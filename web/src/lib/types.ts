@@ -1,5 +1,5 @@
-export type QuestionType = "binary" | "mcq" | "numeric" | "short_text";
-export type Answer = string | number | boolean;
+export type QuestionType = "binary" | "mcq" | "numeric" | "short_text" | "order" | "size" | "dictation";
+export type Answer = string | number | boolean | string[];
 
 export interface ImageRef {
   url: string;
@@ -19,6 +19,25 @@ export interface PublicQuestion {
   images: ImageRef[];
   choices: string[] | null;
   unit: string | null;
+  time_limit: number;
+  memorize?: Memorize | null;
+  items?: string[];
+  size?: SizeConfig;
+  slider?: { min: number; max: number; step: number };
+  speech?: string;
+}
+
+export interface Memorize {
+  items: string[];
+  seconds: number;
+  hide_images?: boolean;
+}
+
+export interface SizeConfig {
+  reference: { label: string; emoji: string };
+  target: { label: string; emoji: string };
+  min: number;
+  max: number;
 }
 
 export interface Reveal {
@@ -32,6 +51,7 @@ export interface AnswerResult extends Reveal {
   position: number;
   user_answer: Answer | null;
   score: number;
+  timed_out?: boolean;
 }
 
 export interface Today {
@@ -43,6 +63,8 @@ export interface Today {
   streak: number;
   username: string;
   is_admin: boolean;
+  server_time: string;
+  current: { position: number; question_id: string; started_at: string } | null;
 }
 
 export interface SubmitResult extends AnswerResult {
@@ -115,6 +137,10 @@ export interface NumericConfig {
   factor?: number | null;
   unit?: string | null;
   exact_margin?: number | null;
+  input?: "keyboard" | "slider";
+  min?: number | null;
+  max?: number | null;
+  step?: number | null;
 }
 
 export interface QuestionDoc {
@@ -129,6 +155,9 @@ export interface QuestionDoc {
   correct_answer: Answer;
   numeric_config?: NumericConfig | null;
   accepted_aliases?: string[];
+  size_config?: SizeConfig | null;
+  memorize?: Memorize | null;
+  time_limit?: number | null;
   explanation: string;
   source_url?: string | null;
   status: "draft" | "published" | "retired";

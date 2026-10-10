@@ -32,3 +32,10 @@ describe("formatAnswer", () => {
     expect(formatAnswer(null, "mcq")).toBe("—");
   });
 });
+
+describe("formatAnswer, nouveaux types", () => {
+  it("affiche un classement et un rapport de taille", () => {
+    expect(formatAnswer(["A", "B", "C"], "order")).toBe("A → B → C");
+    expect(formatAnswer(3.456, "size")).toMatch(/^× 3,46$/);
+  });
+});

@@ -12,12 +12,14 @@ export const CATEGORIES: Record<string, { label: string; pillar: string }> = {
   sport: { label: "Sport", pillar: "memoire" },
   estimation: { label: "Estimation", pillar: "estimation" },
   vrai_faux: { label: "Vrai ou faux", pillar: "esprit_critique" },
+  langue: { label: "Langue française", pillar: "memoire" },
+  memoire: { label: "Mémoire", pillar: "memoire" },
 };
 
 export const CATEGORY_COLOR: Record<string, string> = {
   culture: "#1FA971", histoire: "#0EA5A4", arts: "#16A34A", nature: "#65A30D", sport: "#0891B2",
   logique: "#5B4BFF", reflexion: "#8B5CF6", estimation: "#F2A33A", geographie: "#EA8A1A", sciences: "#D97706",
-  vrai_faux: "#E5484D",
+  vrai_faux: "#E5484D", langue: "#DB2777", memoire: "#0284C7",
 };
 
 export const INPUT_FORMATS = { text: "Texte", image: "Photo", images2: "2 photos" } as const;
@@ -25,13 +27,16 @@ export type InputFormat = keyof typeof INPUT_FORMATS;
 
 export const ANSWER_FORMATS: Record<QuestionType, string> = {
   binary: "Vrai / Faux", mcq: "QCM", numeric: "Nombre", short_text: "Texte libre",
+  order: "Ordre", size: "Taille", dictation: "Dictée",
 };
 
 export const DIFFICULTIES: Record<number, string> = { 1: "Facile", 2: "Moyen", 3: "Difficile" };
 export const STATUSES = { published: "Publiée", draft: "Brouillon", retired: "Retirée" } as const;
 
 export const INPUT_ICON: Record<string, string> = { text: "Aa", image: "▣", images2: "▣▣" };
-export const ANSWER_ICON: Record<QuestionType, string> = { binary: "V/F", mcq: "ABCD", numeric: "123", short_text: "abc" };
+export const ANSWER_ICON: Record<QuestionType, string> = {
+  binary: "V/F", mcq: "ABCD", numeric: "123", short_text: "abc", order: "1·2·3", size: "↔", dictation: "🎧",
+};
 
 /** Modèles de questions : un format d'entrée + un format de réponse, pré-remplis. */
 export interface Template {
@@ -43,6 +48,8 @@ export interface Template {
   category: string;
   prompt?: string;
   choices?: string[];
+  slider?: boolean;
+  memorize?: boolean;
 }
 
 export const TEMPLATES: Template[] = [
@@ -54,4 +61,9 @@ export const TEMPLATES: Template[] = [
   { key: "lieu", title: "Reconnaître un lieu", hint: "Photo → 4 choix", input: "image", type: "mcq", category: "geographie", prompt: "Où a été prise cette photo ?" },
   { key: "photo-nombre", title: "Estimer sur photo", hint: "Photo → nombre", input: "image", type: "numeric", category: "estimation", prompt: "Quelle est la hauteur de ce monument, en mètres ?" },
   { key: "comparer", title: "Comparer 2 photos", hint: "2 photos → A ou B", input: "images2", type: "mcq", category: "estimation", prompt: "Laquelle… ?", choices: ["La photo A", "La photo B", "Les deux", "Aucune des deux"] },
+  { key: "dictee", title: "Dictée", hint: "Écouter → écrire", input: "text", type: "dictation", category: "langue", prompt: "Écoute et écris la phrase." },
+  { key: "taille", title: "Comparer des tailles", hint: "Objet fixe → ajuster l'autre", input: "text", type: "size", category: "estimation", prompt: "Ajuste la taille de … par rapport à …" },
+  { key: "ordre", title: "Remettre dans l'ordre", hint: "3 à 6 éléments à classer", input: "text", type: "order", category: "histoire", prompt: "Du plus ancien au plus récent." },
+  { key: "frise", title: "Curseur / frise", hint: "Glisser vers la bonne valeur", input: "text", type: "numeric", category: "histoire", prompt: "Place sur la frise : …", slider: true },
+  { key: "memoire", title: "Mémoire flash", hint: "Montrer, cacher, demander", input: "text", type: "mcq", category: "memoire", prompt: "Quel mot n'était pas dans la liste ?", memorize: true },
 ];

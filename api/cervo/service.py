@@ -397,8 +397,18 @@ def _fake_answer(q: dict, skill: float, rng: random.Random, parse_number):
         return correct if good else not correct
     if q["type"] == "mcq":
         return correct if good else rng.choice([c for c in q["choices"] if c != correct])
-    if q["type"] == "short_text":
+    if q["type"] in ("short_text", "dictation"):
+        if q["type"] == "dictation" and not good:
+            words = str(correct).split()
+            return " ".join(words[: max(1, len(words) - 2)])
         return str(correct) if good else "je ne sais pas"
+    if q["type"] == "order":
+        items = list(correct)
+        if not good:
+            items[0], items[-1] = items[-1], items[0]
+        return items
+    if q["type"] == "size":
+        return round(float(correct) * (1 if good else rng.uniform(0.5, 1.8)), 2)
     value = float(correct)
     cfg = q.get("numeric_config") or {}
     if cfg.get("scale") == "log":

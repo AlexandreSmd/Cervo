@@ -34,7 +34,9 @@ const json = (body: unknown) => JSON.stringify(body);
 export const api = {
   health: () => request<{ status: string; today: string; env: string }>("/health"),
   today: () => request<Today>("/today"),
-  answer: (date: string, question_id: string, answer: Answer) =>
+  startQuestion: (date: string, question_id: string) =>
+    request<{ started_at: string; server_time: string; position: number }>("/question-start", { method: "POST", body: json({ date, question_id }) }),
+  answer: (date: string, question_id: string, answer: Answer | null) =>
     request<SubmitResult>("/answer", { method: "POST", body: json({ date, question_id, answer }) }),
   results: (date: string) => request<DayDetail>(`/results/${date}`),
   profile: () => request<Profile>("/profile"),
@@ -51,6 +53,7 @@ export const api = {
     setStatus: (id: string, status: string) => request(`/admin/questions/${id}`, { method: "PATCH", body: json({ status }) }),
     update: (id: string, question: unknown) => request(`/admin/questions/${id}`, { method: "PUT", body: json(question) }),
     overview: () => request<Overview>("/admin/overview"),
+    meta: () => request<{ today: string }>("/admin/meta"),
     dayStats: (date: string) => request<DayStats>(`/admin/stats/${date}`),
     schedule: (days = 28, start?: string) => request<Schedule>(`/admin/schedule?days=${days}${start ? `&start=${start}` : ""}`),
     fill: (days = 28) => request<{ created: string[] }>("/admin/schedule/fill", { method: "POST", body: json({ days }) }),

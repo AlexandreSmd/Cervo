@@ -62,7 +62,10 @@ def h(token):
 
 
 def answer_for(q):
-    return {"binary": True, "mcq": (q["choices"] or [""])[0], "numeric": 100, "short_text": "abc"}[q["type"]]
+    return {
+        "binary": True, "mcq": (q["choices"] or [""])[0], "numeric": 100, "short_text": "abc",
+        "order": q.get("items"), "size": 2, "dictation": "une phrase dictée",
+    }[q["type"]]
 
 
 def test_health(client):

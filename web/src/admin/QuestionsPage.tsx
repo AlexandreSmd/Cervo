@@ -18,35 +18,47 @@ function Filter({ label, value, onChange, options }: { label: string; value: str
   );
 }
 
-export function QuestionsPage() {
+/** « Pas encore posées » = la base de questions ; « Déjà posées » = l'historique (avec dates et réussite). */
+export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
   const { data, isLoading, error } = useQuery({ queryKey: ["admin-questions"], queryFn: api.admin.questions });
+  const meta = useQuery({ queryKey: ["admin-meta-today"], queryFn: api.admin.meta, staleTime: 60_000 });
+  const today = meta.data?.today ?? new Date().toISOString().slice(0, 10);
   const [search, setSearch] = useState("");
   const [f, setF] = useState({ category: "all", difficulty: "all", input: "all", answer: "all", status: "all" });
   const [editing, setEditing] = useState<AdminQuestion | "new" | null>(null);
   const [importing, setImporting] = useState(false);
   const [created, setCreated] = useState<string | null>(null);
 
-  const list = useMemo(() => (data?.questions ?? []).filter((q) =>
+  const scoped = useMemo(() => (data?.questions ?? []).filter((q) => {
+    const asked = q.days.some((d) => d <= today);
+    return mode === "past" ? asked : !asked;
+  }), [data, mode, today]);
+  const list = useMemo(() => scoped.filter((q) =>
     (f.category === "all" || q.category === f.category) && (f.difficulty === "all" || String(q.difficulty) === f.difficulty) &&
     (f.input === "all" || q.input_format === f.input) && (f.answer === "all" || q.type === f.answer) && (f.status === "all" || q.status === f.status) &&
-    (!search || `${q.id} ${q.prompt}`.toLowerCase().includes(search.toLowerCase()))), [data, f, search]);
+    (!search || `${q.id} ${q.prompt}`.toLowerCase().includes(search.toLowerCase()))), [scoped, f, search]);
 
   if (error) return <ErrorBox message={(error as Error).message} />;
   if (isLoading || !data) return <Loading />;
-  const today = new Date().toISOString().slice(0, 10);
   const set = (k: keyof typeof f) => (v: string) => setF({ ...f, [k]: v });
 
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-extrabold">Questions</h1>
-          <p className="text-sm text-muted">{data.questions.length} au total · {data.questions.filter((q) => q.status === "published").length} publiées</p>
+          <h1 className="text-4xl font-extrabold">{mode === "past" ? "Déjà posées" : "Pas encore posées"}</h1>
+          <p className="text-sm text-muted">
+            {mode === "past"
+              ? `${scoped.length} questions déjà jouées, avec leur date et leur taux de réussite`
+              : `${scoped.length} questions en réserve · ${scoped.filter((q) => q.days.length).length} déjà planifiées · ${scoped.filter((q) => q.status === "published" && !q.days.length).length} disponibles`}
+          </p>
         </div>
-        <div className="flex gap-2">
-          <button className="btn-ghost" onClick={() => setImporting(true)}>Importer</button>
-          <button className="btn-dark" onClick={() => setEditing("new")} data-testid="new-question">+ Nouvelle question</button>
-        </div>
+        {mode === "bank" && (
+          <div className="flex gap-2">
+            <button className="btn-ghost" onClick={() => setImporting(true)}>Importer</button>
+            <button className="btn-dark" onClick={() => setEditing("new")} data-testid="new-question">+ Nouvelle question</button>
+          </div>
+        )}
       </div>
       {created && <p className="chip bg-good/15 py-2" role="status" data-testid="admin-created">Question {created} enregistrée</p>}
 
@@ -64,12 +76,13 @@ export function QuestionsPage() {
           <thead className="text-left text-xs uppercase tracking-wider text-muted">
             <tr>
               <th className="px-5 py-3">Question</th><th className="px-3 py-3">Niveau</th><th className="px-3 py-3">Entrée → réponse</th>
-              <th className="px-3 py-3">Bonnes rép.</th><th className="px-3 py-3">Prochaine date</th><th className="px-5 py-3">Statut</th>
+              <th className="px-3 py-3">Bonnes rép.</th><th className="px-3 py-3">{mode === "past" ? "Posée le" : "Planifiée"}</th><th className="px-5 py-3">Statut</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
             {list.slice(0, 200).map((q) => {
-              const next = q.days.find((d) => d >= today);
+              const asked = q.days.filter((d) => d <= today);
+              const next = mode === "past" ? asked[asked.length - 1] : q.days.find((d) => d > today);
               return (
                 <tr key={q.id} className="cursor-pointer hover:bg-ink/[0.03]" onClick={() => setEditing(q)} data-testid="admin-question">
                   <td className="max-w-lg px-5 py-3">
@@ -84,7 +97,7 @@ export function QuestionsPage() {
                   <td className="px-3 py-3"><DiffBars level={q.difficulty} /></td>
                   <td className="whitespace-nowrap px-3 py-3 text-muted">{q.input_label} → {q.answer_label}</td>
                   <td className="px-3 py-3"><Rate value={q.stats.success} /></td>
-                  <td className="whitespace-nowrap px-3 py-3 text-muted">{next ? shortDate(next) : "—"}</td>
+                  <td className="whitespace-nowrap px-3 py-3 text-muted">{next ? shortDate(next) : mode === "past" ? "—" : "Non planifiée"}{mode === "past" && asked.length > 1 ? ` (×${asked.length})` : ""}</td>
                   <td className="px-5 py-3"><span className={`chip ${q.status === "published" ? "bg-good/15" : q.status === "draft" ? "bg-mid/20" : ""}`}>{STATUSES[q.status]}</span></td>
                 </tr>
               );

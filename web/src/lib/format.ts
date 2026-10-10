@@ -16,6 +16,11 @@ export function formatNumber(value: number): string {
 
 export function formatAnswer(value: Answer | null | undefined, type: QuestionType, unit?: string | null): string {
   if (value === null || value === undefined || value === "") return "—";
+  if (Array.isArray(value)) return value.join(" → ");
+  if (type === "size") {
+    const n = Number(value);
+    if (Number.isFinite(n)) return `× ${formatNumber(Math.round(n * 100) / 100)}`;
+  }
   if (type === "binary") {
     if (value === true || value === "true") return "Vrai";
     if (value === false || value === "false") return "Faux";

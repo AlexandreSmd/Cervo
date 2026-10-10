@@ -48,8 +48,13 @@ test("captures espace fondateur", async ({ page }) => {
   await page.getByTestId("fill").click();
   await expect(page.getByRole("status")).toBeVisible();
   await page.screenshot({ path: join(OUT, "7-admin-planning-1440.png") });
-  await page.getByRole("link", { name: "Questions" }).click();
+  await page.getByRole("link", { name: "Pas encore posées" }).click();
+  await shot(page, "8-admin-banque", 1440);
   await page.getByTestId("new-question").click();
-  await page.getByTestId("template-comparer").click();
-  await page.screenshot({ path: join(OUT, "8-admin-editeur-1440.png") });
+  await page.getByTestId("template-taille").click();
+  await page.getByLabel("Emoji de référence").fill("☕");
+  await page.getByLabel("Objet de référence").fill("Tasse");
+  await page.getByLabel("Emoji à ajuster").fill("🍽️");
+  await page.getByLabel("Objet à ajuster").fill("Assiette");
+  await page.screenshot({ path: join(OUT, "9-admin-editeur-taille-1440.png") });
 });

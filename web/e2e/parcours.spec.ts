@@ -63,14 +63,27 @@ test("espace fondateur : tableau de bord, planning par glisser-déposer, nouvell
   await page.getByTestId(`slot-${future}-0`).dragTo(page.getByTestId(`slot-${future}-2`));
   await expect(page.getByTestId(`slot-${future}-2`)).toContainText(first.slice(1, 20));
 
+  // Questions déjà posées : celles du jour (des joueurs ont joué dans le premier test)
+  await page.getByRole("link", { name: "Déjà posées" }).click();
+  await expect(page.getByRole("heading", { name: "Déjà posées" })).toBeVisible();
+  await expect(page.getByTestId("admin-question").first()).toBeVisible();
+
   // Nouvelle question à partir d'un modèle
-  await page.getByRole("link", { name: "Questions" }).click();
+  await page.getByRole("link", { name: "Pas encore posées" }).click();
   await page.getByTestId("new-question").click();
   await page.getByTestId("template-vf").click();
   await page.locator("#q-prompt").fill(`Le test de bout en bout ajoute une question (${Date.now()}).`);
   await page.getByRole("radiogroup", { name: "Bonne réponse" }).getByRole("radio", { name: "Vrai" }).click();
   await page.locator("#q-expl").fill("Question ajoutée automatiquement par le test Playwright.");
   await page.getByRole("radiogroup", { name: "Statut" }).getByRole("radio", { name: "Brouillon" }).click();
+  await page.getByTestId("admin-save").click();
+  await expect(page.getByTestId("admin-created")).toBeVisible();
+
+  // Modèle « Remettre dans l'ordre »
+  await page.getByTestId("new-question").click();
+  await page.getByTestId("template-ordre").click();
+  for (const [i, v] of ["Antiquité", "Moyen Âge", "Renaissance", "Époque moderne"].entries()) await page.getByLabel(`Élément ${i + 1}`).fill(v);
+  await page.locator("#q-expl").fill("Les grandes périodes de l'histoire, dans l'ordre.");
   await page.getByTestId("admin-save").click();
   await expect(page.getByTestId("admin-created")).toBeVisible();
 });

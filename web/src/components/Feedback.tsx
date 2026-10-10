@@ -1,14 +1,48 @@
 import { useState } from "react";
 import { api } from "../lib/api";
-import { COLOR_HEX, formatAnswer, scoreColor } from "../lib/format";
-import type { PublicQuestion, SubmitResult } from "../lib/types";
+import { formatAnswer } from "../lib/format";
+import type { Answer, PublicQuestion, SubmitResult } from "../lib/types";
 
-/** Résultat d'une question : score, bonne réponse, ta réponse, explication. */
+const VERDICTS = {
+  good: { title: "Bravo !", icon: "✓", bg: "bg-good", text: "text-good" },
+  mid: { title: "Pas loin !", icon: "≈", bg: "bg-mid", text: "text-mid" },
+  bad: { title: "Raté", icon: "✗", bg: "bg-bad", text: "text-bad" },
+  time: { title: "Temps écoulé", icon: "⏱", bg: "bg-bad", text: "text-bad" },
+};
+
+export function verdictOf(score: number, timedOut?: boolean) {
+  if (timedOut) return VERDICTS.time;
+  if (score >= 80) return VERDICTS.good;
+  if (score >= 40) return VERDICTS.mid;
+  return VERDICTS.bad;
+}
+
+/** Ordre attendu, avec ✓ quand l'élément est à la bonne place. */
+function OrderReveal({ correct, given }: { correct: string[]; given: Answer | null }) {
+  const mine = Array.isArray(given) ? given : [];
+  return (
+    <ol className="space-y-1.5">
+      {correct.map((item, i) => {
+        const ok = mine[i] === item;
+        return (
+          <li key={item} className="flex items-center gap-3 rounded-xl bg-ink/5 px-3 py-2 font-semibold">
+            <span className="w-5 text-center text-sm text-muted">{i + 1}</span>
+            <span className="flex-1">{item}</span>
+            <span className={ok ? "text-good" : "text-bad"} aria-label={ok ? "bien placé" : "mal placé"}>{ok ? "✓" : "✗"}</span>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/** Résultat d'une question : verdict + points, bonne réponse, ta réponse, explication. */
 export function Feedback({ question, result, onNext, isLast }: { question: PublicQuestion; result: SubmitResult; onNext: () => void; isLast: boolean }) {
   const [reporting, setReporting] = useState(false);
   const [reason, setReason] = useState("");
   const [reported, setReported] = useState(false);
-  const color = COLOR_HEX[scoreColor(result.score)];
+  const v = verdictOf(result.score, result.timed_out);
+  const perfect = result.score === 100 && question.type !== "dictation";
 
   const sendReport = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,25 +53,37 @@ export function Feedback({ question, result, onNext, isLast }: { question: Publi
 
   return (
     <div className="animate-rise space-y-4" data-testid="feedback">
-      <div className="flex items-end justify-between">
-        <p className="font-display text-6xl font-extrabold" style={{ color }} aria-live="polite" data-testid="score-value">{result.score}</p>
-        <p className="pb-2 text-sm font-semibold text-muted">/ 100</p>
+      <div className={`flex items-center gap-4 rounded-3xl ${v.bg} p-5 text-white`} role="status" aria-live="polite">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 text-2xl font-extrabold" aria-hidden="true">{v.icon}</span>
+        <span className="flex-1 font-display text-2xl font-extrabold" data-testid="verdict">{v.title}</span>
+        <span className="text-right">
+          <span className="block font-display text-4xl font-extrabold leading-none" data-testid="score-value">+{result.score}</span>
+          <span className="text-xs font-semibold opacity-80">points</span>
+        </span>
       </div>
-      <dl className="divide-y divide-line rounded-2xl bg-ink/5">
-        <div className="flex items-center justify-between gap-4 px-4 py-3">
-          <dt className="text-sm text-muted">Réponse</dt>
-          <dd className="text-right font-bold" data-testid="correct-answer">{formatAnswer(result.correct_answer, question.type, question.unit)}</dd>
-        </div>
-        <div className="flex items-center justify-between gap-4 px-4 py-3">
-          <dt className="text-sm text-muted">Toi</dt>
-          <dd className="text-right font-bold">{formatAnswer(result.user_answer, question.type, question.unit)}</dd>
-        </div>
-      </dl>
-      {result.explanation && <p className="text-[15px] leading-relaxed text-muted">{result.explanation}</p>}
-      <button className="btn-dark w-full text-lg" onClick={onNext} autoFocus data-testid="next">{isLast ? "Résultats" : "Suivant"}</button>
+
+      {question.type === "order" && Array.isArray(result.correct_answer) ? (
+        <OrderReveal correct={result.correct_answer as string[]} given={result.user_answer} />
+      ) : (
+        !perfect && (
+          <div className="space-y-1 px-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">Bonne réponse</p>
+            <p className="font-display text-2xl font-extrabold leading-tight" data-testid="correct-answer">{formatAnswer(result.correct_answer, question.type, question.unit)}</p>
+            {result.user_answer !== null && (
+              <p className="pt-1 text-sm text-muted">Toi : <span className="font-semibold">{formatAnswer(result.user_answer, question.type, question.unit)}</span></p>
+            )}
+          </div>
+        )
+      )}
+
+      {result.explanation && (
+        <p className="rounded-2xl bg-ink/5 p-4 text-[15px] leading-relaxed"><span aria-hidden="true">💡 </span>{result.explanation}</p>
+      )}
+
+      <button className="btn-dark w-full text-lg" onClick={onNext} autoFocus data-testid="next">{isLast ? "Voir mon score" : "Suivant"}</button>
       <div className="text-center">
         {reported ? (
-          <p className="text-xs text-muted" role="status">Merci, c'est noté.</p>
+          <p className="text-xs text-muted">Merci, c'est noté.</p>
         ) : reporting ? (
           <form onSubmit={sendReport} className="flex gap-2">
             <input className="input py-2 text-sm" aria-label="Qu'est-ce qui ne va pas ?" placeholder="Qu'est-ce qui ne va pas ?" value={reason} onChange={(e) => setReason(e.target.value)} minLength={3} maxLength={500} required />

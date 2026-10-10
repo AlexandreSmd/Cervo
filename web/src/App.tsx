@@ -21,7 +21,8 @@ export function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="planning" element={<Planning />} />
-        <Route path="questions" element={<QuestionsPage />} />
+        <Route path="questions" element={<QuestionsPage key="bank" mode="bank" />} />
+        <Route path="questions/passees" element={<QuestionsPage key="past" mode="past" />} />
         <Route path="signalements" element={<ReportsPage />} />
       </Route>
       <Route element={<PlayerShell />}>

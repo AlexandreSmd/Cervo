@@ -50,7 +50,8 @@ En local, clique sur **« Se connecter (local) »**.
 | --- | --- |
 | **Tableau de bord** | Joueurs du jour et des 7 derniers jours, score moyen, taux de quiz terminés, courbe sur 30 jours (clic sur un jour = détail), taux de bonnes réponses par question, répartition des scores, questions les plus dures et les plus faciles |
 | **Planning** | Les 10 questions de chaque jour à venir, dans l'ordre où les joueurs les verront. « Planifier les 28 prochains jours » remplit les jours vides. Glisser un badge sur un autre : réordonner (même jour) ou échanger (deux jours). Glisser une question de la banque sur un badge : la remplacer. Un jour avec des joueurs est verrouillé |
-| **Questions** | Toute la banque, filtrable par catégorie, difficulté, format d'entrée, format de réponse et statut. « Nouvelle question » propose des modèles. Import JSON/CSV |
+| **Pas encore posées** | Ta base de questions en réserve (jamais jouées), filtrable par catégorie, difficulté, format et statut, avec leur date si elles sont déjà planifiées. « Nouvelle question » propose des modèles. Import JSON/CSV |
+| **Déjà posées** | Les questions déjà jouées, avec la date et le taux de bonnes réponses |
 | **Signalements** | Les erreurs signalées par les joueurs, avec accès direct à la question |
 
 Le bloc « Local » de la barre latérale simule des joueurs (pour voir le tableau de bord rempli), ajoute un historique fictif à ton compte ou remet ton quiz du jour à zéro.
@@ -60,11 +61,12 @@ Le bloc « Local » de la barre latérale simule des joueurs (pour voir le table
 | Élément | Valeurs |
 | --- | --- |
 | Format d'entrée (ce que voit le joueur) | Texte · Photo · 2 photos (repérées A et B) |
-| Format de réponse (ce qu'il répond) | Vrai / Faux · QCM (4 choix) · Nombre (estimation, score selon l'écart) · Texte libre (accents et majuscules ignorés, réponses alternatives possibles) |
-| Catégorie | Culture générale, Logique, Réflexion, Géographie, Histoire, Sciences, Nature et animaux, Arts et culture, Sport, Estimation, Vrai ou faux |
+| Format de réponse (ce qu'il répond) | Vrai / Faux · QCM (4 choix) · Nombre (au clavier ou au curseur, score selon l'écart) · Texte libre (accents et majuscules ignorés) · Remettre dans l'ordre (points partiels) · Taille (comparer deux objets) · Dictée (écouter puis écrire, score par mots justes) |
+| Options | Mémoire flash (montrer une liste ou une photo quelques secondes, puis la cacher) · Chrono (15 s par défaut, 20 s pour un classement, 45 s pour une dictée) |
+| Catégorie | Culture générale, Logique, Réflexion, Géographie, Histoire, Sciences, Nature et animaux, Arts et culture, Sport, Estimation, Vrai ou faux, Langue française, Mémoire |
 | Difficulté | 1 Facile · 2 Moyen · 3 Difficile (chaque jour : 2 / 4 / 4) |
 
-Modèles prêts à l'emploi : Vrai ou faux, QCM, Estimation, Réponse libre, Reconnaître une personne (photo → nom), Reconnaître un lieu (photo → QCM), Estimer sur photo (photo → nombre), Comparer 2 photos (A ou B).
+Modèles prêts à l'emploi : Vrai ou faux, QCM, Estimation, Réponse libre, Reconnaître une personne (photo → nom), Reconnaître un lieu (photo → QCM), Estimer sur photo (photo → nombre), Comparer 2 photos (A ou B), Dictée, Comparer des tailles, Remettre dans l'ordre, Curseur / frise, Mémoire flash.
 
 ## Outils de développement (local uniquement)
 

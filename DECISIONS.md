@@ -77,3 +77,17 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 - **Photos de personnes réelles** : aucune n'est fournie (droits à l'image). Le modèle « Reconnaître une personne » est prêt : il suffit d'envoyer une photo libre de droits (Wikimedia Commons) avec son crédit.
 - **Interface joueur épurée** : onglets en bas sur mobile, gros chiffres, presque pas de texte ; plus d'écran d'introduction (une étiquette « Sans aide » sur la première question), plus de pied de page, plus de boutons de taille de texte et de thème (le thème suit le téléphone). La page À propos est supprimée ; la confidentialité est accessible depuis le profil. Les outils de dev sont passés dans l'espace fondateur.
 - **Horaire** : le changement de jour se fait à minuit à Paris (heure d'Europe centrale, CET/CEST), réglable avec `TIMEZONE`.
+
+## Types de questions et chrono (version 3)
+
+- **Chrono de 15 secondes** (demande du porteur, à la place du « pas de chrono » de PRODUCT.md). Il démarre côté serveur quand la question s'affiche (`POST /api/question-start`) : recharger la page ne le remet pas à zéro. Une réponse arrivée après le temps imparti + 4 s de marge (réseau) vaut 0. Le temps est plus long pour une dictée (45 s) et un classement (20 s) ; il est réglable question par question. La phase de mémorisation ne compte pas dans le chrono.
+- **Dictée** : lue par la synthèse vocale du navigateur (`speechSynthesis`, voix française, lecture normale ou lente, réécoute illimitée) : pas de fichier audio à produire. Le texte doit donc être envoyé au navigateur ; il est encodé (base64) pour ne pas s'afficher en clair. Score : part des mots justes (distance d'édition sur les mots), accents comptés, majuscules et ponctuation ignorées. Extraits d'auteurs du domaine public uniquement.
+- **Taille (façon Size It Up)** : l'objet de référence est fixe, le joueur agrandit ou rétrécit l'autre avec un curseur logarithmique. Les objets sont des emojis (aucune image à fournir). Score en proportion : 100 à moins de 1 %, 0 à un facteur 2.
+- **Remettre dans l'ordre** : on touche les éléments dans l'ordre (plus fiable sur téléphone qu'un glisser-déposer). Points partiels : part des paires dans le bon ordre relatif.
+- **Curseur** : option des questions « nombre » (frise chronologique, pourcentages), bornée par min et max.
+- **Mémoire flash** : option de n'importe quelle question : une liste de mots ou une photo s'affiche quelques secondes, puis disparaît avant la question.
+- **QCM sensibles aux accents** : nécessaire pour les questions d'orthographe (« Hypothèse » ≠ « Hypothése »).
+- **Quiz du jour** : au plus 1 dictée, 2 classements et 2 questions de taille par jour, pour garder un rythme rapide.
+- **Écran de réponse** : un bandeau de couleur avec le verdict (Bravo, Pas loin, Raté, Temps écoulé) et les points gagnés, puis la bonne réponse en gros, ta réponse en petit, et l'explication. Pour un classement, l'ordre attendu avec ✓ ou ✗ par ligne.
+- **Admin** : « Pas encore posées » (jamais jouées, y compris celles planifiées pour plus tard) et « Déjà posées » (jouées au moins une fois, aujourd'hui compris).
+- **Nouvelles catégories** : Langue française (dictées, orthographe, anagrammes) et Mémoire, rattachées au pilier Mémoire et culture.

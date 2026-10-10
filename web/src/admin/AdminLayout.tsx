@@ -12,7 +12,8 @@ import { auth } from "../lib/firebase";
 const NAV = [
   { to: "/admin", label: "Tableau de bord", end: true },
   { to: "/admin/planning", label: "Planning" },
-  { to: "/admin/questions", label: "Questions" },
+  { to: "/admin/questions", label: "Pas encore posées", end: true },
+  { to: "/admin/questions/passees", label: "Déjà posées" },
   { to: "/admin/signalements", label: "Signalements" },
 ];
 
