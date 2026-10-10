@@ -25,8 +25,12 @@ def current_claims(authorization: Annotated[str | None, Header()] = None) -> dic
 
 
 def is_admin(claims: dict) -> bool:
+    """Admin = e-mail listé dans ADMIN_EMAILS ET vérifié par Firebase (Google ou lien magique).
+
+    Sans la vérification, n'importe qui pourrait se créer un compte avec l'adresse du fondateur.
+    """
     email = (claims.get("email") or "").lower()
-    return bool(email) and email in get_settings().admin_emails
+    return bool(email) and claims.get("email_verified") is True and email in get_settings().admin_emails
 
 
 def admin_claims(claims: Annotated[dict, Depends(current_claims)]) -> dict:

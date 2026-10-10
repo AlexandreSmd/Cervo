@@ -100,8 +100,18 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 - **Qualité automatisée** : Ruff (Python), ESLint + Prettier + TypeScript strict (interface), `npm run check` avant chaque commit, CI GitHub (qualité, tests, build, puis parcours Playwright avec les émulateurs).
 - **Planning lisible** : une ligne par question avec l'énoncé complet, la réponse attendue, la catégorie, la difficulté et le format ; une frise de dates (prêt, alerte, vide, joué) pour naviguer ; les alertes affichées directement. La logique du glisser-déposer est isolée dans `admin/planningLogic.ts` et testée.
 
-## Nom : Aiguisé
+## Nom : Vif
 
-- Le produit s'appelle **Aiguisé** (mission : « Garder son esprit affûté, vif et précis. »). Le nom affiché vient de `APP_NAME` (`web/src/lib/config.ts` et `api/cervo/__init__.py`), la promesse de `BASELINE` et `MISSION`.
+- Le produit s'appelle **Vif** (après « Cervo Daily », « Aiguisé » puis « Sharp Mind ») (mission : « Garder son esprit affûté, vif et précis. »). Le nom affiché vient de `APP_NAME` (`web/src/lib/config.ts` et `api/cervo/__init__.py`), la promesse de `BASELINE` et `MISSION`.
 - Les **identifiants techniques restent `cervo`** (paquet Python `cervo`, projet d'émulateur `demo-cervo-daily`, comptes de test `@cervo.test`) : invisibles pour les joueurs, et les renommer casserait les données locales existantes sans rien apporter. À changer seulement au moment de créer le vrai projet Firebase.
-- Pseudo par défaut des nouveaux joueurs : `Aiguise-XXXXX`.
+- Pseudo par défaut des nouveaux joueurs : `Vif-XXXXX`.
+
+## Production (version 5)
+
+- **Hébergement** : site et aiguillage `/api` sur un Worker Cloudflare (fichiers statiques + proxy, même domaine, pas de CORS) ; API sur Modal (`modal_app.py`, conteneurs à la demande, gratuit dans le crédit mensuel) ; Firebase Auth et Firestore (offre gratuite Spark). Tout se déploie avec `npm run prod:deploy` (`scripts/prod.mjs`), qui vérifie d'abord la configuration (`prod:check`).
+- **Secrets** : la clé du compte de service Firebase reste dans `secrets/firebase-admin.json` (ignoré par Git) et n'est envoyée qu'au secret Modal `vif-prod`. La configuration Web Firebase (`.env.production`) n'est pas secrète : elle est publique par conception.
+- **Admin** : `ADMIN_EMAILS` (ton adresse) et e-mail vérifié obligatoire. Les routes `/api/dev/*` répondent 404 hors local. En production, l'API ne lit jamais `.env.local`.
+- **Connexion** : invité automatique, puis « Continuer avec Google » ou lien magique par e-mail ; dans les deux cas le compte est rattaché à la session invité (historique conservé).
+- **Quota Firestore** : la banque de questions est gardée en mémoire et rechargée seulement quand `meta/bank.version` change (incrémentée à chaque modification) : une lecture toutes les 30 s par serveur au lieu de plusieurs centaines.
+- **Domaine** : les `.com` s'achètent chez Cloudflare (déjà branchés) ; les `.fr` chez OVH, puis serveurs DNS pointés vers Cloudflare.
+- **Réveil de l'API** : aucun conteneur gardé en veille (coût nul) ; la première requête après une pause prend 2 à 4 s.

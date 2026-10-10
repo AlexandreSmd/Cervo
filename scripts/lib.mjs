@@ -13,7 +13,7 @@ const COLORS = { reset: "\x1b[0m", dim: "\x1b[2m", bold: "\x1b[1m", red: "\x1b[3
 export const c = (color, text) => (process.stdout.isTTY ? `${COLORS[color]}${text}${COLORS.reset}` : text);
 
 export function log(message) {
-  console.log(`${c("magenta", "[aiguisé]")} ${message}`);
+  console.log(`${c("magenta", "[vif]")} ${message}`);
 }
 
 /** Lit .env.local (ou .env.example à défaut) et le fusionne avec l'environnement courant. */

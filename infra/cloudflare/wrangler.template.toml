@@ -1,0 +1,20 @@
+# Modèle de configuration du Worker. `npm run prod:deploy` en génère wrangler.generated.toml
+# (ignoré par Git) en remplaçant __DOMAIN__ par PROD_DOMAIN (.env.production).
+name = "vif"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+[assets]
+directory = "../../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# Les appels /api/* passent toujours par le Worker (jamais par les fichiers statiques).
+run_worker_first = ["/api/*"]
+
+[[routes]]
+pattern = "__DOMAIN__"
+custom_domain = true
+
+[[routes]]
+pattern = "www.__DOMAIN__"
+custom_domain = true

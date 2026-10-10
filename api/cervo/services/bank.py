@@ -107,22 +107,46 @@ def to_doc(q: Question, created_at: str) -> dict:
 
 
 # --- Lecture en base, avec cache ---------------------------------------------------
-# Toute la banque tient en mémoire (quelques centaines de documents) : on la relit au plus
-# toutes les 30 s, et immédiatement après une modification depuis l'admin.
+# Toute la banque tient en mémoire. Pour rester dans le quota gratuit de Firestore, on ne la
+# relit que si elle a changé : chaque modification incrémente `meta/bank.version`, et chaque
+# serveur vérifie ce numéro au plus toutes les 30 s (1 lecture au lieu de plusieurs centaines).
 
-_CACHE_TTL = 30.0
+_CHECK_EVERY = 30.0
 _lock = threading.Lock()
-_cache: dict = {"at": 0.0, "project": None, "items": None}
+_cache: dict = {"checked_at": 0.0, "project": None, "version": None, "items": None}
+
+
+def _version_ref(db):
+    return db.collection(col.META).document("bank")
+
+
+def _read_version(db) -> int:
+    snap = _version_ref(db).get()
+    return int((snap.to_dict() or {}).get("version", 0)) if snap.exists else 0
+
+
+def bump_version(db) -> None:
+    """À appeler après toute écriture dans `questions` : les autres serveurs rechargeront la banque."""
+    from google.cloud import firestore
+
+    _version_ref(db).set({"version": firestore.Increment(1)}, merge=True)
+    invalidate_cache()
 
 
 def all_questions(db, force: bool = False) -> list[dict]:
+    now = time.monotonic()
     with _lock:
-        fresh = time.monotonic() - _cache["at"] < _CACHE_TTL
-        if not force and fresh and _cache["items"] is not None and _cache["project"] == db.project:
+        cached = _cache["items"] is not None and _cache["project"] == db.project
+        if cached and not force and now - _cache["checked_at"] < _CHECK_EVERY:
+            return _cache["items"]
+    version = _read_version(db)
+    with _lock:
+        if not force and _cache["items"] is not None and _cache["project"] == db.project and _cache["version"] == version:
+            _cache["checked_at"] = now
             return _cache["items"]
     items = [{**d.to_dict(), "id": d.id} for d in db.collection(col.QUESTIONS).stream()]
     with _lock:
-        _cache.update(at=time.monotonic(), items=items, project=db.project)
+        _cache.update(checked_at=now, items=items, project=db.project, version=version)
     return items
 
 

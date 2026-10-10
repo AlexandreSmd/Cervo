@@ -88,7 +88,7 @@ def import_questions(body: ImportIn):
         (updated if q.id in existing else created).append(q.id)
         existing.add(q.id)
     batch.commit()
-    bank.invalidate_cache()
+    bank.bump_version(client)
     return {"created": created, "updated": updated, "errors": errors}
 
 
@@ -104,7 +104,7 @@ def update_question(question_id: str, body: dict):
     except ValidationError as exc:
         raise HTTPException(422, _errors(exc)) from None
     ref.set(bank.to_doc(q, snap.to_dict().get("created_at") or now_iso()))
-    bank.invalidate_cache()
+    bank.bump_version(client)
     return {"id": question_id}
 
 
@@ -114,7 +114,7 @@ def set_status(question_id: str, body: StatusIn):
     if not ref.get().exists:
         raise HTTPException(404, "Question introuvable.")
     ref.update({"status": body.status})
-    bank.invalidate_cache()
+    bank.bump_version(db())
     return {"id": question_id, "status": body.status}
 
 

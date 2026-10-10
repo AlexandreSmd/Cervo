@@ -44,14 +44,14 @@ function Gate({ children }: { children: ReactNode }) {
       <div className="mx-auto mt-24 max-w-sm space-y-4 rounded-3xl bg-card p-8 text-center">
         <Logo to="/" />
         <h1 className="text-2xl font-extrabold">Espace fondateur</h1>
-        <p className="text-sm text-muted">Réservé aux comptes listés dans ADMIN_EMAILS.</p>
+        <p className="text-sm text-muted">Réservé au fondateur. Connecte-toi avec ton compte, puis reviens ici.</p>
         {DEV_TOOLS && (
           <button className="btn-dark w-full" disabled={busy} onClick={devLogin} data-testid="admin-dev-login">
             Se connecter (local)
           </button>
         )}
         <Link to="/connexion" className="btn-ghost w-full">
-          Se connecter par e-mail
+          Se connecter
         </Link>
       </div>
     );

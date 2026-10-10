@@ -11,7 +11,7 @@ import sys
 
 from ..clock import now_iso
 from ..firebase import db
-from ..services.bank import check_bank, invalidate_cache, load_files, to_doc
+from ..services.bank import bump_version, check_bank, load_files, to_doc
 
 
 def seed(force: bool = False) -> int:
@@ -32,7 +32,7 @@ def seed(force: bool = False) -> int:
             batch.commit()
             batch = client.batch()
     batch.commit()
-    invalidate_cache()
+    bump_version(client)
     if count:
         print(f"{count} question(s) chargée(s) dans Firestore ({len(valid)} dans la banque).")
     else:

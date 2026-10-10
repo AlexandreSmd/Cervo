@@ -23,6 +23,13 @@ DEFAULTS = {
 
 
 def load_env() -> None:
+    """En local : lit .env.local et complète avec les valeurs par défaut des émulateurs.
+
+    En production (APP_ENV fourni par l'environnement et différent de « local »), on ne lit
+    jamais .env.local : la configuration vient uniquement du secret Modal.
+    """
+    if os.environ.get("APP_ENV", "local") != "local":
+        return
     load_dotenv(ROOT / ".env.local", override=False)
     if os.environ.get("APP_ENV", DEFAULTS["APP_ENV"]) == "local":
         for key, value in DEFAULTS.items():

@@ -9,3 +9,4 @@ ATTEMPTS = "attempts"  # users/{uid}/attempts/{AAAA-MM-JJ} : participation d'un 
 USERNAMES = "usernames"  # usernames/{pseudo en minuscules} : unicité des pseudos
 REPORTS = "reports"  # reports/{id} : signalements de questions
 MEDIA = "media"  # media/{id} : photos envoyées depuis l'admin
+META = "meta"  # meta/bank : numéro de version de la banque (le cache des serveurs se recharge s'il change)

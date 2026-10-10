@@ -1,5 +1,5 @@
 // Nom du produit et promesse : une seule constante à changer (côté API : api/cervo/__init__.py).
-export const APP_NAME = "Aiguisé";
+export const APP_NAME = "Vif";
 export const BASELINE = "Garde ton esprit affûté, vif et précis.";
 export const MISSION = "Garder son esprit affûté, vif et précis.";
 
