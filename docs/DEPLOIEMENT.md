@@ -41,7 +41,7 @@ met tout en ligne : `npm run prod:deploy`.
    - **Adresse e-mail/Mot de passe** → Activer, et active aussi **Lien envoyé par e-mail (connexion sans mot de passe)** → Enregistrer.
    - **Anonyme** → Activer → Enregistrer. (C'est ce qui permet de jouer sans compte.)
 3. Toujours dans Authentication → onglet **Paramètres** → **Domaines autorisés** → **Ajouter un domaine** :
-   ajoute ton domaine (ex. `jouevif.fr`) et `www.` + ton domaine.
+   ajoute ton domaine (`playvif.com`) et `www.` + ton domaine.
 4. **Firestore Database** → **Créer une base de données** → emplacement **eur3 (Europe)** →
    **Démarrer en mode production** → Créer. Les règles par défaut interdisent tout accès direct
    depuis le navigateur : c'est voulu, tout passe par l'API.
@@ -65,7 +65,7 @@ cp .env.production.example .env.production
 open -e .env.production
 ```
 Remplis dans TextEdit, puis enregistre :
-- `PROD_DOMAIN` : ton domaine, sans `https://` (ex. `jouevif.fr`) ;
+- `PROD_DOMAIN` : ton domaine, sans `https://` (`playvif.com`) ;
 - `ADMIN_EMAILS` : ton adresse (déjà remplie) ;
 - `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID` : les trois valeurs de l'étape 2.5.
 

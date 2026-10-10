@@ -557,7 +557,7 @@ Critères : court, mémorable, prononçable en français, évoque le rituel quot
 4. **Cervo** — nom court inventé, évoque le cerveau. Domaines : `cervo.fr`, `cervo.app`.
 5. **Quotidix** — quotidien + dix. Domaines : `quotidix.fr`, `quotidix.com`.
 
-**Nom retenu : Vif** (anciennement « Cervo Daily »). Il évoque un esprit affûté, vif et précis. Domaines à tester : `vif.fr`, `jouevif.fr`, `vif.app`. Prendre le `.fr` et si possible le `.com`. Le nom dans le code est `APP_NAME = "Vif"`, changeable en une ligne.
+**Nom retenu : Vif** (anciennement « Cervo Daily »). Il évoque un esprit affûté, vif et précis. Domaine : `playvif.com`. Le nom dans le code est `APP_NAME = "Vif"`, changeable en une ligne.
 
 À faire côté porteur du projet (pas côté code) : acheter le domaine (par exemple via Cloudflare, qui gérera aussi le DNS), puis vérifier que le nom n'est pas déjà une marque déposée (base INPI / EUIPO).
 
