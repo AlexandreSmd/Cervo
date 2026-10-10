@@ -40,6 +40,7 @@ function prodEnv(conf) {
     FIREBASE_SERVICE_ACCOUNT_JSON: JSON.stringify(JSON.parse(readFileSync(SERVICE_ACCOUNT, "utf8"))),
     ADMIN_EMAILS: conf.ADMIN_EMAILS,
     TIMEZONE: conf.TIMEZONE || "Europe/Paris",
+    FIRESTORE_DATABASE: conf.FIRESTORE_DATABASE || "(default)",
   };
 }
 
@@ -92,7 +93,7 @@ function check({ quiet = false } = {}) {
 function deployApi(conf) {
   log("API : secret de production sur Modal…");
   const env = prodEnv(conf);
-  const vars = ["APP_ENV", "FIREBASE_PROJECT_ID", "FIREBASE_SERVICE_ACCOUNT_JSON", "ADMIN_EMAILS", "TIMEZONE"].map((k) => `${k}=${env[k]}`);
+  const vars = ["APP_ENV", "FIREBASE_PROJECT_ID", "FIREBASE_SERVICE_ACCOUNT_JSON", "ADMIN_EMAILS", "TIMEZONE", "FIRESTORE_DATABASE"].map((k) => `${k}=${env[k]}`);
   const secret = capture("uvx", [...MODAL, "secret", "create", SECRET_NAME, ...vars, "--force"]);
   if (secret.code !== 0) fail(`Création du secret Modal impossible :\n${secret.out}`);
 

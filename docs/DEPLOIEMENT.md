@@ -67,7 +67,8 @@ open -e .env.production
 Remplis dans TextEdit, puis enregistre :
 - `PROD_DOMAIN` : ton domaine, sans `https://` (`playvif.com`) ;
 - `ADMIN_EMAILS` : ton adresse (déjà remplie) ;
-- `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID` : les trois valeurs de l'étape 2.5.
+- `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`, `VITE_FIREBASE_PROJECT_ID` : les trois valeurs de l'étape 2.5 ;
+- `FIRESTORE_DATABASE` : le nom de la base Firestore si tu lui en as donné un (ex. `playvif`), sinon vide.
 
 ## Étape 4 : connecter Modal et Cloudflare au Terminal (5 min)
 
