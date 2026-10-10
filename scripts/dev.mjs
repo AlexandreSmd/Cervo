@@ -49,7 +49,7 @@ if (!existsSync(FIREBASE_BIN)) {
 }
 
 const hosts = emulatorHosts(env);
-const emulatorArgs = [FIREBASE_BIN, "emulators:start", "--only", "auth,firestore,ui", "--project", project, "--export-on-exit", EMULATOR_DATA];
+const emulatorArgs = [FIREBASE_BIN, "emulators:start", "--only", "auth,firestore", "--project", project, "--export-on-exit", EMULATOR_DATA];
 if (existsSync(join(EMULATOR_DATA, "firebase-export-metadata.json"))) emulatorArgs.push("--import", EMULATOR_DATA);
 log("Démarrage des émulateurs Firebase (le premier lancement télécharge l'émulateur Firestore)…");
 watch("Émulateurs", start("firebase", "yellow", process.execPath, emulatorArgs, { env, shell: false }));
