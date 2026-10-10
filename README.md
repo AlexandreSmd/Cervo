@@ -13,6 +13,8 @@ npm run start:local
 
 Puis ouvre **http://localhost:5173**. Ctrl+C pour arrêter (les données sont sauvegardées dans `.emulator-data/`).
 
+**Sur ton téléphone** : connecte-le au même Wi-Fi que l'ordinateur et ouvre l'adresse « Sur ton téléphone » affichée au lancement (par exemple `http://192.168.1.20:5173`). Sur Mac, autorise les connexions entrantes si une fenêtre te le demande.
+
 ### Prérequis (à installer une seule fois)
 
 | Outil | Vérifier | Windows | Mac |
@@ -30,7 +32,7 @@ Python 3.12 est téléchargé automatiquement par uv s'il manque. `npm run setup
 | --- | --- |
 | `npm run start:local` | Setup puis lancement complet (la seule à connaître) |
 | `npm run setup` | Vérifie les prérequis, installe les dépendances, crée `.env.local` |
-| `npm run dev` | Émulateurs Firebase + API (port 8000) + front (port 5173), charge les questions si besoin |
+| `npm run dev` | Émulateurs Firebase + API (port 8000) + front (port 5173), ajoute les nouvelles questions |
 | `npm run db:reset` | Efface les données des émulateurs et recharge les questions |
 | `npm run db:seed:demo` | Ajoute 3 semaines d'historique au compte démo (`demo@cervo.test`) |
 | `npm test` | Tests pytest (API) et Vitest (front) |
@@ -50,7 +52,7 @@ Le bouton **🛠 Dev** en bas à droite permet : connexion démo ou admin en un 
 ## Ajouter des questions
 
 1. **Depuis l'admin** (`/admin`) : formulaire avec aperçu, ou import JSON/CSV.
-2. **Dans le code** : ajouter des objets dans `content/questions/*.json`, lancer `npm run questions:check`, puis `npm run db:reset` (ou `questions:import`).
+2. **Dans le code** : ajouter des objets dans `content/questions/*.json`, lancer `npm run questions:check`, puis relancer `npm run start:local` : les nouvelles questions sont ajoutées automatiquement.
 
 Format d'une question :
 

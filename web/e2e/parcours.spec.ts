@@ -10,6 +10,13 @@ test("parcours complet : quiz invité, résultats, profil, compte par lien magiq
   await expect(page.getByTestId("day-score")).toBeVisible();
   await expect(page.getByTestId("pearl")).toHaveCount(10);
 
+  // Partage sur ordinateur : le message est copié
+  await page.getByTestId("share").click();
+  await expect(page.getByTestId("share-copied")).toBeVisible();
+  const copied = await page.evaluate(() => navigator.clipboard.readText());
+  expect(copied).toMatch(/Mon score : \d+\/100/);
+  expect(copied.match(/[🟢🔴]/gu)?.length).toBe(20);
+
   // Une seule participation par jour : l'accueil montre le score
   await page.goto("/");
   await expect(page.getByTestId("home-score")).toBeVisible();

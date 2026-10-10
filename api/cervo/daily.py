@@ -14,7 +14,8 @@ from zoneinfo import ZoneInfo
 from .catalog import THINKING_PILLARS, pillar_of
 
 QUIZ_SIZE = 10
-DIFFICULTY_QUOTAS = {1: 4, 2: 4, 3: 2}
+# Quiz exigeant : 2 faciles pour se lancer, 4 moyennes, 4 difficiles.
+DIFFICULTY_QUOTAS = {1: 2, 2: 4, 3: 4}
 MAX_PER_CATEGORY = 3
 MIN_CATEGORIES = 5
 MIN_NUMERIC = 2

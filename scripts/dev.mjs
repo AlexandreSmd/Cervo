@@ -1,6 +1,7 @@
 // npm run dev : émulateurs Firebase + API FastAPI (8000) + front Vite (5173),
 // puis chargement des questions si Firestore est vide.
 import { existsSync } from "node:fs";
+import { networkInterfaces } from "node:os";
 import { join } from "node:path";
 import { EMULATOR_DATA, FIREBASE_BIN, ROOT, apiTool, c, emulatorHosts, isUp, loadEnv, log, start, waitFor } from "./lib.mjs";
 
@@ -63,7 +64,7 @@ try {
 }
 if (stopping) await new Promise(() => {});
 
-log("Chargement des questions si Firestore est vide…");
+log("Chargement des nouvelles questions…");
 if (apiTool("seed", [], env) !== 0) log(c("yellow", "Le chargement des questions a échoué (voir ci-dessus)."));
 
 watch("API", start("api", "cyan", "uv", ["run", "--quiet", "--project", "api", "uvicorn", "cervo.main:app", "--host", "127.0.0.1", "--port", "8000", "--reload", "--reload-dir", join(ROOT, "api", "cervo")], { env }));
@@ -72,8 +73,10 @@ watch("Front", start("web", "green", "npm", ["run", "dev", "--workspace", "web"]
 try {
   await waitFor("http://127.0.0.1:8000/api/health", 60000, "L'API");
   await waitFor("http://localhost:5173", 60000, "Le front");
+  const lan = Object.values(networkInterfaces()).flat().find((i) => i && i.family === "IPv4" && !i.internal && /^(192\.168|10\.|172\.(1[6-9]|2\d|3[01]))/.test(i.address));
   console.log(`
-${c("bold", "  Cervo Daily est prêt")}  →  ${c("green", "http://localhost:5173")}
+${c("bold", "  Cervo Daily est prêt")}  →  ${c("green", "http://localhost:5173")}${lan ? `
+  ${c("dim", "Sur ton téléphone (même Wi-Fi) :")} ${c("green", `http://${lan.address}:5173`)}` : ""}
   ${c("dim", "API : http://localhost:8000/api/docs · Émulateurs : http://127.0.0.1:4000 · Ctrl+C pour arrêter")}
 `);
 } catch (err) {

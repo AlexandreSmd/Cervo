@@ -14,6 +14,7 @@ export default defineConfig({
     trace: "retain-on-failure",
     locale: "fr-FR",
     timezoneId: "Europe/Paris",
+    permissions: ["clipboard-read", "clipboard-write"],
     launchOptions: executablePath ? { executablePath } : undefined,
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],

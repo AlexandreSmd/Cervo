@@ -9,7 +9,6 @@ export function scoreColor(score: number): ScoreColor {
 }
 
 export const COLOR_HEX: Record<ScoreColor, string> = { good: "#1FA971", mid: "#F2A33A", bad: "#E5484D" };
-export const COLOR_EMOJI: Record<ScoreColor, string> = { good: "🟩", mid: "🟧", bad: "🟥" };
 
 export function formatNumber(value: number): string {
   return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 3 }).format(value);
@@ -39,13 +38,6 @@ export function formatDay(date: string, style: "long" | "short" = "long"): strin
 
 export function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
-}
-
-/** Texte de partage façon Wordle : aucun indice sur les questions, juste les couleurs. */
-export function shareText(appName: string, date: string, total: number, scores: number[], streak: number, url: string): string {
-  const pearls = scores.map((s) => COLOR_EMOJI[scoreColor(s)]).join("");
-  const streakText = streak > 1 ? ` · 🔥 ${streak} jours` : "";
-  return `${appName} · ${formatDay(date, "short")}\n${total}/100${streakText}\n${pearls}\n${url}`;
 }
 
 /** Interprète la saisie numérique d'un joueur (« 1 234,5 », « 384400 »). */

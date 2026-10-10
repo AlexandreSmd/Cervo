@@ -16,7 +16,7 @@ def make_bank(n_per_cat=12):
                 "id": f"{cat}-{i:03d}",
                 "category": cat,
                 "type": types[(i + c_index) % 4],
-                "difficulty": [1, 1, 2, 2, 3][i % 5],
+                "difficulty": [1, 2, 2, 3, 3][i % 5],
                 "image_url": "/questions/x.svg" if i % 7 == 0 else None,
                 "status": "published",
             })
@@ -31,8 +31,8 @@ def check_constraints(ids, bank):
     assert len(cats) >= 5
     assert max(cats.values()) <= 3
     assert sum(q["type"] == "numeric" for q in qs) >= 2
-    assert sum(bool(q["image_url"]) for q in qs) >= 1
-    assert Counter(q["difficulty"] for q in qs) == {1: 4, 2: 4, 3: 2}
+    assert sum(bool(q.get("image_url")) for q in qs) >= 1
+    assert Counter(q["difficulty"] for q in qs) == {1: 2, 2: 4, 3: 4}
     assert sum(pillar_of(q["category"]) in THINKING_PILLARS for q in qs) >= 4
 
 
@@ -108,3 +108,14 @@ def test_today_in_paris_changes_at_midnight_paris():
     # 22:30 UTC le 10 octobre = 00:30 à Paris le 11 (heure d'été)
     assert today_str("Europe/Paris", datetime(2026, 10, 10, 22, 30, tzinfo=timezone.utc)) == "2026-10-11"
     assert today_str("Europe/Paris", datetime(2026, 10, 10, 21, 30, tzinfo=timezone.utc)) == "2026-10-10"
+
+
+def test_real_bank_respects_constraints_for_a_month():
+    from cervo.questions import load_files
+    bank = [{k: v for k, v in q.items() if not k.startswith("_")} for q in load_files()]
+    history: list[list[str]] = []
+    for day in range(1, 31):
+        ids = build_daily_quiz(f"2026-11-{day:02d}", bank, history)
+        check_constraints(ids, bank)
+        assert not set(ids) & {i for d in history for i in d}
+        history.insert(0, ids)

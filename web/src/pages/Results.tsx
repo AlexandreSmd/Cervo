@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { DayItems } from "../components/DayItems";
 import { Pearls } from "../components/Pearls";
 import { ScoreGauge } from "../components/ScoreGauge";
+import { ShareCard } from "../components/ShareCard";
 import { ErrorBox, Loading } from "../components/States";
 import { ApiError } from "../lib/api";
 import { APP_NAME } from "../lib/config";
-import { capitalize, dayMessage, formatDay, shareText } from "../lib/format";
+import { capitalize, dayMessage, formatDay } from "../lib/format";
 import { useResults, useToday } from "../lib/hooks";
 
 export function Results() {
   const { date = "" } = useParams();
   const { data, isLoading, error } = useResults(date);
   const today = useToday();
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     document.title = data ? `${data.score_total}/100 · ${APP_NAME}` : `Résultats · ${APP_NAME}`;
@@ -28,16 +28,6 @@ export function Results() {
   const isToday = today.data?.date === date;
   const streak = isToday ? today.data?.streak ?? 0 : 0;
 
-  const share = async () => {
-    const text = shareText(APP_NAME, date, data.score_total, scores, streak, window.location.origin);
-    try {
-      if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) await navigator.share({ text });
-      else await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch { /* partage annulé */ }
-  };
-
   return (
     <div className="space-y-6">
       <section className="card space-y-5 p-6 text-center">
@@ -47,11 +37,9 @@ export function Results() {
         <p className="font-display text-lg font-bold">{dayMessage(data.score_total)}</p>
         <Pearls scores={scores} size="lg" />
         {streak > 0 && <p className="text-muted">🔥 Série : <strong className="text-ink">{streak} jour{streak > 1 ? "s" : ""}</strong> de suite</p>}
-        <div className="grid gap-3 sm:grid-cols-2">
-          <button className="btn-primary" onClick={share} data-testid="share">{copied ? "Copié !" : "Partager mon score"}</button>
-          <Link to="/profil" className="btn-ghost" data-testid="to-profile">Voir mon profil</Link>
-        </div>
-        <p className="text-sm text-muted" aria-live="polite">{copied ? "Le résultat est dans ton presse-papiers, sans dévoiler les questions." : isToday ? "Rendez-vous demain pour un nouveau quiz !" : ""}</p>
+        <ShareCard date={date} total={data.score_total} scores={scores} streak={streak} />
+        <Link to="/profil" className="btn-ghost w-full" data-testid="to-profile">Voir mon profil</Link>
+        {isToday && <p className="text-sm text-muted">Rendez-vous demain pour un nouveau quiz !</p>}
       </section>
       <section className="space-y-3">
         <h2 className="text-xl font-bold">Détail des questions</h2>
