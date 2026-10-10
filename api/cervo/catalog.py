@@ -14,6 +14,8 @@ CATEGORIES: dict[str, str] = {
     "sport": "Sport",
     "estimation": "Estimation",
     "vrai_faux": "Vrai ou faux",
+    "langue": "Langue française",
+    "memoire": "Mémoire",
 }
 
 PILLARS: dict[str, str] = {
@@ -35,12 +37,14 @@ CATEGORY_PILLAR: dict[str, str] = {
     "nature": "memoire",
     "sport": "memoire",
     "vrai_faux": "esprit_critique",
+    "langue": "memoire",
+    "memoire": "memoire",
 }
 
 # Piliers qui demandent de réfléchir plutôt que de se souvenir (vision : au moins 4 sur 10).
 THINKING_PILLARS = {"raisonnement", "estimation", "esprit_critique"}
 
-QUESTION_TYPES = ("binary", "mcq", "numeric", "short_text")
+QUESTION_TYPES = ("binary", "mcq", "numeric", "short_text", "order", "size", "dictation")
 STATUSES = ("draft", "published", "retired")
 
 
@@ -62,7 +66,16 @@ ANSWER_FORMATS: dict[str, str] = {
     "mcq": "QCM (4 choix)",
     "numeric": "Nombre",
     "short_text": "Texte libre",
+    "order": "Remettre dans l'ordre",
+    "size": "Taille (curseur)",
+    "dictation": "Dictée",
 }
+
+# Chrono par question (secondes). La dictée a besoin de plus de temps pour écouter et écrire.
+DEFAULT_TIME_LIMIT = 15
+TYPE_TIME_LIMIT = {"dictation": 45, "order": 20}
+# Délai de grâce côté serveur (réseau, animation) avant de considérer le temps écoulé.
+TIME_GRACE = 4
 
 DIFFICULTIES: dict[int, str] = {1: "Facile", 2: "Moyen", 3: "Difficile"}
 

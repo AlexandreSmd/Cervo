@@ -107,3 +107,45 @@ def test_day_score_and_colors():
     assert score_color(79) == "orange"
     assert score_color(40) == "orange"
     assert score_color(39) == "red"
+
+
+def test_dictation_counts_words_and_accents():
+    text = "Longtemps, je me suis couché de bonne heure."
+    q = {"type": "dictation", "correct_answer": text}
+    assert score_answer(q, "longtemps je me suis couché de bonne heure") == 100  # ponctuation et majuscules ignorées
+    assert score_answer(q, "Longtemps, je me suis couche de bonne heure.") == 88  # accent oublié : 1 faute sur 8
+    assert score_answer(q, "Longtemps je me suis couché de bonne") == 88  # mot oublié
+    assert score_answer(q, "") == 0
+    assert score_answer(q, "rien à voir du tout") == 0
+
+
+def test_dictation_apostrophes():
+    q = {"type": "dictation", "correct_answer": "Il faut qu’il parte à l’aube."}
+    assert score_answer(q, "Il faut qu'il parte à l'aube") == 100
+
+
+def test_order_partial_credit():
+    q = {"type": "order", "correct_answer": ["A", "B", "C", "D"]}
+    assert score_answer(q, ["A", "B", "C", "D"]) == 100
+    assert score_answer(q, ["D", "C", "B", "A"]) == 0
+    assert score_answer(q, ["B", "A", "C", "D"]) == 83  # 5 paires sur 6
+    assert score_answer(q, ["A", "B", "C"]) == 0  # incomplet
+    assert score_answer(q, ["A", "B", "C", "X"]) == 0
+
+
+def test_size_is_log_scored():
+    q = {"type": "size", "correct_answer": 3.4, "numeric_config": None}
+    assert score_answer(q, 3.4) == 100
+    assert score_answer(q, 6.8) == 0  # facteur 2 par défaut
+    assert 40 < score_answer(q, 2.4) < 60
+
+
+def test_timeout_scores_zero():
+    assert score_answer({"type": "binary", "correct_answer": True}, None) == 0
+
+
+def test_mcq_is_accent_sensitive():
+    q = {"type": "mcq", "correct_answer": "Hypothèse", "choices": ["Hypothèse", "Hypothése", "Hypotèse", "Hipothèse"]}
+    assert score_answer(q, "Hypothèse") == 100
+    assert score_answer(q, "hypothèse") == 100
+    assert score_answer(q, "Hypothése") == 0

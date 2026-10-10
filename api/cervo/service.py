@@ -10,6 +10,7 @@ from google.cloud import firestore
 
 from . import questions as bank
 from .daily import QUIZ_SIZE, build_daily_quiz
+from .catalog import TIME_GRACE
 from .scoring import day_score, score_answer
 from .stats import apply_answer, apply_completion, displayed_streak, empty_stats, recompute
 
@@ -129,8 +130,11 @@ def today_payload(db, uid: str, day: str, user: dict) -> dict:
     for ans in (attempt or {}).get("answers", []):
         q = qs.get(ans["question_id"])
         answers.append({**_answer_view(ans), **(bank.reveal(q) if q else {})})
+    current = (attempt or {}).get("current") or {}
     return {
         "date": day,
+        "server_time": now_iso(),
+        "current": current if current.get("position") == len(answers) else None,
         "questions": [bank.public_view(qs[qid], i) for i, qid in enumerate(ids) if qid in qs],
         "answers": answers,
         "completed": bool(attempt and attempt.get("completed_at")),
@@ -146,7 +150,39 @@ def _answer_view(ans: dict) -> dict:
         "position": ans["position"],
         "user_answer": ans.get("user_answer"),
         "score": ans["score"],
+        "timed_out": ans.get("timed_out", False),
     }
+
+
+def start_question(db, uid: str, day: str, question_id: str) -> dict:
+    """Démarre le chrono d'une question (une seule fois : recharger la page ne le remet pas à zéro)."""
+    ids = daily_question_ids(db, day)
+    a_ref = attempt_ref(db, uid, day)
+
+    @firestore.transactional
+    def run(tx):
+        snap = a_ref.get(transaction=tx)
+        attempt = snap.to_dict() if snap.exists else {
+            "date": day, "question_ids": ids, "answers": [], "started_at": now_iso(), "completed_at": None, "score_total": None,
+        }
+        position = len(attempt.get("answers", []))
+        if position >= len(ids) or ids[position] != question_id:
+            raise ApiError(409, "Cette question n'est pas la suivante.")
+        current = attempt.get("current") or {}
+        if current.get("position") != position:
+            current = {"position": position, "question_id": question_id, "started_at": now_iso()}
+            attempt["current"] = current
+            tx.set(a_ref, attempt)
+        return current
+
+    current = run(db.transaction())
+    return {**current, "server_time": now_iso()}
+
+
+def _elapsed(started_at: str | None) -> float | None:
+    if not started_at:
+        return None
+    return (datetime.now(timezone.utc) - datetime.fromisoformat(started_at)).total_seconds()
 
 
 def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
@@ -174,16 +210,21 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
             raise ApiError(409, "Tu as déjà terminé le quiz du jour. Reviens demain !")
         if ids[position] != question_id:
             raise ApiError(409, "Cette question a déjà été validée ou n'est pas la suivante.")
-        score = score_answer(question, answer)
+        current = attempt.get("current") or {}
+        elapsed = _elapsed(current.get("started_at")) if current.get("position") == position else None
+        timed_out = answer is None or (elapsed is not None and elapsed > bank.time_limit(question) + TIME_GRACE)
+        score = 0 if timed_out else score_answer(question, answer)
         answers.append({
             "question_id": question_id,
             "position": position,
             "user_answer": answer,
             "score": score,
+            "timed_out": timed_out,
             "answered_at": now_iso(),
             "category": question["category"],
             "type": question["type"],
         })
+        attempt.pop("current", None)
         stats = apply_answer(u_snap.to_dict() or empty_stats(), question, score)
         attempt["answers"] = answers
         completed = len(answers) == QUIZ_SIZE
@@ -194,14 +235,15 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
         tx.set(a_ref, attempt)
         tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
         record_stats(tx, db, day, question_id, score, position, attempt.get("score_total") if completed else None)
-        return score, position, completed, attempt.get("score_total"), stats
+        return score, position, completed, attempt.get("score_total"), stats, timed_out
 
-    score, position, completed, total, stats = run(db.transaction())
+    score, position, completed, total, stats, timed_out = run(db.transaction())
     return {
         "question_id": question_id,
         "position": position,
         "user_answer": answer,
         "score": score,
+        "timed_out": timed_out,
         **bank.reveal(question),
         "completed": completed,
         "score_total": total,

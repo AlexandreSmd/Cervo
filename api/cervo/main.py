@@ -18,7 +18,7 @@ from .config import get_settings
 from .daily import is_valid_day, today_str
 from .firebase import app as firebase_app
 from .firebase import db, verify_token
-from .models import AnswerIn, FillIn, ImportIn, MediaIn, ReportIn, ScheduleDayIn, StatusIn, UsernameIn
+from .models import AnswerIn, FillIn, StartIn, ImportIn, MediaIn, ReportIn, ScheduleDayIn, StatusIn, UsernameIn
 from .service import ApiError
 from .stats import profile_summary
 
@@ -114,6 +114,15 @@ def post_answer(body: AnswerIn, claims: dict = Depends(current_claims)):
     client = db()
     service.ensure_user(client, claims)
     return service.submit_answer(client, claims["uid"], body.date, body.question_id, body.answer)
+
+
+@router.post("/question-start")
+def post_question_start(body: StartIn, claims: dict = Depends(current_claims)):
+    if body.date != today():
+        raise HTTPException(409, "Ce quiz n'est plus disponible : un nouveau quiz t'attend.")
+    client = db()
+    service.ensure_user(client, claims)
+    return service.start_question(client, claims["uid"], body.date, body.question_id)
 
 
 @router.get("/results/{day}")

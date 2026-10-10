@@ -1,0 +1,257 @@
+[
+  {
+    "id": "memoire-001",
+    "type": "mcq",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel mot n'était pas dans la liste ?",
+    "memorize": {
+      "items": [
+        "Pomme",
+        "Train",
+        "Lune",
+        "Violon",
+        "Cactus",
+        "Plume"
+      ],
+      "seconds": 5
+    },
+    "choices": [
+      "Train",
+      "Plume",
+      "Ballon",
+      "Cactus"
+    ],
+    "correct_answer": "Ballon",
+    "explanation": "La liste : Pomme, Train, Lune, Violon, Cactus, Plume. Astuce : invente une petite histoire qui relie les mots.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-002",
+    "type": "short_text",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel était le 4ᵉ chiffre ?",
+    "memorize": {
+      "items": [
+        "4",
+        "8",
+        "1",
+        "9",
+        "3",
+        "7"
+      ],
+      "seconds": 4
+    },
+    "correct_answer": 9,
+    "explanation": "La suite était 4 8 1 9 3 7. Astuce : grouper par paires (48, 19, 37).",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-003",
+    "type": "short_text",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel mot venait juste après « Seize » ?",
+    "memorize": {
+      "items": [
+        "Rouge",
+        "Chat",
+        "Seize",
+        "Nuage",
+        "Lampe",
+        "Ortie"
+      ],
+      "seconds": 5
+    },
+    "correct_answer": "Nuage",
+    "explanation": "Rouge, Chat, Seize, Nuage, Lampe, Ortie.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-004",
+    "type": "short_text",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien y avait-il de ronds bleus ?",
+    "memorize": {
+      "items": [
+        "🔴",
+        "🔵",
+        "🔵",
+        "🟢",
+        "🔴",
+        "🟡",
+        "🔵"
+      ],
+      "seconds": 4
+    },
+    "correct_answer": 3,
+    "explanation": "Trois ronds bleus sur sept.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-005",
+    "type": "short_text",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 3,
+    "prompt": "Quels étaient les deux derniers chiffres du numéro ?",
+    "memorize": {
+      "items": [
+        "06",
+        "47",
+        "82",
+        "19",
+        "35"
+      ],
+      "seconds": 4
+    },
+    "correct_answer": 35,
+    "explanation": "Le numéro était 06 47 82 19 35. Retenir par blocs de deux aide beaucoup.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-006",
+    "type": "mcq",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 3,
+    "prompt": "Lequel de ces mots était dans la liste ?",
+    "memorize": {
+      "items": [
+        "Girafe",
+        "Horloge",
+        "Tempête",
+        "Bougie",
+        "Ruisseau",
+        "Moustache",
+        "Écharpe",
+        "Comète"
+      ],
+      "seconds": 6
+    },
+    "choices": [
+      "Rivière",
+      "Ruisseau",
+      "Moustique",
+      "Étoile"
+    ],
+    "correct_answer": "Ruisseau",
+    "explanation": "La liste : Girafe, Horloge, Tempête, Bougie, Ruisseau, Moustache, Écharpe, Comète.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-007",
+    "type": "short_text",
+    "category": "memoire",
+    "tags": [
+      "mémoire"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel était le 3ᵉ mot ?",
+    "memorize": {
+      "items": [
+        "Sel",
+        "Piano",
+        "Orage",
+        "Fourmi",
+        "Miroir"
+      ],
+      "seconds": 4
+    },
+    "correct_answer": "Orage",
+    "explanation": "Sel, Piano, Orage, Fourmi, Miroir.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-008",
+    "type": "numeric",
+    "category": "memoire",
+    "tags": [
+      "mémoire",
+      "comptage",
+      "visuel"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien de points y avait-il ?",
+    "images": [
+      {
+        "url": "/questions/points-64.svg",
+        "alt": "Des points verts répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
+    "memorize": {
+      "items": [],
+      "seconds": 3,
+      "hide_images": true
+    },
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "points"
+    },
+    "correct_answer": 64,
+    "explanation": "Il y avait 64 points. Repérer quelques groupes de 5 aide à estimer vite.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "memoire-009",
+    "type": "numeric",
+    "category": "memoire",
+    "tags": [
+      "mémoire",
+      "géométrie",
+      "visuel"
+    ],
+    "difficulty": 3,
+    "prompt": "Quel était l'angle, en degrés ?",
+    "images": [
+      {
+        "url": "/questions/angle-72.svg",
+        "alt": "Deux segments formant un angle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
+    "memorize": {
+      "items": [],
+      "seconds": 3,
+      "hide_images": true
+    },
+    "numeric_config": {
+      "scale": "linear",
+      "tolerance": 40,
+      "unit": "°",
+      "exact_margin": 2
+    },
+    "correct_answer": 72,
+    "explanation": "L'angle mesurait 72°. Repère : un angle droit fait 90°.",
+    "source_url": null,
+    "status": "published"
+  }
+]

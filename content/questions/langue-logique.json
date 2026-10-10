@@ -1,0 +1,380 @@
+[
+  {
+    "id": "anagramme-001",
+    "type": "short_text",
+    "category": "langue",
+    "tags": [
+      "anagramme"
+    ],
+    "difficulty": 1,
+    "prompt": "Fruit caché : N · O · G · A · R · E",
+    "correct_answer": "orange",
+    "explanation": "Le mot caché est ORANGE.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "anagramme-002",
+    "type": "short_text",
+    "category": "langue",
+    "tags": [
+      "anagramme"
+    ],
+    "difficulty": 1,
+    "prompt": "Pays caché : A · L · I · T · E · I",
+    "correct_answer": "Italie",
+    "explanation": "Le pays caché est l'ITALIE.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "anagramme-003",
+    "type": "short_text",
+    "category": "langue",
+    "tags": [
+      "anagramme"
+    ],
+    "difficulty": 2,
+    "prompt": "Instrument caché : O · L · I · N · V · O",
+    "correct_answer": "violon",
+    "explanation": "L'instrument caché est le VIOLON.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "anagramme-004",
+    "type": "short_text",
+    "category": "langue",
+    "tags": [
+      "anagramme"
+    ],
+    "difficulty": 2,
+    "prompt": "Animal caché : P · L · A · N · I",
+    "correct_answer": "lapin",
+    "explanation": "L'animal caché est le LAPIN.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "anagramme-005",
+    "type": "short_text",
+    "category": "langue",
+    "tags": [
+      "anagramme"
+    ],
+    "difficulty": 3,
+    "prompt": "Métier caché : D · E · C · I · N · E · M",
+    "accepted_aliases": [
+      "medecin"
+    ],
+    "correct_answer": "médecin",
+    "explanation": "Le métier caché est MÉDECIN.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "anagramme-006",
+    "type": "short_text",
+    "category": "langue",
+    "tags": [
+      "anagramme"
+    ],
+    "difficulty": 3,
+    "prompt": "Planète cachée : T · R · U · N · E · S · A",
+    "correct_answer": "Saturne",
+    "explanation": "La planète cachée est SATURNE.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "ortho-001",
+    "type": "mcq",
+    "category": "langue",
+    "tags": [
+      "orthographe"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle orthographe est correcte ?",
+    "choices": [
+      "Occurrence",
+      "Occurence",
+      "Ocurrence",
+      "Occurrance"
+    ],
+    "correct_answer": "Occurrence",
+    "explanation": "Deux C, deux R : occurrence.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "ortho-002",
+    "type": "mcq",
+    "category": "langue",
+    "tags": [
+      "orthographe"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle orthographe est correcte ?",
+    "choices": [
+      "Accueil",
+      "Acceuil",
+      "Accueuil",
+      "Acueil"
+    ],
+    "correct_answer": "Accueil",
+    "explanation": "Après « cc », on écrit « ueil » : accueil, recueil, cueillir.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "ortho-003",
+    "type": "mcq",
+    "category": "langue",
+    "tags": [
+      "orthographe"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle orthographe est correcte ?",
+    "choices": [
+      "Bizarre",
+      "Bizzare",
+      "Bizare",
+      "Bizzarre"
+    ],
+    "correct_answer": "Bizarre",
+    "explanation": "Un seul Z, deux R : bizarre.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "ortho-004",
+    "type": "mcq",
+    "category": "langue",
+    "tags": [
+      "orthographe"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle orthographe est correcte ?",
+    "choices": [
+      "Connexion",
+      "Connection",
+      "Conexion",
+      "Connéxion"
+    ],
+    "correct_answer": "Connexion",
+    "explanation": "En français, on écrit connexion avec un X (connection est anglais).",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "ortho-005",
+    "type": "mcq",
+    "category": "langue",
+    "tags": [
+      "orthographe"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle orthographe est correcte ?",
+    "choices": [
+      "Apercevoir",
+      "Appercevoir",
+      "Aperçevoir",
+      "Apperçevoir"
+    ],
+    "correct_answer": "Apercevoir",
+    "explanation": "Un seul P : apercevoir, malgré « apparaître ».",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "ortho-006",
+    "type": "mcq",
+    "category": "langue",
+    "tags": [
+      "orthographe"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle orthographe est correcte ?",
+    "choices": [
+      "Hypothèse",
+      "Hypotèse",
+      "Hipothèse",
+      "Hypothése"
+    ],
+    "correct_answer": "Hypothèse",
+    "explanation": "Hypothèse : Y puis TH, et un accent grave.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "intrus-001",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "intrus"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est l'intrus ?",
+    "choices": [
+      "Dauphin",
+      "Requin",
+      "Baleine",
+      "Phoque"
+    ],
+    "correct_answer": "Requin",
+    "explanation": "Le requin est un poisson ; les autres sont des mammifères.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "intrus-002",
+    "type": "mcq",
+    "category": "logique",
+    "tags": [
+      "intrus"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est l'intrus ?",
+    "choices": [
+      "2",
+      "3",
+      "5",
+      "9"
+    ],
+    "correct_answer": "9",
+    "explanation": "9 n'est pas un nombre premier (9 = 3 × 3).",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "intrus-003",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "intrus"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est l'intrus ?",
+    "choices": [
+      "Mercure",
+      "Vénus",
+      "Pluton",
+      "Mars"
+    ],
+    "correct_answer": "Pluton",
+    "explanation": "Pluton est une planète naine depuis 2006.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "intrus-004",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "intrus"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est l'intrus ?",
+    "choices": [
+      "Paris",
+      "Rome",
+      "Sydney",
+      "Madrid"
+    ],
+    "correct_answer": "Sydney",
+    "explanation": "Sydney n'est pas une capitale (c'est Canberra).",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "intrus-005",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "intrus"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est l'intrus ?",
+    "choices": [
+      "Mozart",
+      "Beethoven",
+      "Picasso",
+      "Chopin"
+    ],
+    "correct_answer": "Picasso",
+    "explanation": "Picasso est peintre ; les autres sont compositeurs.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "calcul-001",
+    "type": "short_text",
+    "category": "logique",
+    "tags": [
+      "calcul mental"
+    ],
+    "difficulty": 1,
+    "prompt": "17 × 6 = ?",
+    "correct_answer": 102,
+    "explanation": "17 × 6 = 60 + 42 = 102.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "calcul-002",
+    "type": "short_text",
+    "category": "logique",
+    "tags": [
+      "calcul mental",
+      "pourcentages"
+    ],
+    "difficulty": 2,
+    "prompt": "15 % de 240 = ?",
+    "correct_answer": 36,
+    "explanation": "10 % = 24, 5 % = 12 : 24 + 12 = 36.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "calcul-003",
+    "type": "short_text",
+    "category": "logique",
+    "tags": [
+      "calcul mental"
+    ],
+    "difficulty": 2,
+    "prompt": "999 + 999 = ?",
+    "correct_answer": 1998,
+    "explanation": "1 000 + 1 000 − 2 = 1 998.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "calcul-004",
+    "type": "short_text",
+    "category": "logique",
+    "tags": [
+      "calcul mental"
+    ],
+    "difficulty": 3,
+    "prompt": "48 × 25 = ?",
+    "correct_answer": 1200,
+    "explanation": "× 25, c'est × 100 ÷ 4 : 4 800 ÷ 4 = 1 200.",
+    "source_url": null,
+    "status": "published"
+  },
+  {
+    "id": "calcul-005",
+    "type": "short_text",
+    "category": "logique",
+    "tags": [
+      "calcul mental"
+    ],
+    "difficulty": 3,
+    "prompt": "La moitié du quart de 1 000 = ?",
+    "correct_answer": 125,
+    "explanation": "Le quart de 1 000 = 250, sa moitié = 125.",
+    "source_url": null,
+    "status": "published"
+  }
+]

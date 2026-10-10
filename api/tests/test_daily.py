@@ -68,7 +68,7 @@ def test_only_published_questions():
 
 
 def test_no_repeat_until_bank_exhausted():
-    bank = make_bank()  # 132 questions
+    bank = make_bank()  # 12 par catégorie
     history: list[list[str]] = []
     seen: set[str] = set()
     for day in range(1, 10):
@@ -79,9 +79,9 @@ def test_no_repeat_until_bank_exhausted():
 
 
 def test_history_ignored_when_pool_too_small():
-    bank = make_bank(n_per_cat=5)  # 55 questions
+    bank = make_bank(n_per_cat=5)  # 5 par catégorie
     history = [[q["id"] for q in bank[:30]]]
-    assert len(candidate_pool(bank, history)) == 55  # exclure 30 laisserait < 40
+    assert len(candidate_pool(bank, history)) == len(bank)  # exclure 30 laisserait moins de 40
     assert len(build_daily_quiz("2026-03-01", bank, history)) == 10
 
 
@@ -119,3 +119,13 @@ def test_real_bank_respects_constraints_for_a_month():
         check_constraints(ids, bank)
         assert not set(ids) & {i for d in history for i in d}
         history.insert(0, ids)
+
+
+def test_special_types_are_capped():
+    bank = make_bank()
+    for q in bank[::2]:
+        q["type"] = "dictation"
+    for day in range(1, 8):
+        ids = build_daily_quiz(f"2026-05-{day:02d}", bank)
+        by_id = {q["id"]: q for q in bank}
+        assert sum(by_id[i]["type"] == "dictation" for i in ids) <= 1

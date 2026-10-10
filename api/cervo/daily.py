@@ -24,6 +24,8 @@ MIN_THINKING = 4
 # Taille minimale du vivier après exclusion des questions déjà posées.
 MIN_POOL = 40
 ATTEMPTS_PER_LEVEL = 60
+# Types longs ou particuliers : pas trop par jour pour garder un quiz rythmé.
+TYPE_CAPS = {"dictation": 1, "order": 2, "size": 2}
 
 # Ordre d'assouplissement (section 7) : difficulté, puis catégories, puis images.
 RELAX_LEVELS = (
@@ -84,6 +86,9 @@ def _try_build(order: list[dict], level: dict) -> list[dict] | None:
 
     def can_add(q: dict) -> bool:
         if q["id"] in chosen_ids:
+            return False
+        cap = TYPE_CAPS.get(q.get("type", ""))
+        if cap is not None and sum(1 for s in selected if s.get("type") == q.get("type")) >= cap:
             return False
         if level["categories"] and cat_count.get(q["category"], 0) >= MAX_PER_CATEGORY:
             return False

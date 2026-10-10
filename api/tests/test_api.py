@@ -231,3 +231,25 @@ def test_media_upload_and_question_update(client):
     listing = {x["id"]: x for x in client.get("/api/admin/questions", headers=h(admin)).json()["questions"]}
     assert listing[qid]["difficulty"] == 3 and listing[qid]["input_format"] == "images2"
     assert client.put(f"/api/admin/questions/{qid}", headers=h(admin), json={**q, "images": [{"url": url, "alt": "x"}] * 3}).status_code == 422
+
+
+def test_timer_started_once_and_late_answer_scores_zero(client, monkeypatch):
+    from cervo import service
+    token = anon_token()
+    today_data = client.get("/api/today", headers=h(token)).json()
+    q = today_data["questions"][0]
+    first = client.post("/api/question-start", headers=h(token), json={"date": today_data["date"], "question_id": q["id"]}).json()
+    again = client.post("/api/question-start", headers=h(token), json={"date": today_data["date"], "question_id": q["id"]}).json()
+    assert first["started_at"] == again["started_at"]  # recharger ne relance pas le chrono
+    assert client.get("/api/today", headers=h(token)).json()["current"]["started_at"] == first["started_at"]
+    # On simule une réponse arrivée bien après la fin du chrono
+    monkeypatch.setattr(service, "_elapsed", lambda _: 999)
+    res = client.post("/api/answer", headers=h(token), json={"date": today_data["date"], "question_id": q["id"], "answer": True}).json()
+    assert res["timed_out"] is True and res["score"] == 0
+
+
+def test_timeout_without_answer(client):
+    token = anon_token()
+    data = client.get("/api/today", headers=h(token)).json()
+    res = client.post("/api/answer", headers=h(token), json={"date": data["date"], "question_id": data["questions"][0]["id"], "answer": None}).json()
+    assert res["timed_out"] and res["score"] == 0

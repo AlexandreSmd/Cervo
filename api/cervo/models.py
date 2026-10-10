@@ -7,7 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from .catalog import CATEGORIES, MAX_IMAGES, input_format
-from .scoring import normalize_text
+from .scoring import normalize_text, same_choice
 
 
 class NumericConfig(BaseModel):
@@ -16,6 +16,40 @@ class NumericConfig(BaseModel):
     factor: float | None = Field(default=None, gt=1)
     unit: str | None = None
     exact_margin: float | None = Field(default=None, ge=0)
+    # Saisie au clavier (par défaut) ou avec un curseur borné.
+    input: Literal["keyboard", "slider"] = "keyboard"
+    min: float | None = None
+    max: float | None = None
+    step: float | None = Field(default=None, gt=0)
+
+    @model_validator(mode="after")
+    def slider_bounds(self) -> "NumericConfig":
+        if self.input == "slider" and (self.min is None or self.max is None or self.min >= self.max):
+            raise ValueError("un curseur attend min < max")
+        return self
+
+
+class SizeObject(BaseModel):
+    label: str = Field(min_length=1, max_length=60)
+    emoji: str = Field(min_length=1, max_length=16)
+
+
+class SizeConfig(BaseModel):
+    """Comparer deux objets : la référence est fixe, le joueur ajuste la cible.
+
+    La bonne réponse est le rapport taille(cible) / taille(référence).
+    """
+    reference: SizeObject
+    target: SizeObject
+    min: float = Field(default=0.1, gt=0)
+    max: float = Field(default=10, gt=0)
+
+
+class MemorizeConfig(BaseModel):
+    """Phase de mémorisation : on montre, on cache, puis on pose la question."""
+    items: list[str] = Field(default_factory=list, max_length=12)
+    seconds: int = Field(default=5, ge=2, le=15)
+    hide_images: bool = False
 
 
 class ImageRef(BaseModel):
@@ -26,7 +60,7 @@ class ImageRef(BaseModel):
 
 class Question(BaseModel):
     id: str = Field(min_length=1, max_length=80, pattern=r"^[a-z0-9][a-z0-9_-]*$")
-    type: Literal["binary", "mcq", "numeric", "short_text"]
+    type: Literal["binary", "mcq", "numeric", "short_text", "order", "size", "dictation"]
     category: str
     tags: list[str] = Field(default_factory=list)
     difficulty: int = Field(ge=1, le=3)
@@ -36,6 +70,9 @@ class Question(BaseModel):
     correct_answer: Any
     numeric_config: NumericConfig | None = None
     accepted_aliases: list[str] = Field(default_factory=list)
+    size_config: SizeConfig | None = None
+    memorize: MemorizeConfig | None = None
+    time_limit: int | None = Field(default=None, ge=5, le=120)
     explanation: str = Field(min_length=10, max_length=1000)
     source_url: str | None = None
     status: Literal["draft", "published", "retired"] = "published"
@@ -70,10 +107,9 @@ class Question(BaseModel):
         if self.type == "mcq":
             if not self.choices or len(self.choices) != 4:
                 raise ValueError("un QCM attend exactement 4 choix")
-            normalized = [normalize_text(c) for c in self.choices]
-            if len(set(normalized)) != 4:
+            if any(same_choice(a, b) for i, a in enumerate(self.choices) for b in self.choices[i + 1:]):
                 raise ValueError("les choix du QCM doivent être différents")
-            if normalize_text(self.correct_answer) not in normalized:
+            if not any(same_choice(self.correct_answer, c) for c in self.choices):
                 raise ValueError("la bonne réponse doit faire partie des choix")
         if self.type == "numeric":
             if isinstance(self.correct_answer, bool) or not isinstance(self.correct_answer, (int, float)):
@@ -82,6 +118,24 @@ class Question(BaseModel):
                 raise ValueError("une question numérique attend numeric_config")
             if self.numeric_config.scale == "log" and self.correct_answer <= 0:
                 raise ValueError("l'échelle log attend une réponse strictement positive")
+        if self.type == "order":
+            items = self.correct_answer
+            if not isinstance(items, list) or not 3 <= len(items) <= 6 or not all(isinstance(i, str) and i.strip() for i in items):
+                raise ValueError("un classement attend 3 à 6 éléments, dans le bon ordre")
+            if len({normalize_text(i) for i in items}) != len(items):
+                raise ValueError("les éléments à classer doivent être différents")
+        if self.type == "size":
+            if self.size_config is None:
+                raise ValueError("une question de taille attend size_config (référence et cible)")
+            if isinstance(self.correct_answer, bool) or not isinstance(self.correct_answer, (int, float)) or self.correct_answer <= 0:
+                raise ValueError("une question de taille attend un rapport positif")
+            if not self.size_config.min < self.correct_answer < self.size_config.max:
+                raise ValueError("le rapport doit être compris entre min et max du curseur")
+        if self.type == "dictation":
+            if not isinstance(self.correct_answer, str) or len(self.correct_answer.split()) < 3:
+                raise ValueError("une dictée attend un texte d'au moins 3 mots")
+        if self.memorize and not self.memorize.items and not (self.memorize.hide_images and self.images):
+            raise ValueError("la mémorisation attend des éléments à montrer ou des photos à cacher")
         if self.type == "short_text":
             if isinstance(self.correct_answer, bool) or not isinstance(self.correct_answer, (str, int, float)):
                 raise ValueError("une réponse courte attend un texte ou un nombre")
@@ -93,16 +147,27 @@ class Question(BaseModel):
 class AnswerIn(BaseModel):
     date: str
     question_id: str = Field(max_length=80)
-    answer: Any
+    answer: Any = None  # None : temps écoulé sans réponse
 
     @field_validator("answer")
     @classmethod
     def small_answer(cls, v: Any) -> Any:
-        if isinstance(v, str) and len(v) > 200:
+        if v is None:
+            return v
+        if isinstance(v, list):
+            if len(v) > 8 or not all(isinstance(i, str) and len(i) <= 120 for i in v):
+                raise ValueError("réponse invalide")
+            return v
+        if isinstance(v, str) and len(v) > 600:
             raise ValueError("réponse trop longue")
-        if not isinstance(v, (str, int, float, bool)) or v is None:
+        if not isinstance(v, (str, int, float, bool)):
             raise ValueError("réponse invalide")
         return v
+
+
+class StartIn(BaseModel):
+    date: str
+    question_id: str = Field(max_length=80)
 
 
 class ReportIn(BaseModel):

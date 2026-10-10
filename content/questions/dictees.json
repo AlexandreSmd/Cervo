@@ -1,0 +1,212 @@
+[
+  {
+    "id": "dictee-001",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "proust"
+    ],
+    "difficulty": 1,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Longtemps, je me suis couché de bonne heure.",
+    "explanation": "Première phrase de « Du côté de chez Swann » de Marcel Proust (1913). Piège : « couché » avec un accent.",
+    "source_url": "https://fr.wikipedia.org/wiki/Du_côté_de_chez_Swann",
+    "status": "published"
+  },
+  {
+    "id": "dictee-002",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "hugo"
+    ],
+    "difficulty": 2,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Demain, dès l'aube, à l'heure où blanchit la campagne, je partirai.",
+    "explanation": "Victor Hugo, « Les Contemplations » (1856). Attention à « dès » et « où ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Demain,_dès_l'aube…",
+    "status": "published"
+  },
+  {
+    "id": "dictee-003",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "la fontaine"
+    ],
+    "difficulty": 1,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Rien ne sert de courir ; il faut partir à point.",
+    "explanation": "Jean de La Fontaine, « Le Lièvre et la Tortue » (1668).",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Lièvre_et_la_Tortue_(La_Fontaine)",
+    "status": "published"
+  },
+  {
+    "id": "dictee-004",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "la fontaine"
+    ],
+    "difficulty": 2,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Maître Corbeau, sur un arbre perché, tenait en son bec un fromage.",
+    "explanation": "La Fontaine, « Le Corbeau et le Renard ». Pièges : « Maître » avec un accent circonflexe, « perché ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Corbeau_et_le_Renard",
+    "status": "published"
+  },
+  {
+    "id": "dictee-005",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "verlaine"
+    ],
+    "difficulty": 3,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Les sanglots longs des violons de l'automne blessent mon cœur d'une langueur monotone.",
+    "explanation": "Paul Verlaine, « Chanson d'automne » (1866). Pièges : « sanglots », « cœur », « langueur ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Chanson_d'automne",
+    "status": "published"
+  },
+  {
+    "id": "dictee-006",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "rimbaud"
+    ],
+    "difficulty": 3,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "C'est un trou de verdure où chante une rivière accrochant follement aux herbes des haillons d'argent.",
+    "explanation": "Arthur Rimbaud, « Le Dormeur du val » (1870). Pièges : « où », « follement », « haillons ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Dormeur_du_val",
+    "status": "published"
+  },
+  {
+    "id": "dictee-007",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "apollinaire"
+    ],
+    "difficulty": 2,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Sous le pont Mirabeau coule la Seine et nos amours.",
+    "explanation": "Guillaume Apollinaire, « Le Pont Mirabeau » (1913). Piège : « amours » au pluriel, sans accord du verbe.",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Pont_Mirabeau",
+    "status": "published"
+  },
+  {
+    "id": "dictee-008",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "lamartine"
+    ],
+    "difficulty": 3,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Ô temps, suspends ton vol ! Et vous, heures propices, suspendez votre cours.",
+    "explanation": "Alphonse de Lamartine, « Le Lac » (1820). Pièges : « Ô », « suspends » à l'impératif, « propices ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Lac_(Lamartine)",
+    "status": "published"
+  },
+  {
+    "id": "dictee-009",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "voltaire"
+    ],
+    "difficulty": 1,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Il faut cultiver notre jardin.",
+    "explanation": "Dernière phrase de « Candide » de Voltaire (1759).",
+    "source_url": "https://fr.wikipedia.org/wiki/Candide",
+    "status": "published"
+  },
+  {
+    "id": "dictee-010",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "pascal"
+    ],
+    "difficulty": 2,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Le cœur a ses raisons que la raison ne connaît point.",
+    "explanation": "Blaise Pascal, « Pensées » (1670). Piège : « connaît » avec un accent circonflexe.",
+    "source_url": "https://fr.wikipedia.org/wiki/Pensées_(Pascal)",
+    "status": "published"
+  },
+  {
+    "id": "dictee-011",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "corneille"
+    ],
+    "difficulty": 2,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "À vaincre sans péril, on triomphe sans gloire.",
+    "explanation": "Pierre Corneille, « Le Cid » (1637). Pièges : « À » majuscule accentuée, « péril ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Cid",
+    "status": "published"
+  },
+  {
+    "id": "dictee-012",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "flaubert"
+    ],
+    "difficulty": 3,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Nous étions à l'étude, quand le proviseur entra, suivi d'un nouveau habillé en bourgeois.",
+    "explanation": "Début de « Madame Bovary » de Gustave Flaubert (1857). Pièges : « habillé » et l'accord de « suivi ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Madame_Bovary",
+    "status": "published"
+  },
+  {
+    "id": "dictee-013",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "molière"
+    ],
+    "difficulty": 2,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "Il faut manger pour vivre et non pas vivre pour manger.",
+    "explanation": "Molière, « L'Avare » (1668), réplique de Valère.",
+    "source_url": "https://fr.wikipedia.org/wiki/L'Avare",
+    "status": "published"
+  },
+  {
+    "id": "dictee-014",
+    "type": "dictation",
+    "category": "langue",
+    "tags": [
+      "dictée",
+      "la fontaine"
+    ],
+    "difficulty": 3,
+    "prompt": "Écoute et écris la phrase.",
+    "correct_answer": "La raison du plus fort est toujours la meilleure : nous l'allons montrer tout à l'heure.",
+    "explanation": "La Fontaine, « Le Loup et l'Agneau ». Piège : « tout à l'heure » en trois mots.",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Loup_et_l'Agneau",
+    "status": "published"
+  }
+]

@@ -67,6 +67,10 @@ def score_numeric(answer: Any, truth: float, config: dict | None) -> int:
     return clamp_score(100 * (1 - abs(value - truth) / tolerance))
 
 
+def same_choice(a: Any, b: Any) -> bool:
+    return unicodedata.normalize("NFC", str(a)).strip().casefold() == unicodedata.normalize("NFC", str(b)).strip().casefold()
+
+
 def normalize_text(value: Any) -> str:
     text = unicodedata.normalize("NFKD", str(value)).lower()
     text = "".join(c for c in text if not unicodedata.combining(c))
@@ -99,15 +103,66 @@ def to_bool(value: Any) -> bool | None:
     return None
 
 
+def dictation_words(text: Any) -> list[str]:
+    """Mots d'une dictée : casse et ponctuation ignorées, accents conservés (ils comptent !)."""
+    cleaned = unicodedata.normalize("NFC", str(text)).lower()
+    cleaned = cleaned.replace("’", "'").replace("œ", "oe").replace("æ", "ae")
+    cleaned = re.sub(r"[^\w']+", " ", cleaned)
+    return [w for w in re.split(r"[\s']+", cleaned) if w]
+
+
+def word_distance(a: list[str], b: list[str]) -> int:
+    """Distance d'édition entre deux suites de mots (mots oubliés, ajoutés ou mal écrits)."""
+    prev = list(range(len(b) + 1))
+    for i, wa in enumerate(a, 1):
+        cur = [i]
+        for j, wb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (wa != wb)))
+        prev = cur
+    return prev[-1]
+
+
+def score_dictation(answer: Any, expected: str) -> int:
+    """Pourcentage de mots justes : chaque faute (mot faux, oublié ou en trop) retire sa part."""
+    if not isinstance(answer, str) or not answer.strip():
+        return 0
+    target = dictation_words(expected)
+    if not target:
+        return 0
+    errors = word_distance(dictation_words(answer), target)
+    return clamp_score(100 * (1 - errors / len(target)))
+
+
+def score_order(answer: Any, expected: list) -> int:
+    """Remettre dans l'ordre : part des paires d'éléments dans le bon ordre relatif."""
+    if not isinstance(answer, list) or sorted(map(str, answer)) != sorted(map(str, expected)):
+        return 0
+    rank = {str(item): i for i, item in enumerate(expected)}
+    given = [rank[str(item)] for item in answer]
+    pairs = len(given) * (len(given) - 1) // 2
+    good = sum(1 for i in range(len(given)) for j in range(i + 1, len(given)) if given[i] < given[j])
+    return clamp_score(100 * good / pairs) if pairs else 0
+
+
 def score_answer(question: dict, answer: Any) -> int:
     """Score d'une réponse pour une question (dict au format de la banque)."""
     qtype = question["type"]
     correct = question["correct_answer"]
+    if answer is None:
+        return 0  # temps écoulé sans réponse
+    if qtype == "dictation":
+        return score_dictation(answer, correct)
+    if qtype == "order":
+        return score_order(answer, correct)
+    if qtype == "size":
+        cfg = question.get("numeric_config") or {}
+        return score_numeric(answer, correct, {"scale": "log", "factor": cfg.get("factor") or 2})
     if qtype == "binary":
         given = to_bool(answer)
         return 100 if given is not None and given == bool(correct) else 0
     if qtype == "mcq":
-        return 100 if answer is not None and normalize_text(answer) == normalize_text(correct) else 0
+        # Comparaison exacte (accents compris) : certains QCM portent justement sur l'orthographe.
+        return 100 if answer is not None and same_choice(answer, correct) else 0
     if qtype == "numeric":
         return score_numeric(answer, correct, question.get("numeric_config"))
     if qtype == "short_text":

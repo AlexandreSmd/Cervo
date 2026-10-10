@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import threading
 import time
@@ -10,7 +11,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from .catalog import ANSWER_FORMATS, CATEGORIES, DIFFICULTIES, INPUT_FORMATS, input_format, pillar_of
+from .catalog import ANSWER_FORMATS, CATEGORIES, DEFAULT_TIME_LIMIT, DIFFICULTIES, INPUT_FORMATS, TYPE_TIME_LIMIT, input_format, pillar_of
 from .config import CONTENT_DIR
 from .daily import stable_choices
 from .models import Question
@@ -60,7 +61,11 @@ def check_bank(raws: list[dict]) -> tuple[list[Question], list[str]]:
         if q.id in ids:
             errors.append(f"{where} : identifiant en double (déjà dans {ids[q.id]})")
             continue
-        key = normalize_text(q.prompt) + "|" + "|".join(normalize_text(i.url) for i in q.images)
+        # Deux questions au même énoncé (« Quel est l'intrus ? », dictées…) diffèrent par leur contenu.
+        content = [*(i.url for i in q.images), *(q.choices or []), *(q.memorize.items if q.memorize else [])]
+        if q.type in ("order", "dictation"):
+            content.append(str(q.correct_answer))
+        key = normalize_text(q.prompt) + "|" + "|".join(normalize_text(c) for c in content)
         if key in prompts:
             errors.append(f"{where} : énoncé en double de {prompts[key]}")
             continue
@@ -125,9 +130,24 @@ def describe(q: dict) -> dict:
     }
 
 
+def time_limit(q: dict) -> int:
+    return int(q.get("time_limit") or TYPE_TIME_LIMIT.get(q["type"], DEFAULT_TIME_LIMIT))
+
+
 def public_view(q: dict, position: int) -> dict:
     """Question sans la bonne réponse (envoyée avant validation)."""
     cfg = q.get("numeric_config") or {}
+    extra: dict = {}
+    if q["type"] == "order":
+        extra["items"] = stable_choices(q["id"], list(q["correct_answer"]))
+    if q["type"] == "size":
+        extra["size"] = q.get("size_config")
+    if q["type"] == "numeric" and cfg.get("input") == "slider":
+        extra["slider"] = {"min": cfg["min"], "max": cfg["max"], "step": cfg.get("step") or 1}
+    if q["type"] == "dictation":
+        # Le texte doit être lu par le navigateur (synthèse vocale) : il est seulement encodé,
+        # pour ne pas s'afficher en clair. Pas de classement public, donc enjeu de triche faible.
+        extra["speech"] = base64.b64encode(str(q["correct_answer"]).encode("utf-8")).decode("ascii")
     return {
         "id": q["id"],
         "position": position,
@@ -140,6 +160,9 @@ def public_view(q: dict, position: int) -> dict:
         "images": images_of(q),
         "choices": stable_choices(q["id"], q["choices"]) if q["type"] == "mcq" and q.get("choices") else None,
         "unit": cfg.get("unit"),
+        "memorize": q.get("memorize"),
+        "time_limit": time_limit(q),
+        **extra,
     }
 
 
