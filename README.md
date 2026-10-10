@@ -42,12 +42,34 @@ Python 3.12 est téléchargé automatiquement par uv s'il manque. `npm run setup
 
 Adresses en local : site http://localhost:5173 · API http://localhost:8000/api/docs · console des émulateurs http://127.0.0.1:4000.
 
+## Espace fondateur : http://localhost:5173/admin
+
+En local, clique sur **« Se connecter (local) »**.
+
+| Page | Ce qu'on y fait |
+| --- | --- |
+| **Tableau de bord** | Joueurs du jour et des 7 derniers jours, score moyen, taux de quiz terminés, courbe sur 30 jours (clic sur un jour = détail), taux de bonnes réponses par question, répartition des scores, questions les plus dures et les plus faciles |
+| **Planning** | Les 10 questions de chaque jour à venir, dans l'ordre où les joueurs les verront. « Planifier les 28 prochains jours » remplit les jours vides. Glisser un badge sur un autre : réordonner (même jour) ou échanger (deux jours). Glisser une question de la banque sur un badge : la remplacer. Un jour avec des joueurs est verrouillé |
+| **Questions** | Toute la banque, filtrable par catégorie, difficulté, format d'entrée, format de réponse et statut. « Nouvelle question » propose des modèles. Import JSON/CSV |
+| **Signalements** | Les erreurs signalées par les joueurs, avec accès direct à la question |
+
+Le bloc « Local » de la barre latérale simule des joueurs (pour voir le tableau de bord rempli), ajoute un historique fictif à ton compte ou remet ton quiz du jour à zéro.
+
+### Structure d'une question
+
+| Élément | Valeurs |
+| --- | --- |
+| Format d'entrée (ce que voit le joueur) | Texte · Photo · 2 photos (repérées A et B) |
+| Format de réponse (ce qu'il répond) | Vrai / Faux · QCM (4 choix) · Nombre (estimation, score selon l'écart) · Texte libre (accents et majuscules ignorés, réponses alternatives possibles) |
+| Catégorie | Culture générale, Logique, Réflexion, Géographie, Histoire, Sciences, Nature et animaux, Arts et culture, Sport, Estimation, Vrai ou faux |
+| Difficulté | 1 Facile · 2 Moyen · 3 Difficile (chaque jour : 2 / 4 / 4) |
+
+Modèles prêts à l'emploi : Vrai ou faux, QCM, Estimation, Réponse libre, Reconnaître une personne (photo → nom), Reconnaître un lieu (photo → QCM), Estimer sur photo (photo → nombre), Comparer 2 photos (A ou B).
+
 ## Outils de développement (local uniquement)
 
-Le bouton **🛠 Dev** en bas à droite permet : connexion démo ou admin en un clic, rejouer le quiz du jour, ajouter 3 semaines d'historique fictif, repartir d'une session invité.
-
 - **Lien magique** : en local, aucun e-mail n'est envoyé. Le lien s'affiche dans le terminal (émulateur Auth) et un bouton « Ouvrir le lien magique » apparaît sur la page de connexion.
-- **Admin** : `/admin`, réservé aux e-mails de `ADMIN_EMAILS` (par défaut `admin@cervo.test`, accessible via « Connexion admin »).
+- **Admin** : `/admin`, réservé aux e-mails de `ADMIN_EMAILS` (par défaut `admin@cervo.test`, bouton « Se connecter (local) »).
 
 ## Ajouter des questions
 
@@ -64,9 +86,9 @@ Format d'une question :
   "tags": ["japon", "architecture"],
   "difficulty": 2,
   "prompt": "Quelle est la hauteur de la Tokyo Skytree, en mètres ?",
-  "image_url": "/questions/monument-skytree.svg",
-  "image_alt": "Silhouette stylisée de la tour",
-  "image_credit": "Illustration originale Cervo Daily",
+  "images": [
+    { "url": "/questions/monument-skytree.svg", "alt": "Silhouette de la tour", "credit": "Illustration Cervo Daily" }
+  ],
   "correct_answer": 634,
   "numeric_config": { "scale": "log", "factor": 3, "unit": "m" },
   "explanation": "La Tokyo Skytree mesure 634 m.",
@@ -75,7 +97,7 @@ Format d'une question :
 }
 ```
 
-Types : `binary` (true/false), `mcq` (4 `choices`, `correct_answer` = texte du bon choix), `numeric` (`numeric_config` : `linear` + `tolerance`, ou `log` + `factor`, `exact_margin` optionnel), `short_text` (`accepted_aliases`).
+`images` : 0, 1 ou 2 photos. Types : `binary` (true/false), `mcq` (4 `choices`, `correct_answer` = texte du bon choix), `numeric` (`numeric_config` : `linear` + `tolerance`, ou `log` + `factor`, `exact_margin` optionnel), `short_text` (`accepted_aliases`).
 Catégories : `culture`, `logique`, `reflexion`, `geographie`, `histoire`, `sciences`, `nature`, `arts`, `sport`, `estimation`, `vrai_faux`.
 
 Les illustrations sont générées par `uv run --project api python scripts/generate_illustrations.py`.

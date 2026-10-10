@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
-  darkMode: "class",
+  darkMode: "media",
   theme: {
     extend: {
       colors: {
@@ -19,7 +19,7 @@ export default {
         display: ['"Bricolage Grotesque Variable"', "system-ui", "sans-serif"],
         sans: ['"DM Sans Variable"', "system-ui", "sans-serif"],
       },
-      maxWidth: { app: "560px" },
+      maxWidth: { app: "520px", admin: "1320px" },
     },
   },
   plugins: [],

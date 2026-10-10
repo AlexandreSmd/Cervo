@@ -64,3 +64,16 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 
 - Le modèle de données laisse la place à `friendships`, `challenges`, `badges` (non créés).
 - `modal_app.py` et `infra/cloudflare/` permettent la mise en ligne, non testée dans le MVP (aucun compte).
+
+## Espace fondateur (version 2)
+
+- **Quiz du jour planifié** : `daily_quizzes/{date}` est maintenant écrit à l'avance depuis le planning. Un jour non planifié reste calculé automatiquement à la première visite après minuit (heure de Paris), puis figé : le site se met à jour seul même si personne ne planifie. Même questions, même ordre pour tout le monde.
+- **Verrouillage** : un jour passé, ou aujourd'hui dès qu'un joueur a commencé, ne se modifie plus (sinon les réponses déjà données ne correspondraient plus).
+- **Pas de doublon proche** : la sélection automatique évite les questions des autres jours planifiés, passés comme futurs, en partant des plus proches. Le planning signale les écarts aux règles (difficulté 2/4/4, catégories, photo, nombres) sans les imposer : le fondateur garde la main.
+- **Glisser-déposer natif** (HTML5, sans bibliothèque) ; sur mobile ou au clavier, le panneau d'une question propose « Avant », « Après » et « Remplacer par ».
+- **Statistiques** : agrégats `daily_stats/{date}` (joueurs, terminés, somme des scores, répartition par tranche de 10, réussite par question) et `question_stats/{id}`, mis à jour dans la transaction de chaque réponse. Le tableau de bord lit quelques documents au lieu de toutes les participations.
+- **Structure d'une question** : `images` (0 à 2) remplace `image_url`/`image_alt`/`image_credit` ; l'ancien format reste accepté à l'import et à la lecture. Le format d'entrée est déduit du nombre de photos ; le format de réponse est le champ `type`.
+- **Photos envoyées depuis l'admin** : réduites dans le navigateur (1 200 px, JPEG), stockées dans Firestore (`media/{id}`, 900 Ko maximum) et servies par `/api/media/{id}` avec un cache long. Pas de service de stockage en plus à configurer ; à remplacer par Firebase Storage si les volumes grossissent.
+- **Photos de personnes réelles** : aucune n'est fournie (droits à l'image). Le modèle « Reconnaître une personne » est prêt : il suffit d'envoyer une photo libre de droits (Wikimedia Commons) avec son crédit.
+- **Interface joueur épurée** : onglets en bas sur mobile, gros chiffres, presque pas de texte ; plus d'écran d'introduction (une étiquette « Sans aide » sur la première question), plus de pied de page, plus de boutons de taille de texte et de thème (le thème suit le téléphone). La page À propos est supprimée ; la confidentialité est accessible depuis le profil. Les outils de dev sont passés dans l'espace fondateur.
+- **Horaire** : le changement de jour se fait à minuit à Paris (heure d'Europe centrale, CET/CEST), réglable avec `TIMEZONE`.

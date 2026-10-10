@@ -83,30 +83,3 @@ export function Bars({ items }: { items: { label: string; value: number | null; 
     </ul>
   );
 }
-
-/** Radar à 4 axes : la « forme du cerveau » par pilier. */
-export function PillarRadar({ pillars }: { pillars: { label: string; average: number | null }[] }) {
-  const w = 340, h = 270, cx = w / 2, cy = h / 2, r = 90;
-  const angle = (i: number) => (-Math.PI / 2) + (i * 2 * Math.PI) / pillars.length;
-  const pt = (i: number, v: number) => [cx + Math.cos(angle(i)) * r * (v / 100), cy + Math.sin(angle(i)) * r * (v / 100)];
-  const poly = pillars.map((p, i) => pt(i, p.average ?? 0).join(",")).join(" ");
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="mx-auto h-auto w-full max-w-[340px]" role="img"
-      aria-label={pillars.map((p) => `${p.label} : ${p.average ?? "pas encore de données"}`).join(", ")}>
-      {[25, 50, 75, 100].map((lv) => (
-        <polygon key={lv} points={pillars.map((_, i) => pt(i, lv).join(",")).join(" ")} fill="none" stroke="rgb(var(--line))" />
-      ))}
-      {pillars.map((_, i) => { const [x, y] = pt(i, 100); return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgb(var(--line))" />; })}
-      <polygon points={poly} fill="rgb(var(--accent) / 0.25)" stroke="rgb(var(--accent))" strokeWidth="2.5" strokeLinejoin="round" />
-      {pillars.map((p, i) => {
-        const [x, y] = pt(i, i % 2 ? 150 : 122);
-        return (
-          <text key={p.label} x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="11" fontWeight="700" fill="rgb(var(--ink))">
-            <tspan x={x}>{p.label}</tspan>
-            <tspan x={x} dy="13" fontWeight="400" fill="rgb(var(--muted))">{p.average ?? "—"}</tspan>
-          </text>
-        );
-      })}
-    </svg>
-  );
-}

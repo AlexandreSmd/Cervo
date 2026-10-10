@@ -15,10 +15,10 @@ export function Loading({ label = "Chargement…" }: { label?: string }) {
 
 export function ErrorBox({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="card space-y-3 p-6 text-center" role="alert">
-      <p className="font-display text-xl font-bold">Petit souci</p>
+    <div className="card mt-4 space-y-3 p-6 text-center" role="alert">
+      <p className="font-display text-xl font-bold">Oups</p>
       <p className="text-muted">{message}</p>
-      {onRetry && <button className="btn-soft" onClick={onRetry}>Réessayer</button>}
+      {onRetry && <button className="btn-ghost" onClick={onRetry}>Réessayer</button>}
     </div>
   );
 }

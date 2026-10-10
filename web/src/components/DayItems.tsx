@@ -1,37 +1,26 @@
 import { COLOR_HEX, formatAnswer, scoreColor } from "../lib/format";
 import type { DayItem } from "../lib/types";
-import { CategoryTag } from "./CategoryTag";
-import { QuestionImage } from "./QuestionImage";
+import { QuestionMedia } from "./QuestionCard";
 
-/** Détail des 10 questions d'une journée : ta réponse, la bonne réponse, ton score. */
+/** Les 10 questions d'une journée, repliées : on déplie pour voir le détail. */
 export function DayItems({ items }: { items: DayItem[] }) {
   return (
-    <ol className="space-y-3">
+    <ol className="card divide-y divide-line overflow-hidden">
       {items.map((it, i) => (
-        <li key={it.id} className="card space-y-3 p-4">
-          <div className="flex items-center justify-between gap-2">
-            <span className="flex items-center gap-2 text-sm font-semibold text-muted">
-              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: COLOR_HEX[scoreColor(it.score)] }} aria-hidden="true" />
-              Q{i + 1}
-              <CategoryTag label={it.category_label} pillar={it.pillar} />
-            </span>
-            <span className="font-display text-lg font-extrabold" style={{ color: COLOR_HEX[scoreColor(it.score)] }}>{it.score}</span>
-          </div>
-          <p className="font-semibold">{it.prompt}</p>
-          {it.image_url && (
-            <div className="max-w-[240px]"><QuestionImage src={it.image_url} alt={it.image_alt} credit={null} eager={false} /></div>
-          )}
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div><span className="text-muted">Ta réponse : </span><strong>{formatAnswer(it.user_answer, it.type, it.unit)}</strong></div>
-            <div><span className="text-muted">Bonne réponse : </span><strong>{formatAnswer(it.correct_answer, it.type, it.unit)}</strong></div>
-          </div>
-          {it.explanation && (
-            <details className="text-sm text-muted">
-              <summary className="cursor-pointer font-semibold text-accent">Explication</summary>
-              <p className="mt-1">{it.explanation}</p>
-              {it.source_url && <a href={it.source_url} target="_blank" rel="noreferrer" className="link">Source ↗</a>}
-            </details>
-          )}
+        <li key={it.id}>
+          <details className="group">
+            <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 hover:bg-ink/[0.03]">
+              <span className="h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: COLOR_HEX[scoreColor(it.score)] }} aria-hidden="true" />
+              <span className="flex-1 truncate text-[15px] font-semibold">{i + 1}. {it.prompt}</span>
+              <span className="font-display text-lg font-extrabold">{it.score}</span>
+            </summary>
+            <div className="space-y-3 px-5 pb-5 text-sm">
+              {it.images.length > 0 && <div className="max-w-[320px]"><QuestionMedia images={it.images} eager={false} /></div>}
+              <div className="flex justify-between gap-4"><span className="text-muted">Réponse</span><strong className="text-right">{formatAnswer(it.correct_answer, it.type, it.unit)}</strong></div>
+              <div className="flex justify-between gap-4"><span className="text-muted">Toi</span><strong className="text-right">{formatAnswer(it.user_answer, it.type, it.unit)}</strong></div>
+              {it.explanation && <p className="text-muted">{it.explanation}</p>}
+            </div>
+          </details>
         </li>
       ))}
     </ol>

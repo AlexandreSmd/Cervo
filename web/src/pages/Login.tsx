@@ -83,7 +83,7 @@ export function Login() {
 
   if (isLink) {
     return (
-      <div className="card space-y-4 p-6">
+      <div className="card mt-4 space-y-4 p-6">
         <h1 className="text-2xl font-extrabold">Confirme ton e-mail</h1>
         <p className="text-muted">Pour finaliser la connexion, indique l'adresse à laquelle tu as reçu le lien.</p>
         <form onSubmit={(e) => { e.preventDefault(); handled.current = true; complete(email); }} className="space-y-3">
@@ -97,28 +97,27 @@ export function Login() {
   }
 
   return (
-    <div className="card space-y-5 p-6">
-      <h1 className="text-3xl font-extrabold">Créer un compte ou se connecter</h1>
-      <p className="text-muted">Pas de mot de passe : on t'envoie un lien magique par e-mail. Ton historique d'invité est conservé.</p>
+    <div className="card mt-4 space-y-5 p-6">
+      <h1 className="text-3xl font-extrabold">Ton compte</h1>
+      <p className="text-muted">Un lien de connexion par e-mail, sans mot de passe. Ta progression est gardée.</p>
       {user && !user.isAnonymous && <p className="rounded-2xl bg-good/10 p-3 text-sm">Tu es déjà connecté avec {user.email}.</p>}
       {sent ? (
         <div className="space-y-3" role="status">
           <p className="font-semibold">Lien envoyé à {email} ✉️</p>
-          <p className="text-sm text-muted">Ouvre-le sur cet appareil pour terminer. Pense à regarder tes indésirables.</p>
+          <p className="text-sm text-muted">Ouvre-le sur cet appareil.</p>
           {USE_EMULATOR && (
             <div className="rounded-2xl bg-mid/15 p-4 text-sm">
-              <p className="font-semibold">Mode local : aucun e-mail n'est envoyé.</p>
-              <p className="text-muted">Le lien s'affiche dans le terminal (émulateur Firebase Auth).</p>
-              {devLink && DEV_TOOLS && <a href={devLink} className="btn-soft mt-2 w-full" data-testid="dev-magic-link">Ouvrir le lien magique</a>}
+              <p className="font-semibold">En local, aucun e-mail n'est envoyé : le lien est dans le terminal.</p>
+              {devLink && DEV_TOOLS && <a href={devLink} className="btn-ghost mt-2 w-full" data-testid="dev-magic-link">Ouvrir le lien magique</a>}
             </div>
           )}
           <button className="link text-sm" onClick={() => setSent(false)}>Utiliser une autre adresse</button>
         </div>
       ) : (
         <form onSubmit={send} className="space-y-3">
-          <label htmlFor="email" className="label">Adresse e-mail</label>
+          <label htmlFor="email" className="sr-only">Adresse e-mail</label>
           <input id="email" type="email" autoComplete="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="toi@exemple.fr" required />
-          <button className="btn-primary w-full text-lg" type="submit" data-testid="send-link">Recevoir mon lien magique</button>
+          <button className="btn-dark w-full text-lg" type="submit" data-testid="send-link">Recevoir le lien</button>
         </form>
       )}
       {status && <p className="text-muted">{status}</p>}

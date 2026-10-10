@@ -1,7 +1,7 @@
 // Import CSV de l'admin : une ligne = une question. Les listes sont séparées par « | ».
 export const CSV_COLUMNS = [
   "id", "type", "category", "difficulty", "prompt", "choices", "correct_answer", "scale", "tolerance", "factor",
-  "unit", "exact_margin", "accepted_aliases", "explanation", "source_url", "image_url", "image_alt", "image_credit", "tags", "status",
+  "unit", "exact_margin", "accepted_aliases", "explanation", "source_url", "image1_url", "image1_alt", "image2_url", "image2_alt", "tags", "status",
 ];
 
 export function parseCsv(text: string): string[][] {
@@ -53,7 +53,11 @@ export function csvToQuestions(text: string): Record<string, unknown>[] {
     if (r.choices) q.choices = list(r.choices);
     if (r.accepted_aliases) q.accepted_aliases = list(r.accepted_aliases);
     if (r.tags) q.tags = list(r.tags);
-    for (const k of ["source_url", "image_url", "image_alt", "image_credit"]) if (r[k]) q[k] = r[k];
+    if (r.source_url) q.source_url = r.source_url;
+    const images = [1, 2]
+      .map((n) => ({ url: r[`image${n}_url`] || (n === 1 ? r.image_url : ""), alt: r[`image${n}_alt`] || (n === 1 ? r.image_alt : "") || "Photo" }))
+      .filter((i) => i.url);
+    if (images.length) q.images = images;
     if (type === "numeric") {
       q.numeric_config = {
         scale: r.scale === "log" ? "log" : "linear",

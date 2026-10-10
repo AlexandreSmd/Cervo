@@ -24,4 +24,10 @@ describe("csvToQuestions", () => {
     expect(n.correct_answer).toBe(634);
     expect(n.numeric_config).toMatchObject({ scale: "log", factor: 3, unit: "m" });
   });
+
+  it("lit jusqu'à deux photos", () => {
+    const csv = "type,category,difficulty,prompt,correct_answer,explanation,image1_url,image1_alt,image2_url,image2_alt\n" +
+      "short_text,culture,2,Qui est-ce ?,Marie Curie,Physicienne.,/a.jpg,Portrait A,/b.jpg,Portrait B";
+    expect(csvToQuestions(csv)[0].images).toEqual([{ url: "/a.jpg", alt: "Portrait A" }, { url: "/b.jpg", alt: "Portrait B" }]);
+  });
 });

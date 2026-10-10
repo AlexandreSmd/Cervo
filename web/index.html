@@ -10,14 +10,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og-image.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#5B4BFF" />
+    <meta name="theme-color" content="#F4F5F8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script>
-      try {
-        const t = localStorage.getItem("cervo-theme");
-        if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.classList.add("dark");
-      } catch {}
-    </script>
   </head>
   <body>
     <div id="root"></div>
