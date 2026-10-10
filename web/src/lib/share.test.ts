@@ -11,14 +11,14 @@ describe("partage", () => {
 
   it("montre les 10 questions avec leur couleur et leur score", () => {
     const scores = [100, 0, 50, 90, 80, 79, 40, 39, 100, 100];
-    const text = buildShareMessage("Vif", "2026-10-10", 68, scores, 3, "https://jouevif.fr");
+    const text = buildShareMessage("Vif", "2026-10-10", 68, scores, 3, "https://playvif.com");
     expect(text).toContain("Mon score : 68/100 · 🔥 3 jours de suite");
     expect(text).toContain("🟢🔴🟢🟢🟢🟢🔴🔴🟢🟢");
     expect(text).toContain(" 1. 🟢 100/100");
     expect(text).toContain(" 2. 🔴 0/100");
     expect(text).toContain("10. 🟢 100/100");
     expect(text).toContain("7/10 questions réussies");
-    expect(text).toContain("https://jouevif.fr");
+    expect(text).toContain("https://playvif.com");
   });
 
   it("n'affiche pas de série pour un seul jour", () => {
