@@ -20,7 +20,7 @@ export function Logo() {
         <span className="h-3 w-3 rounded-full bg-good" />
         <span className="h-3 w-3 rounded-full bg-mid" />
       </span>
-      <span className="font-display text-lg font-extrabold tracking-tight">{APP_NAME}</span>
+      <span className="whitespace-nowrap font-display text-lg font-extrabold tracking-tight">{APP_NAME}</span>
     </Link>
   );
 }
@@ -35,7 +35,7 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [dark]);
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-xl px-3 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${isActive ? "bg-accent/10 text-accent" : "text-muted hover:text-ink"}`;
+    `rounded-xl px-2 py-2 text-sm font-semibold transition sm:px-3 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${isActive ? "bg-accent/10 text-accent" : "text-muted hover:text-ink"}`;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -43,7 +43,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-line/60 bg-bg/85 backdrop-blur">
         <div className="mx-auto flex max-w-app items-center justify-between gap-2 px-4 py-3">
           <Logo />
-          <nav className="flex items-center gap-1" aria-label="Navigation principale">
+          <nav className="flex items-center gap-0.5 sm:gap-1" aria-label="Navigation principale">
             <NavLink to="/" end className={navClass}>Jouer</NavLink>
             <NavLink to="/profil" className={navClass}>Profil</NavLink>
             <button type="button" onClick={() => setLarge(!large)} className="rounded-xl px-2 py-2 text-sm font-bold text-muted hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
