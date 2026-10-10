@@ -69,7 +69,7 @@ def _is_numeric(q: dict) -> bool:
 
 
 def _has_image(q: dict) -> bool:
-    return bool(q.get("image_url"))
+    return bool(q.get("images") or q.get("image_url"))
 
 
 def _is_thinking(q: dict) -> bool:

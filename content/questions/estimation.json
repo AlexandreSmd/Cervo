@@ -9,9 +9,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la hauteur de la Tokyo Skytree, en mètres ?",
-    "image_url": "/questions/monument-skytree.svg",
-    "image_alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/monument-skytree.svg",
+        "alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La Tokyo Skytree mesure 634 m : c'est la plus haute tour de télécommunication du monde.",
     "source_url": "https://fr.wikipedia.org/wiki/Tokyo_Skytree",
     "status": "published",
@@ -32,9 +36,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la hauteur du Burj Khalifa, à Dubaï, en mètres ?",
-    "image_url": "/questions/monument-burj.svg",
-    "image_alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/monument-burj.svg",
+        "alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Le Burj Khalifa culmine à 828 m depuis 2010 : c'est le plus haut gratte-ciel du monde.",
     "source_url": "https://fr.wikipedia.org/wiki/Burj_Khalifa",
     "status": "published",
@@ -55,9 +63,13 @@
     ],
     "difficulty": 1,
     "prompt": "Quelle est la hauteur de la tour Eiffel, antennes comprises, en mètres ?",
-    "image_url": "/questions/monument-eiffel.svg",
-    "image_alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/monument-eiffel.svg",
+        "alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La tour Eiffel mesure 330 m depuis l'ajout d'une nouvelle antenne en 2022 (312 m à l'origine).",
     "source_url": "https://fr.wikipedia.org/wiki/Tour_Eiffel",
     "status": "published",
@@ -79,9 +91,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la hauteur actuelle de la pyramide de Khéops, en mètres ?",
-    "image_url": "/questions/monument-pyramid.svg",
-    "image_alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/monument-pyramid.svg",
+        "alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Elle mesure environ 138 m aujourd'hui, contre 146 m à l'origine : elle a perdu son sommet et son revêtement.",
     "source_url": "https://fr.wikipedia.org/wiki/Pyramide_de_Khéops",
     "status": "published",
@@ -103,9 +119,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la hauteur de la statue de la Liberté, socle compris, en mètres ?",
-    "image_url": "/questions/monument-liberty.svg",
-    "image_alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/monument-liberty.svg",
+        "alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La statue mesure 46 m, et 93 m avec son socle, du sol à la torche.",
     "source_url": "https://fr.wikipedia.org/wiki/Statue_de_la_Liberté",
     "status": "published",
@@ -127,9 +147,13 @@
     ],
     "difficulty": 3,
     "prompt": "Quelle est la hauteur de la tour de Big Ben (tour Elizabeth), à Londres, en mètres ?",
-    "image_url": "/questions/monument-bigben.svg",
-    "image_alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/monument-bigben.svg",
+        "alt": "Silhouette stylisée d'un monument, avec un petit personnage pour l'échelle",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La tour Elizabeth mesure environ 96 m ; Big Ben est en réalité le nom de sa grosse cloche.",
     "source_url": "https://fr.wikipedia.org/wiki/Big_Ben",
     "status": "published",
@@ -151,9 +175,13 @@
     ],
     "difficulty": 1,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-37.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-37.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 37 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -174,9 +202,13 @@
     ],
     "difficulty": 1,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-52.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-52.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 52 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -197,9 +229,13 @@
     ],
     "difficulty": 1,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-64.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-64.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 64 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -220,9 +256,13 @@
     ],
     "difficulty": 2,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-95.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-95.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 95 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -243,9 +283,13 @@
     ],
     "difficulty": 2,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-150.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-150.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 150 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -266,9 +310,13 @@
     ],
     "difficulty": 2,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-180.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-180.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 180 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -289,9 +337,13 @@
     ],
     "difficulty": 2,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-230.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-230.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 230 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -312,9 +364,13 @@
     ],
     "difficulty": 3,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-320.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-320.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 320 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -335,9 +391,13 @@
     ],
     "difficulty": 3,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-480.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-480.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 480 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -358,9 +418,13 @@
     ],
     "difficulty": 3,
     "prompt": "Sans compter un par un : combien de points y a-t-il sur cette image ?",
-    "image_url": "/questions/points-720.svg",
-    "image_alt": "Des points de couleur répartis au hasard",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/points-720.svg",
+        "alt": "Des points de couleur répartis au hasard",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "Il y a exactement 720 points. Astuce : compte une petite zone, puis multiplie par le nombre de zones semblables.",
     "source_url": null,
     "status": "published",
@@ -381,9 +445,13 @@
     ],
     "difficulty": 1,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-90.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-90.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 90°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -405,9 +473,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-35.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-35.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 35°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -429,9 +501,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-72.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-72.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 72°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -453,9 +529,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-110.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-110.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 110°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -477,9 +557,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-145.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-145.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 145°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -501,9 +585,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-20.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-20.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 20°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -525,9 +613,13 @@
     ],
     "difficulty": 3,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-160.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-160.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 160°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -549,9 +641,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quelle est la mesure de cet angle, en degrés ?",
-    "image_url": "/questions/angle-55.svg",
-    "image_alt": "Deux segments formant un angle, marqué d'un arc orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/angle-55.svg",
+        "alt": "Deux segments formant un angle, marqué d'un arc orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "L'angle mesure 55°. Repères utiles : un angle droit fait 90°, un angle plat 180°.",
     "source_url": null,
     "status": "published",
@@ -573,9 +669,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quel pourcentage du disque est coloré en violet ?",
-    "image_url": "/questions/disque-18.svg",
-    "image_alt": "Un disque dont une part est colorée en violet",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/disque-18.svg",
+        "alt": "Un disque dont une part est colorée en violet",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La part violette représente 18 % du disque. Repère : un quart fait 25 %, la moitié 50 %.",
     "source_url": null,
     "status": "published",
@@ -597,9 +697,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quel pourcentage du disque est coloré en violet ?",
-    "image_url": "/questions/disque-35.svg",
-    "image_alt": "Un disque dont une part est colorée en violet",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/disque-35.svg",
+        "alt": "Un disque dont une part est colorée en violet",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La part violette représente 35 % du disque. Repère : un quart fait 25 %, la moitié 50 %.",
     "source_url": null,
     "status": "published",
@@ -621,9 +725,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quel pourcentage du disque est coloré en violet ?",
-    "image_url": "/questions/disque-62.svg",
-    "image_alt": "Un disque dont une part est colorée en violet",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/disque-62.svg",
+        "alt": "Un disque dont une part est colorée en violet",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La part violette représente 62 % du disque. Repère : un quart fait 25 %, la moitié 50 %.",
     "source_url": null,
     "status": "published",
@@ -645,9 +753,13 @@
     ],
     "difficulty": 1,
     "prompt": "Quel pourcentage du disque est coloré en violet ?",
-    "image_url": "/questions/disque-82.svg",
-    "image_alt": "Un disque dont une part est colorée en violet",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/disque-82.svg",
+        "alt": "Un disque dont une part est colorée en violet",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La part violette représente 82 % du disque. Repère : un quart fait 25 %, la moitié 50 %.",
     "source_url": null,
     "status": "published",
@@ -669,9 +781,13 @@
     ],
     "difficulty": 2,
     "prompt": "Quel pourcentage du disque est coloré en violet ?",
-    "image_url": "/questions/disque-8.svg",
-    "image_alt": "Un disque dont une part est colorée en violet",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/disque-8.svg",
+        "alt": "Un disque dont une part est colorée en violet",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La part violette représente 8 % du disque. Repère : un quart fait 25 %, la moitié 50 %.",
     "source_url": null,
     "status": "published",
@@ -693,9 +809,13 @@
     ],
     "difficulty": 1,
     "prompt": "Quel pourcentage du disque est coloré en violet ?",
-    "image_url": "/questions/disque-45.svg",
-    "image_alt": "Un disque dont une part est colorée en violet",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/disque-45.svg",
+        "alt": "Un disque dont une part est colorée en violet",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La part violette représente 45 % du disque. Repère : un quart fait 25 %, la moitié 50 %.",
     "source_url": null,
     "status": "published",
@@ -717,9 +837,13 @@
     ],
     "difficulty": 2,
     "prompt": "Combien de fois la ligne B est-elle plus longue que la ligne A ?",
-    "image_url": "/questions/lignes-x4.svg",
-    "image_alt": "Deux lignes horizontales, A en violet et B en orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/lignes-x4.svg",
+        "alt": "Deux lignes horizontales, A en violet et B en orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La ligne B est 4 fois plus longue que la ligne A. Astuce : reporte mentalement la ligne A le long de B.",
     "source_url": null,
     "status": "published",
@@ -740,9 +864,13 @@
     ],
     "difficulty": 2,
     "prompt": "Combien de fois la ligne B est-elle plus longue que la ligne A ?",
-    "image_url": "/questions/lignes-x2-5.svg",
-    "image_alt": "Deux lignes horizontales, A en violet et B en orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/lignes-x2-5.svg",
+        "alt": "Deux lignes horizontales, A en violet et B en orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La ligne B est 2,5 fois plus longue que la ligne A. Astuce : reporte mentalement la ligne A le long de B.",
     "source_url": null,
     "status": "published",
@@ -763,9 +891,13 @@
     ],
     "difficulty": 3,
     "prompt": "Combien de fois la ligne B est-elle plus longue que la ligne A ?",
-    "image_url": "/questions/lignes-x10.svg",
-    "image_alt": "Deux lignes horizontales, A en violet et B en orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/lignes-x10.svg",
+        "alt": "Deux lignes horizontales, A en violet et B en orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La ligne B est 10 fois plus longue que la ligne A. Astuce : reporte mentalement la ligne A le long de B.",
     "source_url": null,
     "status": "published",
@@ -786,9 +918,13 @@
     ],
     "difficulty": 1,
     "prompt": "Combien de fois la ligne B est-elle plus longue que la ligne A ?",
-    "image_url": "/questions/lignes-x1-5.svg",
-    "image_alt": "Deux lignes horizontales, A en violet et B en orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/lignes-x1-5.svg",
+        "alt": "Deux lignes horizontales, A en violet et B en orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La ligne B est 1,5 fois plus longue que la ligne A. Astuce : reporte mentalement la ligne A le long de B.",
     "source_url": null,
     "status": "published",
@@ -809,9 +945,13 @@
     ],
     "difficulty": 3,
     "prompt": "Combien de fois la ligne B est-elle plus longue que la ligne A ?",
-    "image_url": "/questions/lignes-x7.svg",
-    "image_alt": "Deux lignes horizontales, A en violet et B en orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/lignes-x7.svg",
+        "alt": "Deux lignes horizontales, A en violet et B en orange",
+        "credit": "Illustration originale Cervo Daily (libre de droits)"
+      }
+    ],
     "explanation": "La ligne B est 7 fois plus longue que la ligne A. Astuce : reporte mentalement la ligne A le long de B.",
     "source_url": null,
     "status": "published",

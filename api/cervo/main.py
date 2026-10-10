@@ -7,18 +7,18 @@ from collections import defaultdict, deque
 
 from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from firebase_admin import auth as fb_auth
 from pydantic import BaseModel, ValidationError
 
-from . import APP_NAME, service
+from . import APP_NAME, admin, service
 from . import questions as bank
-from .catalog import CATEGORIES, PILLARS
+from .catalog import ANSWER_FORMATS, CATEGORIES, DIFFICULTIES, INPUT_FORMATS, PILLARS
 from .config import get_settings
 from .daily import is_valid_day, today_str
 from .firebase import app as firebase_app
 from .firebase import db, verify_token
-from .models import AnswerIn, ImportIn, ReportIn, StatusIn, UsernameIn
+from .models import AnswerIn, FillIn, ImportIn, MediaIn, ReportIn, ScheduleDayIn, StatusIn, UsernameIn
 from .service import ApiError
 from .stats import profile_summary
 
@@ -178,8 +178,108 @@ def admin_questions(_: dict = Depends(admin_claims)):
     for snap in client.collection("reports").stream():
         qid = snap.to_dict().get("question_id")
         reports[qid] = reports.get(qid, 0) + 1
+    q_stats = {s.id: admin._rate(s.to_dict()) for s in client.collection("question_stats").stream()}
+    used: dict[str, list[str]] = {}
+    for day, ids in service.planned_days(client).items():
+        for qid in ids:
+            used.setdefault(qid, []).append(day)
     items = sorted(bank.all_questions(client, force=True), key=lambda q: q.get("created_at") or "", reverse=True)
-    return {"questions": [{**q, "reports": reports.get(q["id"], 0)} for q in items]}
+    return {"questions": [
+        {
+            **{k: v for k, v in q.items() if k not in ("image_url", "image_alt", "image_credit")},
+            "images": bank.images_of(q),
+            **bank.describe(q),
+            "reports": reports.get(q["id"], 0),
+            "stats": q_stats.get(q["id"], admin._rate(None)),
+            "days": sorted(used.get(q["id"], [])),
+        }
+        for q in items
+    ]}
+
+
+@router.get("/admin/meta")
+def admin_meta(_: dict = Depends(admin_claims)):
+    return {
+        "categories": CATEGORIES, "input_formats": INPUT_FORMATS, "answer_formats": ANSWER_FORMATS,
+        "difficulties": DIFFICULTIES, "today": today(),
+    }
+
+
+@router.put("/admin/questions/{question_id}")
+def admin_update_question(question_id: str, body: dict, _: dict = Depends(admin_claims)):
+    client = db()
+    ref = client.collection("questions").document(question_id)
+    snap = ref.get()
+    if not snap.exists:
+        raise HTTPException(404, "Question introuvable.")
+    try:
+        q = bank.validate({**body, "id": question_id})
+    except ValidationError as exc:
+        raise HTTPException(422, [f"{'.'.join(map(str, e['loc']))} : {e['msg']}" for e in exc.errors()]) from None
+    ref.set(bank.to_doc(q, snap.to_dict().get("created_at") or service.now_iso()))
+    bank.invalidate_cache()
+    return {"id": question_id}
+
+
+@router.get("/admin/overview")
+def admin_overview(_: dict = Depends(admin_claims)):
+    return admin.overview(db(), today())
+
+
+@router.get("/admin/stats/{day}")
+def admin_day_stats(day: str, _: dict = Depends(admin_claims)):
+    if not is_valid_day(day):
+        raise HTTPException(400, "Date invalide.")
+    client = db()
+    snap = client.collection("daily_stats").document(day).get()
+    return admin.day_stats_view(client, day, snap.to_dict() if snap.exists else None, bank.by_id(client))
+
+
+@router.get("/admin/schedule")
+def admin_schedule(start: str | None = None, days: int = 28, _: dict = Depends(admin_claims)):
+    start = start if start and is_valid_day(start) else today()
+    return admin.schedule(db(), today(), start, max(1, min(days, 90)))
+
+
+@router.post("/admin/schedule/fill")
+def admin_fill(body: FillIn, _: dict = Depends(admin_claims)):
+    return {"created": admin.fill_schedule(db(), today(), body.days)}
+
+
+@router.put("/admin/schedule/{day}")
+def admin_set_day(day: str, body: ScheduleDayIn, _: dict = Depends(admin_claims)):
+    if not is_valid_day(day):
+        raise HTTPException(400, "Date invalide.")
+    admin.set_day(db(), day, body.question_ids, today())
+    return {"date": day, "question_ids": body.question_ids}
+
+
+@router.post("/admin/schedule/{day}/regenerate")
+def admin_regenerate(day: str, _: dict = Depends(admin_claims)):
+    if not is_valid_day(day):
+        raise HTTPException(400, "Date invalide.")
+    return {"date": day, "question_ids": admin.regenerate_day(db(), day, today())}
+
+
+@router.delete("/admin/schedule/{day}")
+def admin_clear_day(day: str, _: dict = Depends(admin_claims)):
+    if not is_valid_day(day):
+        raise HTTPException(400, "Date invalide.")
+    admin.clear_day(db(), day, today())
+    return {"date": day}
+
+
+@router.post("/admin/media")
+def admin_media(body: MediaIn, _: dict = Depends(admin_claims)):
+    return {"url": admin.save_media(db(), body.data_url)}
+
+
+@router.get("/media/{media_id}")
+def get_media(media_id: str):
+    if not media_id.isalnum():
+        raise HTTPException(404, "Image introuvable.")
+    data, content_type = admin.load_media(db(), media_id)
+    return Response(content=data, media_type=content_type, headers={"Cache-Control": "public, max-age=31536000, immutable"})
 
 
 @router.get("/admin/reports")
@@ -252,6 +352,11 @@ def dev_replay(claims: dict = Depends(current_claims)):
     service.attempt_ref(client, claims["uid"], today()).delete()
     service.rebuild_user_stats(client, claims["uid"])
     return {"ok": True}
+
+
+@router.post("/dev/simulate-players", dependencies=[Depends(local_only)])
+def dev_simulate(_: dict = Depends(admin_claims)):
+    return {"players": admin.simulate_players(db(), today())}
 
 
 @router.post("/dev/seed-history", dependencies=[Depends(local_only)])

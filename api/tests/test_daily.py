@@ -17,7 +17,7 @@ def make_bank(n_per_cat=12):
                 "category": cat,
                 "type": types[(i + c_index) % 4],
                 "difficulty": [1, 2, 2, 3, 3][i % 5],
-                "image_url": "/questions/x.svg" if i % 7 == 0 else None,
+                "images": [{"url": "/questions/x.svg", "alt": "x"}] if i % 7 == 0 else [],
                 "status": "published",
             })
     return bank
@@ -31,7 +31,7 @@ def check_constraints(ids, bank):
     assert len(cats) >= 5
     assert max(cats.values()) <= 3
     assert sum(q["type"] == "numeric" for q in qs) >= 2
-    assert sum(bool(q.get("image_url")) for q in qs) >= 1
+    assert sum(bool(q.get("images")) for q in qs) >= 1
     assert Counter(q["difficulty"] for q in qs) == {1: 2, 2: 4, 3: 4}
     assert sum(pillar_of(q["category"]) in THINKING_PILLARS for q in qs) >= 4
 
@@ -87,7 +87,7 @@ def test_history_ignored_when_pool_too_small():
 
 def test_relaxation_with_tiny_bank():
     bank = [
-        {"id": f"q{i}", "category": "culture", "type": "mcq", "difficulty": 1, "image_url": None, "status": "published"}
+        {"id": f"q{i}", "category": "culture", "type": "mcq", "difficulty": 1, "images": [], "status": "published"}
         for i in range(10)
     ]
     assert sorted(build_daily_quiz("2026-10-10", bank)) == sorted(q["id"] for q in bank)

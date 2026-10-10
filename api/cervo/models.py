@@ -6,7 +6,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from .catalog import CATEGORIES
+from .catalog import CATEGORIES, MAX_IMAGES, input_format
 from .scoring import normalize_text
 
 
@@ -18,6 +18,12 @@ class NumericConfig(BaseModel):
     exact_margin: float | None = Field(default=None, ge=0)
 
 
+class ImageRef(BaseModel):
+    url: str = Field(min_length=1, max_length=500)
+    alt: str = Field(min_length=1, max_length=300)
+    credit: str | None = Field(default=None, max_length=300)
+
+
 class Question(BaseModel):
     id: str = Field(min_length=1, max_length=80, pattern=r"^[a-z0-9][a-z0-9_-]*$")
     type: Literal["binary", "mcq", "numeric", "short_text"]
@@ -25,9 +31,7 @@ class Question(BaseModel):
     tags: list[str] = Field(default_factory=list)
     difficulty: int = Field(ge=1, le=3)
     prompt: str = Field(min_length=5, max_length=500)
-    image_url: str | None = None
-    image_credit: str | None = None
-    image_alt: str | None = None
+    images: list[ImageRef] = Field(default_factory=list, max_length=MAX_IMAGES)
     choices: list[str] | None = None
     correct_answer: Any
     numeric_config: NumericConfig | None = None
@@ -35,6 +39,22 @@ class Question(BaseModel):
     explanation: str = Field(min_length=10, max_length=1000)
     source_url: str | None = None
     status: Literal["draft", "published", "retired"] = "published"
+
+    @model_validator(mode="before")
+    @classmethod
+    def legacy_image(cls, data: Any) -> Any:
+        """Ancien format (image_url, image_alt, image_credit) → images[0]."""
+        if isinstance(data, dict) and data.get("image_url"):
+            data = dict(data)
+            image = {"url": data.pop("image_url"), "alt": data.pop("image_alt", None) or "Illustration", "credit": data.pop("image_credit", None)}
+            data["images"] = [image, *(data.get("images") or [])]
+        elif isinstance(data, dict):
+            data = {k: v for k, v in data.items() if k not in ("image_url", "image_alt", "image_credit")}
+        return data
+
+    @property
+    def input_format(self) -> str:
+        return input_format(len(self.images))
 
     @field_validator("category")
     @classmethod
@@ -67,8 +87,6 @@ class Question(BaseModel):
                 raise ValueError("une réponse courte attend un texte ou un nombre")
             if isinstance(self.correct_answer, str) and not normalize_text(self.correct_answer):
                 raise ValueError("la réponse attendue est vide")
-        if self.image_url and not self.image_alt:
-            raise ValueError("une image doit avoir un texte alternatif (image_alt)")
         return self
 
 
@@ -103,3 +121,15 @@ class ImportIn(BaseModel):
 
 class StatusIn(BaseModel):
     status: Literal["draft", "published", "retired"]
+
+
+class ScheduleDayIn(BaseModel):
+    question_ids: list[str] = Field(min_length=10, max_length=10)
+
+
+class FillIn(BaseModel):
+    days: int = Field(default=28, ge=1, le=120)
+
+
+class MediaIn(BaseModel):
+    data_url: str = Field(max_length=1_400_000)

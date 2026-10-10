@@ -10,7 +10,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from .catalog import CATEGORIES, pillar_of
+from .catalog import ANSWER_FORMATS, CATEGORIES, DIFFICULTIES, INPUT_FORMATS, input_format, pillar_of
 from .config import CONTENT_DIR
 from .daily import stable_choices
 from .models import Question
@@ -60,15 +60,17 @@ def check_bank(raws: list[dict]) -> tuple[list[Question], list[str]]:
         if q.id in ids:
             errors.append(f"{where} : identifiant en double (déjà dans {ids[q.id]})")
             continue
-        key = normalize_text(q.prompt) + "|" + normalize_text(q.image_url or "")
+        key = normalize_text(q.prompt) + "|" + "|".join(normalize_text(i.url) for i in q.images)
         if key in prompts:
             errors.append(f"{where} : énoncé en double de {prompts[key]}")
             continue
-        if q.image_url and q.image_url.startswith("/questions/"):
-            image = CONTENT_DIR.parents[1] / "web" / "public" / q.image_url.lstrip("/")
-            if not image.exists():
-                errors.append(f"{where} : image introuvable {q.image_url}")
-                continue
+        missing = [
+            i.url for i in q.images
+            if i.url.startswith("/questions/") and not (CONTENT_DIR.parents[1] / "web" / "public" / i.url.lstrip("/")).exists()
+        ]
+        if missing:
+            errors.append(f"{where} : image introuvable {', '.join(missing)}")
+            continue
         ids[q.id] = where
         prompts[key] = q.id
         valid.append(q)
@@ -101,6 +103,28 @@ def by_id(db) -> dict[str, dict]:
     return {q["id"]: q for q in all_questions(db)}
 
 
+def images_of(q: dict) -> list[dict]:
+    """Photos d'une question (accepte l'ancien format image_url des données déjà en base)."""
+    if q.get("images"):
+        return list(q["images"])
+    if q.get("image_url"):
+        return [{"url": q["image_url"], "alt": q.get("image_alt") or "Illustration", "credit": q.get("image_credit")}]
+    return []
+
+
+def describe(q: dict) -> dict:
+    """Libellés lisibles de la structure d'une question (admin)."""
+    images = images_of(q)
+    fmt = input_format(len(images))
+    return {
+        "input_format": fmt,
+        "input_label": INPUT_FORMATS[fmt],
+        "answer_label": ANSWER_FORMATS.get(q["type"], q["type"]),
+        "difficulty_label": DIFFICULTIES.get(q.get("difficulty", 2), ""),
+        "category_label": CATEGORIES.get(q["category"], q["category"]),
+    }
+
+
 def public_view(q: dict, position: int) -> dict:
     """Question sans la bonne réponse (envoyée avant validation)."""
     cfg = q.get("numeric_config") or {}
@@ -113,9 +137,7 @@ def public_view(q: dict, position: int) -> dict:
         "pillar": pillar_of(q["category"]),
         "difficulty": q.get("difficulty", 2),
         "prompt": q["prompt"],
-        "image_url": q.get("image_url"),
-        "image_alt": q.get("image_alt"),
-        "image_credit": q.get("image_credit"),
+        "images": images_of(q),
         "choices": stable_choices(q["id"], q["choices"]) if q["type"] == "mcq" and q.get("choices") else None,
         "unit": cfg.get("unit"),
     }

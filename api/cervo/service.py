@@ -29,20 +29,33 @@ def now_iso() -> str:
 
 # --- Quiz du jour -----------------------------------------------------------
 
+def planned_days(db) -> dict[str, list[str]]:
+    return {d.id: list(d.to_dict().get("question_ids", [])) for d in db.collection("daily_quizzes").stream()}
+
+
+def history_around(day: str, planned: dict[str, list[str]]) -> list[list[str]]:
+    """Questions des autres jours (passés et déjà planifiés), du plus proche au plus lointain."""
+    from datetime import date as _date
+
+    target = _date.fromisoformat(day)
+    others = sorted((d for d in planned if d != day), key=lambda d: abs((_date.fromisoformat(d) - target).days))
+    return [planned[d] for d in others[:HISTORY_DAYS]]
+
+
+def compute_day(db, day: str, planned: dict[str, list[str]] | None = None) -> list[str]:
+    planned = planned if planned is not None else planned_days(db)
+    return build_daily_quiz(day, bank.all_questions(db), history_around(day, planned))
+
+
 def daily_question_ids(db, day: str) -> list[str]:
-    """Quiz du jour, calculé de façon déterministe puis figé à la première demande."""
+    """Quiz du jour : celui planifié par l'admin, sinon calculé de façon déterministe puis figé."""
     ref = db.collection("daily_quizzes").document(day)
     snap = ref.get()
     if snap.exists:
         return list(snap.to_dict()["question_ids"])
-    previous = [
-        d for d in db.collection("daily_quizzes").stream() if d.id < day
-    ]
-    previous.sort(key=lambda d: d.id, reverse=True)
-    history = [list(d.to_dict().get("question_ids", [])) for d in previous[:HISTORY_DAYS]]
-    ids = build_daily_quiz(day, bank.all_questions(db), history)
+    ids = compute_day(db, day)
     try:
-        ref.create({"question_ids": ids, "created_at": now_iso()})
+        ref.create({"question_ids": ids, "created_at": now_iso(), "source": "auto"})
     except AlreadyExists:
         return list(ref.get().to_dict()["question_ids"])
     return ids
@@ -180,6 +193,7 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
             stats = apply_completion(stats, day, attempt["score_total"])
         tx.set(a_ref, attempt)
         tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
+        record_stats(tx, db, day, question_id, score, position, attempt.get("score_total") if completed else None)
         return score, position, completed, attempt.get("score_total"), stats
 
     score, position, completed, total, stats = run(db.transaction())
@@ -193,6 +207,24 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
         "score_total": total,
         "streak": displayed_streak(stats, day),
     }
+
+
+def record_stats(tx, db, day: str, question_id: str, score: int, position: int, day_total: int | None) -> None:
+    """Statistiques agrégées pour le tableau de bord, écrites dans la même transaction."""
+    inc = firestore.Increment
+    daily = {
+        "date": day,
+        "questions": {question_id: {"sum": inc(score), "count": inc(1), "correct": inc(1 if score >= 100 else 0)}},
+    }
+    if position == 0:
+        daily["started"] = inc(1)
+    if day_total is not None:
+        daily["completed"] = inc(1)
+        daily["score_sum"] = inc(day_total)
+        daily["buckets"] = {str(min(9, day_total // 10)): inc(1)}
+    tx.set(db.collection("daily_stats").document(day), daily, merge=True)
+    tx.set(db.collection("question_stats").document(question_id),
+           {"sum": inc(score), "count": inc(1), "correct": inc(1 if score >= 100 else 0)}, merge=True)
 
 
 def day_detail(db, uid: str, day: str) -> dict:
