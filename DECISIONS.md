@@ -91,3 +91,17 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 - **Écran de réponse** : un bandeau de couleur avec le verdict (Bravo, Pas loin, Raté, Temps écoulé) et les points gagnés, puis la bonne réponse en gros, ta réponse en petit, et l'explication. Pour un classement, l'ordre attendu avec ✓ ou ✗ par ligne.
 - **Admin** : « Pas encore posées » (jamais jouées, y compris celles planifiées pour plus tard) et « Déjà posées » (jouées au moins une fois, aujourd'hui compris).
 - **Nouvelles catégories** : Langue française (dictées, orthographe, anagrammes) et Mémoire, rattachées au pilier Mémoire et culture.
+
+## Socle de code (version 4)
+
+- **API en trois couches** : `domain/` (règles pures, testées sans base), `services/` (cas d'usage Firestore), `web/` (routes fines). Les dépendances vont toujours `web → services → domain`. Détails dans `docs/ARCHITECTURE.md`.
+- **Noms des collections centralisés** (`services/collections.py`), erreurs métier (`errors.ApiError`) et dates (`clock.py`) en un seul endroit.
+- **Validation par format de réponse** : une fonction de contrôle par type (`models._ANSWER_CHECKS`) et un `match` dans `scoring.score_answer` : ajouter un type se fait au même endroit, sans chaîne de `if`.
+- **Qualité automatisée** : Ruff (Python), ESLint + Prettier + TypeScript strict (interface), `npm run check` avant chaque commit, CI GitHub (qualité, tests, build, puis parcours Playwright avec les émulateurs).
+- **Planning lisible** : une ligne par question avec l'énoncé complet, la réponse attendue, la catégorie, la difficulté et le format ; une frise de dates (prêt, alerte, vide, joué) pour naviguer ; les alertes affichées directement. La logique du glisser-déposer est isolée dans `admin/planningLogic.ts` et testée.
+
+## Nom : Aiguisé
+
+- Le produit s'appelle **Aiguisé** (mission : « Garder son esprit affûté, vif et précis. »). Le nom affiché vient de `APP_NAME` (`web/src/lib/config.ts` et `api/cervo/__init__.py`), la promesse de `BASELINE` et `MISSION`.
+- Les **identifiants techniques restent `cervo`** (paquet Python `cervo`, projet d'émulateur `demo-cervo-daily`, comptes de test `@cervo.test`) : invisibles pour les joueurs, et les renommer casserait les données locales existantes sans rien apporter. À changer seulement au moment de créer le vrai projet Firebase.
+- Pseudo par défaut des nouveaux joueurs : `Aiguise-XXXXX`.

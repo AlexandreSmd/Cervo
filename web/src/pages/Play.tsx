@@ -1,3 +1,4 @@
+// Déroulé du quiz : mémorisation éventuelle, chrono, réponse, verdict, question suivante.
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -21,7 +22,10 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
     const id = window.setInterval(() => {
       const l = seconds - (Date.now() - start) / 1000;
       setLeft(l);
-      if (l <= 0) { window.clearInterval(id); onDone(); }
+      if (l <= 0) {
+        window.clearInterval(id);
+        onDone();
+      }
     }, 100);
     return () => window.clearInterval(id);
   }, [seconds, onDone]);
@@ -31,10 +35,16 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
       <p className="font-display text-2xl font-extrabold">Mémorise !</p>
       {items.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2">
-          {items.map((it, i) => <span key={i} className="rounded-2xl bg-accent/10 px-4 py-3 font-display text-2xl font-extrabold">{it}</span>)}
+          {items.map((it, i) => (
+            <span key={i} className="rounded-2xl bg-accent/10 px-4 py-3 font-display text-2xl font-extrabold">
+              {it}
+            </span>
+          ))}
         </div>
       )}
-      <div className="h-2 overflow-hidden rounded-full bg-ink/10"><div className="h-full rounded-full bg-accent" style={{ width: `${Math.max(0, left / seconds) * 100}%` }} /></div>
+      <div className="h-2 overflow-hidden rounded-full bg-ink/10">
+        <div className="h-full rounded-full bg-accent" style={{ width: `${Math.max(0, left / seconds) * 100}%` }} />
+      </div>
       <p className="font-display text-4xl font-extrabold tabular-nums">{Math.max(0, Math.ceil(left))}</p>
     </div>
   );
@@ -56,7 +66,10 @@ export function Play() {
   const question = data?.questions[index];
   const needsMemorize = !!question?.memorize && memorized !== index && data?.current?.position !== index;
 
-  useEffect(() => { window.scrollTo({ top: 0 }); setExpired(false); }, [index, feedback]);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    setExpired(false);
+  }, [index, feedback]);
 
   // Démarre le chrono côté serveur dès que la question est visible (après la mémorisation).
   useEffect(() => {
@@ -67,10 +80,17 @@ export function Play() {
       return;
     }
     let cancelled = false;
-    api.startQuestion(data.date, question.id)
-      .then((r) => { if (!cancelled) setStarted({ position: index, at: Date.parse(r.started_at) + (Date.now() - Date.parse(r.server_time)) }); })
-      .catch(() => { if (!cancelled) setStarted({ position: index, at: Date.now() }); });
-    return () => { cancelled = true; };
+    api
+      .startQuestion(data.date, question.id)
+      .then((r) => {
+        if (!cancelled) setStarted({ position: index, at: Date.parse(r.started_at) + (Date.now() - Date.parse(r.server_time)) });
+      })
+      .catch(() => {
+        if (!cancelled) setStarted({ position: index, at: Date.now() });
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [data, question, index, feedback, needsMemorize, started]);
 
   const onExpire = useCallback(() => setExpired(true), []);
@@ -91,7 +111,12 @@ export function Play() {
       const result = await api.answer(data.date, question.id, answer);
       setFeedback(result);
       qc.setQueryData(["today", user?.uid], {
-        ...data, current: null, answers: [...data.answers, result], completed: result.completed, score_total: result.score_total, streak: result.streak,
+        ...data,
+        current: null,
+        answers: [...data.answers, result],
+        completed: result.completed,
+        score_total: result.score_total,
+        streak: result.streak,
       });
     } catch (err) {
       setSubmitError((err as Error).message);
@@ -113,9 +138,19 @@ export function Play() {
   return (
     <div className="space-y-4 pt-2">
       <div className="flex items-center gap-3">
-        <Link to="/" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/5 text-lg" aria-label="Quitter (ta progression est gardée)">×</Link>
-        <div className="flex-1"><Pearls scores={scores} current={feedback ? undefined : index} size="sm" /></div>
-        <span className="w-10 text-right text-sm font-bold" data-testid="progress">{index + 1}/10</span>
+        <Link
+          to="/"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink/5 text-lg"
+          aria-label="Quitter (ta progression est gardée)"
+        >
+          ×
+        </Link>
+        <div className="flex-1">
+          <Pearls scores={scores} current={feedback ? undefined : index} size="sm" />
+        </div>
+        <span className="w-10 text-right text-sm font-bold" data-testid="progress">
+          {index + 1}/10
+        </span>
       </div>
 
       <article className="card space-y-5 p-5" aria-labelledby="question-prompt">
@@ -126,9 +161,12 @@ export function Play() {
           </>
         ) : (
           <>
-            {!feedback && (timerReady
-              ? <Timer startedAt={started!.at} limit={question.time_limit} onExpire={onExpire} paused={submitting} />
-              : <div className="h-7" />)}
+            {!feedback &&
+              (timerReady ? (
+                <Timer startedAt={started!.at} limit={question.time_limit} onExpire={onExpire} paused={submitting} />
+              ) : (
+                <div className="h-7" />
+              ))}
             <QuestionHeader question={hideImages ? { ...question, images: [] } : question} />
             {feedback ? (
               <Feedback question={question} result={feedback} onNext={next} isLast={feedback.completed} />
@@ -137,7 +175,11 @@ export function Play() {
             )}
           </>
         )}
-        {submitError && <p className="text-sm font-semibold text-bad" role="alert">{submitError}</p>}
+        {submitError && (
+          <p className="text-sm font-semibold text-bad" role="alert">
+            {submitError}
+          </p>
+        )}
       </article>
       {index === 0 && !feedback && <p className="text-center text-xs text-muted">🧠 Sans aide · {question.time_limit} s par question</p>}
     </div>

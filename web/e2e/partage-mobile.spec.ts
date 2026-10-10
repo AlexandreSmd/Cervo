@@ -9,7 +9,9 @@ test("sur mobile, le bouton ouvre la feuille de partage (Messenger) avec les 10 
     (window as unknown as { __shared: unknown[] }).__shared = [];
     Object.defineProperty(navigator, "share", {
       configurable: true,
-      value: async (data: unknown) => { (window as unknown as { __shared: unknown[] }).__shared.push(data); },
+      value: async (data: unknown) => {
+        (window as unknown as { __shared: unknown[] }).__shared.push(data);
+      },
     });
   });
   await playFullQuiz(page);

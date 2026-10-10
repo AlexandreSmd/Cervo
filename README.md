@@ -1,6 +1,6 @@
-# Cervo Daily
+# Aiguisé
 
-**Garde ton cervo affûté.** 10 questions par jour, sans aide, un score sur 100 par question et la preuve de ta progression.
+**Garder son esprit affûté, vif et précis.** 10 questions par jour, sans aide, un score sur 100 par question et la preuve de ta progression.
 
 Stack : API Python (FastAPI, uv) · front React (Vite, TypeScript, Tailwind) · Firebase Auth · Firestore · Modal (API en ligne) · Cloudflare (front et proxy).
 En local, Firebase est remplacé par ses **émulateurs** : aucun compte à créer.
@@ -56,65 +56,30 @@ En local, clique sur **« Se connecter (local) »**.
 
 Le bloc « Local » de la barre latérale simule des joueurs (pour voir le tableau de bord rempli), ajoute un historique fictif à ton compte ou remet ton quiz du jour à zéro.
 
-### Structure d'une question
+### Structure
 
-| Élément | Valeurs |
+```
+api/cervo/domain/    Règles métier pures (scoring, quiz du jour, statistiques, modèles)
+api/cervo/services/  Cas d'usage sur Firestore (partie, planning, statistiques…)
+api/cervo/web/       Routes FastAPI (joueur, admin, dev)
+web/src/             Interface React (pages, components, admin, lib)
+content/questions/   Banque de questions (JSON)
+scripts/             Scripts npm (Node) et génération des illustrations
+infra/, modal_app.py Mise en ligne (Cloudflare, Modal)
+docs/                Architecture et captures d'écran
+```
+
+Détails : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Pour contribuer : [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Qualité du code
+
+| Commande | Rôle |
 | --- | --- |
-| Format d'entrée (ce que voit le joueur) | Texte · Photo · 2 photos (repérées A et B) |
-| Format de réponse (ce qu'il répond) | Vrai / Faux · QCM (4 choix) · Nombre (au clavier ou au curseur, score selon l'écart) · Texte libre (accents et majuscules ignorés) · Remettre dans l'ordre (points partiels) · Taille (comparer deux objets) · Dictée (écouter puis écrire, score par mots justes) |
-| Options | Mémoire flash (montrer une liste ou une photo quelques secondes, puis la cacher) · Chrono (15 s par défaut, 20 s pour un classement, 45 s pour une dictée) |
-| Catégorie | Culture générale, Logique, Réflexion, Géographie, Histoire, Sciences, Nature et animaux, Arts et culture, Sport, Estimation, Vrai ou faux, Langue française, Mémoire |
-| Difficulté | 1 Facile · 2 Moyen · 3 Difficile (chaque jour : 2 / 4 / 4) |
+| `npm run lint` | Ruff (Python), ESLint + Prettier + TypeScript (interface) |
+| `npm run format` | Corrige et reformate automatiquement |
+| `npm run check` | Qualité puis tests : à lancer avant chaque commit |
 
-Modèles prêts à l'emploi : Vrai ou faux, QCM, Estimation, Réponse libre, Reconnaître une personne (photo → nom), Reconnaître un lieu (photo → QCM), Estimer sur photo (photo → nombre), Comparer 2 photos (A ou B), Dictée, Comparer des tailles, Remettre dans l'ordre, Curseur / frise, Mémoire flash.
-
-## Outils de développement (local uniquement)
-
-- **Lien magique** : en local, aucun e-mail n'est envoyé. Le lien s'affiche dans le terminal (émulateur Auth) et un bouton « Ouvrir le lien magique » apparaît sur la page de connexion.
-- **Admin** : `/admin`, réservé aux e-mails de `ADMIN_EMAILS` (par défaut `admin@cervo.test`, bouton « Se connecter (local) »).
-
-## Ajouter des questions
-
-1. **Depuis l'admin** (`/admin`) : formulaire avec aperçu, ou import JSON/CSV.
-2. **Dans le code** : ajouter des objets dans `content/questions/*.json`, lancer `npm run questions:check`, puis relancer `npm run start:local` : les nouvelles questions sont ajoutées automatiquement.
-
-Format d'une question :
-
-```json
-{
-  "id": "estimation-001",
-  "type": "numeric",
-  "category": "estimation",
-  "tags": ["japon", "architecture"],
-  "difficulty": 2,
-  "prompt": "Quelle est la hauteur de la Tokyo Skytree, en mètres ?",
-  "images": [
-    { "url": "/questions/monument-skytree.svg", "alt": "Silhouette de la tour", "credit": "Illustration Cervo Daily" }
-  ],
-  "correct_answer": 634,
-  "numeric_config": { "scale": "log", "factor": 3, "unit": "m" },
-  "explanation": "La Tokyo Skytree mesure 634 m.",
-  "source_url": "https://fr.wikipedia.org/wiki/Tokyo_Skytree",
-  "status": "published"
-}
-```
-
-`images` : 0, 1 ou 2 photos. Types : `binary` (true/false), `mcq` (4 `choices`, `correct_answer` = texte du bon choix), `numeric` (`numeric_config` : `linear` + `tolerance`, ou `log` + `factor`, `exact_margin` optionnel), `short_text` (`accepted_aliases`).
-Catégories : `culture`, `logique`, `reflexion`, `geographie`, `histoire`, `sciences`, `nature`, `arts`, `sport`, `estimation`, `vrai_faux`.
-
-Les illustrations sont générées par `uv run --project api python scripts/generate_illustrations.py`.
-
-## Structure
-
-```
-api/          API FastAPI (cervo/scoring.py, daily.py, stats.py : modules purs testés)
-web/          Front React (src/pages, src/components, src/lib, e2e/)
-content/      Banque de questions (JSON)
-scripts/      Scripts npm (Node) et génération des illustrations
-infra/        Worker Cloudflare (mise en ligne)
-modal_app.py  Déploiement de l'API sur Modal
-docs/screenshots/  Captures d'écran (390 px et 1280 px)
-```
+La CI GitHub lance qualité, tests, build et parcours de bout en bout à chaque push.
 
 ## Mise en ligne (après le MVP)
 

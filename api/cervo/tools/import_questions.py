@@ -10,9 +10,9 @@ import json
 import sys
 from pathlib import Path
 
+from ..clock import now_iso
 from ..firebase import db
-from ..questions import check_bank, invalidate_cache, to_doc
-from ..service import now_iso
+from ..services.bank import check_bank, invalidate_cache, to_doc
 
 
 def main() -> None:

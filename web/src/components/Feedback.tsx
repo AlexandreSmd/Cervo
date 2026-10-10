@@ -1,3 +1,4 @@
+// Écran après une réponse : verdict coloré, points, bonne réponse, explication.
 import { useState } from "react";
 import { api } from "../lib/api";
 import { formatAnswer } from "../lib/format";
@@ -28,7 +29,9 @@ function OrderReveal({ correct, given }: { correct: string[]; given: Answer | nu
           <li key={item} className="flex items-center gap-3 rounded-xl bg-ink/5 px-3 py-2 font-semibold">
             <span className="w-5 text-center text-sm text-muted">{i + 1}</span>
             <span className="flex-1">{item}</span>
-            <span className={ok ? "text-good" : "text-bad"} aria-label={ok ? "bien placé" : "mal placé"}>{ok ? "✓" : "✗"}</span>
+            <span className={ok ? "text-good" : "text-bad"} aria-label={ok ? "bien placé" : "mal placé"}>
+              {ok ? "✓" : "✗"}
+            </span>
           </li>
         );
       })}
@@ -37,7 +40,17 @@ function OrderReveal({ correct, given }: { correct: string[]; given: Answer | nu
 }
 
 /** Résultat d'une question : verdict + points, bonne réponse, ta réponse, explication. */
-export function Feedback({ question, result, onNext, isLast }: { question: PublicQuestion; result: SubmitResult; onNext: () => void; isLast: boolean }) {
+export function Feedback({
+  question,
+  result,
+  onNext,
+  isLast,
+}: {
+  question: PublicQuestion;
+  result: SubmitResult;
+  onNext: () => void;
+  isLast: boolean;
+}) {
   const [reporting, setReporting] = useState(false);
   const [reason, setReason] = useState("");
   const [reported, setReported] = useState(false);
@@ -54,10 +67,19 @@ export function Feedback({ question, result, onNext, isLast }: { question: Publi
   return (
     <div className="animate-rise space-y-4" data-testid="feedback">
       <div className={`flex items-center gap-4 rounded-3xl ${v.bg} p-5 text-white`} role="status" aria-live="polite">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 text-2xl font-extrabold" aria-hidden="true">{v.icon}</span>
-        <span className="flex-1 font-display text-2xl font-extrabold" data-testid="verdict">{v.title}</span>
+        <span
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 text-2xl font-extrabold"
+          aria-hidden="true"
+        >
+          {v.icon}
+        </span>
+        <span className="flex-1 font-display text-2xl font-extrabold" data-testid="verdict">
+          {v.title}
+        </span>
         <span className="text-right">
-          <span className="block font-display text-4xl font-extrabold leading-none" data-testid="score-value">+{result.score}</span>
+          <span className="block font-display text-4xl font-extrabold leading-none" data-testid="score-value">
+            +{result.score}
+          </span>
           <span className="text-xs font-semibold opacity-80">points</span>
         </span>
       </div>
@@ -68,29 +90,51 @@ export function Feedback({ question, result, onNext, isLast }: { question: Publi
         !perfect && (
           <div className="space-y-1 px-1">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">Bonne réponse</p>
-            <p className="font-display text-2xl font-extrabold leading-tight" data-testid="correct-answer">{formatAnswer(result.correct_answer, question.type, question.unit)}</p>
+            <p className="font-display text-2xl font-extrabold leading-tight" data-testid="correct-answer">
+              {formatAnswer(result.correct_answer, question.type, question.unit)}
+            </p>
             {result.user_answer !== null && (
-              <p className="pt-1 text-sm text-muted">Toi : <span className="font-semibold">{formatAnswer(result.user_answer, question.type, question.unit)}</span></p>
+              <p className="pt-1 text-sm text-muted">
+                Toi : <span className="font-semibold">{formatAnswer(result.user_answer, question.type, question.unit)}</span>
+              </p>
             )}
           </div>
         )
       )}
 
       {result.explanation && (
-        <p className="rounded-2xl bg-ink/5 p-4 text-[15px] leading-relaxed"><span aria-hidden="true">💡 </span>{result.explanation}</p>
+        <p className="rounded-2xl bg-ink/5 p-4 text-[15px] leading-relaxed">
+          <span aria-hidden="true">💡 </span>
+          {result.explanation}
+        </p>
       )}
 
-      <button className="btn-dark w-full text-lg" onClick={onNext} autoFocus data-testid="next">{isLast ? "Voir mon score" : "Suivant"}</button>
+      <button className="btn-dark w-full text-lg" onClick={onNext} autoFocus data-testid="next">
+        {isLast ? "Voir mon score" : "Suivant"}
+      </button>
       <div className="text-center">
         {reported ? (
           <p className="text-xs text-muted">Merci, c'est noté.</p>
         ) : reporting ? (
           <form onSubmit={sendReport} className="flex gap-2">
-            <input className="input py-2 text-sm" aria-label="Qu'est-ce qui ne va pas ?" placeholder="Qu'est-ce qui ne va pas ?" value={reason} onChange={(e) => setReason(e.target.value)} minLength={3} maxLength={500} required />
-            <button type="submit" className="btn-ghost btn-sm">Envoyer</button>
+            <input
+              className="input py-2 text-sm"
+              aria-label="Qu'est-ce qui ne va pas ?"
+              placeholder="Qu'est-ce qui ne va pas ?"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              minLength={3}
+              maxLength={500}
+              required
+            />
+            <button type="submit" className="btn-ghost btn-sm">
+              Envoyer
+            </button>
           </form>
         ) : (
-          <button className="text-xs text-muted hover:text-ink" onClick={() => setReporting(true)}>⚑ Signaler une erreur</button>
+          <button className="text-xs text-muted hover:text-ink" onClick={() => setReporting(true)}>
+            ⚑ Signaler une erreur
+          </button>
         )}
       </div>
     </div>

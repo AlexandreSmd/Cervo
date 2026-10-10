@@ -1,3 +1,4 @@
+// Routes : l'interface joueur (onglets Jouer / Profil) et l'espace fondateur (/admin).
 import { Outlet, Route, Routes } from "react-router-dom";
 import { AdminLayout } from "./admin/AdminLayout";
 import { Dashboard } from "./admin/Dashboard";
@@ -12,7 +13,11 @@ import { PastDay, Results } from "./pages/Results";
 import { NotFound, Privacy } from "./pages/Static";
 
 function PlayerShell() {
-  return <Layout><Outlet /></Layout>;
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
 }
 
 export function App() {

@@ -47,9 +47,7 @@ def get_settings() -> Settings:
     return Settings(
         app_env=os.environ.get("APP_ENV", "production"),
         project_id=os.environ.get("FIREBASE_PROJECT_ID", DEFAULTS["FIREBASE_PROJECT_ID"]),
-        admin_emails=frozenset(
-            e.strip().lower() for e in os.environ.get("ADMIN_EMAILS", "").split(",") if e.strip()
-        ),
+        admin_emails=frozenset(e.strip().lower() for e in os.environ.get("ADMIN_EMAILS", "").split(",") if e.strip()),
         timezone=os.environ.get("TIMEZONE", "Europe/Paris"),
         cors_origins=[o for o in os.environ.get("CORS_ORIGINS", "").split(",") if o],
     )

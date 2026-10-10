@@ -1,3 +1,4 @@
+// Partage du résultat : feuille de partage du téléphone (Messenger…) ou copie.
 import { useEffect, useState } from "react";
 import { APP_NAME, PUBLIC_URL } from "../lib/config";
 import { MESSENGER_APP_URL, buildShareMessage, isMobileDevice, shareMessage, type ShareOutcome } from "../lib/share";
@@ -33,24 +34,33 @@ export function ShareCard({ date, total, scores, streak }: Props) {
 
       <div aria-live="polite" className="text-center text-sm">
         {outcome === "shared" && <p className="text-good">Envoyé ! Merci de faire tourner {APP_NAME}.</p>}
-        {outcome === "copied" && (
-          mobile ? (
+        {outcome === "copied" &&
+          (mobile ? (
             <div className="space-y-2 rounded-2xl bg-[#0866FF]/10 p-3">
               <p>Message copié. Ouvre Messenger et colle-le dans une conversation.</p>
-              <a href={MESSENGER_APP_URL} className="btn-ghost w-full py-2">Ouvrir Messenger</a>
+              <a href={MESSENGER_APP_URL} className="btn-ghost w-full py-2">
+                Ouvrir Messenger
+              </a>
             </div>
           ) : (
-            <p className="text-muted" data-testid="share-copied">Copié ! Colle-le dans Messenger, WhatsApp ou un SMS.</p>
-          )
-        )}
+            <p className="text-muted" data-testid="share-copied">
+              Copié ! Colle-le dans Messenger, WhatsApp ou un SMS.
+            </p>
+          ))}
         {outcome === "failed" && <p className="text-bad">Impossible de copier automatiquement : sélectionne le message ci-dessous.</p>}
       </div>
 
-      <button className="w-full text-center text-xs text-muted hover:text-ink" onClick={() => setShowPreview(!showPreview)} aria-expanded={showPreview}>
+      <button
+        className="w-full text-center text-xs text-muted hover:text-ink"
+        onClick={() => setShowPreview(!showPreview)}
+        aria-expanded={showPreview}
+      >
         {showPreview || outcome === "failed" ? "Masquer l'aperçu" : "Aperçu du message"}
       </button>
       {(showPreview || outcome === "failed") && (
-        <pre className="whitespace-pre-wrap rounded-2xl bg-ink/5 p-4 font-sans text-sm" data-testid="share-preview">{message}</pre>
+        <pre className="whitespace-pre-wrap rounded-2xl bg-ink/5 p-4 font-sans text-sm" data-testid="share-preview">
+          {message}
+        </pre>
       )}
     </div>
   );

@@ -75,7 +75,7 @@ try {
   await waitFor("http://localhost:5173", 60000, "Le front");
   const lan = Object.values(networkInterfaces()).flat().find((i) => i && i.family === "IPv4" && !i.internal && /^(192\.168|10\.|172\.(1[6-9]|2\d|3[01]))/.test(i.address));
   console.log(`
-${c("bold", "  Cervo Daily est prêt")}  →  ${c("green", "http://localhost:5173")}${lan ? `
+${c("bold", "  Aiguisé est prêt")}  →  ${c("green", "http://localhost:5173")}${lan ? `
   ${c("dim", "Sur ton téléphone (même Wi-Fi) :")} ${c("green", `http://${lan.address}:5173`)}` : ""}
   ${c("dim", "API : http://localhost:8000/api/docs · Émulateurs : http://127.0.0.1:4000 · Ctrl+C pour arrêter")}
 `);

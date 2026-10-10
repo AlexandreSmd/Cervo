@@ -1,3 +1,4 @@
+// Session Firebase : invité automatique dès l'arrivée, puis compte par lien magique.
 import { onAuthStateChanged, signInAnonymously, type User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { auth } from "./firebase";

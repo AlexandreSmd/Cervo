@@ -10,11 +10,13 @@ import re
 import unicodedata
 from typing import Any
 
+# Échelle log : 0 point quand on se trompe d'un facteur 3 (estimations) ou 2 (tailles).
 DEFAULT_LOG_FACTOR = 3.0
+SIZE_LOG_FACTOR = 2.0
 
 
 def round_half_up(x: float) -> int:
-    return int(math.floor(x + 0.5))
+    return math.floor(x + 0.5)
 
 
 def clamp_score(x: float) -> int:
@@ -43,6 +45,7 @@ def parse_number(value: Any) -> float | None:
 
 
 def score_numeric(answer: Any, truth: float, config: dict | None) -> int:
+    """Estimation : score selon l'écart, linéaire (± tolérance) ou en proportion (facteur)."""
     config = config or {}
     value = parse_number(answer)
     if value is None:
@@ -68,10 +71,12 @@ def score_numeric(answer: Any, truth: float, config: dict | None) -> int:
 
 
 def same_choice(a: Any, b: Any) -> bool:
+    """Égalité de deux libellés, sans tenir compte de la casse ni des espaces autour."""
     return unicodedata.normalize("NFC", str(a)).strip().casefold() == unicodedata.normalize("NFC", str(b)).strip().casefold()
 
 
 def normalize_text(value: Any) -> str:
+    """Forme canonique pour comparer des textes : minuscules, sans accents ni ponctuation."""
     text = unicodedata.normalize("NFKD", str(value)).lower()
     text = "".join(c for c in text if not unicodedata.combining(c))
     text = text.replace("œ", "oe").replace("æ", "ae")
@@ -79,6 +84,7 @@ def normalize_text(value: Any) -> str:
 
 
 def score_short_text(answer: Any, expected: Any, aliases: list | None = None) -> int:
+    """Réponse courte : nombre comparé exactement, texte comparé sans casse ni accents (+ alias)."""
     if answer is None:
         return 0
     if isinstance(expected, (int, float)) and not isinstance(expected, bool):
@@ -145,40 +151,36 @@ def score_order(answer: Any, expected: list) -> int:
 
 
 def score_answer(question: dict, answer: Any) -> int:
-    """Score d'une réponse pour une question (dict au format de la banque)."""
-    qtype = question["type"]
+    """Score (0 à 100) d'une réponse pour une question au format de la banque.
+
+    Pour ajouter un format de réponse : une fonction `score_<type>` ici, un cas ci-dessous,
+    un contrôle dans `models._ANSWER_CHECKS` (voir docs/ARCHITECTURE.md).
+    """
+    if answer is None:  # temps écoulé sans réponse
+        return 0
     correct = question["correct_answer"]
-    if answer is None:
-        return 0  # temps écoulé sans réponse
-    if qtype == "dictation":
-        return score_dictation(answer, correct)
-    if qtype == "order":
-        return score_order(answer, correct)
-    if qtype == "size":
-        cfg = question.get("numeric_config") or {}
-        return score_numeric(answer, correct, {"scale": "log", "factor": cfg.get("factor") or 2})
-    if qtype == "binary":
-        given = to_bool(answer)
-        return 100 if given is not None and given == bool(correct) else 0
-    if qtype == "mcq":
-        # Comparaison exacte (accents compris) : certains QCM portent justement sur l'orthographe.
-        return 100 if answer is not None and same_choice(answer, correct) else 0
-    if qtype == "numeric":
-        return score_numeric(answer, correct, question.get("numeric_config"))
-    if qtype == "short_text":
-        return score_short_text(answer, correct, question.get("accepted_aliases"))
-    raise ValueError(f"Type de question inconnu : {qtype}")
+    match question["type"]:
+        case "binary":
+            given = to_bool(answer)
+            return 100 if given is not None and given == bool(correct) else 0
+        case "mcq":
+            # Comparaison exacte, accents compris : certains QCM portent sur l'orthographe.
+            return 100 if same_choice(answer, correct) else 0
+        case "numeric":
+            return score_numeric(answer, correct, question.get("numeric_config"))
+        case "short_text":
+            return score_short_text(answer, correct, question.get("accepted_aliases"))
+        case "order":
+            return score_order(answer, correct)
+        case "size":
+            factor = (question.get("numeric_config") or {}).get("factor") or SIZE_LOG_FACTOR
+            return score_numeric(answer, correct, {"scale": "log", "factor": factor})
+        case "dictation":
+            return score_dictation(answer, correct)
+    raise ValueError(f"Type de question inconnu : {question['type']}")
 
 
 def day_score(scores: list[int]) -> int:
     if not scores:
         return 0
     return round_half_up(sum(scores) / len(scores))
-
-
-def score_color(score: int) -> str:
-    if score >= 80:
-        return "green"
-    if score >= 40:
-        return "orange"
-    return "red"

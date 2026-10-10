@@ -26,29 +26,89 @@
     color-scheme: dark;
   }
 }
-html { -webkit-text-size-adjust: 100%; }
-body { @apply bg-bg font-sans text-ink antialiased; min-height: 100vh; }
-h1, h2, h3 { @apply font-display; letter-spacing: -0.03em; }
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  @apply bg-bg font-sans text-ink antialiased;
+  min-height: 100vh;
+}
+h1,
+h2,
+h3 {
+  @apply font-display;
+  letter-spacing: -0.03em;
+}
 
 @layer components {
-  .card { @apply rounded-[28px] bg-card; }
-  .btn { @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full px-6 font-semibold transition
-    focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40; }
-  .btn-primary { @apply btn bg-accent text-white; }
-  .btn-dark { @apply btn bg-ink text-bg; }
-  .btn-ghost { @apply btn bg-ink/5 text-ink hover:bg-ink/10; }
-  .btn-sm { @apply min-h-[36px] px-4 text-sm; }
-  .input { @apply w-full rounded-2xl border-0 bg-ink/5 px-4 py-3.5 text-lg text-ink placeholder:text-muted/70
-    focus:outline-none focus:ring-2 focus:ring-accent; }
-  .label { @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted; }
-  .chip { @apply inline-flex items-center gap-1 rounded-full bg-ink/5 px-3 py-1 text-xs font-semibold; }
-  .link { @apply font-semibold text-accent underline-offset-4 hover:underline; }
+  .card {
+    @apply rounded-[28px] bg-card;
+  }
+  .btn {
+    @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full px-6 font-semibold transition
+    focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-white;
+  }
+  .btn-dark {
+    @apply btn bg-ink text-bg;
+  }
+  .btn-ghost {
+    @apply btn bg-ink/5 text-ink hover:bg-ink/10;
+  }
+  .btn-sm {
+    @apply min-h-[36px] px-4 text-sm;
+  }
+  .input {
+    @apply w-full rounded-2xl border-0 bg-ink/5 px-4 py-3.5 text-lg text-ink placeholder:text-muted/70
+    focus:outline-none focus:ring-2 focus:ring-accent;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-ink/5 px-3 py-1 text-xs font-semibold;
+  }
+  .link {
+    @apply font-semibold text-accent underline-offset-4 hover:underline;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
-@keyframes pop { 0% { transform: scale(0.6); opacity: 0 } 70% { transform: scale(1.12) } 100% { transform: scale(1); opacity: 1 } }
-.animate-pop { animation: pop 0.35s ease-out both; }
-@keyframes rise { from { transform: translateY(8px); opacity: 0 } to { transform: none; opacity: 1 } }
-.animate-rise { animation: rise 0.25s ease-out both; }
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-pop {
+  animation: pop 0.35s ease-out both;
+}
+@keyframes rise {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.animate-rise {
+  animation: rise 0.25s ease-out both;
+}

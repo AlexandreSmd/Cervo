@@ -9,9 +9,9 @@ from __future__ import annotations
 import argparse
 import sys
 
+from ..clock import now_iso
 from ..firebase import db
-from ..questions import check_bank, invalidate_cache, load_files, to_doc
-from ..service import now_iso
+from ..services.bank import check_bank, invalidate_cache, load_files, to_doc
 
 
 def seed(force: bool = False) -> int:

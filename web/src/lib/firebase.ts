@@ -1,3 +1,4 @@
+// Firebase côté navigateur : uniquement l'authentification (émulateur en local).
 import { initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { AUTH_EMULATOR_URL, FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, USE_EMULATOR } from "./config";

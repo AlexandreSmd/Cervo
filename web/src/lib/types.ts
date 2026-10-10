@@ -1,3 +1,4 @@
+// Contrats de l'API (miroir des réponses de api/cervo/web/*).
 export type QuestionType = "binary" | "mcq" | "numeric" | "short_text" | "order" | "size" | "dictation";
 export type Answer = string | number | boolean | string[];
 
@@ -187,6 +188,9 @@ export interface QuestionSummary {
   input_format: string;
   input_label: string;
   answer_label: string;
+  correct_answer?: Answer;
+  unit?: string | null;
+  memorize?: boolean;
   missing?: boolean;
 }
 

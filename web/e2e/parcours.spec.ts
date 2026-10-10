@@ -82,7 +82,8 @@ test("espace fondateur : tableau de bord, planning par glisser-déposer, nouvell
   // Modèle « Remettre dans l'ordre »
   await page.getByTestId("new-question").click();
   await page.getByTestId("template-ordre").click();
-  for (const [i, v] of ["Antiquité", "Moyen Âge", "Renaissance", "Époque moderne"].entries()) await page.getByLabel(`Élément ${i + 1}`).fill(v);
+  for (const [i, v] of ["Antiquité", "Moyen Âge", "Renaissance", "Époque moderne"].entries())
+    await page.getByLabel(`Élément ${i + 1}`).fill(v);
   await page.locator("#q-expl").fill("Les grandes périodes de l'histoire, dans l'ordre.");
   await page.getByTestId("admin-save").click();
   await expect(page.getByTestId("admin-created")).toBeVisible();

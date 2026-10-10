@@ -1,3 +1,4 @@
+// Composants d'interface de l'espace fondateur : KPI, panneaux, sélecteurs, tiroir latéral.
 import { useEffect, type ReactNode } from "react";
 import { CATEGORY_COLOR } from "./meta";
 
@@ -11,7 +12,17 @@ export function Kpi({ label, value, hint, accent }: { label: string; value: Reac
   );
 }
 
-export function Panel({ title, action, children, className = "" }: { title?: string; action?: ReactNode; children: ReactNode; className?: string }) {
+export function Panel({
+  title,
+  action,
+  children,
+  className = "",
+}: {
+  title?: string;
+  action?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <section className={`rounded-3xl bg-card p-5 ${className}`}>
       {(title || action) && (
@@ -25,12 +36,28 @@ export function Panel({ title, action, children, className = "" }: { title?: str
   );
 }
 
-export function Segmented<T extends string | number>({ value, options, onChange, label }: { value: T; options: [T, string][]; onChange: (v: T) => void; label: string }) {
+export function Segmented<T extends string | number>({
+  value,
+  options,
+  onChange,
+  label,
+}: {
+  value: T;
+  options: [T, string][];
+  onChange: (v: T) => void;
+  label: string;
+}) {
   return (
     <div className="flex gap-1 rounded-full bg-ink/5 p-1" role="radiogroup" aria-label={label}>
       {options.map(([v, text]) => (
-        <button key={String(v)} type="button" role="radio" aria-checked={value === v} onClick={() => onChange(v)}
-          className={`flex-1 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition ${value === v ? "bg-card shadow-sm" : "text-muted hover:text-ink"}`}>
+        <button
+          key={String(v)}
+          type="button"
+          role="radio"
+          aria-checked={value === v}
+          onClick={() => onChange(v)}
+          className={`flex-1 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition ${value === v ? "bg-card shadow-sm" : "text-muted hover:text-ink"}`}
+        >
           {text}
         </button>
       ))}
@@ -39,13 +66,21 @@ export function Segmented<T extends string | number>({ value, options, onChange,
 }
 
 export function CategoryDot({ category, className = "h-2.5 w-2.5" }: { category: string; className?: string }) {
-  return <span className={`inline-block shrink-0 rounded-full ${className}`} style={{ backgroundColor: CATEGORY_COLOR[category] ?? "#888" }} aria-hidden="true" />;
+  return (
+    <span
+      className={`inline-block shrink-0 rounded-full ${className}`}
+      style={{ backgroundColor: CATEGORY_COLOR[category] ?? "#888" }}
+      aria-hidden="true"
+    />
+  );
 }
 
 export function DiffBars({ level }: { level: number }) {
   return (
     <span className="inline-flex gap-0.5" aria-label={["", "Facile", "Moyen", "Difficile"][level]}>
-      {[1, 2, 3].map((i) => <span key={i} className={`h-1.5 w-2.5 rounded-full ${i <= level ? "bg-ink" : "bg-ink/15"}`} />)}
+      {[1, 2, 3].map((i) => (
+        <span key={i} className={`h-1.5 w-2.5 rounded-full ${i <= level ? "bg-ink" : "bg-ink/15"}`} />
+      ))}
     </span>
   );
 }
@@ -55,14 +90,28 @@ export function Rate({ value }: { value: number | null }) {
   const color = value >= 70 ? "#1FA971" : value >= 40 ? "#F2A33A" : "#E5484D";
   return (
     <span className="inline-flex items-center gap-2">
-      <span className="h-1.5 w-12 overflow-hidden rounded-full bg-ink/10"><span className="block h-full rounded-full" style={{ width: `${value}%`, backgroundColor: color }} /></span>
+      <span className="h-1.5 w-12 overflow-hidden rounded-full bg-ink/10">
+        <span className="block h-full rounded-full" style={{ width: `${value}%`, backgroundColor: color }} />
+      </span>
       <span className="w-9 text-right text-sm font-semibold tabular-nums">{value}%</span>
     </span>
   );
 }
 
 /** Panneau latéral (droite) pour éditer ou consulter. */
-export function Drawer({ open, onClose, title, children, wide = false }: { open: boolean; onClose: () => void; title: string; children: ReactNode; wide?: boolean }) {
+export function Drawer({
+  open,
+  onClose,
+  title,
+  children,
+  wide = false,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+  wide?: boolean;
+}) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -76,7 +125,9 @@ export function Drawer({ open, onClose, title, children, wide = false }: { open:
       <div className={`relative flex h-full w-full flex-col bg-bg shadow-2xl ${wide ? "max-w-5xl" : "max-w-lg"}`}>
         <div className="flex items-center justify-between border-b border-line bg-card px-6 py-4">
           <h2 className="text-xl font-bold">{title}</h2>
-          <button onClick={onClose} className="flex h-9 w-9 items-center justify-center rounded-full bg-ink/5 text-lg" aria-label="Fermer">×</button>
+          <button onClick={onClose} className="flex h-9 w-9 items-center justify-center rounded-full bg-ink/5 text-lg" aria-label="Fermer">
+            ×
+          </button>
         </div>
         <div className="flex-1 overflow-y-auto p-6">{children}</div>
       </div>

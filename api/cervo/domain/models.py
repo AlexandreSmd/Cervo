@@ -23,7 +23,7 @@ class NumericConfig(BaseModel):
     step: float | None = Field(default=None, gt=0)
 
     @model_validator(mode="after")
-    def slider_bounds(self) -> "NumericConfig":
+    def slider_bounds(self) -> NumericConfig:
         if self.input == "slider" and (self.min is None or self.max is None or self.min >= self.max):
             raise ValueError("un curseur attend min < max")
         return self
@@ -39,6 +39,7 @@ class SizeConfig(BaseModel):
 
     La bonne réponse est le rapport taille(cible) / taille(référence).
     """
+
     reference: SizeObject
     target: SizeObject
     min: float = Field(default=0.1, gt=0)
@@ -47,6 +48,7 @@ class SizeConfig(BaseModel):
 
 class MemorizeConfig(BaseModel):
     """Phase de mémorisation : on montre, on cache, puis on pose la question."""
+
     items: list[str] = Field(default_factory=list, max_length=12)
     seconds: int = Field(default=5, ge=2, le=15)
     hide_images: bool = False
@@ -83,7 +85,11 @@ class Question(BaseModel):
         """Ancien format (image_url, image_alt, image_credit) → images[0]."""
         if isinstance(data, dict) and data.get("image_url"):
             data = dict(data)
-            image = {"url": data.pop("image_url"), "alt": data.pop("image_alt", None) or "Illustration", "credit": data.pop("image_credit", None)}
+            image = {
+                "url": data.pop("image_url"),
+                "alt": data.pop("image_alt", None) or "Illustration",
+                "credit": data.pop("image_credit", None),
+            }
             data["images"] = [image, *(data.get("images") or [])]
         elif isinstance(data, dict):
             data = {k: v for k, v in data.items() if k not in ("image_url", "image_alt", "image_credit")}
@@ -101,47 +107,85 @@ class Question(BaseModel):
         return v
 
     @model_validator(mode="after")
-    def coherent_answer(self) -> "Question":
-        if self.type == "binary" and not isinstance(self.correct_answer, bool):
-            raise ValueError("une question vrai/faux attend true ou false")
-        if self.type == "mcq":
-            if not self.choices or len(self.choices) != 4:
-                raise ValueError("un QCM attend exactement 4 choix")
-            if any(same_choice(a, b) for i, a in enumerate(self.choices) for b in self.choices[i + 1:]):
-                raise ValueError("les choix du QCM doivent être différents")
-            if not any(same_choice(self.correct_answer, c) for c in self.choices):
-                raise ValueError("la bonne réponse doit faire partie des choix")
-        if self.type == "numeric":
-            if isinstance(self.correct_answer, bool) or not isinstance(self.correct_answer, (int, float)):
-                raise ValueError("une question numérique attend un nombre")
-            if self.numeric_config is None:
-                raise ValueError("une question numérique attend numeric_config")
-            if self.numeric_config.scale == "log" and self.correct_answer <= 0:
-                raise ValueError("l'échelle log attend une réponse strictement positive")
-        if self.type == "order":
-            items = self.correct_answer
-            if not isinstance(items, list) or not 3 <= len(items) <= 6 or not all(isinstance(i, str) and i.strip() for i in items):
-                raise ValueError("un classement attend 3 à 6 éléments, dans le bon ordre")
-            if len({normalize_text(i) for i in items}) != len(items):
-                raise ValueError("les éléments à classer doivent être différents")
-        if self.type == "size":
-            if self.size_config is None:
-                raise ValueError("une question de taille attend size_config (référence et cible)")
-            if isinstance(self.correct_answer, bool) or not isinstance(self.correct_answer, (int, float)) or self.correct_answer <= 0:
-                raise ValueError("une question de taille attend un rapport positif")
-            if not self.size_config.min < self.correct_answer < self.size_config.max:
-                raise ValueError("le rapport doit être compris entre min et max du curseur")
-        if self.type == "dictation":
-            if not isinstance(self.correct_answer, str) or len(self.correct_answer.split()) < 3:
-                raise ValueError("une dictée attend un texte d'au moins 3 mots")
+    def coherent_answer(self) -> Question:
+        """La bonne réponse doit avoir la forme attendue par le format de réponse."""
+        _ANSWER_CHECKS[self.type](self)
         if self.memorize and not self.memorize.items and not (self.memorize.hide_images and self.images):
             raise ValueError("la mémorisation attend des éléments à montrer ou des photos à cacher")
-        if self.type == "short_text":
-            if isinstance(self.correct_answer, bool) or not isinstance(self.correct_answer, (str, int, float)):
-                raise ValueError("une réponse courte attend un texte ou un nombre")
-            if isinstance(self.correct_answer, str) and not normalize_text(self.correct_answer):
-                raise ValueError("la réponse attendue est vide")
         return self
+
+
+# --- Vérifications par format de réponse ---------------------------------------------
+
+
+def _is_number(value: Any) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _check_binary(q: Question) -> None:
+    if not isinstance(q.correct_answer, bool):
+        raise ValueError("une question vrai/faux attend true ou false")
+
+
+def _check_mcq(q: Question) -> None:
+    if not q.choices or len(q.choices) != 4:
+        raise ValueError("un QCM attend exactement 4 choix")
+    if any(same_choice(a, b) for i, a in enumerate(q.choices) for b in q.choices[i + 1 :]):
+        raise ValueError("les choix du QCM doivent être différents")
+    if not any(same_choice(q.correct_answer, c) for c in q.choices):
+        raise ValueError("la bonne réponse doit faire partie des choix")
+
+
+def _check_numeric(q: Question) -> None:
+    if not _is_number(q.correct_answer):
+        raise ValueError("une question numérique attend un nombre")
+    if q.numeric_config is None:
+        raise ValueError("une question numérique attend numeric_config")
+    if q.numeric_config.scale == "log" and q.correct_answer <= 0:
+        raise ValueError("l'échelle log attend une réponse strictement positive")
+
+
+def _check_short_text(q: Question) -> None:
+    if not (_is_number(q.correct_answer) or isinstance(q.correct_answer, str)):
+        raise ValueError("une réponse courte attend un texte ou un nombre")
+    if isinstance(q.correct_answer, str) and not normalize_text(q.correct_answer):
+        raise ValueError("la réponse attendue est vide")
+
+
+def _check_order(q: Question) -> None:
+    items = q.correct_answer
+    if not isinstance(items, list) or not 3 <= len(items) <= 6 or not all(isinstance(i, str) and i.strip() for i in items):
+        raise ValueError("un classement attend 3 à 6 éléments, dans le bon ordre")
+    if len({normalize_text(i) for i in items}) != len(items):
+        raise ValueError("les éléments à classer doivent être différents")
+
+
+def _check_size(q: Question) -> None:
+    if q.size_config is None:
+        raise ValueError("une question de taille attend size_config (référence et cible)")
+    if not _is_number(q.correct_answer) or q.correct_answer <= 0:
+        raise ValueError("une question de taille attend un rapport positif")
+    if not q.size_config.min < q.correct_answer < q.size_config.max:
+        raise ValueError("le rapport doit être compris entre min et max du curseur")
+
+
+def _check_dictation(q: Question) -> None:
+    if not isinstance(q.correct_answer, str) or len(q.correct_answer.split()) < 3:
+        raise ValueError("une dictée attend un texte d'au moins 3 mots")
+
+
+_ANSWER_CHECKS = {
+    "binary": _check_binary,
+    "mcq": _check_mcq,
+    "numeric": _check_numeric,
+    "short_text": _check_short_text,
+    "order": _check_order,
+    "size": _check_size,
+    "dictation": _check_dictation,
+}
+
+
+# --- Requêtes de l'API ------------------------------------------------------------
 
 
 class AnswerIn(BaseModel):

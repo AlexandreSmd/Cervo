@@ -1,3 +1,4 @@
+// Tableau de bord : joueurs, scores, réussite par question, répartition, palmarès.
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,27 +8,44 @@ import type { DayStats, Overview } from "../lib/types";
 import { CategoryDot, Kpi, Panel, Rate, shortDate } from "./ui";
 
 function ActivityChart({ series, selected, onSelect }: { series: Overview["series"]; selected: string; onSelect: (d: string) => void }) {
-  const w = 900, h = 220, pad = 28;
+  const w = 900,
+    h = 220,
+    pad = 28;
   const max = Math.max(10, ...series.map((s) => s.players));
   const bw = (w - pad * 2) / series.length;
   const y = (v: number) => h - pad - (v / max) * (h - pad * 2);
   const ys = (v: number) => h - pad - (v / 100) * (h - pad * 2);
-  const line = series.map((s, i) => (s.average === null ? null : `${pad + i * bw + bw / 2},${ys(s.average)}`)).filter(Boolean).join(" ");
+  const line = series
+    .map((s, i) => (s.average === null ? null : `${pad + i * bw + bw / 2},${ys(s.average)}`))
+    .filter(Boolean)
+    .join(" ");
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="h-auto w-full" role="img" aria-label="Joueurs et score moyen sur 30 jours">
       {series.map((s, i) => (
         <g key={s.date} onClick={() => onSelect(s.date)} className="cursor-pointer">
           <rect x={pad + i * bw + 3} y={pad} width={bw - 6} height={h - pad * 2} fill="transparent" />
-          <rect x={pad + i * bw + 3} y={y(s.players)} width={bw - 6} height={Math.max(0, h - pad - y(s.players))} rx="5"
-            fill={s.date === selected ? "rgb(var(--accent))" : "rgb(var(--ink) / 0.12)"}>
+          <rect
+            x={pad + i * bw + 3}
+            y={y(s.players)}
+            width={bw - 6}
+            height={Math.max(0, h - pad - y(s.players))}
+            rx="5"
+            fill={s.date === selected ? "rgb(var(--accent))" : "rgb(var(--ink) / 0.12)"}
+          >
             <title>{`${shortDate(s.date)} : ${s.players} joueurs, score moyen ${s.average ?? "—"}`}</title>
           </rect>
         </g>
       ))}
       {line && <polyline points={line} fill="none" stroke="#F2A33A" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />}
-      <text x={pad} y={14} fontSize="12" fill="rgb(var(--muted))">joueurs (barres) · score moyen (ligne)</text>
-      <text x={pad} y={h - 8} fontSize="11" fill="rgb(var(--muted))">{shortDate(series[0].date)}</text>
-      <text x={w - pad} y={h - 8} fontSize="11" fill="rgb(var(--muted))" textAnchor="end">aujourd'hui</text>
+      <text x={pad} y={14} fontSize="12" fill="rgb(var(--muted))">
+        joueurs (barres) · score moyen (ligne)
+      </text>
+      <text x={pad} y={h - 8} fontSize="11" fill="rgb(var(--muted))">
+        {shortDate(series[0].date)}
+      </text>
+      <text x={w - pad} y={h - 8} fontSize="11" fill="rgb(var(--muted))" textAnchor="end">
+        aujourd'hui
+      </text>
     </svg>
   );
 }
@@ -38,7 +56,11 @@ function Distribution({ values }: { values: number[] }) {
     <div className="flex h-36 items-end gap-1.5" role="img" aria-label="Répartition des scores du jour">
       {values.map((v, i) => (
         <div key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
-          <div className="w-full rounded-md" style={{ height: `${(v / max) * 85}%`, minHeight: 2, backgroundColor: i >= 8 ? "#1FA971" : i >= 4 ? "#F2A33A" : "#E5484D" }} title={`${i * 10}–${i * 10 + 9} : ${v}`} />
+          <div
+            className="w-full rounded-md"
+            style={{ height: `${(v / max) * 85}%`, minHeight: 2, backgroundColor: i >= 8 ? "#1FA971" : i >= 4 ? "#F2A33A" : "#E5484D" }}
+            title={`${i * 10}–${i * 10 + 9} : ${v}`}
+          />
           <span className="text-[10px] text-muted">{i * 10}</span>
         </div>
       ))}
@@ -52,17 +74,33 @@ function DayQuestions({ day }: { day: DayStats }) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="text-left text-xs uppercase tracking-wider text-muted">
-          <tr><th className="py-2 pr-2">#</th><th className="py-2 pr-4">Question</th><th className="py-2 pr-4">Format</th><th className="py-2 pr-4">Réponses</th><th className="py-2 pr-4">Moyenne</th><th className="py-2">Bonnes réponses</th></tr>
+          <tr>
+            <th className="py-2 pr-2">#</th>
+            <th className="py-2 pr-4">Question</th>
+            <th className="py-2 pr-4">Format</th>
+            <th className="py-2 pr-4">Réponses</th>
+            <th className="py-2 pr-4">Moyenne</th>
+            <th className="py-2">Bonnes réponses</th>
+          </tr>
         </thead>
         <tbody className="divide-y divide-line">
           {day.questions.map((q) => (
             <tr key={q.id}>
               <td className="py-3 pr-2 font-bold text-muted">{q.position + 1}</td>
-              <td className="py-3 pr-4"><span className="flex max-w-[460px] items-center gap-2"><CategoryDot category={q.category} /><span className="truncate">{q.prompt}</span></span></td>
-              <td className="whitespace-nowrap py-3 pr-4 text-muted">{q.input_label} → {q.answer_label}</td>
+              <td className="py-3 pr-4">
+                <span className="flex max-w-[460px] items-center gap-2">
+                  <CategoryDot category={q.category} />
+                  <span className="truncate">{q.prompt}</span>
+                </span>
+              </td>
+              <td className="whitespace-nowrap py-3 pr-4 text-muted">
+                {q.input_label} → {q.answer_label}
+              </td>
               <td className="py-3 pr-4 tabular-nums">{q.answers}</td>
               <td className="py-3 pr-4 tabular-nums">{q.average ?? "—"}</td>
-              <td className="py-3"><Rate value={q.success} /></td>
+              <td className="py-3">
+                <Rate value={q.success} />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -89,7 +127,9 @@ export function Dashboard() {
           <h1 className="text-4xl font-extrabold">Tableau de bord</h1>
         </div>
         {k.days_planned_ahead < 7 && (
-          <Link to="/admin/planning" className="chip bg-mid/20 py-2">⚠ Seulement {k.days_planned_ahead} jour(s) planifié(s) : planifier →</Link>
+          <Link to="/admin/planning" className="chip bg-mid/20 py-2">
+            ⚠ Seulement {k.days_planned_ahead} jour(s) planifié(s) : planifier →
+          </Link>
         )}
       </div>
 
@@ -106,19 +146,34 @@ export function Dashboard() {
         <ActivityChart series={data.series} selected={current.date} onSelect={setSelected} />
       </Panel>
 
-      <Panel title={`Questions du ${shortDate(current.date)}`}
-        action={<span className="text-sm text-muted">{current.players} joueurs · {current.completed} terminés</span>}>
+      <Panel
+        title={`Questions du ${shortDate(current.date)}`}
+        action={
+          <span className="text-sm text-muted">
+            {current.players} joueurs · {current.completed} terminés
+          </span>
+        }
+      >
         <DayQuestions day={current} />
       </Panel>
 
       <div className="grid gap-5 lg:grid-cols-3">
         <Panel title={`Scores du ${shortDate(current.date)}`}>
           <Distribution values={current.distribution} />
-          <p className="mt-3 text-sm text-muted">Score moyen : <strong className="text-ink">{current.average ?? "—"}</strong></p>
+          <p className="mt-3 text-sm text-muted">
+            Score moyen : <strong className="text-ink">{current.average ?? "—"}</strong>
+          </p>
         </Panel>
-        {([["Les plus dures", data.hardest], ["Les plus faciles", data.easiest]] as const).map(([title, list]) => (
+        {(
+          [
+            ["Les plus dures", data.hardest],
+            ["Les plus faciles", data.easiest],
+          ] as const
+        ).map(([title, list]) => (
           <Panel key={title} title={title}>
-            {list.length === 0 ? <p className="text-sm text-muted">Pas encore assez de réponses.</p> : (
+            {list.length === 0 ? (
+              <p className="text-sm text-muted">Pas encore assez de réponses.</p>
+            ) : (
               <ul className="divide-y divide-line">
                 {list.map((q) => (
                   <li key={q.id} className="flex items-center gap-3 py-2.5 text-sm">
@@ -132,7 +187,11 @@ export function Dashboard() {
           </Panel>
         ))}
       </div>
-      {k.reports > 0 && <Link to="/admin/signalements" className="chip bg-bad/10 py-2 text-bad">⚑ {k.reports} signalement(s) à traiter</Link>}
+      {k.reports > 0 && (
+        <Link to="/admin/signalements" className="chip bg-bad/10 py-2 text-bad">
+          ⚑ {k.reports} signalement(s) à traiter
+        </Link>
+      )}
     </div>
   );
 }

@@ -5,9 +5,9 @@ from __future__ import annotations
 import sys
 from collections import Counter
 
-from ..catalog import CATEGORIES
-from ..daily import MIN_POOL
-from ..questions import check_bank, load_files
+from ..domain.catalog import CATEGORIES
+from ..domain.daily import MIN_POOL
+from ..services.bank import check_bank, load_files
 
 
 def main() -> None:

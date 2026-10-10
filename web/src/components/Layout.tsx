@@ -1,10 +1,15 @@
+// Cadre de l'interface joueur : barre du haut, onglets en bas sur mobile.
 import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { APP_NAME } from "../lib/config";
 
 export function Logo({ to = "/" }: { to?: string }) {
   return (
-    <Link to={to} className="flex items-center gap-2 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30" aria-label={`${APP_NAME}, accueil`}>
+    <Link
+      to={to}
+      className="flex items-center gap-2 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
+      aria-label={`${APP_NAME}, accueil`}
+    >
       <span className="flex gap-0.5" aria-hidden="true">
         <span className="h-2.5 w-2.5 rounded-full bg-accent" />
         <span className="h-2.5 w-2.5 rounded-full bg-good" />
@@ -24,22 +29,34 @@ const TABS = [
 export function Layout({ children }: { children: ReactNode }) {
   const tab = ({ isActive }: { isActive: boolean }) =>
     `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-semibold transition sm:flex-none sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:text-sm ${
-      isActive ? "text-ink sm:bg-ink/5" : "text-muted hover:text-ink"}`;
+      isActive ? "text-ink sm:bg-ink/5" : "text-muted hover:text-ink"
+    }`;
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-app items-center justify-between px-5 py-3">
           <Logo />
           <nav className="hidden gap-1 sm:flex" aria-label="Navigation">
-            {TABS.map((t) => <NavLink key={t.to} to={t.to} end className={tab}>{t.label}</NavLink>)}
+            {TABS.map((t) => (
+              <NavLink key={t.to} to={t.to} end className={tab}>
+                {t.label}
+              </NavLink>
+            ))}
           </nav>
         </div>
       </header>
-      <main id="main" className="mx-auto w-full max-w-app flex-1 px-5 pb-28 pt-2 sm:pb-12">{children}</main>
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-line bg-card/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden" aria-label="Navigation">
+      <main id="main" className="mx-auto w-full max-w-app flex-1 px-5 pb-28 pt-2 sm:pb-12">
+        {children}
+      </main>
+      <nav
+        className="fixed inset-x-0 bottom-0 z-30 flex border-t border-line bg-card/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden"
+        aria-label="Navigation"
+      >
         {TABS.map((t) => (
           <NavLink key={t.to} to={t.to} end className={tab}>
-            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true"><path d={t.icon} /></svg>
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
+              <path d={t.icon} />
+            </svg>
             {t.label}
           </NavLink>
         ))}

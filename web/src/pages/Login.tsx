@@ -1,3 +1,4 @@
+// Connexion par lien magique ; rattache l'e-mail à la session invité (même uid).
 import { useQueryClient } from "@tanstack/react-query";
 import { EmailAuthProvider, isSignInWithEmailLink, linkWithCredential, sendSignInLinkToEmail, signInWithEmailLink } from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +13,13 @@ const EMAIL_KEY = "cervo-email-for-signin";
 
 export function Login() {
   const { user, ready } = useAuth();
-  const [email, setEmail] = useState(() => { try { return localStorage.getItem(EMAIL_KEY) ?? ""; } catch { return ""; } });
+  const [email, setEmail] = useState(() => {
+    try {
+      return localStorage.getItem(EMAIL_KEY) ?? "";
+    } catch {
+      return "";
+    }
+  });
   const [sent, setSent] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,10 +33,17 @@ export function Login() {
   // Retour depuis le lien magique : on rattache l'e-mail à la session invité (même uid).
   useEffect(() => {
     if (!isLink || !ready || !user || handled.current) return;
-    const stored = (() => { try { return localStorage.getItem(EMAIL_KEY); } catch { return null; } })();
+    const stored = (() => {
+      try {
+        return localStorage.getItem(EMAIL_KEY);
+      } catch {
+        return null;
+      }
+    })();
     if (!stored) return; // l'utilisateur doit confirmer son e-mail (autre appareil)
     handled.current = true;
     complete(stored);
+    // `complete` change à chaque rendu ; l'effet ne doit tourner qu'une fois la session prête.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLink, ready, user]);
 
@@ -51,16 +65,22 @@ export function Login() {
         await signInWithEmailLink(auth, address, link);
       }
       await auth.currentUser?.getIdToken(true);
-      try { localStorage.removeItem(EMAIL_KEY); } catch { /* ignore */ }
+      try {
+        localStorage.removeItem(EMAIL_KEY);
+      } catch {
+        /* ignore */
+      }
       await api.profile();
       await qc.invalidateQueries();
       navigate("/profil", { replace: true });
     } catch (err) {
       setCompleting(false);
       const code = (err as { code?: string }).code ?? "";
-      setError(code.includes("invalid-action-code") || code.includes("expired")
-        ? "Ce lien a expiré ou a déjà servi. Demande un nouveau lien."
-        : "La connexion n'a pas abouti. Réessaie avec un nouveau lien.");
+      setError(
+        code.includes("invalid-action-code") || code.includes("expired")
+          ? "Ce lien a expiré ou a déjà servi. Demande un nouveau lien."
+          : "La connexion n'a pas abouti. Réessaie avec un nouveau lien.",
+      );
     }
   };
 
@@ -70,7 +90,11 @@ export function Login() {
     setStatus(null);
     try {
       await sendSignInLinkToEmail(auth, email, { url: `${window.location.origin}/connexion`, handleCodeInApp: true });
-      try { localStorage.setItem(EMAIL_KEY, email); } catch { /* ignore */ }
+      try {
+        localStorage.setItem(EMAIL_KEY, email);
+      } catch {
+        /* ignore */
+      }
       setSent(true);
       if (USE_EMULATOR) setDevLink(await latestEmulatorLink(email));
     } catch {
@@ -78,7 +102,13 @@ export function Login() {
     }
   };
 
-  const storedEmail = (() => { try { return localStorage.getItem(EMAIL_KEY); } catch { return null; } })();
+  const storedEmail = (() => {
+    try {
+      return localStorage.getItem(EMAIL_KEY);
+    } catch {
+      return null;
+    }
+  })();
   if (completing || (isLink && !error && (!ready || storedEmail))) return <Loading label="Connexion en cours…" />;
 
   if (isLink) {
@@ -86,12 +116,27 @@ export function Login() {
       <div className="card mt-4 space-y-4 p-6">
         <h1 className="text-2xl font-extrabold">Confirme ton e-mail</h1>
         <p className="text-muted">Pour finaliser la connexion, indique l'adresse à laquelle tu as reçu le lien.</p>
-        <form onSubmit={(e) => { e.preventDefault(); handled.current = true; complete(email); }} className="space-y-3">
-          <label htmlFor="email-confirm" className="label">Adresse e-mail</label>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handled.current = true;
+            complete(email);
+          }}
+          className="space-y-3"
+        >
+          <label htmlFor="email-confirm" className="label">
+            Adresse e-mail
+          </label>
           <input id="email-confirm" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <button className="btn-primary w-full" type="submit">Me connecter</button>
+          <button className="btn-primary w-full" type="submit">
+            Me connecter
+          </button>
         </form>
-        {error && <p className="text-bad" role="alert">{error}</p>}
+        {error && (
+          <p className="text-bad" role="alert">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
@@ -108,20 +153,43 @@ export function Login() {
           {USE_EMULATOR && (
             <div className="rounded-2xl bg-mid/15 p-4 text-sm">
               <p className="font-semibold">En local, aucun e-mail n'est envoyé : le lien est dans le terminal.</p>
-              {devLink && DEV_TOOLS && <a href={devLink} className="btn-ghost mt-2 w-full" data-testid="dev-magic-link">Ouvrir le lien magique</a>}
+              {devLink && DEV_TOOLS && (
+                <a href={devLink} className="btn-ghost mt-2 w-full" data-testid="dev-magic-link">
+                  Ouvrir le lien magique
+                </a>
+              )}
             </div>
           )}
-          <button className="link text-sm" onClick={() => setSent(false)}>Utiliser une autre adresse</button>
+          <button className="link text-sm" onClick={() => setSent(false)}>
+            Utiliser une autre adresse
+          </button>
         </div>
       ) : (
         <form onSubmit={send} className="space-y-3">
-          <label htmlFor="email" className="sr-only">Adresse e-mail</label>
-          <input id="email" type="email" autoComplete="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="toi@exemple.fr" required />
-          <button className="btn-dark w-full text-lg" type="submit" data-testid="send-link">Recevoir le lien</button>
+          <label htmlFor="email" className="sr-only">
+            Adresse e-mail
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            className="input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="toi@exemple.fr"
+            required
+          />
+          <button className="btn-dark w-full text-lg" type="submit" data-testid="send-link">
+            Recevoir le lien
+          </button>
         </form>
       )}
       {status && <p className="text-muted">{status}</p>}
-      {error && <p className="text-bad" role="alert">{error}</p>}
+      {error && (
+        <p className="text-bad" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

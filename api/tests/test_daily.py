@@ -1,10 +1,10 @@
 from collections import Counter
+from datetime import UTC, datetime
 
 import pytest
 
-from cervo.catalog import CATEGORIES, THINKING_PILLARS, pillar_of
-from cervo.daily import build_daily_quiz, candidate_pool, stable_choices, today_str
-from datetime import datetime, timezone
+from cervo.domain.catalog import CATEGORIES, THINKING_PILLARS, pillar_of
+from cervo.domain.daily import build_daily_quiz, candidate_pool, stable_choices, today_str
 
 
 def make_bank(n_per_cat=12):
@@ -12,14 +12,16 @@ def make_bank(n_per_cat=12):
     types = ["binary", "mcq", "numeric", "short_text"]
     for c_index, cat in enumerate(CATEGORIES):
         for i in range(n_per_cat):
-            bank.append({
-                "id": f"{cat}-{i:03d}",
-                "category": cat,
-                "type": types[(i + c_index) % 4],
-                "difficulty": [1, 2, 2, 3, 3][i % 5],
-                "images": [{"url": "/questions/x.svg", "alt": "x"}] if i % 7 == 0 else [],
-                "status": "published",
-            })
+            bank.append(
+                {
+                    "id": f"{cat}-{i:03d}",
+                    "category": cat,
+                    "type": types[(i + c_index) % 4],
+                    "difficulty": [1, 2, 2, 3, 3][i % 5],
+                    "images": [{"url": "/questions/x.svg", "alt": "x"}] if i % 7 == 0 else [],
+                    "status": "published",
+                }
+            )
     return bank
 
 
@@ -86,10 +88,7 @@ def test_history_ignored_when_pool_too_small():
 
 
 def test_relaxation_with_tiny_bank():
-    bank = [
-        {"id": f"q{i}", "category": "culture", "type": "mcq", "difficulty": 1, "images": [], "status": "published"}
-        for i in range(10)
-    ]
+    bank = [{"id": f"q{i}", "category": "culture", "type": "mcq", "difficulty": 1, "images": [], "status": "published"} for i in range(10)]
     assert sorted(build_daily_quiz("2026-10-10", bank)) == sorted(q["id"] for q in bank)
 
 
@@ -106,12 +105,13 @@ def test_stable_choices():
 
 def test_today_in_paris_changes_at_midnight_paris():
     # 22:30 UTC le 10 octobre = 00:30 à Paris le 11 (heure d'été)
-    assert today_str("Europe/Paris", datetime(2026, 10, 10, 22, 30, tzinfo=timezone.utc)) == "2026-10-11"
-    assert today_str("Europe/Paris", datetime(2026, 10, 10, 21, 30, tzinfo=timezone.utc)) == "2026-10-10"
+    assert today_str("Europe/Paris", datetime(2026, 10, 10, 22, 30, tzinfo=UTC)) == "2026-10-11"
+    assert today_str("Europe/Paris", datetime(2026, 10, 10, 21, 30, tzinfo=UTC)) == "2026-10-10"
 
 
 def test_real_bank_respects_constraints_for_a_month():
-    from cervo.questions import load_files
+    from cervo.services.bank import load_files
+
     bank = [{k: v for k, v in q.items() if not k.startswith("_")} for q in load_files()]
     history: list[list[str]] = []
     for day in range(1, 31):

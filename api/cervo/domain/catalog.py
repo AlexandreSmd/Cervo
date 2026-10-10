@@ -44,12 +44,10 @@ CATEGORY_PILLAR: dict[str, str] = {
 # Piliers qui demandent de réfléchir plutôt que de se souvenir (vision : au moins 4 sur 10).
 THINKING_PILLARS = {"raisonnement", "estimation", "esprit_critique"}
 
-QUESTION_TYPES = ("binary", "mcq", "numeric", "short_text", "order", "size", "dictation")
-STATUSES = ("draft", "published", "retired")
-
 
 def pillar_of(category: str) -> str:
     return CATEGORY_PILLAR.get(category, "memoire")
+
 
 # --- Structure d'une question : ce qu'on montre (entrée) et ce qu'on attend (réponse) ---
 

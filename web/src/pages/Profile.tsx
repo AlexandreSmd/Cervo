@@ -1,3 +1,4 @@
+// Profil : moyenne, série, courbe, forme du cerveau, calendrier, toutes mes questions, compte.
 import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
 import { useMemo, useState } from "react";
@@ -9,7 +10,12 @@ import { auth } from "../lib/firebase";
 import { COLOR_HEX, formatAnswer, formatDay, scoreColor } from "../lib/format";
 import { useDays, useProfile } from "../lib/hooks";
 
-const PILLAR_SHORT: Record<string, string> = { raisonnement: "Raisonnement", estimation: "Estimation", memoire: "Mémoire", esprit_critique: "Esprit critique" };
+const PILLAR_SHORT: Record<string, string> = {
+  raisonnement: "Raisonnement",
+  estimation: "Estimation",
+  memoire: "Mémoire",
+  esprit_critique: "Esprit critique",
+};
 
 function Tile({ label, value }: { label: string; value: string | number }) {
   return (
@@ -38,24 +44,55 @@ function Username({ current }: { current: string }) {
   };
   if (!editing) {
     return (
-      <button className="flex items-center gap-2 text-left" onClick={() => { setValue(current); setEditing(true); }} aria-label="Modifier le pseudo">
-        <h1 className="text-3xl font-extrabold" data-testid="username">{current}</h1>
-        <span className="text-muted" aria-hidden="true">✎</span>
+      <button
+        className="flex items-center gap-2 text-left"
+        onClick={() => {
+          setValue(current);
+          setEditing(true);
+        }}
+        aria-label="Modifier le pseudo"
+      >
+        <h1 className="text-3xl font-extrabold" data-testid="username">
+          {current}
+        </h1>
+        <span className="text-muted" aria-hidden="true">
+          ✎
+        </span>
       </button>
     );
   }
   return (
     <form onSubmit={save} className="space-y-1">
       <div className="flex gap-2">
-        <input className="input py-2" aria-label="Pseudo" value={value} onChange={(e) => setValue(e.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9À-ÿ_.\-]+" required autoFocus />
-        <button className="btn-dark btn-sm" type="submit">OK</button>
+        <input
+          className="input py-2"
+          aria-label="Pseudo"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          minLength={3}
+          maxLength={24}
+          pattern="[A-Za-z0-9À-ÿ_.\-]+"
+          required
+          autoFocus
+        />
+        <button className="btn-dark btn-sm" type="submit">
+          OK
+        </button>
       </div>
-      {error && <p className="text-sm text-bad" role="alert">{error}</p>}
+      {error && (
+        <p className="text-sm text-bad" role="alert">
+          {error}
+        </p>
+      )}
     </form>
   );
 }
 
-const FILTERS = [["all", "Toutes"], ["missed", "Ratées"], ["good", "Réussies"]] as const;
+const FILTERS = [
+  ["all", "Toutes"],
+  ["missed", "Ratées"],
+  ["good", "Réussies"],
+] as const;
 
 export function Profile() {
   const { data: p, isLoading, error, refetch } = useProfile();
@@ -69,8 +106,9 @@ export function Profile() {
 
   const review = useMemo(() => {
     const all = (days.data?.days ?? []).flatMap((d) => d.answers.map((a) => ({ ...a, date: d.date })));
-    return all.filter((a) => (category === "all" || a.category === category) &&
-      (filter === "all" || (filter === "missed" ? a.score < 50 : a.score >= 50)));
+    return all.filter(
+      (a) => (category === "all" || a.category === category) && (filter === "all" || (filter === "missed" ? a.score < 50 : a.score >= 50)),
+    );
   }, [days.data, filter, category]);
 
   if (error) return <ErrorBox message={(error as Error).message} onRetry={() => refetch()} />;
@@ -104,13 +142,20 @@ export function Profile() {
 
       {p.is_anonymous && (
         <Link to="/connexion" className="card flex items-center justify-between p-5" data-testid="create-account">
-          <span><span className="block font-bold">Sauvegarder ma progression</span><span className="text-sm text-muted">Créer un compte avec ton e-mail</span></span>
-          <span className="text-2xl text-accent" aria-hidden="true">→</span>
+          <span>
+            <span className="block font-bold">Sauvegarder ma progression</span>
+            <span className="text-sm text-muted">Créer un compte avec ton e-mail</span>
+          </span>
+          <span className="text-2xl text-accent" aria-hidden="true">
+            →
+          </span>
         </Link>
       )}
 
       {p.days_played === 0 ? (
-        <Link to="/jouer" className="btn-primary w-full">Jouer le quiz du jour</Link>
+        <Link to="/jouer" className="btn-primary w-full">
+          Jouer le quiz du jour
+        </Link>
       ) : (
         <>
           <section className="card space-y-3 p-5">
@@ -130,47 +175,89 @@ export function Profile() {
 
           <section className="space-y-3" aria-labelledby="mes-questions">
             <div className="flex items-center justify-between">
-              <h2 id="mes-questions" className="text-lg font-bold">Mes questions</h2>
-              <select className="rounded-full bg-ink/5 px-3 py-1.5 text-sm font-semibold" value={category} onChange={(e) => setCategory(e.target.value)} aria-label="Catégorie">
+              <h2 id="mes-questions" className="text-lg font-bold">
+                Mes questions
+              </h2>
+              <select
+                className="rounded-full bg-ink/5 px-3 py-1.5 text-sm font-semibold"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                aria-label="Catégorie"
+              >
                 <option value="all">Toutes catégories</option>
-                {p.categories.map((c) => <option key={c.category} value={c.category}>{c.label}</option>)}
+                {p.categories.map((c) => (
+                  <option key={c.category} value={c.category}>
+                    {c.label}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="flex gap-1 rounded-full bg-ink/5 p-1" role="tablist">
               {FILTERS.map(([key, label]) => (
-                <button key={key} role="tab" aria-selected={filter === key} onClick={() => setFilter(key)}
-                  className={`flex-1 rounded-full py-2 text-sm font-semibold ${filter === key ? "bg-card shadow-sm" : "text-muted"}`}>{label}</button>
+                <button
+                  key={key}
+                  role="tab"
+                  aria-selected={filter === key}
+                  onClick={() => setFilter(key)}
+                  className={`flex-1 rounded-full py-2 text-sm font-semibold ${filter === key ? "bg-card shadow-sm" : "text-muted"}`}
+                >
+                  {label}
+                </button>
               ))}
             </div>
             <ul className="card divide-y divide-line overflow-hidden">
               {review.slice(0, shown).map((a) => (
                 <li key={`${a.date}-${a.position}`} className="flex gap-3 px-5 py-4">
-                  <span className="mt-1.5 h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: COLOR_HEX[scoreColor(a.score)] }} aria-hidden="true" />
+                  <span
+                    className="mt-1.5 h-3 w-3 shrink-0 rounded-full"
+                    style={{ backgroundColor: COLOR_HEX[scoreColor(a.score)] }}
+                    aria-hidden="true"
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold">{a.prompt}</p>
-                    <p className="text-sm text-muted">{formatAnswer(a.correct_answer, a.type, a.unit)} · toi : {formatAnswer(a.user_answer, a.type, a.unit)}</p>
-                    <p className="text-xs text-muted">{formatDay(a.date, "short")} · {catLabels.get(a.category) ?? a.category}</p>
+                    <p className="text-sm text-muted">
+                      {formatAnswer(a.correct_answer, a.type, a.unit)} · toi : {formatAnswer(a.user_answer, a.type, a.unit)}
+                    </p>
+                    <p className="text-xs text-muted">
+                      {formatDay(a.date, "short")} · {catLabels.get(a.category) ?? a.category}
+                    </p>
                   </div>
                   <span className="font-display font-extrabold">{a.score}</span>
                 </li>
               ))}
               {review.length === 0 && <li className="px-5 py-6 text-center text-sm text-muted">Rien ici pour l'instant</li>}
             </ul>
-            {review.length > shown && <button className="btn-ghost w-full" onClick={() => setShown(shown + 20)}>Voir plus</button>}
+            {review.length > shown && (
+              <button className="btn-ghost w-full" onClick={() => setShown(shown + 20)}>
+                Voir plus
+              </button>
+            )}
           </section>
         </>
       )}
 
       <section className="card divide-y divide-line overflow-hidden">
-        {!p.is_anonymous && <button className="w-full px-5 py-4 text-left font-semibold" onClick={() => leave(async () => undefined)}>Se déconnecter</button>}
-        <Link to="/confidentialite" className="block px-5 py-4 font-semibold">Confidentialité</Link>
+        {!p.is_anonymous && (
+          <button className="w-full px-5 py-4 text-left font-semibold" onClick={() => leave(async () => undefined)}>
+            Se déconnecter
+          </button>
+        )}
+        <Link to="/confidentialite" className="block px-5 py-4 font-semibold">
+          Confidentialité
+        </Link>
         {confirmDelete ? (
           <div className="flex gap-2 p-4">
-            <button className="btn btn-sm flex-1 bg-bad text-white" onClick={() => leave(api.deleteAccount)}>Tout supprimer</button>
-            <button className="btn-ghost btn-sm flex-1" onClick={() => setConfirmDelete(false)}>Annuler</button>
+            <button className="btn btn-sm flex-1 bg-bad text-white" onClick={() => leave(api.deleteAccount)}>
+              Tout supprimer
+            </button>
+            <button className="btn-ghost btn-sm flex-1" onClick={() => setConfirmDelete(false)}>
+              Annuler
+            </button>
           </div>
         ) : (
-          <button className="w-full px-5 py-4 text-left font-semibold text-bad" onClick={() => setConfirmDelete(true)}>Supprimer mes données</button>
+          <button className="w-full px-5 py-4 text-left font-semibold text-bad" onClick={() => setConfirmDelete(true)}>
+            Supprimer mes données
+          </button>
         )}
       </section>
     </div>

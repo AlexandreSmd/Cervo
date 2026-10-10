@@ -1,3 +1,4 @@
+// Requêtes du joueur (TanStack Query), activées une fois la session prête.
 import { useQuery } from "@tanstack/react-query";
 import { api } from "./api";
 import { useAuth } from "./auth";

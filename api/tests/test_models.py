@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
 
-from cervo.models import Question
-from cervo.questions import public_view
+from cervo.domain.models import Question
+from cervo.services.bank import public_view
 
 BASE = {"id": "x-1", "category": "culture", "difficulty": 2, "prompt": "Une question ?", "explanation": "Une explication assez longue."}
 
@@ -30,11 +30,19 @@ def test_dictation_and_timer():
 
 
 def test_slider_and_memorize():
-    q = Question.model_validate({**BASE, "type": "numeric", "correct_answer": 1450,
-                                 "numeric_config": {"scale": "linear", "tolerance": 100, "input": "slider", "min": 1000, "max": 2000, "step": 10},
-                                 "memorize": {"items": ["un", "deux"], "seconds": 4}})
+    q = Question.model_validate(
+        {
+            **BASE,
+            "type": "numeric",
+            "correct_answer": 1450,
+            "numeric_config": {"scale": "linear", "tolerance": 100, "input": "slider", "min": 1000, "max": 2000, "step": 10},
+            "memorize": {"items": ["un", "deux"], "seconds": 4},
+        }
+    )
     view = public_view(q.model_dump(), 0)
     assert view["slider"] == {"min": 1000, "max": 2000, "step": 10}
     assert view["memorize"]["seconds"] == 4 and view["time_limit"] == 15
     with pytest.raises(ValidationError):
-        Question.model_validate({**BASE, "type": "numeric", "correct_answer": 5, "numeric_config": {"input": "slider", "min": 10, "max": 1}})
+        Question.model_validate(
+            {**BASE, "type": "numeric", "correct_answer": 5, "numeric_config": {"input": "slider", "min": 10, "max": 1}}
+        )

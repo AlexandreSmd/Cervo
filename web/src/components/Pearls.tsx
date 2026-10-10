@@ -1,3 +1,4 @@
+// Motif signature : 10 perles colorées selon le score de chaque question.
 import { COLOR_HEX, scoreColor } from "../lib/format";
 
 interface Props {

@@ -1,7 +1,12 @@
 import pytest
 
-from cervo.scoring import (
-    day_score, normalize_text, parse_number, score_answer, score_color, score_numeric, score_short_text,
+from cervo.domain.scoring import (
+    day_score,
+    normalize_text,
+    parse_number,
+    score_answer,
+    score_numeric,
+    score_short_text,
 )
 
 LOG3 = {"scale": "log", "factor": 3}
@@ -99,14 +104,10 @@ def test_mcq():
     assert score_answer(q, None) == 0
 
 
-def test_day_score_and_colors():
+def test_day_score():
     assert day_score([100, 0, 50, 51]) == 50
     assert day_score([]) == 0
     assert day_score([100] * 9 + [5]) == 91
-    assert score_color(80) == "green"
-    assert score_color(79) == "orange"
-    assert score_color(40) == "orange"
-    assert score_color(39) == "red"
 
 
 def test_dictation_counts_words_and_accents():

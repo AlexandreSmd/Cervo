@@ -1,3 +1,4 @@
+// Chrono d'une question (démarré côté serveur, voir services/play.py).
 import { useEffect, useState } from "react";
 
 /** Barre de chrono : se vide en `limit` secondes à partir de `startedAt` (heure serveur corrigée). */
@@ -16,9 +17,14 @@ export function Timer({ startedAt, limit, onExpire, paused }: { startedAt: numbe
   return (
     <div className="flex items-center gap-3" role="timer" aria-label={`${Math.ceil(left)} secondes restantes`} data-testid="timer">
       <div className="h-2 flex-1 overflow-hidden rounded-full bg-ink/10">
-        <div className={`h-full rounded-full transition-[width] duration-100 ease-linear ${urgent ? "bg-bad" : "bg-ink"}`} style={{ width: `${(left / limit) * 100}%` }} />
+        <div
+          className={`h-full rounded-full transition-[width] duration-100 ease-linear ${urgent ? "bg-bad" : "bg-ink"}`}
+          style={{ width: `${(left / limit) * 100}%` }}
+        />
       </div>
-      <span className={`w-8 text-right font-display text-lg font-extrabold tabular-nums ${urgent ? "text-bad" : ""}`}>{Math.ceil(left)}</span>
+      <span className={`w-8 text-right font-display text-lg font-extrabold tabular-nums ${urgent ? "text-bad" : ""}`}>
+        {Math.ceil(left)}
+      </span>
     </div>
   );
 }

@@ -423,7 +423,7 @@
       {
         "url": "/questions/suite-polygones.svg",
         "alt": "Un triangle, un carré, un pentagone et un hexagone, suivis d'un point d'interrogation",
-        "credit": "Illustration originale Cervo Daily (libre de droits)"
+        "credit": "Illustration originale Aiguisé (libre de droits)"
       }
     ],
     "explanation": "Triangle (3), carré (4), pentagone (5), hexagone (6)… la suivante est un heptagone à 7 côtés.",
@@ -446,7 +446,7 @@
       {
         "url": "/questions/grille-3x3.svg",
         "alt": "Une grille carrée de 3 cases sur 3",
-        "credit": "Illustration originale Cervo Daily (libre de droits)"
+        "credit": "Illustration originale Aiguisé (libre de droits)"
       }
     ],
     "explanation": "9 petits carrés, 4 carrés de 2 × 2 et 1 grand carré de 3 × 3 : 9 + 4 + 1 = 14.",
@@ -469,7 +469,7 @@
       {
         "url": "/questions/grille-2x2.svg",
         "alt": "Une grille carrée de 2 cases sur 2",
-        "credit": "Illustration originale Cervo Daily (libre de droits)"
+        "credit": "Illustration originale Aiguisé (libre de droits)"
       }
     ],
     "explanation": "4 petits carrés et 1 grand carré qui les contient : 4 + 1 = 5.",
@@ -492,7 +492,7 @@
       {
         "url": "/questions/triangles.svg",
         "alt": "Un grand triangle partagé par deux segments partant du sommet",
-        "credit": "Illustration originale Cervo Daily (libre de droits)"
+        "credit": "Illustration originale Aiguisé (libre de droits)"
       }
     ],
     "explanation": "Les 4 segments qui partent du sommet découpent la base : chaque paire de segments forme un triangle, soit 3 petits + 2 moyens + 1 grand = 6.",
@@ -514,7 +514,7 @@
       {
         "url": "/questions/cubes-escalier.svg",
         "alt": "Un escalier de cubes : une colonne de 3, une de 2 et une de 1",
-        "credit": "Illustration originale Cervo Daily (libre de droits)"
+        "credit": "Illustration originale Aiguisé (libre de droits)"
       }
     ],
     "explanation": "L'escalier compte 3 + 2 + 1 = 6 cubes ; un carré de 3 × 3 en contient 9, il en manque donc 3.",

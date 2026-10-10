@@ -1,3 +1,4 @@
+// Message de partage (une ligne par question en 🟢/🔴) et envoi (partage natif ou copie).
 import { formatDay } from "./format";
 
 /** Seuil du code couleur du partage : 🟢 à partir de 50 points (plus de la moitié), 🔴 en dessous. */
@@ -40,7 +41,9 @@ export async function copyText(text: string): Promise<boolean> {
       await navigator.clipboard.writeText(text);
       return true;
     }
-  } catch { /* repli ci-dessous */ }
+  } catch {
+    /* repli ci-dessous */
+  }
   const area = document.createElement("textarea");
   area.value = text;
   area.setAttribute("readonly", "");
@@ -50,7 +53,11 @@ export async function copyText(text: string): Promise<boolean> {
   area.select();
   area.setSelectionRange(0, text.length);
   let ok = false;
-  try { ok = document.execCommand("copy"); } catch { ok = false; }
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
   document.body.removeChild(area);
   return ok;
 }

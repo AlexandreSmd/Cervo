@@ -1,6 +1,7 @@
-// Nom du produit : une seule constante à changer.
-export const APP_NAME = "Cervo Daily";
-export const BASELINE = "Garde ton cervo affûté.";
+// Nom du produit et promesse : une seule constante à changer (côté API : api/cervo/__init__.py).
+export const APP_NAME = "Aiguisé";
+export const BASELINE = "Garde ton esprit affûté, vif et précis.";
+export const MISSION = "Garder son esprit affûté, vif et précis.";
 
 export const USE_EMULATOR = import.meta.env.VITE_USE_FIREBASE_EMULATOR !== "false";
 export const DEV_TOOLS = import.meta.env.VITE_DEV_TOOLS === "true";

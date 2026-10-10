@@ -1,8 +1,12 @@
+// Client de l'API : ajoute le jeton Firebase, traduit les erreurs en messages lisibles.
 import { auth } from "./firebase";
 import type { AdminQuestion, Answer, DayDetail, DayStats, Overview, PlayedDay, Profile, Schedule, SubmitResult, Today } from "./types";
 
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(
+    public status: number,
+    message: string,
+  ) {
     super(message);
   }
 }
@@ -21,9 +25,12 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const data = text ? JSON.parse(text) : null;
   if (!res.ok) {
     const detail = data?.detail;
-    const message = typeof detail === "string" ? detail
-      : Array.isArray(detail) ? detail.map((d) => (typeof d === "string" ? d : d.msg)).join(" · ")
-      : "Oups, quelque chose s'est mal passé. Réessaie dans un instant.";
+    const message =
+      typeof detail === "string"
+        ? detail
+        : Array.isArray(detail)
+          ? detail.map((d) => (typeof d === "string" ? d : d.msg)).join(" · ")
+          : "Oups, quelque chose s'est mal passé. Réessaie dans un instant.";
     throw new ApiError(res.status, message);
   }
   return data as T;
@@ -35,7 +42,10 @@ export const api = {
   health: () => request<{ status: string; today: string; env: string }>("/health"),
   today: () => request<Today>("/today"),
   startQuestion: (date: string, question_id: string) =>
-    request<{ started_at: string; server_time: string; position: number }>("/question-start", { method: "POST", body: json({ date, question_id }) }),
+    request<{ started_at: string; server_time: string; position: number }>("/question-start", {
+      method: "POST",
+      body: json({ date, question_id }),
+    }),
   answer: (date: string, question_id: string, answer: Answer | null) =>
     request<SubmitResult>("/answer", { method: "POST", body: json({ date, question_id, answer }) }),
   results: (date: string) => request<DayDetail>(`/results/${date}`),
@@ -48,8 +58,10 @@ export const api = {
     questions: () => request<{ questions: AdminQuestion[] }>("/admin/questions"),
     reports: () => request<{ reports: { id: string; question_id: string; reason: string; created_at: string }[] }>("/admin/reports"),
     import: (questions: unknown[], overwrite = false) =>
-      request<{ created: string[]; updated: string[]; errors: { index: number; errors: string[] }[] }>(
-        "/admin/questions/import", { method: "POST", body: json({ questions, overwrite }) }),
+      request<{ created: string[]; updated: string[]; errors: { index: number; errors: string[] }[] }>("/admin/questions/import", {
+        method: "POST",
+        body: json({ questions, overwrite }),
+      }),
     setStatus: (id: string, status: string) => request(`/admin/questions/${id}`, { method: "PATCH", body: json({ status }) }),
     update: (id: string, question: unknown) => request(`/admin/questions/${id}`, { method: "PUT", body: json(question) }),
     overview: () => request<Overview>("/admin/overview"),
