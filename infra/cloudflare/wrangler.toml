@@ -1,0 +1,11 @@
+name = "cervo-daily"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[assets]
+directory = "../../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[vars]
+API_ORIGIN = "https://REMPLACER--cervo-daily-api-api.modal.run"

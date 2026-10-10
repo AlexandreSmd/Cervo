@@ -1,0 +1,545 @@
+[
+  {
+    "id": "sport-001",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "football"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de joueurs compte une équipe de football sur le terrain ?",
+    "explanation": "Chaque équipe aligne 11 joueurs, gardien compris.",
+    "source_url": "https://fr.wikipedia.org/wiki/Football",
+    "status": "published",
+    "choices": [
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
+    "correct_answer": "11"
+  },
+  {
+    "id": "sport-002",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "olympisme"
+    ],
+    "difficulty": 1,
+    "prompt": "Tous les combien d'années ont lieu les Jeux olympiques d'été ?",
+    "explanation": "Les JO d'été ont lieu tous les 4 ans ; ceux de Tokyo 2020 ont exceptionnellement été décalés en 2021.",
+    "source_url": "https://fr.wikipedia.org/wiki/Jeux_olympiques",
+    "status": "published",
+    "choices": [
+      "2 ans",
+      "3 ans",
+      "4 ans",
+      "5 ans"
+    ],
+    "correct_answer": "4 ans"
+  },
+  {
+    "id": "sport-003",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "athlétisme"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la longueur d'un marathon, en kilomètres ?",
+    "explanation": "Le marathon mesure 42,195 km, distance fixée lors des JO de Londres en 1908.",
+    "source_url": "https://fr.wikipedia.org/wiki/Marathon_(sport)",
+    "status": "published",
+    "correct_answer": 42.195,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "km",
+      "tolerance": 15,
+      "exact_margin": 0.2
+    }
+  },
+  {
+    "id": "sport-004",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "athlétisme",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est le record du monde masculin du 100 m, en secondes ?",
+    "explanation": "Usain Bolt a couru le 100 m en 9,58 s à Berlin en 2009.",
+    "source_url": "https://fr.wikipedia.org/wiki/100_mètres",
+    "status": "published",
+    "correct_answer": 9.58,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "s",
+      "tolerance": 1.5,
+      "exact_margin": 0.02
+    }
+  },
+  {
+    "id": "sport-005",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "football"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel pays a remporté la Coupe du monde de football 2018 ?",
+    "explanation": "La France bat la Croatie 4-2 en finale à Moscou et décroche sa deuxième étoile.",
+    "source_url": "https://fr.wikipedia.org/wiki/Coupe_du_monde_de_football_2018",
+    "status": "published",
+    "choices": [
+      "La Croatie",
+      "La France",
+      "La Belgique",
+      "L'Argentine"
+    ],
+    "correct_answer": "La France"
+  },
+  {
+    "id": "sport-006",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "olympisme"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien d'anneaux figurent sur le drapeau olympique ?",
+    "explanation": "Les 5 anneaux entrelacés symbolisent l'union des cinq continents.",
+    "source_url": "https://fr.wikipedia.org/wiki/Anneaux_olympiques",
+    "status": "published",
+    "choices": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "correct_answer": "5"
+  },
+  {
+    "id": "sport-007",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "basket"
+    ],
+    "difficulty": 2,
+    "prompt": "À quelle hauteur se trouve un panier de basket, en mètres ?",
+    "explanation": "Le cercle est à 3,05 m (10 pieds), hauteur choisie par l'inventeur du basket, James Naismith.",
+    "source_url": "https://fr.wikipedia.org/wiki/Basket-ball",
+    "status": "published",
+    "correct_answer": 3.05,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "m",
+      "tolerance": 1,
+      "exact_margin": 0.05
+    }
+  },
+  {
+    "id": "sport-008",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "raquettes"
+    ],
+    "difficulty": 1,
+    "prompt": "Dans quel sport utilise-t-on un volant ?",
+    "explanation": "Le volant de badminton peut dépasser 400 km/h lors d'un smash.",
+    "source_url": "https://fr.wikipedia.org/wiki/Badminton",
+    "status": "published",
+    "choices": [
+      "Le tennis",
+      "Le badminton",
+      "Le squash",
+      "Le padel"
+    ],
+    "correct_answer": "Le badminton"
+  },
+  {
+    "id": "sport-009",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "olympisme"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle ville a accueilli les Jeux olympiques d'été de 2024 ?",
+    "explanation": "Paris a accueilli les JO en 2024, cent ans après ceux de 1924.",
+    "source_url": "https://fr.wikipedia.org/wiki/Jeux_olympiques_d'été_de_2024",
+    "status": "published",
+    "choices": [
+      "Los Angeles",
+      "Paris",
+      "Tokyo",
+      "Londres"
+    ],
+    "correct_answer": "Paris"
+  },
+  {
+    "id": "sport-010",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "cyclisme"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de kilomètres mesurait le Tour de France 2024 ?",
+    "explanation": "Le Tour 2024, parti de Florence et arrivé à Nice, mesurait 3 492 km.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tour_de_France_2024",
+    "status": "published",
+    "correct_answer": 3492,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km",
+      "factor": 2,
+      "exact_margin": 150
+    }
+  },
+  {
+    "id": "sport-011",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "tennis"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel tournoi du Grand Chelem se joue sur terre battue ?",
+    "explanation": "Roland-Garros, à Paris, est le seul tournoi du Grand Chelem sur terre battue.",
+    "source_url": "https://fr.wikipedia.org/wiki/Internationaux_de_France_de_tennis",
+    "status": "published",
+    "choices": [
+      "Wimbledon",
+      "Roland-Garros",
+      "L'US Open",
+      "L'Open d'Australie"
+    ],
+    "correct_answer": "Roland-Garros"
+  },
+  {
+    "id": "sport-012",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "natation"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la longueur d'un bassin de piscine olympique, en mètres ?",
+    "explanation": "Un bassin olympique mesure 50 m de long et 25 m de large.",
+    "source_url": "https://fr.wikipedia.org/wiki/Piscine_olympique",
+    "status": "published",
+    "correct_answer": 50,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m",
+      "factor": 2
+    }
+  },
+  {
+    "id": "sport-013",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "rugby"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de points vaut un essai au rugby à XV ?",
+    "explanation": "Un essai vaut 5 points, et la transformation en ajoute 2.",
+    "source_url": "https://fr.wikipedia.org/wiki/Essai_(rugby)",
+    "status": "published",
+    "choices": [
+      "3",
+      "4",
+      "5",
+      "7"
+    ],
+    "correct_answer": "5"
+  },
+  {
+    "id": "sport-014",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "football"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de minutes dure un match de football (temps réglementaire) ?",
+    "explanation": "Deux mi-temps de 45 minutes, plus le temps additionnel.",
+    "source_url": "https://fr.wikipedia.org/wiki/Football",
+    "status": "published",
+    "choices": [
+      "60",
+      "80",
+      "90",
+      "120"
+    ],
+    "correct_answer": "90"
+  },
+  {
+    "id": "sport-015",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "natation",
+      "records"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel athlète détient le record de médailles d'or olympiques ?",
+    "explanation": "Le nageur américain Michael Phelps a remporté 23 médailles d'or entre 2004 et 2016.",
+    "source_url": "https://fr.wikipedia.org/wiki/Michael_Phelps",
+    "status": "published",
+    "choices": [
+      "Usain Bolt",
+      "Michael Phelps",
+      "Carl Lewis",
+      "Larissa Latynina"
+    ],
+    "correct_answer": "Michael Phelps"
+  },
+  {
+    "id": "sport-016",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "natation",
+      "records"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien de médailles d'or olympiques Michael Phelps a-t-il remportées ?",
+    "explanation": "Michael Phelps compte 23 titres olympiques (28 médailles au total), un record absolu.",
+    "source_url": "https://fr.wikipedia.org/wiki/Michael_Phelps",
+    "status": "published",
+    "correct_answer": 23,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "médailles",
+      "tolerance": 15
+    }
+  },
+  {
+    "id": "sport-017",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "tennis"
+    ],
+    "difficulty": 2,
+    "prompt": "Au tennis, comment appelle-t-on le score de 40-40 ?",
+    "explanation": "À 40-40, il y a égalité : il faut ensuite gagner deux points de suite pour remporter le jeu.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tennis",
+    "status": "published",
+    "choices": [
+      "Avantage",
+      "Égalité",
+      "Break",
+      "Let"
+    ],
+    "correct_answer": "Égalité"
+  },
+  {
+    "id": "sport-018",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "volley"
+    ],
+    "difficulty": 3,
+    "prompt": "À quelle hauteur se trouve le filet de volley-ball masculin, en mètres ?",
+    "explanation": "Le filet est à 2,43 m chez les hommes et 2,24 m chez les femmes.",
+    "source_url": "https://fr.wikipedia.org/wiki/Volley-ball",
+    "status": "published",
+    "correct_answer": 2.43,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "m",
+      "tolerance": 1,
+      "exact_margin": 0.03
+    }
+  },
+  {
+    "id": "sport-019",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "olympisme",
+      "antiquité"
+    ],
+    "difficulty": 1,
+    "prompt": "Dans quel pays sont nés les Jeux olympiques antiques ?",
+    "explanation": "Les premiers Jeux se tiennent à Olympie, en Grèce, en 776 av. J.-C. selon la tradition.",
+    "source_url": "https://fr.wikipedia.org/wiki/Jeux_olympiques_antiques",
+    "status": "published",
+    "choices": [
+      "L'Italie",
+      "La Grèce",
+      "L'Égypte",
+      "La Turquie"
+    ],
+    "correct_answer": "La Grèce"
+  },
+  {
+    "id": "sport-020",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "tennis"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien pèse une balle de tennis, en grammes ?",
+    "explanation": "Le règlement impose entre 56 et 59,4 g.",
+    "source_url": "https://fr.wikipedia.org/wiki/Balle_de_tennis",
+    "status": "published",
+    "correct_answer": 57.5,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "g",
+      "factor": 2,
+      "exact_margin": 2
+    }
+  },
+  {
+    "id": "sport-021",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "basket"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de joueurs par équipe sont sur le terrain au basket-ball ?",
+    "explanation": "Cinq joueurs par équipe, avec des remplacements illimités.",
+    "source_url": "https://fr.wikipedia.org/wiki/Basket-ball",
+    "status": "published",
+    "choices": [
+      "5",
+      "6",
+      "7",
+      "11"
+    ],
+    "correct_answer": "5"
+  },
+  {
+    "id": "sport-022",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "judo"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel sport pratique Teddy Riner ?",
+    "explanation": "Teddy Riner est l'un des plus grands judokas de l'histoire, avec 11 titres de champion du monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Teddy_Riner",
+    "status": "published",
+    "choices": [
+      "La lutte",
+      "Le judo",
+      "La boxe",
+      "Le rugby"
+    ],
+    "correct_answer": "Le judo"
+  },
+  {
+    "id": "sport-023",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "athlétisme",
+      "records"
+    ],
+    "difficulty": 3,
+    "prompt": "Quel est le record du monde masculin du saut en hauteur, en mètres ?",
+    "explanation": "Le Cubain Javier Sotomayor a franchi 2,45 m en 1993 ; le record tient toujours.",
+    "source_url": "https://fr.wikipedia.org/wiki/Saut_en_hauteur",
+    "status": "published",
+    "correct_answer": 2.45,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "m",
+      "tolerance": 0.6,
+      "exact_margin": 0.01
+    }
+  },
+  {
+    "id": "sport-024",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "golf"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de trous compte un parcours de golf standard ?",
+    "explanation": "Un parcours complet compte 18 trous, une norme fixée à St Andrews en Écosse.",
+    "source_url": "https://fr.wikipedia.org/wiki/Golf",
+    "status": "published",
+    "choices": [
+      "9",
+      "12",
+      "18",
+      "24"
+    ],
+    "correct_answer": "18"
+  },
+  {
+    "id": "sport-025",
+    "type": "numeric",
+    "category": "sport",
+    "tags": [
+      "jeux",
+      "calcul"
+    ],
+    "difficulty": 2,
+    "prompt": "Aux fléchettes, quel est le score maximal possible avec 3 fléchettes ?",
+    "explanation": "Trois fléchettes dans le triple 20 : 3 × 60 = 180, le fameux « one hundred and eighty ! ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Fléchettes",
+    "status": "published",
+    "correct_answer": 180,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "points",
+      "tolerance": 60
+    }
+  },
+  {
+    "id": "sport-026",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "basket"
+    ],
+    "difficulty": 1,
+    "prompt": "Dans quel sport Tony Parker s'est-il illustré ?",
+    "explanation": "Tony Parker a remporté 4 titres NBA avec les San Antonio Spurs.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tony_Parker",
+    "status": "published",
+    "choices": [
+      "Le handball",
+      "Le basket-ball",
+      "Le tennis",
+      "Le football"
+    ],
+    "correct_answer": "Le basket-ball"
+  },
+  {
+    "id": "sport-027",
+    "type": "mcq",
+    "category": "sport",
+    "tags": [
+      "handball"
+    ],
+    "difficulty": 2,
+    "prompt": "Au handball, combien de joueurs par équipe sont sur le terrain (gardien compris) ?",
+    "explanation": "Six joueurs de champ et un gardien.",
+    "source_url": "https://fr.wikipedia.org/wiki/Handball",
+    "status": "published",
+    "choices": [
+      "5",
+      "6",
+      "7",
+      "9"
+    ],
+    "correct_answer": "7"
+  }
+]

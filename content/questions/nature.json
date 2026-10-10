@@ -1,0 +1,572 @@
+[
+  {
+    "id": "nature-001",
+    "type": "binary",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "océans"
+    ],
+    "difficulty": 1,
+    "prompt": "La pieuvre a trois cœurs.",
+    "explanation": "Vrai : deux cœurs envoient le sang vers les branchies, le troisième vers le reste du corps.",
+    "source_url": "https://fr.wikipedia.org/wiki/Octopus",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "nature-002",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "records"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le plus grand animal ayant jamais vécu sur Terre ?",
+    "explanation": "La baleine bleue peut dépasser 30 m de long : aucun dinosaure connu n'était aussi lourd.",
+    "source_url": "https://fr.wikipedia.org/wiki/Baleine_bleue",
+    "status": "published",
+    "choices": [
+      "L'éléphant d'Afrique",
+      "La baleine bleue",
+      "Le requin-baleine",
+      "Le diplodocus"
+    ],
+    "correct_answer": "La baleine bleue"
+  },
+  {
+    "id": "nature-003",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de pattes a une araignée ?",
+    "explanation": "Les araignées sont des arachnides : elles ont 8 pattes, contre 6 pour les insectes.",
+    "source_url": "https://fr.wikipedia.org/wiki/Araneae",
+    "status": "published",
+    "correct_answer": 8,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "pattes",
+      "tolerance": 4
+    }
+  },
+  {
+    "id": "nature-004",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "records"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est l'animal terrestre le plus rapide ?",
+    "explanation": "Le guépard peut atteindre environ 110 km/h en pointe, sur de courtes distances.",
+    "source_url": "https://fr.wikipedia.org/wiki/Guépard",
+    "status": "published",
+    "choices": [
+      "Le lion",
+      "Le guépard",
+      "L'antilope",
+      "Le lévrier"
+    ],
+    "correct_answer": "Le guépard"
+  },
+  {
+    "id": "nature-005",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "vitesse"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle vitesse de pointe le guépard peut-il atteindre, en km/h ?",
+    "explanation": "Les mesures donnent environ 100 à 120 km/h, sur quelques centaines de mètres seulement.",
+    "source_url": "https://fr.wikipedia.org/wiki/Guépard",
+    "status": "published",
+    "correct_answer": 110,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km/h",
+      "factor": 2,
+      "exact_margin": 10
+    }
+  },
+  {
+    "id": "nature-006",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de mois dure la gestation d'une éléphante d'Afrique ?",
+    "explanation": "Environ 22 mois : c'est la plus longue gestation des mammifères terrestres.",
+    "source_url": "https://fr.wikipedia.org/wiki/Éléphant_de_savane_d'Afrique",
+    "status": "published",
+    "correct_answer": 22,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "mois",
+      "tolerance": 12,
+      "exact_margin": 1
+    }
+  },
+  {
+    "id": "nature-007",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "australie"
+    ],
+    "difficulty": 1,
+    "prompt": "De quoi le koala se nourrit-il presque exclusivement ?",
+    "explanation": "Le koala mange des feuilles d'eucalyptus, très pauvres en énergie, d'où ses longues heures de sommeil.",
+    "source_url": "https://fr.wikipedia.org/wiki/Koala",
+    "status": "published",
+    "choices": [
+      "De bambou",
+      "D'eucalyptus",
+      "D'insectes",
+      "De fruits"
+    ],
+    "correct_answer": "D'eucalyptus"
+  },
+  {
+    "id": "nature-008",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le seul mammifère capable de vrai vol battu ?",
+    "explanation": "Les autres « volants » ne font que planer ; seules les chauves-souris battent des ailes.",
+    "source_url": "https://fr.wikipedia.org/wiki/Chiroptera",
+    "status": "published",
+    "choices": [
+      "L'écureuil volant",
+      "La chauve-souris",
+      "Le galéopithèque",
+      "Le phalanger volant"
+    ],
+    "correct_answer": "La chauve-souris"
+  },
+  {
+    "id": "nature-009",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "records"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien pèse une baleine bleue adulte, en tonnes ?",
+    "explanation": "Une baleine bleue adulte pèse en général entre 100 et 150 tonnes ; les plus grandes ont dépassé 170 tonnes.",
+    "source_url": "https://fr.wikipedia.org/wiki/Baleine_bleue",
+    "status": "published",
+    "correct_answer": 150,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "tonnes",
+      "factor": 3,
+      "exact_margin": 30
+    }
+  },
+  {
+    "id": "nature-010",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "insectes"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien d'yeux possède une abeille ?",
+    "explanation": "Deux grands yeux composés et trois petits yeux simples (ocelles) sur le dessus de la tête.",
+    "source_url": "https://fr.wikipedia.org/wiki/Abeille",
+    "status": "published",
+    "choices": [
+      "2",
+      "3",
+      "5",
+      "8"
+    ],
+    "correct_answer": "5"
+  },
+  {
+    "id": "nature-011",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "océans"
+    ],
+    "difficulty": 1,
+    "prompt": "Le dauphin est :",
+    "explanation": "Le dauphin respire de l'air, allaite ses petits et a le sang chaud : c'est un mammifère marin.",
+    "source_url": "https://fr.wikipedia.org/wiki/Dauphin",
+    "status": "published",
+    "choices": [
+      "Un poisson",
+      "Un mammifère",
+      "Un amphibien",
+      "Un reptile"
+    ],
+    "correct_answer": "Un mammifère"
+  },
+  {
+    "id": "nature-012",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la taille d'une girafe mâle adulte, en mètres ?",
+    "explanation": "Un mâle mesure environ 5 à 6 m : c'est l'animal le plus grand du monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Girafe",
+    "status": "published",
+    "correct_answer": 5.5,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m",
+      "factor": 2,
+      "exact_margin": 0.4
+    }
+  },
+  {
+    "id": "nature-013",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "arbres"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel arbre produit des glands ?",
+    "explanation": "Le gland est le fruit du chêne ; le hêtre donne des faînes et le châtaignier des châtaignes.",
+    "source_url": "https://fr.wikipedia.org/wiki/Gland_(botanique)",
+    "status": "published",
+    "choices": [
+      "Le hêtre",
+      "Le chêne",
+      "Le châtaignier",
+      "Le noisetier"
+    ],
+    "correct_answer": "Le chêne"
+  },
+  {
+    "id": "nature-014",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "oiseaux",
+      "records"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel oiseau pond les plus gros œufs ?",
+    "explanation": "Un œuf d'autruche pèse environ 1,5 kg, l'équivalent d'une vingtaine d'œufs de poule.",
+    "source_url": "https://fr.wikipedia.org/wiki/Autruche",
+    "status": "published",
+    "choices": [
+      "L'aigle royal",
+      "L'autruche",
+      "Le cygne",
+      "L'émeu"
+    ],
+    "correct_answer": "L'autruche"
+  },
+  {
+    "id": "nature-015",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "asie"
+    ],
+    "difficulty": 1,
+    "prompt": "De quel pays le panda géant est-il originaire ?",
+    "explanation": "Le panda géant vit dans les forêts de montagne du centre de la Chine.",
+    "source_url": "https://fr.wikipedia.org/wiki/Panda_géant",
+    "status": "published",
+    "choices": [
+      "Le Japon",
+      "La Chine",
+      "L'Inde",
+      "Le Népal"
+    ],
+    "correct_answer": "La Chine"
+  },
+  {
+    "id": "nature-016",
+    "type": "short_text",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "vocabulaire"
+    ],
+    "difficulty": 1,
+    "prompt": "Comment appelle-t-on le petit du cheval ?",
+    "explanation": "Le petit du cheval est le poulain (ou la pouliche pour une femelle).",
+    "source_url": "https://fr.wikipedia.org/wiki/Poulain",
+    "status": "published",
+    "correct_answer": "Poulain",
+    "accepted_aliases": [
+      "pouliche",
+      "un poulain"
+    ]
+  },
+  {
+    "id": "nature-017",
+    "type": "short_text",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "vocabulaire"
+    ],
+    "difficulty": 2,
+    "prompt": "Comment appelle-t-on le petit de la chèvre ?",
+    "explanation": "Le petit de la chèvre est le chevreau, ou cabri ; la femelle est une chevrette.",
+    "source_url": "https://fr.wikipedia.org/wiki/Chèvre",
+    "status": "published",
+    "correct_answer": "Chevreau",
+    "accepted_aliases": [
+      "cabri",
+      "chevrette",
+      "biquet",
+      "un chevreau"
+    ]
+  },
+  {
+    "id": "nature-018",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "oiseaux"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel oiseau est capable de voler en arrière ?",
+    "explanation": "Grâce à des battements d'ailes très rapides, le colibri peut faire du surplace et reculer.",
+    "source_url": "https://fr.wikipedia.org/wiki/Trochilidae",
+    "status": "published",
+    "choices": [
+      "Le martinet",
+      "Le colibri",
+      "L'hirondelle",
+      "Le faucon"
+    ],
+    "correct_answer": "Le colibri"
+  },
+  {
+    "id": "nature-019",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "piège"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien de vertèbres compte le cou d'une girafe ?",
+    "explanation": "Comme presque tous les mammifères (et nous), la girafe a 7 vertèbres cervicales… chacune très longue.",
+    "source_url": "https://fr.wikipedia.org/wiki/Girafe",
+    "status": "published",
+    "correct_answer": 7,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "vertèbres",
+      "tolerance": 10
+    }
+  },
+  {
+    "id": "nature-020",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "insectes"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de pattes a un insecte ?",
+    "explanation": "Tous les insectes adultes ont 6 pattes et un corps en trois parties.",
+    "source_url": "https://fr.wikipedia.org/wiki/Insecte",
+    "status": "published",
+    "choices": [
+      "4",
+      "6",
+      "8",
+      "10"
+    ],
+    "correct_answer": "6"
+  },
+  {
+    "id": "nature-021",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "piège"
+    ],
+    "difficulty": 1,
+    "prompt": "Où vivent les ours polaires à l'état sauvage ?",
+    "explanation": "Les ours polaires vivent dans l'Arctique ; il n'y en a pas en Antarctique, où vivent les manchots.",
+    "source_url": "https://fr.wikipedia.org/wiki/Ours_blanc",
+    "status": "published",
+    "choices": [
+      "En Antarctique",
+      "Autour du pôle Nord",
+      "Dans les Alpes",
+      "En Patagonie"
+    ],
+    "correct_answer": "Autour du pôle Nord"
+  },
+  {
+    "id": "nature-022",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "plantes"
+    ],
+    "difficulty": 1,
+    "prompt": "Dans quelle partie de la plante la photosynthèse se fait-elle surtout ?",
+    "explanation": "Les feuilles concentrent la chlorophylle qui capte la lumière.",
+    "source_url": "https://fr.wikipedia.org/wiki/Photosynthèse",
+    "status": "published",
+    "choices": [
+      "Les racines",
+      "Les feuilles",
+      "Les fleurs",
+      "L'écorce"
+    ],
+    "correct_answer": "Les feuilles"
+  },
+  {
+    "id": "nature-023",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "oiseaux",
+      "records"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle est l'envergure du condor des Andes, en mètres ?",
+    "explanation": "Le condor des Andes atteint environ 3 m d'envergure, l'une des plus grandes chez les oiseaux.",
+    "source_url": "https://fr.wikipedia.org/wiki/Condor_des_Andes",
+    "status": "published",
+    "correct_answer": 3,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m",
+      "factor": 2,
+      "exact_margin": 0.2
+    }
+  },
+  {
+    "id": "nature-024",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel mammifère pond des œufs ?",
+    "explanation": "L'ornithorynque et les échidnés sont des monotrèmes : des mammifères qui pondent.",
+    "source_url": "https://fr.wikipedia.org/wiki/Ornithorynque",
+    "status": "published",
+    "choices": [
+      "Le kangourou",
+      "L'ornithorynque",
+      "Le tatou",
+      "Le hérisson"
+    ],
+    "correct_answer": "L'ornithorynque"
+  },
+  {
+    "id": "nature-025",
+    "type": "numeric",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "sommeil"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien d'heures par jour un koala dort-il ou se repose-t-il ?",
+    "explanation": "Le koala dort ou somnole 18 à 22 heures par jour pour économiser l'énergie de son régime d'eucalyptus.",
+    "source_url": "https://fr.wikipedia.org/wiki/Koala",
+    "status": "published",
+    "correct_answer": 20,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "heures",
+      "tolerance": 10,
+      "exact_margin": 2
+    }
+  },
+  {
+    "id": "nature-026",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "océans",
+      "animaux"
+    ],
+    "difficulty": 2,
+    "prompt": "De quoi se nourrit principalement le requin-baleine ?",
+    "explanation": "Le plus grand poisson du monde filtre l'eau pour se nourrir de plancton et de petits poissons.",
+    "source_url": "https://fr.wikipedia.org/wiki/Requin-baleine",
+    "status": "published",
+    "choices": [
+      "De phoques",
+      "De plancton",
+      "De thons",
+      "D'algues"
+    ],
+    "correct_answer": "De plancton"
+  },
+  {
+    "id": "nature-027",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "animaux",
+      "océans"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de bras a une pieuvre ?",
+    "explanation": "« Octopus » signifie « huit pieds » : la pieuvre a 8 bras couverts de ventouses.",
+    "source_url": "https://fr.wikipedia.org/wiki/Octopus",
+    "status": "published",
+    "choices": [
+      "6",
+      "8",
+      "10",
+      "12"
+    ],
+    "correct_answer": "8"
+  },
+  {
+    "id": "nature-028",
+    "type": "mcq",
+    "category": "nature",
+    "tags": [
+      "arbres",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est l'arbre le plus haut du monde ?",
+    "explanation": "Un séquoia de Californie, nommé Hyperion, mesure plus de 115 m.",
+    "source_url": "https://fr.wikipedia.org/wiki/Sequoia_sempervirens",
+    "status": "published",
+    "choices": [
+      "Le baobab",
+      "Le séquoia à feuilles d'if",
+      "L'eucalyptus géant",
+      "Le cèdre du Liban"
+    ],
+    "correct_answer": "Le séquoia à feuilles d'if"
+  }
+]

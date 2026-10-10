@@ -1,0 +1,13 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+web/dist/
+.emulator-data/
+.env*
+!.env.example
+*.log
+web/test-results/
+web/playwright-report/
+.setup-stamp
