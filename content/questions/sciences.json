@@ -1,0 +1,591 @@
+[
+  {
+    "id": "sciences-001",
+    "type": "binary",
+    "category": "sciences",
+    "tags": [
+      "espace"
+    ],
+    "difficulty": 1,
+    "prompt": "Le Soleil est une étoile.",
+    "explanation": "Vrai : le Soleil est une étoile naine jaune, la plus proche de nous, à environ 150 millions de km.",
+    "source_url": "https://fr.wikipedia.org/wiki/Soleil",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "sciences-002",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "corps humain"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien d'os compte le squelette d'un adulte ?",
+    "explanation": "Un adulte compte 206 os ; un nouveau-né en a davantage, certains fusionnant pendant la croissance.",
+    "source_url": "https://fr.wikipedia.org/wiki/Squelette_humain",
+    "status": "published",
+    "correct_answer": 206,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "os",
+      "factor": 2
+    }
+  },
+  {
+    "id": "sciences-003",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "chimie"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le symbole chimique de l'or ?",
+    "explanation": "Au vient du latin « aurum ». Ag (argentum) est le symbole de l'argent.",
+    "source_url": "https://fr.wikipedia.org/wiki/Or",
+    "status": "published",
+    "choices": [
+      "Ag",
+      "Au",
+      "Or",
+      "Go"
+    ],
+    "correct_answer": "Au"
+  },
+  {
+    "id": "sciences-004",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "physique"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la vitesse de la lumière dans le vide, en kilomètres par seconde ?",
+    "explanation": "La lumière parcourt 299 792 km chaque seconde : de quoi faire plus de 7 fois le tour de la Terre.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vitesse_de_la_lumière",
+    "status": "published",
+    "correct_answer": 299792,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km/s",
+      "factor": 3
+    }
+  },
+  {
+    "id": "sciences-005",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "physique",
+      "unités"
+    ],
+    "difficulty": 3,
+    "prompt": "À quelle température l'eau bout-elle au niveau de la mer, en degrés Fahrenheit ?",
+    "explanation": "100 °C correspondent à 212 °F ; l'eau gèle à 32 °F.",
+    "source_url": "https://fr.wikipedia.org/wiki/Degré_Fahrenheit",
+    "status": "published",
+    "correct_answer": 212,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "°F",
+      "tolerance": 60
+    }
+  },
+  {
+    "id": "sciences-006",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "espace"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la planète la plus proche du Soleil ?",
+    "explanation": "Mercure tourne autour du Soleil en 88 jours seulement.",
+    "source_url": "https://fr.wikipedia.org/wiki/Mercure_(planète)",
+    "status": "published",
+    "choices": [
+      "Vénus",
+      "Mercure",
+      "Mars",
+      "La Terre"
+    ],
+    "correct_answer": "Mercure"
+  },
+  {
+    "id": "sciences-007",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "espace"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de planètes compte le système solaire ?",
+    "explanation": "Depuis 2006, Pluton est classée planète naine : le système solaire compte 8 planètes.",
+    "source_url": "https://fr.wikipedia.org/wiki/Système_solaire",
+    "status": "published",
+    "correct_answer": 8,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "planètes",
+      "tolerance": 4
+    }
+  },
+  {
+    "id": "sciences-008",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "biologie"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel gaz les plantes absorbent-elles pour réaliser la photosynthèse ?",
+    "explanation": "Les plantes captent le CO₂ et, grâce à la lumière, produisent du sucre et rejettent de l'oxygène.",
+    "source_url": "https://fr.wikipedia.org/wiki/Photosynthèse",
+    "status": "published",
+    "choices": [
+      "L'oxygène",
+      "L'azote",
+      "Le dioxyde de carbone",
+      "L'hélium"
+    ],
+    "correct_answer": "Le dioxyde de carbone"
+  },
+  {
+    "id": "sciences-009",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "espace",
+      "physique"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle est la température à la surface du Soleil, en degrés Celsius ?",
+    "explanation": "La surface (photosphère) est à environ 5 500 °C ; le cœur dépasse 15 millions de degrés.",
+    "source_url": "https://fr.wikipedia.org/wiki/Soleil",
+    "status": "published",
+    "correct_answer": 5500,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "°C",
+      "factor": 3,
+      "exact_margin": 300
+    }
+  },
+  {
+    "id": "sciences-010",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "chimie"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la formule chimique de l'eau ?",
+    "explanation": "Une molécule d'eau associe deux atomes d'hydrogène et un atome d'oxygène.",
+    "source_url": "https://fr.wikipedia.org/wiki/Eau",
+    "status": "published",
+    "choices": [
+      "CO₂",
+      "H₂O",
+      "O₂",
+      "NaCl"
+    ],
+    "correct_answer": "H₂O"
+  },
+  {
+    "id": "sciences-011",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "biologie",
+      "corps humain"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de chromosomes possède une cellule humaine (hors cellules sexuelles) ?",
+    "explanation": "Nos cellules contiennent 46 chromosomes, soit 23 paires.",
+    "source_url": "https://fr.wikipedia.org/wiki/Chromosome",
+    "status": "published",
+    "correct_answer": 46,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "chromosomes",
+      "tolerance": 20
+    }
+  },
+  {
+    "id": "sciences-012",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "espace"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle planète est surnommée la planète rouge ?",
+    "explanation": "La couleur de Mars vient de l'oxyde de fer (la rouille) qui recouvre son sol.",
+    "source_url": "https://fr.wikipedia.org/wiki/Mars_(planète)",
+    "status": "published",
+    "choices": [
+      "Vénus",
+      "Jupiter",
+      "Mars",
+      "Saturne"
+    ],
+    "correct_answer": "Mars"
+  },
+  {
+    "id": "sciences-013",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "espace",
+      "distances"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la distance moyenne entre la Terre et le Soleil, en millions de kilomètres ?",
+    "explanation": "La Terre est en moyenne à environ 150 millions de km du Soleil : c'est l'unité astronomique.",
+    "source_url": "https://fr.wikipedia.org/wiki/Unité_astronomique",
+    "status": "published",
+    "correct_answer": 150,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "millions de km",
+      "factor": 3,
+      "exact_margin": 3
+    }
+  },
+  {
+    "id": "sciences-014",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "physique",
+      "unités"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est l'unité de la résistance électrique ?",
+    "explanation": "L'ohm (Ω) doit son nom au physicien allemand Georg Ohm.",
+    "source_url": "https://fr.wikipedia.org/wiki/Ohm",
+    "status": "published",
+    "choices": [
+      "Le volt",
+      "L'ampère",
+      "L'ohm",
+      "Le watt"
+    ],
+    "correct_answer": "L'ohm"
+  },
+  {
+    "id": "sciences-015",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "chimie"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien d'éléments chimiques compte le tableau périodique en 2024 ?",
+    "explanation": "118 éléments sont reconnus, de l'hydrogène à l'oganesson.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tableau_périodique_des_éléments",
+    "status": "published",
+    "correct_answer": 118,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "éléments",
+      "factor": 2
+    }
+  },
+  {
+    "id": "sciences-016",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "corps humain"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel organe produit l'insuline ?",
+    "explanation": "L'insuline est fabriquée par les îlots de Langerhans du pancréas et régule le taux de sucre dans le sang.",
+    "source_url": "https://fr.wikipedia.org/wiki/Insuline",
+    "status": "published",
+    "choices": [
+      "Le foie",
+      "Le pancréas",
+      "Les reins",
+      "L'estomac"
+    ],
+    "correct_answer": "Le pancréas"
+  },
+  {
+    "id": "sciences-017",
+    "type": "short_text",
+    "category": "sciences",
+    "tags": [
+      "géométrie"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de côtés a un hexagone ?",
+    "explanation": "« Hexa » veut dire six en grec : l'hexagone a 6 côtés, comme les alvéoles des abeilles.",
+    "source_url": "https://fr.wikipedia.org/wiki/Hexagone",
+    "status": "published",
+    "correct_answer": 6,
+    "accepted_aliases": []
+  },
+  {
+    "id": "sciences-018",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "espace"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est l'âge de l'Univers, en milliards d'années ?",
+    "explanation": "L'Univers a environ 13,8 milliards d'années, d'après les mesures du rayonnement fossile.",
+    "source_url": "https://fr.wikipedia.org/wiki/Âge_de_l'Univers",
+    "status": "published",
+    "correct_answer": 13.8,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "milliards d'années",
+      "factor": 2,
+      "exact_margin": 0.2
+    }
+  },
+  {
+    "id": "sciences-019",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "terre"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est l'âge de la Terre, en milliards d'années ?",
+    "explanation": "La Terre s'est formée il y a environ 4,54 milliards d'années.",
+    "source_url": "https://fr.wikipedia.org/wiki/Âge_de_la_Terre",
+    "status": "published",
+    "correct_answer": 4.54,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "milliards d'années",
+      "factor": 2,
+      "exact_margin": 0.1
+    }
+  },
+  {
+    "id": "sciences-020",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "physique"
+    ],
+    "difficulty": 1,
+    "prompt": "Qui a formulé la théorie de la relativité ?",
+    "explanation": "Einstein publie la relativité restreinte en 1905 puis la relativité générale en 1915.",
+    "source_url": "https://fr.wikipedia.org/wiki/Albert_Einstein",
+    "status": "published",
+    "choices": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Niels Bohr",
+      "Marie Curie"
+    ],
+    "correct_answer": "Albert Einstein"
+  },
+  {
+    "id": "sciences-021",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "corps humain"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de litres de sang contient le corps d'un adulte ?",
+    "explanation": "Un adulte possède environ 5 litres de sang, soit 7 à 8 % de sa masse.",
+    "source_url": "https://fr.wikipedia.org/wiki/Sang",
+    "status": "published",
+    "correct_answer": 5,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "litres",
+      "factor": 2,
+      "exact_margin": 0.5
+    }
+  },
+  {
+    "id": "sciences-022",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "chimie"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel métal est liquide à température ambiante ?",
+    "explanation": "Le mercure fond à −39 °C : c'est le seul métal liquide à température ambiante.",
+    "source_url": "https://fr.wikipedia.org/wiki/Mercure_(chimie)",
+    "status": "published",
+    "choices": [
+      "Le plomb",
+      "Le mercure",
+      "L'étain",
+      "Le zinc"
+    ],
+    "correct_answer": "Le mercure"
+  },
+  {
+    "id": "sciences-023",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "chimie",
+      "terre"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel pourcentage d'azote contient l'air que nous respirons ?",
+    "explanation": "L'air contient environ 78 % d'azote et 21 % d'oxygène.",
+    "source_url": "https://fr.wikipedia.org/wiki/Air",
+    "status": "published",
+    "correct_answer": 78,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "%",
+      "tolerance": 40,
+      "exact_margin": 1
+    }
+  },
+  {
+    "id": "sciences-024",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "espace"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la plus grande planète du système solaire ?",
+    "explanation": "Jupiter est si grande qu'elle pourrait contenir plus de 1 300 Terres.",
+    "source_url": "https://fr.wikipedia.org/wiki/Jupiter_(planète)",
+    "status": "published",
+    "choices": [
+      "Saturne",
+      "Jupiter",
+      "Neptune",
+      "Uranus"
+    ],
+    "correct_answer": "Jupiter"
+  },
+  {
+    "id": "sciences-025",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "physique",
+      "espace"
+    ],
+    "difficulty": 3,
+    "prompt": "Une personne pèse 60 kg sur Terre. Combien de kilos afficherait sa balance sur la Lune ?",
+    "explanation": "La gravité lunaire vaut environ 1/6 de celle de la Terre : la balance afficherait à peu près 10 kg.",
+    "source_url": "https://fr.wikipedia.org/wiki/Lune",
+    "status": "published",
+    "correct_answer": 10,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "kg",
+      "factor": 2,
+      "exact_margin": 0.5
+    }
+  },
+  {
+    "id": "sciences-026",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "physique"
+    ],
+    "difficulty": 2,
+    "prompt": "Dans quel milieu le son se propage-t-il le plus vite ?",
+    "explanation": "Le son file à environ 5 900 m/s dans l'acier, contre 1 500 m/s dans l'eau et 340 m/s dans l'air. Dans le vide, il ne se propage pas.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vitesse_du_son",
+    "status": "published",
+    "choices": [
+      "L'air",
+      "L'eau",
+      "L'acier",
+      "Le vide"
+    ],
+    "correct_answer": "L'acier"
+  },
+  {
+    "id": "sciences-027",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "physique"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la vitesse du son dans l'air à 20 °C, en mètres par seconde ?",
+    "explanation": "Le son parcourt environ 343 m/s : il faut à peu près 3 secondes pour qu'il parcoure 1 km.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vitesse_du_son",
+    "status": "published",
+    "correct_answer": 343,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m/s",
+      "factor": 2,
+      "exact_margin": 5
+    }
+  },
+  {
+    "id": "sciences-028",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "médecine"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel scientifique a découvert la pénicilline en 1928 ?",
+    "explanation": "Alexander Fleming remarque qu'une moisissure empêche la croissance de bactéries : c'est le premier antibiotique.",
+    "source_url": "https://fr.wikipedia.org/wiki/Pénicilline",
+    "status": "published",
+    "choices": [
+      "Louis Pasteur",
+      "Alexander Fleming",
+      "Marie Curie",
+      "Robert Koch"
+    ],
+    "correct_answer": "Alexander Fleming"
+  },
+  {
+    "id": "sciences-029",
+    "type": "numeric",
+    "category": "sciences",
+    "tags": [
+      "corps humain"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de dents compte la dentition complète d'un adulte ?",
+    "explanation": "Un adulte a 32 dents, dents de sagesse comprises.",
+    "source_url": "https://fr.wikipedia.org/wiki/Dent",
+    "status": "published",
+    "correct_answer": 32,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "dents",
+      "tolerance": 12
+    }
+  },
+  {
+    "id": "sciences-030",
+    "type": "mcq",
+    "category": "sciences",
+    "tags": [
+      "biologie"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la plus petite unité de la vie capable de se reproduire seule ?",
+    "explanation": "La cellule est l'unité de base du vivant ; un virus, lui, a besoin d'une cellule pour se reproduire.",
+    "source_url": "https://fr.wikipedia.org/wiki/Cellule_(biologie)",
+    "status": "published",
+    "choices": [
+      "L'atome",
+      "La molécule",
+      "La cellule",
+      "Le gène"
+    ],
+    "correct_answer": "La cellule"
+  }
+]

@@ -1,0 +1,648 @@
+[
+  {
+    "id": "culture-001",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "canada",
+      "capitales"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la capitale du Canada ?",
+    "explanation": "Ottawa est la capitale fédérale du Canada depuis 1857, même si Toronto est la plus grande ville du pays.",
+    "source_url": "https://fr.wikipedia.org/wiki/Ottawa",
+    "status": "published",
+    "choices": [
+      "Toronto",
+      "Ottawa",
+      "Montréal",
+      "Vancouver"
+    ],
+    "correct_answer": "Ottawa"
+  },
+  {
+    "id": "culture-002",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "japon",
+      "monnaies"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la monnaie du Japon ?",
+    "explanation": "Le yen est la monnaie du Japon. Le yuan est chinois, le won coréen et le ringgit malaisien.",
+    "source_url": "https://fr.wikipedia.org/wiki/Yen",
+    "status": "published",
+    "choices": [
+      "Le yuan",
+      "Le won",
+      "Le yen",
+      "Le ringgit"
+    ],
+    "correct_answer": "Le yen"
+  },
+  {
+    "id": "culture-003",
+    "type": "short_text",
+    "category": "culture",
+    "tags": [
+      "littérature"
+    ],
+    "difficulty": 1,
+    "prompt": "Qui a écrit le roman « Les Misérables » (1862) ?",
+    "explanation": "Victor Hugo a publié « Les Misérables » en 1862, pendant son exil à Guernesey.",
+    "source_url": "https://fr.wikipedia.org/wiki/Les_Misérables",
+    "status": "published",
+    "correct_answer": "Victor Hugo",
+    "accepted_aliases": [
+      "Hugo"
+    ]
+  },
+  {
+    "id": "culture-004",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "cuisine",
+      "mexique"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est l'ingrédient principal du guacamole ?",
+    "explanation": "Le guacamole, d'origine aztèque, est une purée d'avocat relevée de citron vert, d'oignon et de piment.",
+    "source_url": "https://fr.wikipedia.org/wiki/Guacamole",
+    "status": "published",
+    "choices": [
+      "La tomate",
+      "L'avocat",
+      "Le concombre",
+      "Le poivron"
+    ],
+    "correct_answer": "L'avocat"
+  },
+  {
+    "id": "culture-005",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "jeux"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de cases compte un échiquier ?",
+    "explanation": "Un échiquier compte 8 × 8 = 64 cases, alternativement claires et foncées.",
+    "source_url": "https://fr.wikipedia.org/wiki/Échiquier",
+    "status": "published",
+    "choices": [
+      "49",
+      "64",
+      "81",
+      "100"
+    ],
+    "correct_answer": "64"
+  },
+  {
+    "id": "culture-006",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "brésil",
+      "langues"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle langue est la plus parlée au Brésil ?",
+    "explanation": "Ancienne colonie portugaise, le Brésil est aujourd'hui le pays qui compte le plus de lusophones au monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Portugais_brésilien",
+    "status": "published",
+    "choices": [
+      "L'espagnol",
+      "Le portugais",
+      "L'anglais",
+      "Le français"
+    ],
+    "correct_answer": "Le portugais"
+  },
+  {
+    "id": "culture-007",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "afrique",
+      "villes"
+    ],
+    "difficulty": 1,
+    "prompt": "Dans quel pays se trouve la ville de Marrakech ?",
+    "explanation": "Marrakech, surnommée la « ville rouge », est l'une des villes impériales du Maroc.",
+    "source_url": "https://fr.wikipedia.org/wiki/Marrakech",
+    "status": "published",
+    "choices": [
+      "L'Algérie",
+      "La Tunisie",
+      "Le Maroc",
+      "L'Égypte"
+    ],
+    "correct_answer": "Le Maroc"
+  },
+  {
+    "id": "culture-008",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "jeux"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de cartes compte un jeu de tarot ?",
+    "explanation": "Le tarot compte 78 cartes : 56 cartes de couleur, 21 atouts et l'Excuse.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tarot_français",
+    "status": "published",
+    "choices": [
+      "52",
+      "54",
+      "78",
+      "32"
+    ],
+    "correct_answer": "78"
+  },
+  {
+    "id": "culture-009",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "france",
+      "symboles"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel animal est le symbole de la France sur les maillots des équipes nationales ?",
+    "explanation": "Le coq gaulois vient d'un jeu de mots latin : « gallus » signifie à la fois coq et Gaulois.",
+    "source_url": "https://fr.wikipedia.org/wiki/Coq_gaulois",
+    "status": "published",
+    "choices": [
+      "L'aigle",
+      "Le lion",
+      "Le coq",
+      "L'ours"
+    ],
+    "correct_answer": "Le coq"
+  },
+  {
+    "id": "culture-010",
+    "type": "short_text",
+    "category": "culture",
+    "tags": [
+      "chine",
+      "langues"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la langue la plus parlée en Chine ?",
+    "explanation": "Le mandarin (putonghua) est la langue officielle de la Chine et la langue maternelle la plus parlée au monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Mandarin_standard",
+    "status": "published",
+    "correct_answer": "Mandarin",
+    "accepted_aliases": [
+      "chinois mandarin",
+      "le mandarin",
+      "putonghua"
+    ]
+  },
+  {
+    "id": "culture-011",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "australie",
+      "capitales",
+      "piège"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la capitale de l'Australie ?",
+    "explanation": "Canberra a été créée de toutes pièces au début du XXᵉ siècle pour départager Sydney et Melbourne, qui voulaient toutes deux être capitale.",
+    "source_url": "https://fr.wikipedia.org/wiki/Canberra",
+    "status": "published",
+    "choices": [
+      "Sydney",
+      "Melbourne",
+      "Canberra",
+      "Perth"
+    ],
+    "correct_answer": "Canberra"
+  },
+  {
+    "id": "culture-012",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "jeux"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien de pièces y a-t-il sur l'échiquier au début d'une partie d'échecs (les deux camps réunis) ?",
+    "explanation": "Chaque joueur commence avec 16 pièces : 8 pions, 2 tours, 2 cavaliers, 2 fous, une dame et un roi.",
+    "source_url": "https://fr.wikipedia.org/wiki/Échecs",
+    "status": "published",
+    "choices": [
+      "16",
+      "24",
+      "32",
+      "40"
+    ],
+    "correct_answer": "32"
+  },
+  {
+    "id": "culture-013",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "musées",
+      "espagne"
+    ],
+    "difficulty": 2,
+    "prompt": "Dans quelle ville se trouve le musée du Prado ?",
+    "explanation": "Le Prado, ouvert en 1819 à Madrid, abrite l'une des plus grandes collections de peinture européenne.",
+    "source_url": "https://fr.wikipedia.org/wiki/Musée_du_Prado",
+    "status": "published",
+    "choices": [
+      "Barcelone",
+      "Madrid",
+      "Lisbonne",
+      "Séville"
+    ],
+    "correct_answer": "Madrid"
+  },
+  {
+    "id": "culture-014",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "littérature"
+    ],
+    "difficulty": 1,
+    "prompt": "Qui a écrit « Le Petit Prince » ?",
+    "explanation": "Antoine de Saint-Exupéry, aviateur et écrivain, a publié « Le Petit Prince » en 1943 à New York.",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Petit_Prince",
+    "status": "published",
+    "choices": [
+      "Jules Verne",
+      "Antoine de Saint-Exupéry",
+      "Albert Camus",
+      "Marcel Pagnol"
+    ],
+    "correct_answer": "Antoine de Saint-Exupéry"
+  },
+  {
+    "id": "culture-015",
+    "type": "short_text",
+    "category": "culture",
+    "tags": [
+      "littérature"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le nom de famille du détective Sherlock, créé par Arthur Conan Doyle ?",
+    "explanation": "Sherlock Holmes apparaît pour la première fois en 1887 dans « Une étude en rouge ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Sherlock_Holmes",
+    "status": "published",
+    "correct_answer": "Holmes",
+    "accepted_aliases": [
+      "Sherlock Holmes"
+    ]
+  },
+  {
+    "id": "culture-016",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "cuisine",
+      "fromages"
+    ],
+    "difficulty": 2,
+    "prompt": "De quel pays le fromage gouda est-il originaire ?",
+    "explanation": "Le gouda doit son nom à la ville néerlandaise de Gouda, où il était vendu dès le Moyen Âge.",
+    "source_url": "https://fr.wikipedia.org/wiki/Gouda_(fromage)",
+    "status": "published",
+    "choices": [
+      "La Suisse",
+      "La Belgique",
+      "Les Pays-Bas",
+      "Le Danemark"
+    ],
+    "correct_answer": "Les Pays-Bas"
+  },
+  {
+    "id": "culture-017",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "france",
+      "symboles"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la devise de la République française ?",
+    "explanation": "« Liberté, Égalité, Fraternité », héritée de la Révolution, est inscrite dans la Constitution de 1958.",
+    "source_url": "https://fr.wikipedia.org/wiki/Liberté,_Égalité,_Fraternité",
+    "status": "published",
+    "choices": [
+      "Liberté, Égalité, Fraternité",
+      "Travail, Famille, Patrie",
+      "Unité, Progrès, Justice",
+      "Paix, Travail, Patrie"
+    ],
+    "correct_answer": "Liberté, Égalité, Fraternité"
+  },
+  {
+    "id": "culture-018",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "europe",
+      "symboles",
+      "piège"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien d'étoiles figurent sur le drapeau de l'Union européenne ?",
+    "explanation": "Le drapeau compte 12 étoiles, symbole de perfection et d'unité : ce nombre ne dépend pas du nombre de pays membres.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_européen",
+    "status": "published",
+    "choices": [
+      "10",
+      "12",
+      "15",
+      "27"
+    ],
+    "correct_answer": "12"
+  },
+  {
+    "id": "culture-019",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "europe"
+    ],
+    "difficulty": 2,
+    "prompt": "Dans quelle ville se trouve le siège officiel du Parlement européen ?",
+    "explanation": "Les sessions plénières se tiennent à Strasbourg, siège officiel, même si les commissions travaillent surtout à Bruxelles.",
+    "source_url": "https://fr.wikipedia.org/wiki/Parlement_européen",
+    "status": "published",
+    "choices": [
+      "Bruxelles",
+      "Strasbourg",
+      "Luxembourg",
+      "Genève"
+    ],
+    "correct_answer": "Strasbourg"
+  },
+  {
+    "id": "culture-020",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "monnaies"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la monnaie du Royaume-Uni ?",
+    "explanation": "Le Royaume-Uni n'a jamais adopté l'euro et utilise la livre sterling, l'une des plus anciennes monnaies encore en usage.",
+    "source_url": "https://fr.wikipedia.org/wiki/Livre_sterling",
+    "status": "published",
+    "choices": [
+      "L'euro",
+      "La livre sterling",
+      "Le franc",
+      "La couronne"
+    ],
+    "correct_answer": "La livre sterling"
+  },
+  {
+    "id": "culture-021",
+    "type": "short_text",
+    "category": "culture",
+    "tags": [
+      "informatique"
+    ],
+    "difficulty": 2,
+    "prompt": "Que signifie le sigle WWW, au début des adresses web ?",
+    "explanation": "WWW signifie World Wide Web, la « toile d'araignée mondiale » imaginée par Tim Berners-Lee au CERN en 1989.",
+    "source_url": "https://fr.wikipedia.org/wiki/World_Wide_Web",
+    "status": "published",
+    "correct_answer": "World Wide Web",
+    "accepted_aliases": [
+      "worldwideweb"
+    ]
+  },
+  {
+    "id": "culture-022",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "france",
+      "politique"
+    ],
+    "difficulty": 1,
+    "prompt": "Depuis 2002, combien d'années dure un mandat de président de la République française ?",
+    "explanation": "Le quinquennat a remplacé le septennat après le référendum de 2000 ; il s'applique depuis l'élection de 2002.",
+    "source_url": "https://fr.wikipedia.org/wiki/Quinquennat_présidentiel_en_France",
+    "status": "published",
+    "choices": [
+      "4 ans",
+      "5 ans",
+      "6 ans",
+      "7 ans"
+    ],
+    "correct_answer": "5 ans"
+  },
+  {
+    "id": "culture-023",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "france",
+      "villes"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle ville est surnommée « la Ville lumière » ?",
+    "explanation": "Paris doit ce surnom à son éclairage public précoce et à son rôle de foyer des idées au siècle des Lumières.",
+    "source_url": "https://fr.wikipedia.org/wiki/Paris",
+    "status": "published",
+    "choices": [
+      "Lyon",
+      "Paris",
+      "Rome",
+      "Las Vegas"
+    ],
+    "correct_answer": "Paris"
+  },
+  {
+    "id": "culture-024",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "russie",
+      "géographie"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien de fuseaux horaires la Russie couvre-t-elle ?",
+    "explanation": "La Russie s'étend sur 11 fuseaux horaires, de Kaliningrad à la péninsule du Kamtchatka.",
+    "source_url": "https://fr.wikipedia.org/wiki/Heure_en_Russie",
+    "status": "published",
+    "choices": [
+      "7",
+      "9",
+      "11",
+      "13"
+    ],
+    "correct_answer": "11"
+  },
+  {
+    "id": "culture-025",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "religions",
+      "fêtes"
+    ],
+    "difficulty": 3,
+    "prompt": "Comment s'appelle le Nouvel An juif ?",
+    "explanation": "Roch Hachana (« tête de l'année ») ouvre l'année juive ; Yom Kippour, le Grand Pardon, suit dix jours plus tard.",
+    "source_url": "https://fr.wikipedia.org/wiki/Roch_Hachana",
+    "status": "published",
+    "choices": [
+      "Hanoucca",
+      "Pessah",
+      "Roch Hachana",
+      "Yom Kippour"
+    ],
+    "correct_answer": "Roch Hachana"
+  },
+  {
+    "id": "culture-026",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "usa",
+      "monuments"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel pays a offert la statue de la Liberté aux États-Unis ?",
+    "explanation": "La France l'a offerte en 1886 pour le centenaire de l'indépendance américaine ; sa structure est signée Gustave Eiffel.",
+    "source_url": "https://fr.wikipedia.org/wiki/Statue_de_la_Liberté",
+    "status": "published",
+    "choices": [
+      "Le Royaume-Uni",
+      "La France",
+      "L'Espagne",
+      "L'Italie"
+    ],
+    "correct_answer": "La France"
+  },
+  {
+    "id": "culture-027",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "langues"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel alphabet utilise-t-on pour écrire le russe ?",
+    "explanation": "Le russe s'écrit en alphabet cyrillique, créé au IXᵉ siècle dans l'Empire bulgare.",
+    "source_url": "https://fr.wikipedia.org/wiki/Alphabet_cyrillique",
+    "status": "published",
+    "choices": [
+      "Latin",
+      "Grec",
+      "Cyrillique",
+      "Arabe"
+    ],
+    "correct_answer": "Cyrillique"
+  },
+  {
+    "id": "culture-028",
+    "type": "short_text",
+    "category": "culture",
+    "tags": [
+      "pays",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel est le plus petit État du monde par sa superficie ?",
+    "explanation": "Avec environ 0,44 km², la Cité du Vatican est le plus petit État souverain du monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vatican",
+    "status": "published",
+    "correct_answer": "Vatican",
+    "accepted_aliases": [
+      "cité du vatican",
+      "le vatican",
+      "etat de la cite du vatican"
+    ]
+  },
+  {
+    "id": "culture-029",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "astrologie"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de signes compte le zodiaque occidental ?",
+    "explanation": "Le zodiaque occidental compte 12 signes, du Bélier aux Poissons.",
+    "source_url": "https://fr.wikipedia.org/wiki/Zodiaque",
+    "status": "published",
+    "choices": [
+      "10",
+      "12",
+      "13",
+      "14"
+    ],
+    "correct_answer": "12"
+  },
+  {
+    "id": "culture-030",
+    "type": "short_text",
+    "category": "culture",
+    "tags": [
+      "calendrier"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de jours compte une année bissextile ?",
+    "explanation": "Une année bissextile compte 366 jours : on ajoute un 29 février tous les quatre ans (sauf exceptions séculaires).",
+    "source_url": "https://fr.wikipedia.org/wiki/Année_bissextile",
+    "status": "published",
+    "correct_answer": 366,
+    "accepted_aliases": []
+  },
+  {
+    "id": "culture-031",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "amérique",
+      "monuments"
+    ],
+    "difficulty": 2,
+    "prompt": "Dans quel pays se trouve le Machu Picchu ?",
+    "explanation": "Le Machu Picchu, cité inca du XVᵉ siècle, domine la vallée de l'Urubamba au Pérou.",
+    "source_url": "https://fr.wikipedia.org/wiki/Machu_Picchu",
+    "status": "published",
+    "choices": [
+      "La Bolivie",
+      "Le Mexique",
+      "Le Pérou",
+      "Le Chili"
+    ],
+    "correct_answer": "Le Pérou"
+  },
+  {
+    "id": "culture-032",
+    "type": "mcq",
+    "category": "culture",
+    "tags": [
+      "france",
+      "télécoms"
+    ],
+    "difficulty": 3,
+    "prompt": "Quel est l'indicatif téléphonique international de la France ?",
+    "explanation": "La France utilise le +33 ; +32 est la Belgique, +34 l'Espagne et +41 la Suisse.",
+    "source_url": "https://fr.wikipedia.org/wiki/Liste_des_indicatifs_téléphoniques_internationaux_par_pays",
+    "status": "published",
+    "choices": [
+      "+32",
+      "+33",
+      "+34",
+      "+41"
+    ],
+    "correct_answer": "+33"
+  }
+]

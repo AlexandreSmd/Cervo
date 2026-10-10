@@ -1,0 +1,751 @@
+[
+  {
+    "id": "geographie-001",
+    "type": "binary",
+    "category": "geographie",
+    "tags": [
+      "australie",
+      "capitales",
+      "piège"
+    ],
+    "difficulty": 1,
+    "prompt": "Sydney est la capitale de l'Australie.",
+    "explanation": "Faux : la capitale est Canberra. Sydney est la plus grande ville du pays, mais pas sa capitale.",
+    "source_url": "https://fr.wikipedia.org/wiki/Canberra",
+    "status": "published",
+    "correct_answer": false
+  },
+  {
+    "id": "geographie-002",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "espace",
+      "distances"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la distance moyenne entre la Terre et la Lune, en kilomètres ?",
+    "explanation": "La Lune est en moyenne à 384 400 km de la Terre : environ 30 fois le diamètre terrestre.",
+    "source_url": "https://fr.wikipedia.org/wiki/Lune",
+    "status": "published",
+    "correct_answer": 384400,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km",
+      "factor": 3
+    }
+  },
+  {
+    "id": "geographie-003",
+    "type": "short_text",
+    "category": "geographie",
+    "tags": [
+      "france",
+      "fleuves"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le plus long fleuve de France ?",
+    "explanation": "La Loire parcourt environ 1 000 km du mont Gerbier-de-Jonc à l'Atlantique.",
+    "source_url": "https://fr.wikipedia.org/wiki/Loire_(fleuve)",
+    "status": "published",
+    "correct_answer": "Loire",
+    "accepted_aliases": [
+      "la loire"
+    ]
+  },
+  {
+    "id": "geographie-004",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "océans"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le plus grand océan du monde ?",
+    "explanation": "Le Pacifique couvre environ un tiers de la surface de la Terre.",
+    "source_url": "https://fr.wikipedia.org/wiki/Océan_Pacifique",
+    "status": "published",
+    "choices": [
+      "L'Atlantique",
+      "L'Indien",
+      "Le Pacifique",
+      "L'Arctique"
+    ],
+    "correct_answer": "Le Pacifique"
+  },
+  {
+    "id": "geographie-005",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "france",
+      "population"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien d'habitants compte la France (outre-mer compris), en millions ?",
+    "explanation": "La France comptait environ 68,4 millions d'habitants au 1ᵉʳ janvier 2024 selon l'Insee.",
+    "source_url": "https://www.insee.fr/fr/statistiques/2381472",
+    "status": "published",
+    "correct_answer": 68,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "millions",
+      "tolerance": 20,
+      "exact_margin": 1
+    }
+  },
+  {
+    "id": "geographie-006",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "montagnes",
+      "france"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est l'altitude du mont Blanc, en mètres ?",
+    "explanation": "Le mont Blanc culmine autour de 4 806 m (4 805,59 m lors de la mesure de 2021) ; son sommet de neige varie légèrement chaque année.",
+    "source_url": "https://fr.wikipedia.org/wiki/Mont_Blanc",
+    "status": "published",
+    "correct_answer": 4806,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m",
+      "factor": 2,
+      "exact_margin": 30
+    }
+  },
+  {
+    "id": "geographie-007",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "montagnes",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est l'altitude du mont Everest, en mètres ?",
+    "explanation": "L'Everest culmine à 8 849 m selon la mesure commune de la Chine et du Népal en 2020.",
+    "source_url": "https://fr.wikipedia.org/wiki/Everest",
+    "status": "published",
+    "correct_answer": 8849,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m",
+      "factor": 2,
+      "exact_margin": 50
+    }
+  },
+  {
+    "id": "geographie-008",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "afrique",
+      "fleuves"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le plus long fleuve d'Afrique ?",
+    "explanation": "Le Nil, long d'environ 6 650 km, traverse onze pays avant de se jeter dans la Méditerranée.",
+    "source_url": "https://fr.wikipedia.org/wiki/Nil",
+    "status": "published",
+    "choices": [
+      "Le Congo",
+      "Le Niger",
+      "Le Nil",
+      "Le Zambèze"
+    ],
+    "correct_answer": "Le Nil"
+  },
+  {
+    "id": "geographie-009",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "capitales",
+      "piège"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la capitale de la Turquie ?",
+    "explanation": "Ankara est la capitale depuis 1923, choisie par Atatürk ; Istanbul reste la plus grande ville.",
+    "source_url": "https://fr.wikipedia.org/wiki/Ankara",
+    "status": "published",
+    "choices": [
+      "Istanbul",
+      "Ankara",
+      "Izmir",
+      "Antalya"
+    ],
+    "correct_answer": "Ankara"
+  },
+  {
+    "id": "geographie-010",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "capitales",
+      "piège"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la capitale du Brésil ?",
+    "explanation": "Brasília, ville nouvelle inaugurée en 1960, a remplacé Rio de Janeiro comme capitale.",
+    "source_url": "https://fr.wikipedia.org/wiki/Brasília",
+    "status": "published",
+    "choices": [
+      "Rio de Janeiro",
+      "São Paulo",
+      "Brasília",
+      "Salvador"
+    ],
+    "correct_answer": "Brasília"
+  },
+  {
+    "id": "geographie-011",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "records",
+      "pays"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel est le plus grand pays du monde par sa superficie ?",
+    "explanation": "Avec plus de 17 millions de km², la Russie est presque deux fois plus grande que le Canada, deuxième.",
+    "source_url": "https://fr.wikipedia.org/wiki/Russie",
+    "status": "published",
+    "choices": [
+      "Le Canada",
+      "La Chine",
+      "Les États-Unis",
+      "La Russie"
+    ],
+    "correct_answer": "La Russie"
+  },
+  {
+    "id": "geographie-012",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "population",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel pays est le plus peuplé du monde en 2024 ?",
+    "explanation": "Selon l'ONU, l'Inde a dépassé la Chine en 2023 et compte plus de 1,4 milliard d'habitants.",
+    "source_url": "https://fr.wikipedia.org/wiki/Démographie_de_l'Inde",
+    "status": "published",
+    "choices": [
+      "La Chine",
+      "L'Inde",
+      "Les États-Unis",
+      "L'Indonésie"
+    ],
+    "correct_answer": "L'Inde"
+  },
+  {
+    "id": "geographie-013",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "europe"
+    ],
+    "difficulty": 1,
+    "prompt": "Combien de pays compte l'Union européenne en 2024 ?",
+    "explanation": "L'Union européenne compte 27 États membres depuis la sortie du Royaume-Uni en 2020.",
+    "source_url": "https://fr.wikipedia.org/wiki/Union_européenne",
+    "status": "published",
+    "correct_answer": 27,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "pays",
+      "tolerance": 10
+    }
+  },
+  {
+    "id": "geographie-014",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "france",
+      "superficie"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle est la superficie de la France métropolitaine, en km² ?",
+    "explanation": "La France métropolitaine (Corse comprise) couvre environ 544 000 km², ce qui en fait le plus grand pays de l'Union européenne.",
+    "source_url": "https://fr.wikipedia.org/wiki/France_métropolitaine",
+    "status": "published",
+    "correct_answer": 544000,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km²",
+      "factor": 2,
+      "exact_margin": 5000
+    }
+  },
+  {
+    "id": "geographie-015",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "france",
+      "distances"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la distance à vol d'oiseau entre Paris et Marseille, en kilomètres ?",
+    "explanation": "Environ 660 km séparent les deux villes à vol d'oiseau ; par la route, on dépasse 770 km.",
+    "source_url": "https://fr.wikipedia.org/wiki/Marseille",
+    "status": "published",
+    "correct_answer": 660,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km",
+      "factor": 2,
+      "exact_margin": 20
+    }
+  },
+  {
+    "id": "geographie-016",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "fleuves",
+      "records"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle est la longueur du Nil, en kilomètres ?",
+    "explanation": "Le Nil mesure environ 6 650 km ; sa longueur exacte fait débat avec celle de l'Amazone.",
+    "source_url": "https://fr.wikipedia.org/wiki/Nil",
+    "status": "published",
+    "correct_answer": 6650,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km",
+      "factor": 2,
+      "exact_margin": 100
+    }
+  },
+  {
+    "id": "geographie-017",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "déserts",
+      "amérique"
+    ],
+    "difficulty": 2,
+    "prompt": "Dans quel pays se trouve le désert d'Atacama, l'un des plus arides du monde ?",
+    "explanation": "L'Atacama, au nord du Chili, reçoit par endroits moins d'un millimètre de pluie par an.",
+    "source_url": "https://fr.wikipedia.org/wiki/Désert_d'Atacama",
+    "status": "published",
+    "choices": [
+      "Le Pérou",
+      "Le Chili",
+      "L'Argentine",
+      "Le Mexique"
+    ],
+    "correct_answer": "Le Chili"
+  },
+  {
+    "id": "geographie-018",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "fleuves",
+      "royaume-uni"
+    ],
+    "difficulty": 1,
+    "prompt": "Quel fleuve traverse Londres ?",
+    "explanation": "La Tamise traverse Londres avant de se jeter dans la mer du Nord.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tamise",
+    "status": "published",
+    "choices": [
+      "La Seine",
+      "La Tamise",
+      "Le Rhin",
+      "La Severn"
+    ],
+    "correct_answer": "La Tamise"
+  },
+  {
+    "id": "geographie-019",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "france",
+      "population"
+    ],
+    "difficulty": 2,
+    "prompt": "Combien d'habitants compte la ville de Paris (intra-muros), en millions ?",
+    "explanation": "Paris intra-muros compte environ 2,1 millions d'habitants ; l'agglomération en rassemble plus de 10 millions.",
+    "source_url": "https://fr.wikipedia.org/wiki/Paris",
+    "status": "published",
+    "correct_answer": 2.1,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "millions",
+      "factor": 2,
+      "exact_margin": 0.1
+    }
+  },
+  {
+    "id": "geographie-020",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "océans",
+      "records"
+    ],
+    "difficulty": 3,
+    "prompt": "Quelle est la profondeur maximale de la fosse des Mariannes, en mètres ?",
+    "explanation": "Le point le plus profond, le Challenger Deep, est mesuré autour de 10 994 m : plus que la hauteur de l'Everest.",
+    "source_url": "https://fr.wikipedia.org/wiki/Fosse_des_Mariannes",
+    "status": "published",
+    "correct_answer": 10994,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "m",
+      "factor": 2,
+      "exact_margin": 150
+    }
+  },
+  {
+    "id": "geographie-021",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 1,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-italie.svg",
+    "image_alt": "Drapeau à trois bandes verticales : vert, blanc, rouge",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Le drapeau italien est vert, blanc et rouge, en bandes verticales. Le Mexique ajoute un aigle au centre.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Italie",
+    "status": "published",
+    "choices": [
+      "L'Irlande",
+      "L'Italie",
+      "Le Mexique",
+      "La Hongrie"
+    ],
+    "correct_answer": "L'Italie"
+  },
+  {
+    "id": "geographie-022",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux",
+      "piège"
+    ],
+    "difficulty": 3,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-irlande.svg",
+    "image_alt": "Drapeau à trois bandes verticales : vert, blanc, orange",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Vert, blanc, orange (du mât vers l'extérieur) : c'est l'Irlande. La Côte d'Ivoire utilise les mêmes couleurs dans l'ordre inverse.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Irlande",
+    "status": "published",
+    "choices": [
+      "La Côte d'Ivoire",
+      "L'Irlande",
+      "L'Italie",
+      "L'Inde"
+    ],
+    "correct_answer": "L'Irlande"
+  },
+  {
+    "id": "geographie-023",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 1,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-belgique.svg",
+    "image_alt": "Drapeau à trois bandes verticales : noir, jaune, rouge",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Noir, jaune, rouge en bandes verticales : la Belgique. L'Allemagne a les mêmes couleurs en bandes horizontales.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Belgique",
+    "status": "published",
+    "choices": [
+      "L'Allemagne",
+      "La Belgique",
+      "La Roumanie",
+      "L'Andorre"
+    ],
+    "correct_answer": "La Belgique"
+  },
+  {
+    "id": "geographie-024",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 1,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-allemagne.svg",
+    "image_alt": "Drapeau à trois bandes horizontales : noir, rouge, jaune",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Noir, rouge, or en bandes horizontales : le drapeau allemand.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Allemagne",
+    "status": "published",
+    "choices": [
+      "La Belgique",
+      "L'Allemagne",
+      "L'Autriche",
+      "La Lituanie"
+    ],
+    "correct_answer": "L'Allemagne"
+  },
+  {
+    "id": "geographie-025",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 2,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-pays-bas.svg",
+    "image_alt": "Drapeau à trois bandes horizontales : rouge, blanc, bleu",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Rouge, blanc, bleu foncé à l'horizontale : les Pays-Bas. Le Luxembourg utilise un bleu plus clair.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_des_Pays-Bas",
+    "status": "published",
+    "choices": [
+      "La France",
+      "Le Luxembourg",
+      "Les Pays-Bas",
+      "La Russie"
+    ],
+    "correct_answer": "Les Pays-Bas"
+  },
+  {
+    "id": "geographie-026",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 2,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-autriche.svg",
+    "image_alt": "Drapeau à trois bandes horizontales : rouge, blanc, rouge",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Rouge, blanc, rouge à l'horizontale : l'Autriche, l'un des plus anciens drapeaux du monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Autriche",
+    "status": "published",
+    "choices": [
+      "La Pologne",
+      "La Lettonie",
+      "L'Autriche",
+      "Le Danemark"
+    ],
+    "correct_answer": "L'Autriche"
+  },
+  {
+    "id": "geographie-027",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 1,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-japon.svg",
+    "image_alt": "Drapeau blanc avec un disque rouge au centre",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Un disque rouge sur fond blanc : le Hinomaru, drapeau du Japon. Celui du Bangladesh est un disque rouge sur fond vert.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_du_Japon",
+    "status": "published",
+    "choices": [
+      "La Chine",
+      "La Corée du Sud",
+      "Le Japon",
+      "Le Bangladesh"
+    ],
+    "correct_answer": "Le Japon"
+  },
+  {
+    "id": "geographie-028",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 1,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-suede.svg",
+    "image_alt": "Drapeau bleu avec une croix jaune décalée vers le mât",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Une croix jaune sur fond bleu : la Suède.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Suède",
+    "status": "published",
+    "choices": [
+      "La Norvège",
+      "La Finlande",
+      "La Suède",
+      "Le Danemark"
+    ],
+    "correct_answer": "La Suède"
+  },
+  {
+    "id": "geographie-029",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux",
+      "piège"
+    ],
+    "difficulty": 2,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-pologne.svg",
+    "image_alt": "Drapeau à deux bandes horizontales : blanc en haut, rouge en bas",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Blanc au-dessus, rouge en dessous : la Pologne. L'Indonésie et Monaco ont le rouge en haut.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Pologne",
+    "status": "published",
+    "choices": [
+      "L'Indonésie",
+      "Monaco",
+      "La Pologne",
+      "L'Autriche"
+    ],
+    "correct_answer": "La Pologne"
+  },
+  {
+    "id": "geographie-030",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 1,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-ukraine.svg",
+    "image_alt": "Drapeau à deux bandes horizontales : bleu en haut, jaune en bas",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Bleu au-dessus, jaune en dessous : l'Ukraine (le ciel au-dessus des champs de blé).",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Ukraine",
+    "status": "published",
+    "choices": [
+      "La Suède",
+      "L'Ukraine",
+      "Le Kazakhstan",
+      "La Roumanie"
+    ],
+    "correct_answer": "L'Ukraine"
+  },
+  {
+    "id": "geographie-031",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 2,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-roumanie.svg",
+    "image_alt": "Drapeau à trois bandes verticales : bleu, jaune, rouge",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Bleu, jaune, rouge en bandes verticales : la Roumanie (le drapeau du Tchad est presque identique).",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Roumanie",
+    "status": "published",
+    "choices": [
+      "La Belgique",
+      "La Roumanie",
+      "La Colombie",
+      "La Bulgarie"
+    ],
+    "correct_answer": "La Roumanie"
+  },
+  {
+    "id": "geographie-032",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "drapeaux"
+    ],
+    "difficulty": 2,
+    "prompt": "À quel pays appartient ce drapeau ?",
+    "image_url": "/questions/drapeau-hongrie.svg",
+    "image_alt": "Drapeau à trois bandes horizontales : rouge, blanc, vert",
+    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "explanation": "Rouge, blanc, vert à l'horizontale : la Hongrie. La Bulgarie est blanc, vert, rouge.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Hongrie",
+    "status": "published",
+    "choices": [
+      "L'Italie",
+      "La Hongrie",
+      "La Bulgarie",
+      "L'Iran"
+    ],
+    "correct_answer": "La Hongrie"
+  },
+  {
+    "id": "geographie-033",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "capitales"
+    ],
+    "difficulty": 1,
+    "prompt": "Quelle est la capitale de l'Espagne ?",
+    "explanation": "Madrid est la capitale de l'Espagne depuis 1561, au centre géographique du pays.",
+    "source_url": "https://fr.wikipedia.org/wiki/Madrid",
+    "status": "published",
+    "choices": [
+      "Barcelone",
+      "Madrid",
+      "Séville",
+      "Valence"
+    ],
+    "correct_answer": "Madrid"
+  },
+  {
+    "id": "geographie-034",
+    "type": "numeric",
+    "category": "geographie",
+    "tags": [
+      "terre",
+      "distances"
+    ],
+    "difficulty": 2,
+    "prompt": "Quelle est la circonférence de la Terre à l'équateur, en kilomètres ?",
+    "explanation": "La circonférence équatoriale est d'environ 40 075 km : le mètre fut défini à l'origine à partir de la taille de la Terre.",
+    "source_url": "https://fr.wikipedia.org/wiki/Terre",
+    "status": "published",
+    "correct_answer": 40075,
+    "numeric_config": {
+      "scale": "log",
+      "unit": "km",
+      "factor": 2,
+      "exact_margin": 400
+    }
+  },
+  {
+    "id": "geographie-035",
+    "type": "mcq",
+    "category": "geographie",
+    "tags": [
+      "france",
+      "piège",
+      "records"
+    ],
+    "difficulty": 2,
+    "prompt": "Quel pays possède le plus de fuseaux horaires (territoires d'outre-mer compris) ?",
+    "explanation": "Grâce à ses outre-mer, de la Polynésie à La Réunion, la France s'étend sur 12 fuseaux horaires, record mondial.",
+    "source_url": "https://fr.wikipedia.org/wiki/Heure_en_France",
+    "status": "published",
+    "choices": [
+      "La Russie",
+      "Les États-Unis",
+      "La France",
+      "Le Royaume-Uni"
+    ],
+    "correct_answer": "La France"
+  }
+]
