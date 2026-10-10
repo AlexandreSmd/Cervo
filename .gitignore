@@ -7,6 +7,11 @@ web/dist/
 .emulator-data/
 .env*
 !.env.example
+!.env.production.example
+secrets/
+.prod-state.json
+infra/cloudflare/wrangler.generated.toml
+.wrangler/
 *.log
 web/test-results/
 web/playwright-report/

@@ -242,6 +242,11 @@ export function Profile() {
             Se déconnecter
           </button>
         )}
+        {p.is_admin && (
+          <Link to="/admin" className="block px-5 py-4 font-semibold text-accent">
+            Espace fondateur
+          </Link>
+        )}
         <Link to="/confidentialite" className="block px-5 py-4 font-semibold">
           Confidentialité
         </Link>

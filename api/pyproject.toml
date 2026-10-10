@@ -1,7 +1,7 @@
 [project]
 name = "cervo"
 version = "0.1.0"
-description = "API d'Aiguisé"
+description = "API de Vif"
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115",

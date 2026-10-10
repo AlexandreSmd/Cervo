@@ -2,7 +2,7 @@
   "name": "cervo-daily",
   "private": true,
   "version": "0.1.0",
-  "description": "Aiguisé — Garder son esprit affûté, vif et précis.",
+  "description": "Vif — Garder son esprit affûté, vif et précis.",
   "workspaces": [
     "web"
   ],
@@ -21,9 +21,15 @@
     "questions:import": "node scripts/run-api-tool.mjs import_questions",
     "lint": "node scripts/lint.mjs",
     "format": "node scripts/lint.mjs --fix",
-    "check": "node scripts/lint.mjs && node scripts/test.mjs"
+    "check": "node scripts/lint.mjs && node scripts/test.mjs",
+    "prod:check": "node scripts/prod.mjs check",
+    "prod:deploy": "node scripts/prod.mjs deploy",
+    "prod:api": "node scripts/prod.mjs api",
+    "prod:seed": "node scripts/prod.mjs seed",
+    "prod:web": "node scripts/prod.mjs web"
   },
   "devDependencies": {
-    "firebase-tools": "^15.0.0"
+    "firebase-tools": "^15.0.0",
+    "wrangler": "^4.149.0"
   }
 }

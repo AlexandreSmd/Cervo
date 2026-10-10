@@ -22,7 +22,7 @@ def ensure_user(db, claims: dict) -> dict:
     is_anonymous = claims.get("firebase", {}).get("sign_in_provider") == "anonymous"
     email = claims.get("email")
     if not snap.exists:
-        username = f"Aiguise-{uid[:5].upper()}"
+        username = f"Vif-{uid[:5].upper()}"
         doc = {
             "username": username,
             "username_lower": username.lower(),

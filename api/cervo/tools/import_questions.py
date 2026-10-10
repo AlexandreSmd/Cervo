@@ -12,7 +12,7 @@ from pathlib import Path
 
 from ..clock import now_iso
 from ..firebase import db
-from ..services.bank import check_bank, invalidate_cache, to_doc
+from ..services.bank import bump_version, check_bank, to_doc
 
 
 def main() -> None:
@@ -41,7 +41,7 @@ def main() -> None:
         batch.set(ref, to_doc(q, now_iso()))
         created += 1
     batch.commit()
-    invalidate_cache()
+    bump_version(client)
     print(f"{created} question(s) importée(s), {skipped} déjà présente(s), {len(errors)} en erreur.")
     if errors:
         sys.exit(1)

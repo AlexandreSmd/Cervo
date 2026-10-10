@@ -1,4 +1,4 @@
-# Architecture de Aiguisé
+# Architecture de Vif
 
 Ce document explique comment le code est organisé, où se trouve chaque règle, et comment
 faire évoluer le produit sans rien casser. Les choix et leurs raisons sont dans `DECISIONS.md`.

@@ -1,4 +1,4 @@
-# Aiguisé
+# Vif
 
 **Garder son esprit affûté, vif et précis.** 10 questions par jour, sans aide, un score sur 100 par question et la preuve de ta progression.
 
@@ -81,9 +81,13 @@ Détails : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Pour contribuer : [CONT
 
 La CI GitHub lance qualité, tests, build et parcours de bout en bout à chaque push.
 
-## Mise en ligne (après le MVP)
+## Mise en ligne
 
-1. Créer un projet Firebase (Authentication avec « Lien e-mail », Firestore), déployer `firestore.rules`.
-2. API : `modal deploy modal_app.py` avec un secret Modal `cervo-firebase` (voir l'en-tête de `modal_app.py`).
-3. Front : `npm run build --workspace web` avec `VITE_USE_FIREBASE_EMULATOR=false`, `VITE_DEV_TOOLS=false` et la vraie config Firebase (`VITE_FIREBASE_*`), puis Cloudflare (`infra/cloudflare/`).
-4. Cloudflare : domaine, Worker qui proxifie `/api/*` vers Modal, règle de limitation de débit sur `/api/answer`.
+Tout est prêt : domaine, Firebase (connexion et base), Modal (API) et Cloudflare (site).
+Guide pas à pas : **[docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md)**, puis une seule commande :
+
+| Commande | Rôle |
+| --- | --- |
+| `npm run prod:check` | Vérifie que la configuration et les comptes sont prêts |
+| `npm run prod:deploy` | Met en ligne l'API, charge les questions, publie le site |
+| `npm run prod:api` / `prod:seed` / `prod:web` | Une seule de ces étapes |

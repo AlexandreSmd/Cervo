@@ -1,6 +1,16 @@
 // Connexion par lien magique ; rattache l'e-mail à la session invité (même uid).
 import { useQueryClient } from "@tanstack/react-query";
-import { EmailAuthProvider, isSignInWithEmailLink, linkWithCredential, sendSignInLinkToEmail, signInWithEmailLink } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  GoogleAuthProvider,
+  isSignInWithEmailLink,
+  linkWithCredential,
+  linkWithPopup,
+  sendSignInLinkToEmail,
+  signInWithCredential,
+  signInWithEmailLink,
+  signInWithPopup,
+} from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../components/States";
@@ -64,15 +74,12 @@ export function Login() {
       } else {
         await signInWithEmailLink(auth, address, link);
       }
-      await auth.currentUser?.getIdToken(true);
       try {
         localStorage.removeItem(EMAIL_KEY);
       } catch {
-        /* ignore */
+        /* stockage indisponible */
       }
-      await api.profile();
-      await qc.invalidateQueries();
-      navigate("/profil", { replace: true });
+      await finish();
     } catch (err) {
       setCompleting(false);
       const code = (err as { code?: string }).code ?? "";
@@ -81,6 +88,42 @@ export function Login() {
           ? "Ce lien a expiré ou a déjà servi. Demande un nouveau lien."
           : "La connexion n'a pas abouti. Réessaie avec un nouveau lien.",
       );
+    }
+  };
+
+  /** Après une connexion : jeton à jour (e-mail), profil synchronisé, direction le profil. */
+  const finish = async () => {
+    await auth.currentUser?.getIdToken(true);
+    await api.profile();
+    await qc.invalidateQueries();
+    navigate("/profil", { replace: true });
+  };
+
+  /** Google : rattache le compte à la session invité (même historique), sinon s'y connecte. */
+  const google = async () => {
+    setError(null);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    try {
+      if (auth.currentUser?.isAnonymous) {
+        try {
+          await linkWithPopup(auth.currentUser, provider);
+        } catch (err) {
+          const code = (err as { code?: string }).code ?? "";
+          if (!code.includes("already-in-use")) throw err;
+          // Ce compte Google existe déjà : on s'y connecte (l'historique invité de cet appareil n'est pas fusionné).
+          const credential = GoogleAuthProvider.credentialFromError(err as never);
+          if (credential) await signInWithCredential(auth, credential);
+          else await signInWithPopup(auth, provider);
+        }
+      } else {
+        await signInWithPopup(auth, provider);
+      }
+      await finish();
+    } catch (err) {
+      const code = (err as { code?: string }).code ?? "";
+      if (!code.includes("popup-closed") && !code.includes("cancelled-popup"))
+        setError("La connexion avec Google n'a pas abouti. Réessaie.");
     }
   };
 
@@ -144,7 +187,7 @@ export function Login() {
   return (
     <div className="card mt-4 space-y-5 p-6">
       <h1 className="text-3xl font-extrabold">Ton compte</h1>
-      <p className="text-muted">Un lien de connexion par e-mail, sans mot de passe. Ta progression est gardée.</p>
+      <p className="text-muted">Sans mot de passe. Ta progression est gardée.</p>
       {user && !user.isAnonymous && <p className="rounded-2xl bg-good/10 p-3 text-sm">Tu es déjà connecté avec {user.email}.</p>}
       {sent ? (
         <div className="space-y-3" role="status">
@@ -165,24 +208,57 @@ export function Login() {
           </button>
         </div>
       ) : (
-        <form onSubmit={send} className="space-y-3">
-          <label htmlFor="email" className="sr-only">
-            Adresse e-mail
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            className="input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="toi@exemple.fr"
-            required
-          />
-          <button className="btn-dark w-full text-lg" type="submit" data-testid="send-link">
-            Recevoir le lien
+        <div className="space-y-4">
+          <button
+            type="button"
+            onClick={google}
+            data-testid="google"
+            className="btn w-full border border-line bg-card text-lg text-ink hover:bg-ink/5"
+          >
+            <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden="true">
+              <path
+                fill="#FFC107"
+                d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"
+              />
+              <path
+                fill="#FF3D00"
+                d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"
+              />
+              <path
+                fill="#4CAF50"
+                d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"
+              />
+              <path
+                fill="#1976D2"
+                d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"
+              />
+            </svg>
+            Continuer avec Google
           </button>
-        </form>
+          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-muted">
+            <span className="h-px flex-1 bg-line" />
+            ou par e-mail
+            <span className="h-px flex-1 bg-line" />
+          </div>
+          <form onSubmit={send} className="space-y-3">
+            <label htmlFor="email" className="sr-only">
+              Adresse e-mail
+            </label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              className="input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="toi@exemple.fr"
+              required
+            />
+            <button className="btn-dark w-full text-lg" type="submit" data-testid="send-link">
+              Recevoir le lien
+            </button>
+          </form>
+        </div>
       )}
       {status && <p className="text-muted">{status}</p>}
       {error && (

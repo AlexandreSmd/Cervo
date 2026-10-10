@@ -1,4 +1,4 @@
-# Product Management — Aiguisé
+# Product Management — Vif
 
 *Cahier des charges de la V1, destiné à Claude Code*
 
@@ -6,11 +6,11 @@
 
 ## Vision et mission
 
-Aiguisé est la salle de sport quotidienne du cerveau, pensée pour une époque où l'IA réfléchit de plus en plus à notre place.
+Vif est la salle de sport quotidienne du cerveau, pensée pour une époque où l'IA réfléchit de plus en plus à notre place.
 
 ### Le constat
 
-L'IA répond à presque tout en quelques secondes : elle rédige, résume, calcule, recommande. C'est utile, mais chaque fois qu'on lui délègue une réflexion, on s'en exerce un peu moins. Retenir, raisonner et estimer sont des capacités qui s'entretiennent, comme un muscle. Aiguisé propose un rituel simple et agréable pour les garder en forme.
+L'IA répond à presque tout en quelques secondes : elle rédige, résume, calcule, recommande. C'est utile, mais chaque fois qu'on lui délègue une réflexion, on s'en exerce un peu moins. Retenir, raisonner et estimer sont des capacités qui s'entretiennent, comme un muscle. Vif propose un rituel simple et agréable pour les garder en forme.
 
 ### Vision
 
@@ -31,7 +31,7 @@ Concrètement : donner à chacun, chaque jour, 5 à 10 minutes pour réfléchir 
 - **Sans aide** : on répond de tête, sans moteur de recherche ni assistant. C'est le cœur de la promesse, dit clairement dès l'accueil.
 - **Court et quotidien** : 10 questions, pas une de plus. Un rituel, pas une corvée.
 - **Honnête** : un score précis sur 100, sans flatterie, avec la bonne réponse et une explication à chaque fois.
-- **Pas contre l'IA** : l'IA reste un excellent outil. Aiguisé entraîne ce qu'on garde pour soi, sans faire la morale.
+- **Pas contre l'IA** : l'IA reste un excellent outil. Vif entraîne ce qu'on garde pour soi, sans faire la morale.
 - **Visible** : le profil montre la forme du cerveau et son évolution, comme un suivi d'entraînement.
 
 ### Les quatre piliers de l'entraînement
@@ -59,7 +59,7 @@ Les personnes qui utilisent l'IA au quotidien (étudiants, actifs, curieux) et q
 | Ton de coach : encourageant après une erreur, jamais culpabilisant ni scolaire | Le but est de donner envie de revenir demain |
 | Pas de classement public en V1 | On ne peut pas empêcher de tricher ; limiter l'enjeu garde le jeu sain |
 
-### Ce que Aiguisé n'est pas
+### Ce que Vif n'est pas
 
 - Pas un outil contre l'IA ou contre la technologie.
 - Pas un jeu de compétition stressant.
@@ -102,7 +102,7 @@ Le MVP est terminé quand, après avoir collé le prompt ci-dessous dans Claude 
 ### Prompt à coller dans Claude Code
 
 ```text
-Tu es le développeur unique du projet Aiguisé. Lis PRODUCT.md en entier avant de commencer, en particulier la section « Livraison du MVP : localhost en une commande ».
+Tu es le développeur unique du projet Vif. Lis PRODUCT.md en entier avant de commencer, en particulier la section « Livraison du MVP : localhost en une commande ».
 
 Stack imposée, à ne pas changer : backend Python (FastAPI, uv), frontend React (Vite, TypeScript), authentification Firebase, base Firestore, infrastructure Modal, réseau Cloudflare. En local, utilise les émulateurs Firebase (Auth et Firestore) : je n'ai aucun compte Firebase, Modal ou Cloudflare à créer pour le MVP.
 
@@ -557,7 +557,7 @@ Critères : court, mémorable, prononçable en français, évoque le rituel quot
 4. **Cervo** — nom court inventé, évoque le cerveau. Domaines : `cervo.fr`, `cervo.app`.
 5. **Quotidix** — quotidien + dix. Domaines : `quotidix.fr`, `quotidix.com`.
 
-**Nom retenu : Aiguisé** (anciennement « Cervo Daily »). Il évoque un esprit affûté, vif et précis. Domaines à tester : `aiguise.fr`, `aiguise.app`, `aiguise.com`. Prendre le `.fr` et si possible le `.com`. Le nom dans le code est `APP_NAME = "Aiguisé"`, changeable en une ligne.
+**Nom retenu : Vif** (anciennement « Cervo Daily »). Il évoque un esprit affûté, vif et précis. Domaines à tester : `vif.fr`, `jouevif.fr`, `vif.app`. Prendre le `.fr` et si possible le `.com`. Le nom dans le code est `APP_NAME = "Vif"`, changeable en une ligne.
 
 À faire côté porteur du projet (pas côté code) : acheter le domaine (par exemple via Cloudflare, qui gérera aussi le DNS), puis vérifier que le nom n'est pas déjà une marque déposée (base INPI / EUIPO).
 
