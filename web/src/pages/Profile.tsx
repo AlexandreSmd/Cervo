@@ -65,6 +65,7 @@ export function Profile() {
   const [catFilter, setCatFilter] = useState("all");
   const [scoreFilter, setScoreFilter] = useState("all");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [shown, setShown] = useState(10);
   const navigate = useNavigate();
   const qc = useQueryClient();
 
@@ -166,7 +167,7 @@ export function Profile() {
           <section className="card space-y-3 p-6" aria-labelledby="historique">
             <h2 id="historique" className="text-xl font-bold">Historique</h2>
             <ul className="divide-y divide-line">
-              {(days.data?.days ?? []).slice(0, 30).map((d) => (
+              {(days.data?.days ?? []).slice(0, 14).map((d) => (
                 <li key={d.date}>
                   <Link to={`/profil/${d.date}`} className="flex items-center justify-between gap-3 py-2.5 hover:text-accent">
                     <span>{capitalize(formatDay(d.date))}</span>
@@ -204,7 +205,7 @@ export function Profile() {
             </div>
             <p className="text-sm text-muted">{review.length} question{review.length > 1 ? "s" : ""}</p>
             <ul className="space-y-2">
-              {review.slice(0, 60).map((a) => (
+              {review.slice(0, shown).map((a) => (
                 <li key={`${a.date}-${a.position}`} className="rounded-2xl border border-line p-3 text-sm">
                   <div className="mb-1 flex justify-between text-xs text-muted">
                     <span>{formatDay(a.date, "short")} · {catLabels.get(a.category) ?? a.category}</span>
@@ -215,6 +216,7 @@ export function Profile() {
                 </li>
               ))}
             </ul>
+            {review.length > shown && <button className="btn-ghost w-full" onClick={() => setShown(shown + 20)}>Voir plus</button>}
           </section>
         </>
       )}
