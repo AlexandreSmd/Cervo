@@ -9,6 +9,8 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // Accessible depuis un téléphone sur le même Wi-Fi (http://<ip-de-l-ordinateur>:5173).
+    host: true,
     // En local, Vite joue le rôle du Worker Cloudflare : /api/* → API FastAPI.
     proxy: { "/api": { target: "http://127.0.0.1:8000", changeOrigin: true } },
   },

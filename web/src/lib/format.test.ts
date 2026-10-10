@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatAnswer, parseNumberInput, scoreColor, shareText } from "./format";
+import { formatAnswer, parseNumberInput, scoreColor } from "./format";
 
 describe("scoreColor", () => {
   it("suit les seuils vert ≥ 80, orange 40–79, rouge < 40", () => {
@@ -33,12 +33,9 @@ describe("formatAnswer", () => {
   });
 });
 
-describe("shareText", () => {
-  it("produit un texte à emojis sans dévoiler les questions", () => {
-    const text = shareText("Cervo Daily", "2026-10-10", 72, [100, 0, 50, 90, 80, 79, 40, 39, 100, 100], 3, "https://cervo.fr");
-    expect(text).toContain("72/100");
-    expect(text).toContain("🟩🟥🟧🟩🟩🟧🟧🟥🟩🟩");
-    expect(text).toContain("🔥 3 jours");
-    expect(text.split("\n")).toHaveLength(4);
+describe("formatAnswer, nouveaux types", () => {
+  it("affiche un classement et un rapport de taille", () => {
+    expect(formatAnswer(["A", "B", "C"], "order")).toBe("A → B → C");
+    expect(formatAnswer(3.456, "size")).toMatch(/^× 3,46$/);
   });
 });

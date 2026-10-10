@@ -5,9 +5,10 @@ from __future__ import annotations
 from firebase_admin import auth
 
 from ..config import get_settings
-from ..daily import today_str
+from ..domain.daily import today_str
 from ..firebase import app, db
-from ..service import ensure_user, seed_history
+from ..services.demo import seed_history
+from ..services.users import ensure_user
 
 DEMO_EMAIL = "demo@cervo.test"
 

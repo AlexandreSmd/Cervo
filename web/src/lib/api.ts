@@ -1,8 +1,12 @@
+// Client de l'API : ajoute le jeton Firebase, traduit les erreurs en messages lisibles.
 import { auth } from "./firebase";
-import type { AdminQuestion, Answer, DayDetail, PlayedDay, Profile, SubmitResult, Today } from "./types";
+import type { AdminQuestion, Answer, DayDetail, DayStats, Overview, PlayedDay, Profile, Schedule, SubmitResult, Today } from "./types";
 
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(
+    public status: number,
+    message: string,
+  ) {
     super(message);
   }
 }
@@ -21,7 +25,12 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const data = text ? JSON.parse(text) : null;
   if (!res.ok) {
     const detail = data?.detail;
-    const message = typeof detail === "string" ? detail : "Oups, quelque chose s'est mal passé. Réessaie dans un instant.";
+    const message =
+      typeof detail === "string"
+        ? detail
+        : Array.isArray(detail)
+          ? detail.map((d) => (typeof d === "string" ? d : d.msg)).join(" · ")
+          : "Oups, quelque chose s'est mal passé. Réessaie dans un instant.";
     throw new ApiError(res.status, message);
   }
   return data as T;
@@ -32,7 +41,12 @@ const json = (body: unknown) => JSON.stringify(body);
 export const api = {
   health: () => request<{ status: string; today: string; env: string }>("/health"),
   today: () => request<Today>("/today"),
-  answer: (date: string, question_id: string, answer: Answer) =>
+  startQuestion: (date: string, question_id: string) =>
+    request<{ started_at: string; server_time: string; position: number }>("/question-start", {
+      method: "POST",
+      body: json({ date, question_id }),
+    }),
+  answer: (date: string, question_id: string, answer: Answer | null) =>
     request<SubmitResult>("/answer", { method: "POST", body: json({ date, question_id, answer }) }),
   results: (date: string) => request<DayDetail>(`/results/${date}`),
   profile: () => request<Profile>("/profile"),
@@ -44,13 +58,26 @@ export const api = {
     questions: () => request<{ questions: AdminQuestion[] }>("/admin/questions"),
     reports: () => request<{ reports: { id: string; question_id: string; reason: string; created_at: string }[] }>("/admin/reports"),
     import: (questions: unknown[], overwrite = false) =>
-      request<{ created: string[]; updated: string[]; errors: { index: number; errors: string[] }[] }>(
-        "/admin/questions/import", { method: "POST", body: json({ questions, overwrite }) }),
+      request<{ created: string[]; updated: string[]; errors: { index: number; errors: string[] }[] }>("/admin/questions/import", {
+        method: "POST",
+        body: json({ questions, overwrite }),
+      }),
     setStatus: (id: string, status: string) => request(`/admin/questions/${id}`, { method: "PATCH", body: json({ status }) }),
+    update: (id: string, question: unknown) => request(`/admin/questions/${id}`, { method: "PUT", body: json(question) }),
+    overview: () => request<Overview>("/admin/overview"),
+    meta: () => request<{ today: string }>("/admin/meta"),
+    dayStats: (date: string) => request<DayStats>(`/admin/stats/${date}`),
+    schedule: (days = 28, start?: string) => request<Schedule>(`/admin/schedule?days=${days}${start ? `&start=${start}` : ""}`),
+    fill: (days = 28) => request<{ created: string[] }>("/admin/schedule/fill", { method: "POST", body: json({ days }) }),
+    setDay: (date: string, question_ids: string[]) => request(`/admin/schedule/${date}`, { method: "PUT", body: json({ question_ids }) }),
+    regenerate: (date: string) => request<{ question_ids: string[] }>(`/admin/schedule/${date}/regenerate`, { method: "POST" }),
+    clearDay: (date: string) => request(`/admin/schedule/${date}`, { method: "DELETE" }),
+    uploadMedia: (data_url: string) => request<{ url: string }>("/admin/media", { method: "POST", body: json({ data_url }) }),
   },
   dev: {
     login: (role: "demo" | "admin") => request<{ token: string; email: string }>("/dev/login", { method: "POST", body: json({ role }) }),
     replayToday: () => request("/dev/replay-today", { method: "POST" }),
     seedHistory: () => request<{ created: number }>("/dev/seed-history", { method: "POST" }),
+    simulatePlayers: () => request<{ players: number }>("/dev/simulate-players", { method: "POST" }),
   },
 };

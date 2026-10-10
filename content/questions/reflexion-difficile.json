@@ -1,0 +1,220 @@
+[
+  {
+    "id": "reflexion-101",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "piège",
+      "temps",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Combien de fois l'aiguille des heures et celle des minutes se superposent-elles en 24 heures ?",
+    "explanation": "Elles se rejoignent 11 fois toutes les 12 heures (pas 12 : entre 11 h et 13 h, il n'y a qu'une rencontre, à midi). Soit 22 fois par jour.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 22,
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-102",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "dénombrement",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Un tournoi à élimination directe réunit 64 joueurs. Combien de matchs faut-il jouer pour désigner le vainqueur ?",
+    "explanation": "Chaque match élimine exactement un joueur. Pour en éliminer 63, il faut 63 matchs.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 63,
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-103",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "dénombrement"
+    ],
+    "difficulty": 2,
+    "prompt": "Dix personnes se serrent toutes la main deux à deux, une seule fois. Combien de poignées de main en tout ?",
+    "explanation": "Chacun serre 9 mains, soit 10 × 9 = 90, mais chaque poignée est comptée deux fois : 45.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 45,
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-104",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "calcul",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Un père a 36 ans et son fils 6 ans. Dans combien d'années le père aura-t-il exactement le triple de l'âge de son fils ?",
+    "explanation": "36 + x = 3 × (6 + x), donc 36 + x = 18 + 3x, soit x = 9. Le père aura 45 ans, le fils 15.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 9,
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-105",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "probabilités",
+      "piège",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Jeu télévisé : 3 portes, une voiture derrière l'une d'elles. Tu en choisis une, l'animateur (qui sait tout) ouvre une autre porte vide et te propose de changer. Si tu changes, quelle est ta probabilité de gagner ?",
+    "explanation": "C'est le problème de Monty Hall : ton premier choix a 1 chance sur 3 d'être bon, donc changer gagne 2 fois sur 3.",
+    "source_url": "https://fr.wikipedia.org/wiki/Problème_de_Monty_Hall",
+    "status": "published",
+    "choices": [
+      "1/3",
+      "1/2",
+      "2/3",
+      "1"
+    ],
+    "correct_answer": "2/3"
+  },
+  {
+    "id": "reflexion-106",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "probabilités",
+      "piège",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Dans un groupe de 23 personnes, quelle est environ la probabilité qu'au moins deux d'entre elles aient le même jour d'anniversaire ?",
+    "explanation": "C'est le paradoxe des anniversaires : avec 23 personnes, il y a 253 paires possibles, et la probabilité dépasse déjà 50 %.",
+    "source_url": "https://fr.wikipedia.org/wiki/Paradoxe_des_anniversaires",
+    "status": "published",
+    "choices": [
+      "6 %",
+      "23 %",
+      "50 %",
+      "90 %"
+    ],
+    "correct_answer": "50 %"
+  },
+  {
+    "id": "reflexion-107",
+    "type": "mcq",
+    "category": "reflexion",
+    "tags": [
+      "probabilités",
+      "biais",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Une maladie touche 1 personne sur 10 000. Un test se trompe dans 1 % des cas. Ton test est positif : quelle est environ la probabilité que tu sois malade ?",
+    "explanation": "Sur 10 000 personnes testées : 1 vrai malade, mais environ 100 faux positifs. Un positif sur 101 seulement est malade, soit environ 1 %.",
+    "source_url": "https://fr.wikipedia.org/wiki/Théorème_de_Bayes",
+    "status": "published",
+    "choices": [
+      "Environ 99 %",
+      "Environ 50 %",
+      "Environ 10 %",
+      "Environ 1 %"
+    ],
+    "correct_answer": "Environ 1 %"
+  },
+  {
+    "id": "reflexion-108",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "vitesse",
+      "piège",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Un cycliste fait l'aller à 20 km/h et le retour, sur la même distance, à 30 km/h. Quelle est sa vitesse moyenne sur l'aller-retour, en km/h ?",
+    "explanation": "Pas 25 ! Pour 60 km aller et 60 km retour : 3 h + 2 h = 5 h pour 120 km, soit 24 km/h.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 24,
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-109",
+    "type": "numeric",
+    "category": "reflexion",
+    "tags": [
+      "géométrie",
+      "piège",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Une corde fait le tour de la Terre à l'équateur. On l'allonge d'un seul mètre et on la soulève partout à la même hauteur. À combien de centimètres du sol se trouve-t-elle ?",
+    "explanation": "Le rayon augmente de 1 m ÷ 2π, soit environ 16 cm, quelle que soit la taille de la sphère. L'intuition dit « presque rien », c'est faux.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 16,
+    "numeric_config": {
+      "scale": "linear",
+      "unit": "cm",
+      "tolerance": 15,
+      "exact_margin": 1
+    }
+  },
+  {
+    "id": "reflexion-110",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "exponentiel",
+      "piège",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Une bactérie se divise en deux chaque minute. En partant d'une seule bactérie, un bocal est plein en 60 minutes. En combien de minutes est-il plein si l'on part de 2 bactéries ?",
+    "explanation": "Partir de 2 bactéries, c'est avoir une minute d'avance : 59 minutes.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 59,
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-111",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "calendrier",
+      "calcul",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Nous sommes lundi. Quel jour de la semaine serons-nous dans 100 jours ?",
+    "explanation": "100 = 14 semaines + 2 jours : lundi + 2 jours = mercredi.",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": "mercredi",
+    "accepted_aliases": []
+  },
+  {
+    "id": "reflexion-112",
+    "type": "short_text",
+    "category": "reflexion",
+    "tags": [
+      "piège"
+    ],
+    "difficulty": 3,
+    "prompt": "Il faut 6 minutes pour faire cuire 3 œufs durs dans une casserole. Combien de minutes faut-il pour en faire cuire 6 dans la même casserole ?",
+    "explanation": "Les œufs cuisent en même temps : 6 minutes, quel que soit leur nombre (s'ils tiennent dans la casserole).",
+    "source_url": null,
+    "status": "published",
+    "correct_answer": 6,
+    "accepted_aliases": []
+  }
+]

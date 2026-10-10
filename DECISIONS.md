@@ -13,7 +13,7 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 
 - **Projet fictif `demo-cervo-daily`** : le préfixe `demo-` dit aux émulateurs qu'aucune ressource réelle n'existe, donc pas de connexion Google nécessaire.
 - **Questions publiées par défaut** (`status: published`) : la section « Livraison du MVP » prime sur la section 12 (qui proposait `draft`). L'admin permet de retirer ou repasser en brouillon.
-- **Chargement des questions** au démarrage, avant l'API, seulement si la collection `questions` est vide. `db:reset` force le rechargement.
+- **Chargement des questions** au démarrage, avant l'API : les questions absentes de Firestore sont ajoutées (les nouvelles questions arrivent sans perdre l'historique) ; celles déjà présentes ne sont pas réécrites, pour garder les changements faits dans l'admin. `db:reset` repart de zéro.
 - **Dates stockées en texte ISO** (`2026-10-10T08:00:00+00:00`) plutôt qu'en Timestamp Firestore : plus simple à sérialiser, triable.
 - **Pseudos uniques** via une collection `usernames/{pseudo en minuscules}` mise à jour en transaction. Pseudo par défaut : `Cervo-XXXXX`.
 - **Réponses dénormalisées** : chaque réponse stockée garde `category` et `type` pour calculer les tendances par pilier sans relire les questions.
@@ -31,7 +31,8 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 
 - **Déterministe** : graine = SHA-256 de la date, la banque est triée par identifiant. Même date + même banque + même historique = même quiz. Le résultat est figé dans `daily_quizzes/{date}` à la première demande (création atomique, `create()`).
 - **Pas de répétition** : on exclut les questions des jours précédents (jusqu'à 365 jours) tant qu'il reste au moins 40 questions disponibles ; au-delà, les plus anciennes redeviennent éligibles. Avec 350 questions, aucune répétition pendant environ 31 jours.
-- **Contraintes** (section 7 + vision) : 1 image, 2 numériques, 4 questions « réflexion » (Raisonnement/Estimation/Esprit critique), 4/4/2 en difficulté, ≥ 5 catégories, ≤ 3 par catégorie. Assouplissement dans l'ordre : difficulté, puis catégories (avec numériques et piliers), puis images.
+- **Contraintes** (section 7 + vision) : 1 image, 2 numériques, 4 questions « réflexion » (Raisonnement/Estimation/Esprit critique), ≥ 5 catégories, ≤ 3 par catégorie. Assouplissement dans l'ordre : difficulté, puis catégories (avec numériques et piliers), puis images.
+- **Difficulté relevée (demande du porteur)** : 2 faciles / 4 moyennes / 4 difficiles par jour (au lieu de 4/4/2 dans PRODUCT.md), et 118 questions ajoutées dont 83 difficiles (fichiers `content/questions/*-difficile.json`). La banque compte 468 questions dont 138 difficiles : un mois complet sans répétition, vérifié par un test.
 - **Ordre des questions** : de la plus facile à la plus difficile, pour un démarrage en douceur.
 - **On ne répond qu'au quiz du jour** : une réponse envoyée avec une autre date est refusée (évite de jouer « hier » après minuit).
 - **Les catégories Géographie et Sciences comptent dans le pilier Estimation**, comme le tableau des piliers de PRODUCT.md.
@@ -47,7 +48,9 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 
 - **Bibliothèques** : React 18, React Router 6, TanStack Query 5, Tailwind 3, polices Fontsource (servies localement, pas d'appel à Google Fonts), graphiques en SVG maison (pas de dépendance de graphiques).
 - **Taille du texte ajustable** (bouton « AA ») et mode sombre, mémorisés dans le navigateur.
-- **Partage** : texte à emojis copié dans le presse-papiers (partage natif sur mobile), sans dévoiler les questions.
+- **Partage Messenger (mobile)** : le bouton « Envoyer sur Messenger » ouvre la feuille de partage du téléphone (Web Share API), où Messenger apparaît. Messenger ne permet pas de pré-remplir un message par lien direct (son lien `fb-messenger://share` n'accepte qu'une URL) ; la feuille de partage est donc la seule façon d'envoyer le texte en un geste. Si elle n'est pas disponible (site en http sur le Wi-Fi local), le message est copié et un bouton ouvre l'application Messenger pour le coller.
+- **Message partagé** : une ligne par question avec 🟢 (50 points ou plus, soit plus de la moitié) ou 🔴 (moins de 50), le score de chaque question, le score du jour et le lien. Le code couleur à deux couleurs a été demandé par le porteur ; à l'écran, les perles gardent leurs trois couleurs. Les questions ne sont jamais dévoilées. `VITE_PUBLIC_URL` permet de mettre l'adresse publique du site dans le message.
+- **Test sur téléphone en local** : Vite et l'émulateur Auth écoutent sur le réseau local ; `npm run dev` affiche l'adresse à ouvrir sur le téléphone (même Wi-Fi). L'API et Firestore restent accessibles uniquement depuis l'ordinateur.
 - **Import CSV** : colonnes listées dans l'admin, listes séparées par « | », séparateur « , » ou « ; » détecté automatiquement (Excel français).
 - **Limitation de débit** : simple compteur en mémoire dans l'API (40 réponses/minute par joueur) ; en production, Cloudflare ajoute sa propre règle.
 
@@ -61,3 +64,44 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 
 - Le modèle de données laisse la place à `friendships`, `challenges`, `badges` (non créés).
 - `modal_app.py` et `infra/cloudflare/` permettent la mise en ligne, non testée dans le MVP (aucun compte).
+
+## Espace fondateur (version 2)
+
+- **Quiz du jour planifié** : `daily_quizzes/{date}` est maintenant écrit à l'avance depuis le planning. Un jour non planifié reste calculé automatiquement à la première visite après minuit (heure de Paris), puis figé : le site se met à jour seul même si personne ne planifie. Même questions, même ordre pour tout le monde.
+- **Verrouillage** : un jour passé, ou aujourd'hui dès qu'un joueur a commencé, ne se modifie plus (sinon les réponses déjà données ne correspondraient plus).
+- **Pas de doublon proche** : la sélection automatique évite les questions des autres jours planifiés, passés comme futurs, en partant des plus proches. Le planning signale les écarts aux règles (difficulté 2/4/4, catégories, photo, nombres) sans les imposer : le fondateur garde la main.
+- **Glisser-déposer natif** (HTML5, sans bibliothèque) ; sur mobile ou au clavier, le panneau d'une question propose « Avant », « Après » et « Remplacer par ».
+- **Statistiques** : agrégats `daily_stats/{date}` (joueurs, terminés, somme des scores, répartition par tranche de 10, réussite par question) et `question_stats/{id}`, mis à jour dans la transaction de chaque réponse. Le tableau de bord lit quelques documents au lieu de toutes les participations.
+- **Structure d'une question** : `images` (0 à 2) remplace `image_url`/`image_alt`/`image_credit` ; l'ancien format reste accepté à l'import et à la lecture. Le format d'entrée est déduit du nombre de photos ; le format de réponse est le champ `type`.
+- **Photos envoyées depuis l'admin** : réduites dans le navigateur (1 200 px, JPEG), stockées dans Firestore (`media/{id}`, 900 Ko maximum) et servies par `/api/media/{id}` avec un cache long. Pas de service de stockage en plus à configurer ; à remplacer par Firebase Storage si les volumes grossissent.
+- **Photos de personnes réelles** : aucune n'est fournie (droits à l'image). Le modèle « Reconnaître une personne » est prêt : il suffit d'envoyer une photo libre de droits (Wikimedia Commons) avec son crédit.
+- **Interface joueur épurée** : onglets en bas sur mobile, gros chiffres, presque pas de texte ; plus d'écran d'introduction (une étiquette « Sans aide » sur la première question), plus de pied de page, plus de boutons de taille de texte et de thème (le thème suit le téléphone). La page À propos est supprimée ; la confidentialité est accessible depuis le profil. Les outils de dev sont passés dans l'espace fondateur.
+- **Horaire** : le changement de jour se fait à minuit à Paris (heure d'Europe centrale, CET/CEST), réglable avec `TIMEZONE`.
+
+## Types de questions et chrono (version 3)
+
+- **Chrono de 15 secondes** (demande du porteur, à la place du « pas de chrono » de PRODUCT.md). Il démarre côté serveur quand la question s'affiche (`POST /api/question-start`) : recharger la page ne le remet pas à zéro. Une réponse arrivée après le temps imparti + 4 s de marge (réseau) vaut 0. Le temps est plus long pour une dictée (45 s) et un classement (20 s) ; il est réglable question par question. La phase de mémorisation ne compte pas dans le chrono.
+- **Dictée** : lue par la synthèse vocale du navigateur (`speechSynthesis`, voix française, lecture normale ou lente, réécoute illimitée) : pas de fichier audio à produire. Le texte doit donc être envoyé au navigateur ; il est encodé (base64) pour ne pas s'afficher en clair. Score : part des mots justes (distance d'édition sur les mots), accents comptés, majuscules et ponctuation ignorées. Extraits d'auteurs du domaine public uniquement.
+- **Taille (façon Size It Up)** : l'objet de référence est fixe, le joueur agrandit ou rétrécit l'autre avec un curseur logarithmique. Les objets sont des emojis (aucune image à fournir). Score en proportion : 100 à moins de 1 %, 0 à un facteur 2.
+- **Remettre dans l'ordre** : on touche les éléments dans l'ordre (plus fiable sur téléphone qu'un glisser-déposer). Points partiels : part des paires dans le bon ordre relatif.
+- **Curseur** : option des questions « nombre » (frise chronologique, pourcentages), bornée par min et max.
+- **Mémoire flash** : option de n'importe quelle question : une liste de mots ou une photo s'affiche quelques secondes, puis disparaît avant la question.
+- **QCM sensibles aux accents** : nécessaire pour les questions d'orthographe (« Hypothèse » ≠ « Hypothése »).
+- **Quiz du jour** : au plus 1 dictée, 2 classements et 2 questions de taille par jour, pour garder un rythme rapide.
+- **Écran de réponse** : un bandeau de couleur avec le verdict (Bravo, Pas loin, Raté, Temps écoulé) et les points gagnés, puis la bonne réponse en gros, ta réponse en petit, et l'explication. Pour un classement, l'ordre attendu avec ✓ ou ✗ par ligne.
+- **Admin** : « Pas encore posées » (jamais jouées, y compris celles planifiées pour plus tard) et « Déjà posées » (jouées au moins une fois, aujourd'hui compris).
+- **Nouvelles catégories** : Langue française (dictées, orthographe, anagrammes) et Mémoire, rattachées au pilier Mémoire et culture.
+
+## Socle de code (version 4)
+
+- **API en trois couches** : `domain/` (règles pures, testées sans base), `services/` (cas d'usage Firestore), `web/` (routes fines). Les dépendances vont toujours `web → services → domain`. Détails dans `docs/ARCHITECTURE.md`.
+- **Noms des collections centralisés** (`services/collections.py`), erreurs métier (`errors.ApiError`) et dates (`clock.py`) en un seul endroit.
+- **Validation par format de réponse** : une fonction de contrôle par type (`models._ANSWER_CHECKS`) et un `match` dans `scoring.score_answer` : ajouter un type se fait au même endroit, sans chaîne de `if`.
+- **Qualité automatisée** : Ruff (Python), ESLint + Prettier + TypeScript strict (interface), `npm run check` avant chaque commit, CI GitHub (qualité, tests, build, puis parcours Playwright avec les émulateurs).
+- **Planning lisible** : une ligne par question avec l'énoncé complet, la réponse attendue, la catégorie, la difficulté et le format ; une frise de dates (prêt, alerte, vide, joué) pour naviguer ; les alertes affichées directement. La logique du glisser-déposer est isolée dans `admin/planningLogic.ts` et testée.
+
+## Nom : Aiguisé
+
+- Le produit s'appelle **Aiguisé** (mission : « Garder son esprit affûté, vif et précis. »). Le nom affiché vient de `APP_NAME` (`web/src/lib/config.ts` et `api/cervo/__init__.py`), la promesse de `BASELINE` et `MISSION`.
+- Les **identifiants techniques restent `cervo`** (paquet Python `cervo`, projet d'émulateur `demo-cervo-daily`, comptes de test `@cervo.test`) : invisibles pour les joueurs, et les renommer casserait les données locales existantes sans rien apporter. À changer seulement au moment de créer le vrai projet Firebase.
+- Pseudo par défaut des nouveaux joueurs : `Aiguise-XXXXX`.

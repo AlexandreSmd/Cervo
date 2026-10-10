@@ -1,4 +1,4 @@
-# Product Management — Cervo Daily
+# Product Management — Aiguisé
 
 *Cahier des charges de la V1, destiné à Claude Code*
 
@@ -6,11 +6,11 @@
 
 ## Vision et mission
 
-Cervo Daily est la salle de sport quotidienne du cerveau, pensée pour une époque où l'IA réfléchit de plus en plus à notre place.
+Aiguisé est la salle de sport quotidienne du cerveau, pensée pour une époque où l'IA réfléchit de plus en plus à notre place.
 
 ### Le constat
 
-L'IA répond à presque tout en quelques secondes : elle rédige, résume, calcule, recommande. C'est utile, mais chaque fois qu'on lui délègue une réflexion, on s'en exerce un peu moins. Retenir, raisonner et estimer sont des capacités qui s'entretiennent, comme un muscle. Cervo Daily propose un rituel simple et agréable pour les garder en forme.
+L'IA répond à presque tout en quelques secondes : elle rédige, résume, calcule, recommande. C'est utile, mais chaque fois qu'on lui délègue une réflexion, on s'en exerce un peu moins. Retenir, raisonner et estimer sont des capacités qui s'entretiennent, comme un muscle. Aiguisé propose un rituel simple et agréable pour les garder en forme.
 
 ### Vision
 
@@ -18,18 +18,20 @@ Un monde où chacun reste capable de penser par lui-même, même entouré d'IA.
 
 ### Mission
 
-Donner à chacun, chaque jour, 5 à 10 minutes pour réfléchir seul : 10 questions, sans aide, un score sur 100 par question, et la preuve de sa progression dans le temps.
+**Garder son esprit affûté, vif et précis.**
+
+Concrètement : donner à chacun, chaque jour, 5 à 10 minutes pour réfléchir seul : 10 questions, sans aide, un score sur 100 par question, et la preuve de sa progression dans le temps.
 
 ### Baseline
 
-**Garde ton cervo affûté.** Variantes à tester : « Dix questions par jour. Zéro IA. », « Réfléchis encore un peu. »
+**Garde ton esprit affûté, vif et précis.** Variantes à tester : « Dix questions par jour. Zéro IA. », « Réfléchis encore un peu. »
 
 ### Principes qui en découlent
 
 - **Sans aide** : on répond de tête, sans moteur de recherche ni assistant. C'est le cœur de la promesse, dit clairement dès l'accueil.
 - **Court et quotidien** : 10 questions, pas une de plus. Un rituel, pas une corvée.
 - **Honnête** : un score précis sur 100, sans flatterie, avec la bonne réponse et une explication à chaque fois.
-- **Pas contre l'IA** : l'IA reste un excellent outil. Cervo Daily entraîne ce qu'on garde pour soi, sans faire la morale.
+- **Pas contre l'IA** : l'IA reste un excellent outil. Aiguisé entraîne ce qu'on garde pour soi, sans faire la morale.
 - **Visible** : le profil montre la forme du cerveau et son évolution, comme un suivi d'entraînement.
 
 ### Les quatre piliers de l'entraînement
@@ -57,7 +59,7 @@ Les personnes qui utilisent l'IA au quotidien (étudiants, actifs, curieux) et q
 | Ton de coach : encourageant après une erreur, jamais culpabilisant ni scolaire | Le but est de donner envie de revenir demain |
 | Pas de classement public en V1 | On ne peut pas empêcher de tricher ; limiter l'enjeu garde le jeu sain |
 
-### Ce que Cervo Daily n'est pas
+### Ce que Aiguisé n'est pas
 
 - Pas un outil contre l'IA ou contre la technologie.
 - Pas un jeu de compétition stressant.
@@ -100,7 +102,7 @@ Le MVP est terminé quand, après avoir collé le prompt ci-dessous dans Claude 
 ### Prompt à coller dans Claude Code
 
 ```text
-Tu es le développeur unique du projet Cervo Daily. Lis PRODUCT.md en entier avant de commencer, en particulier la section « Livraison du MVP : localhost en une commande ».
+Tu es le développeur unique du projet Aiguisé. Lis PRODUCT.md en entier avant de commencer, en particulier la section « Livraison du MVP : localhost en une commande ».
 
 Stack imposée, à ne pas changer : backend Python (FastAPI, uv), frontend React (Vite, TypeScript), authentification Firebase, base Firestore, infrastructure Modal, réseau Cloudflare. En local, utilise les émulateurs Firebase (Auth et Firestore) : je n'ai aucun compte Firebase, Modal ou Cloudflare à créer pour le MVP.
 
@@ -199,7 +201,7 @@ Une maquette jouable a déjà été validée dans ses grandes lignes : le MVP la
 - **Motif signature** : une rangée de 10 perles, une par question. Elles se colorent selon le score (vert à partir de 80, orange de 40 à 79, rouge en dessous de 40) et réapparaissent sur l'accueil, la progression, les résultats et l'historique.
 - **Couleurs (mode clair)** : fond `#F2F4FB`, texte `#14183A`, accent violet `#5B4BFF`, vert `#1FA971`, orange `#F2A33A`, rouge `#E5484D`. Un mode sombre équivalent (fond `#0E1126`, accent `#8A7EFF`).
 - **Typographies** : Bricolage Grotesque pour les titres, DM Sans pour le texte.
-- **Ton** : coach encourageant, jamais scolaire ni culpabilisant. Titre d'accueil : « Garde ton cervo affûté. »
+- **Ton** : coach encourageant, jamais scolaire ni culpabilisant. Titre d'accueil : « Garde ton esprit affûté, vif et précis. »
 - **Mobile d'abord** : une colonne de 560 px maximum, boutons larges, pas de chrono.
 
 ### Vérification avant de déclarer terminé
@@ -555,7 +557,7 @@ Critères : court, mémorable, prononçable en français, évoque le rituel quot
 4. **Cervo** — nom court inventé, évoque le cerveau. Domaines : `cervo.fr`, `cervo.app`.
 5. **Quotidix** — quotidien + dix. Domaines : `quotidix.fr`, `quotidix.com`.
 
-**Nom retenu : Cervo Daily.** « Cervo » porte l'idée du cerveau à entretenir, « Daily » le rituel quotidien. Domaines à tester : `cervo.fr`, `cervodaily.com`, `cervodaily.fr`, `cervo.app`. Prendre le `.fr` et si possible le `.com`. Le nom dans le code est `APP_NAME = "Cervo Daily"`, changeable en une ligne.
+**Nom retenu : Aiguisé** (anciennement « Cervo Daily »). Il évoque un esprit affûté, vif et précis. Domaines à tester : `aiguise.fr`, `aiguise.app`, `aiguise.com`. Prendre le `.fr` et si possible le `.com`. Le nom dans le code est `APP_NAME = "Aiguisé"`, changeable en une ligne.
 
 À faire côté porteur du projet (pas côté code) : acheter le domaine (par exemple via Cloudflare, qui gérera aussi le DNS), puis vérifier que le nom n'est pas déjà une marque déposée (base INPI / EUIPO).
 

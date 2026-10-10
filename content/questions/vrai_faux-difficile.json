@@ -1,0 +1,200 @@
+[
+  {
+    "id": "vrai-faux-101",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "histoire"
+    ],
+    "difficulty": 2,
+    "prompt": "Des humains ont vécu à la même époque que les dinosaures (non aviens).",
+    "explanation": "Faux : les derniers dinosaures non aviens ont disparu il y a 66 millions d'années, les premiers humains sont apparus il y a environ 300 000 ans.",
+    "source_url": "https://fr.wikipedia.org/wiki/Dinosaure",
+    "status": "published",
+    "correct_answer": false
+  },
+  {
+    "id": "vrai-faux-102",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "météo",
+      "physique",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Un éclair est plus chaud que la surface du Soleil.",
+    "explanation": "Vrai : un éclair chauffe l'air jusqu'à environ 30 000 °C, contre 5 500 °C à la surface du Soleil.",
+    "source_url": "https://fr.wikipedia.org/wiki/Éclair",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-103",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "géographie",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "L'Everest grandit encore de quelques millimètres chaque année.",
+    "explanation": "Vrai : la poussée de la plaque indienne soulève l'Himalaya de quelques millimètres par an.",
+    "source_url": "https://fr.wikipedia.org/wiki/Everest",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-104",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "chimie"
+    ],
+    "difficulty": 2,
+    "prompt": "Le diamant et le graphite des crayons sont faits du même élément chimique.",
+    "explanation": "Vrai : tous deux sont du carbone pur, seul l'arrangement des atomes change.",
+    "source_url": "https://fr.wikipedia.org/wiki/Diamant",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-105",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "géographie",
+      "france"
+    ],
+    "difficulty": 2,
+    "prompt": "Le Mont-Saint-Michel se trouve en Bretagne.",
+    "explanation": "Faux : il est en Normandie, dans la Manche, même si la baie touche la Bretagne. Le Couesnon marque la frontière.",
+    "source_url": "https://fr.wikipedia.org/wiki/Mont-Saint-Michel",
+    "status": "published",
+    "correct_answer": false
+  },
+  {
+    "id": "vrai-faux-106",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "nature",
+      "espace",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Il y a plus d'arbres sur Terre que d'étoiles dans la Voie lactée.",
+    "explanation": "Vrai : on estime à environ 3 000 milliards le nombre d'arbres, contre 100 à 400 milliards d'étoiles dans notre galaxie.",
+    "source_url": "https://fr.wikipedia.org/wiki/Arbre",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-107",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "cerveau",
+      "corps humain",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Le tissu du cerveau lui-même ne ressent pas la douleur.",
+    "explanation": "Vrai : le cerveau n'a pas de récepteurs de la douleur, ce qui permet certaines opérations en restant éveillé. Les maux de tête viennent des tissus autour.",
+    "source_url": "https://fr.wikipedia.org/wiki/Cerveau_humain",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-108",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "physique",
+      "paris",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "La tour Eiffel est un peu plus haute en été qu'en hiver.",
+    "explanation": "Vrai : le fer se dilate avec la chaleur ; la tour peut gagner une quinzaine de centimètres lors des fortes chaleurs.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tour_Eiffel",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-109",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "physique",
+      "santé",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Une banane est légèrement radioactive.",
+    "explanation": "Vrai : elle contient du potassium, dont une petite partie (potassium 40) est radioactive. La dose est sans aucun danger.",
+    "source_url": "https://fr.wikipedia.org/wiki/Potassium_40",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-110",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "histoire",
+      "échelles de temps",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Cléopâtre a vécu plus près de nous dans le temps que de la construction de la pyramide de Khéops.",
+    "explanation": "Vrai : environ 2 500 ans séparent Khéops (vers −2560) de Cléopâtre (−69 à −30), contre environ 2 050 ans entre Cléopâtre et nous.",
+    "source_url": "https://fr.wikipedia.org/wiki/Cléopâtre_VII",
+    "status": "published",
+    "correct_answer": true
+  },
+  {
+    "id": "vrai-faux-111",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "santé",
+      "esprit critique",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Les vaccins contre la rougeole augmentent le risque d'autisme.",
+    "explanation": "Faux : l'étude de 1998 à l'origine de cette idée était frauduleuse et a été retirée ; des études sur des millions d'enfants n'ont trouvé aucun lien.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vaccin_ROR",
+    "status": "published",
+    "correct_answer": false
+  },
+  {
+    "id": "vrai-faux-112",
+    "type": "binary",
+    "category": "vrai_faux",
+    "tags": [
+      "idées reçues",
+      "statistiques",
+      "esprit critique",
+      "difficile"
+    ],
+    "difficulty": 3,
+    "prompt": "Si une étude montre que les buveurs de café vivent plus longtemps, cela prouve que le café allonge la vie.",
+    "explanation": "Faux : une corrélation ne prouve pas une cause. D'autres facteurs (revenus, mode de vie) peuvent expliquer les deux.",
+    "source_url": "https://fr.wikipedia.org/wiki/Corrélation_n'implique_pas_causalité",
+    "status": "published",
+    "correct_answer": false
+  }
+]

@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
+// Résultats d'une journée : score, perles, partage, détail des questions.
+import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { DayItems } from "../components/DayItems";
 import { Pearls } from "../components/Pearls";
-import { ScoreGauge } from "../components/ScoreGauge";
+import { ShareCard } from "../components/ShareCard";
 import { ErrorBox, Loading } from "../components/States";
 import { ApiError } from "../lib/api";
-import { APP_NAME } from "../lib/config";
-import { capitalize, dayMessage, formatDay, shareText } from "../lib/format";
+import { APP_NAME, BASELINE } from "../lib/config";
+import { COLOR_HEX, capitalize, formatDay, scoreColor } from "../lib/format";
 import { useResults, useToday } from "../lib/hooks";
 
 export function Results() {
   const { date = "" } = useParams();
   const { data, isLoading, error } = useResults(date);
   const today = useToday();
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    document.title = data ? `${data.score_total}/100 · ${APP_NAME}` : `Résultats · ${APP_NAME}`;
-    return () => { document.title = `${APP_NAME} — Garde ton cervo affûté`; };
+    document.title = data ? `${data.score_total}/100 · ${APP_NAME}` : APP_NAME;
+    return () => {
+      document.title = `${APP_NAME} — ${BASELINE}`;
+    };
   }, [data]);
 
   if (error instanceof ApiError && error.status === 409) return <Navigate to="/jouer" replace />;
@@ -25,38 +27,27 @@ export function Results() {
   if (isLoading || !data) return <Loading />;
 
   const scores = data.items.map((i) => i.score);
-  const isToday = today.data?.date === date;
-  const streak = isToday ? today.data?.streak ?? 0 : 0;
-
-  const share = async () => {
-    const text = shareText(APP_NAME, date, data.score_total, scores, streak, window.location.origin);
-    try {
-      if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) await navigator.share({ text });
-      else await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch { /* partage annulé */ }
-  };
+  const streak = today.data?.date === date ? (today.data?.streak ?? 0) : 0;
 
   return (
-    <div className="space-y-6">
-      <section className="card space-y-5 p-6 text-center">
-        <p className="text-sm font-semibold text-muted">{capitalize(formatDay(date))}</p>
-        <h1 className="text-3xl font-extrabold">Score du jour</h1>
-        <div className="flex justify-center" data-testid="day-score"><ScoreGauge score={data.score_total} size={170} /></div>
-        <p className="font-display text-lg font-bold">{dayMessage(data.score_total)}</p>
-        <Pearls scores={scores} size="lg" />
-        {streak > 0 && <p className="text-muted">🔥 Série : <strong className="text-ink">{streak} jour{streak > 1 ? "s" : ""}</strong> de suite</p>}
-        <div className="grid gap-3 sm:grid-cols-2">
-          <button className="btn-primary" onClick={share} data-testid="share">{copied ? "Copié !" : "Partager mon score"}</button>
-          <Link to="/profil" className="btn-ghost" data-testid="to-profile">Voir mon profil</Link>
+    <div className="space-y-4 pt-4">
+      <section className="card space-y-6 p-6" data-testid="day-score">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-sm font-semibold text-muted">{capitalize(formatDay(date))}</p>
+            <p className="font-display text-7xl font-extrabold" style={{ color: COLOR_HEX[scoreColor(data.score_total)] }}>
+              {data.score_total}
+            </p>
+          </div>
+          {streak > 0 && <span className="chip bg-mid/15">🔥 {streak}</span>}
         </div>
-        <p className="text-sm text-muted" aria-live="polite">{copied ? "Le résultat est dans ton presse-papiers, sans dévoiler les questions." : isToday ? "Rendez-vous demain pour un nouveau quiz !" : ""}</p>
+        <Pearls scores={scores} size="lg" />
+        <ShareCard date={date} total={data.score_total} scores={scores} streak={streak} />
       </section>
-      <section className="space-y-3">
-        <h2 className="text-xl font-bold">Détail des questions</h2>
-        <DayItems items={data.items} />
-      </section>
+      <DayItems items={data.items} />
+      <Link to="/profil" className="btn-ghost w-full" data-testid="to-profile">
+        Mon profil
+      </Link>
     </div>
   );
 }
@@ -67,14 +58,16 @@ export function PastDay() {
   if (error) return <ErrorBox message={(error as Error).message} />;
   if (isLoading || !data) return <Loading />;
   return (
-    <div className="space-y-5">
-      <Link to="/profil" className="link text-sm">← Retour au profil</Link>
-      <section className="card flex items-center justify-between gap-4 p-5">
-        <div>
-          <h1 className="text-2xl font-extrabold">{capitalize(formatDay(date))}</h1>
-          <p className="text-muted">Score du jour : <strong className="text-ink">{data.score_total}/100</strong></p>
-        </div>
-        <div className="w-40"><Pearls scores={data.items.map((i) => i.score)} size="sm" /></div>
+    <div className="space-y-4 pt-4">
+      <Link to="/profil" className="chip">
+        ← Profil
+      </Link>
+      <section className="card space-y-4 p-6">
+        <p className="text-sm font-semibold text-muted">{capitalize(formatDay(date))}</p>
+        <p className="font-display text-6xl font-extrabold" style={{ color: COLOR_HEX[scoreColor(data.score_total)] }}>
+          {data.score_total}
+        </p>
+        <Pearls scores={data.items.map((i) => i.score)} />
       </section>
       <DayItems items={data.items} />
     </div>

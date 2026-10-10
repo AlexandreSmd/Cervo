@@ -107,10 +107,7 @@ def profile_summary(stats: dict, attempts: list[dict], today: str) -> dict:
 
     start = date.fromisoformat(today) - timedelta(days=29)
     by_day = {a["date"]: a["score_total"] for a in completed}
-    last_30 = [
-        {"date": d, "score": by_day.get(d)}
-        for d in ((start + timedelta(days=i)).isoformat() for i in range(30))
-    ]
+    last_30 = [{"date": d, "score": by_day.get(d)} for d in ((start + timedelta(days=i)).isoformat() for i in range(30))]
     best = max(completed, key=lambda a: (a["score_total"], a["date"]), default=None)
     worst = min(completed, key=lambda a: (a["score_total"], a["date"]), default=None)
 
@@ -123,20 +120,20 @@ def profile_summary(stats: dict, attempts: list[dict], today: str) -> dict:
 
     pillars = []
     for key, label in PILLARS.items():
-        pillars.append({
-            "pillar": key,
-            "label": label,
-            "average": _avg(stats["pillar_stats"].get(key)),
-            "count": (stats["pillar_stats"].get(key) or {}).get("count", 0),
-            "trend": _pillar_trend(completed, key, today),
-        })
+        pillars.append(
+            {
+                "pillar": key,
+                "label": label,
+                "average": _avg(stats["pillar_stats"].get(key)),
+                "count": (stats["pillar_stats"].get(key) or {}).get("count", 0),
+                "trend": _pillar_trend(completed, key, today),
+            }
+        )
 
     types = stats["type_stats"]
     closed = [types.get(t) for t in ("binary", "mcq", "short_text") if types.get(t)]
     closed_count = sum(e.get("count", 0) for e in closed)
-    correct_rate = (
-        round_half_up(100 * sum(e.get("correct", 0) for e in closed) / closed_count) if closed_count else None
-    )
+    correct_rate = round_half_up(100 * sum(e.get("correct", 0) for e in closed) / closed_count) if closed_count else None
 
     return {
         "days_played": days_played,

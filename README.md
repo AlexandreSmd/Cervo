@@ -1,6 +1,6 @@
-# Cervo Daily
+# Aiguisé
 
-**Garde ton cervo affûté.** 10 questions par jour, sans aide, un score sur 100 par question et la preuve de ta progression.
+**Garder son esprit affûté, vif et précis.** 10 questions par jour, sans aide, un score sur 100 par question et la preuve de ta progression.
 
 Stack : API Python (FastAPI, uv) · front React (Vite, TypeScript, Tailwind) · Firebase Auth · Firestore · Modal (API en ligne) · Cloudflare (front et proxy).
 En local, Firebase est remplacé par ses **émulateurs** : aucun compte à créer.
@@ -12,6 +12,8 @@ npm run start:local
 ```
 
 Puis ouvre **http://localhost:5173**. Ctrl+C pour arrêter (les données sont sauvegardées dans `.emulator-data/`).
+
+**Sur ton téléphone** : connecte-le au même Wi-Fi que l'ordinateur et ouvre l'adresse « Sur ton téléphone » affichée au lancement (par exemple `http://192.168.1.20:5173`). Sur Mac, autorise les connexions entrantes si une fenêtre te le demande.
 
 ### Prérequis (à installer une seule fois)
 
@@ -30,7 +32,7 @@ Python 3.12 est téléchargé automatiquement par uv s'il manque. `npm run setup
 | --- | --- |
 | `npm run start:local` | Setup puis lancement complet (la seule à connaître) |
 | `npm run setup` | Vérifie les prérequis, installe les dépendances, crée `.env.local` |
-| `npm run dev` | Émulateurs Firebase + API (port 8000) + front (port 5173), charge les questions si besoin |
+| `npm run dev` | Émulateurs Firebase + API (port 8000) + front (port 5173), ajoute les nouvelles questions |
 | `npm run db:reset` | Efface les données des émulateurs et recharge les questions |
 | `npm run db:seed:demo` | Ajoute 3 semaines d'historique au compte démo (`demo@cervo.test`) |
 | `npm test` | Tests pytest (API) et Vitest (front) |
@@ -40,55 +42,44 @@ Python 3.12 est téléchargé automatiquement par uv s'il manque. `npm run setup
 
 Adresses en local : site http://localhost:5173 · API http://localhost:8000/api/docs · console des émulateurs http://127.0.0.1:4000.
 
-## Outils de développement (local uniquement)
+## Espace fondateur : http://localhost:5173/admin
 
-Le bouton **🛠 Dev** en bas à droite permet : connexion démo ou admin en un clic, rejouer le quiz du jour, ajouter 3 semaines d'historique fictif, repartir d'une session invité.
+En local, clique sur **« Se connecter (local) »**.
 
-- **Lien magique** : en local, aucun e-mail n'est envoyé. Le lien s'affiche dans le terminal (émulateur Auth) et un bouton « Ouvrir le lien magique » apparaît sur la page de connexion.
-- **Admin** : `/admin`, réservé aux e-mails de `ADMIN_EMAILS` (par défaut `admin@cervo.test`, accessible via « Connexion admin »).
+| Page | Ce qu'on y fait |
+| --- | --- |
+| **Tableau de bord** | Joueurs du jour et des 7 derniers jours, score moyen, taux de quiz terminés, courbe sur 30 jours (clic sur un jour = détail), taux de bonnes réponses par question, répartition des scores, questions les plus dures et les plus faciles |
+| **Planning** | Les 10 questions de chaque jour à venir, dans l'ordre où les joueurs les verront. « Planifier les 28 prochains jours » remplit les jours vides. Glisser un badge sur un autre : réordonner (même jour) ou échanger (deux jours). Glisser une question de la banque sur un badge : la remplacer. Un jour avec des joueurs est verrouillé |
+| **Pas encore posées** | Ta base de questions en réserve (jamais jouées), filtrable par catégorie, difficulté, format et statut, avec leur date si elles sont déjà planifiées. « Nouvelle question » propose des modèles. Import JSON/CSV |
+| **Déjà posées** | Les questions déjà jouées, avec la date et le taux de bonnes réponses |
+| **Signalements** | Les erreurs signalées par les joueurs, avec accès direct à la question |
 
-## Ajouter des questions
+Le bloc « Local » de la barre latérale simule des joueurs (pour voir le tableau de bord rempli), ajoute un historique fictif à ton compte ou remet ton quiz du jour à zéro.
 
-1. **Depuis l'admin** (`/admin`) : formulaire avec aperçu, ou import JSON/CSV.
-2. **Dans le code** : ajouter des objets dans `content/questions/*.json`, lancer `npm run questions:check`, puis `npm run db:reset` (ou `questions:import`).
-
-Format d'une question :
-
-```json
-{
-  "id": "estimation-001",
-  "type": "numeric",
-  "category": "estimation",
-  "tags": ["japon", "architecture"],
-  "difficulty": 2,
-  "prompt": "Quelle est la hauteur de la Tokyo Skytree, en mètres ?",
-  "image_url": "/questions/monument-skytree.svg",
-  "image_alt": "Silhouette stylisée de la tour",
-  "image_credit": "Illustration originale Cervo Daily",
-  "correct_answer": 634,
-  "numeric_config": { "scale": "log", "factor": 3, "unit": "m" },
-  "explanation": "La Tokyo Skytree mesure 634 m.",
-  "source_url": "https://fr.wikipedia.org/wiki/Tokyo_Skytree",
-  "status": "published"
-}
-```
-
-Types : `binary` (true/false), `mcq` (4 `choices`, `correct_answer` = texte du bon choix), `numeric` (`numeric_config` : `linear` + `tolerance`, ou `log` + `factor`, `exact_margin` optionnel), `short_text` (`accepted_aliases`).
-Catégories : `culture`, `logique`, `reflexion`, `geographie`, `histoire`, `sciences`, `nature`, `arts`, `sport`, `estimation`, `vrai_faux`.
-
-Les illustrations sont générées par `uv run --project api python scripts/generate_illustrations.py`.
-
-## Structure
+### Structure
 
 ```
-api/          API FastAPI (cervo/scoring.py, daily.py, stats.py : modules purs testés)
-web/          Front React (src/pages, src/components, src/lib, e2e/)
-content/      Banque de questions (JSON)
-scripts/      Scripts npm (Node) et génération des illustrations
-infra/        Worker Cloudflare (mise en ligne)
-modal_app.py  Déploiement de l'API sur Modal
-docs/screenshots/  Captures d'écran (390 px et 1280 px)
+api/cervo/domain/    Règles métier pures (scoring, quiz du jour, statistiques, modèles)
+api/cervo/services/  Cas d'usage sur Firestore (partie, planning, statistiques…)
+api/cervo/web/       Routes FastAPI (joueur, admin, dev)
+web/src/             Interface React (pages, components, admin, lib)
+content/questions/   Banque de questions (JSON)
+scripts/             Scripts npm (Node) et génération des illustrations
+infra/, modal_app.py Mise en ligne (Cloudflare, Modal)
+docs/                Architecture et captures d'écran
 ```
+
+Détails : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Pour contribuer : [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Qualité du code
+
+| Commande | Rôle |
+| --- | --- |
+| `npm run lint` | Ruff (Python), ESLint + Prettier + TypeScript (interface) |
+| `npm run format` | Corrige et reformate automatiquement |
+| `npm run check` | Qualité puis tests : à lancer avant chaque commit |
+
+La CI GitHub lance qualité, tests, build et parcours de bout en bout à chaque push.
 
 ## Mise en ligne (après le MVP)
 

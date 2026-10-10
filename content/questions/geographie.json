@@ -416,9 +416,13 @@
     ],
     "difficulty": 1,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-italie.svg",
-    "image_alt": "Drapeau à trois bandes verticales : vert, blanc, rouge",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-italie.svg",
+        "alt": "Drapeau à trois bandes verticales : vert, blanc, rouge",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Le drapeau italien est vert, blanc et rouge, en bandes verticales. Le Mexique ajoute un aigle au centre.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Italie",
     "status": "published",
@@ -440,9 +444,13 @@
     ],
     "difficulty": 3,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-irlande.svg",
-    "image_alt": "Drapeau à trois bandes verticales : vert, blanc, orange",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-irlande.svg",
+        "alt": "Drapeau à trois bandes verticales : vert, blanc, orange",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Vert, blanc, orange (du mât vers l'extérieur) : c'est l'Irlande. La Côte d'Ivoire utilise les mêmes couleurs dans l'ordre inverse.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Irlande",
     "status": "published",
@@ -463,9 +471,13 @@
     ],
     "difficulty": 1,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-belgique.svg",
-    "image_alt": "Drapeau à trois bandes verticales : noir, jaune, rouge",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-belgique.svg",
+        "alt": "Drapeau à trois bandes verticales : noir, jaune, rouge",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Noir, jaune, rouge en bandes verticales : la Belgique. L'Allemagne a les mêmes couleurs en bandes horizontales.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Belgique",
     "status": "published",
@@ -486,9 +498,13 @@
     ],
     "difficulty": 1,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-allemagne.svg",
-    "image_alt": "Drapeau à trois bandes horizontales : noir, rouge, jaune",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-allemagne.svg",
+        "alt": "Drapeau à trois bandes horizontales : noir, rouge, jaune",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Noir, rouge, or en bandes horizontales : le drapeau allemand.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Allemagne",
     "status": "published",
@@ -509,9 +525,13 @@
     ],
     "difficulty": 2,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-pays-bas.svg",
-    "image_alt": "Drapeau à trois bandes horizontales : rouge, blanc, bleu",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-pays-bas.svg",
+        "alt": "Drapeau à trois bandes horizontales : rouge, blanc, bleu",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Rouge, blanc, bleu foncé à l'horizontale : les Pays-Bas. Le Luxembourg utilise un bleu plus clair.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_des_Pays-Bas",
     "status": "published",
@@ -532,9 +552,13 @@
     ],
     "difficulty": 2,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-autriche.svg",
-    "image_alt": "Drapeau à trois bandes horizontales : rouge, blanc, rouge",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-autriche.svg",
+        "alt": "Drapeau à trois bandes horizontales : rouge, blanc, rouge",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Rouge, blanc, rouge à l'horizontale : l'Autriche, l'un des plus anciens drapeaux du monde.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Autriche",
     "status": "published",
@@ -555,9 +579,13 @@
     ],
     "difficulty": 1,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-japon.svg",
-    "image_alt": "Drapeau blanc avec un disque rouge au centre",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-japon.svg",
+        "alt": "Drapeau blanc avec un disque rouge au centre",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Un disque rouge sur fond blanc : le Hinomaru, drapeau du Japon. Celui du Bangladesh est un disque rouge sur fond vert.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_du_Japon",
     "status": "published",
@@ -578,9 +606,13 @@
     ],
     "difficulty": 1,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-suede.svg",
-    "image_alt": "Drapeau bleu avec une croix jaune décalée vers le mât",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-suede.svg",
+        "alt": "Drapeau bleu avec une croix jaune décalée vers le mât",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Une croix jaune sur fond bleu : la Suède.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Suède",
     "status": "published",
@@ -602,9 +634,13 @@
     ],
     "difficulty": 2,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-pologne.svg",
-    "image_alt": "Drapeau à deux bandes horizontales : blanc en haut, rouge en bas",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-pologne.svg",
+        "alt": "Drapeau à deux bandes horizontales : blanc en haut, rouge en bas",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Blanc au-dessus, rouge en dessous : la Pologne. L'Indonésie et Monaco ont le rouge en haut.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Pologne",
     "status": "published",
@@ -625,9 +661,13 @@
     ],
     "difficulty": 1,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-ukraine.svg",
-    "image_alt": "Drapeau à deux bandes horizontales : bleu en haut, jaune en bas",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-ukraine.svg",
+        "alt": "Drapeau à deux bandes horizontales : bleu en haut, jaune en bas",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Bleu au-dessus, jaune en dessous : l'Ukraine (le ciel au-dessus des champs de blé).",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_l'Ukraine",
     "status": "published",
@@ -648,9 +688,13 @@
     ],
     "difficulty": 2,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-roumanie.svg",
-    "image_alt": "Drapeau à trois bandes verticales : bleu, jaune, rouge",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-roumanie.svg",
+        "alt": "Drapeau à trois bandes verticales : bleu, jaune, rouge",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Bleu, jaune, rouge en bandes verticales : la Roumanie (le drapeau du Tchad est presque identique).",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Roumanie",
     "status": "published",
@@ -671,9 +715,13 @@
     ],
     "difficulty": 2,
     "prompt": "À quel pays appartient ce drapeau ?",
-    "image_url": "/questions/drapeau-hongrie.svg",
-    "image_alt": "Drapeau à trois bandes horizontales : rouge, blanc, vert",
-    "image_credit": "Illustration originale Cervo Daily (libre de droits)",
+    "images": [
+      {
+        "url": "/questions/drapeau-hongrie.svg",
+        "alt": "Drapeau à trois bandes horizontales : rouge, blanc, vert",
+        "credit": "Illustration originale Aiguisé (libre de droits)"
+      }
+    ],
     "explanation": "Rouge, blanc, vert à l'horizontale : la Hongrie. La Bulgarie est blanc, vert, rouge.",
     "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Hongrie",
     "status": "published",

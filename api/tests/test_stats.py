@@ -1,4 +1,4 @@
-from cervo.stats import apply_answer, apply_completion, displayed_streak, empty_stats, profile_summary, recompute
+from cervo.domain.stats import apply_answer, apply_completion, displayed_streak, empty_stats, profile_summary, recompute
 
 Q = {"id": "q1", "category": "logique", "type": "short_text"}
 QN = {"id": "q2", "category": "estimation", "type": "numeric"}

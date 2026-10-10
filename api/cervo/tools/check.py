@@ -5,9 +5,9 @@ from __future__ import annotations
 import sys
 from collections import Counter
 
-from ..catalog import CATEGORIES
-from ..daily import MIN_POOL
-from ..questions import check_bank, load_files
+from ..domain.catalog import CATEGORIES
+from ..domain.daily import MIN_POOL
+from ..services.bank import check_bank, load_files
 
 
 def main() -> None:
@@ -22,7 +22,8 @@ def main() -> None:
     by_diff = Counter(q.difficulty for q in published)
     print("  types :", dict(by_type))
     print("  difficultés :", dict(sorted(by_diff.items())))
-    print("  avec image :", sum(1 for q in published if q.image_url))
+    by_input = Counter(q.input_format for q in published)
+    print("  formats d'entrée :", dict(by_input))
     if errors:
         print(f"\n{len(errors)} problème(s) :", file=sys.stderr)
         for err in errors:

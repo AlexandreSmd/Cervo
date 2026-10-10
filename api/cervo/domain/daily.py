@@ -14,7 +14,8 @@ from zoneinfo import ZoneInfo
 from .catalog import THINKING_PILLARS, pillar_of
 
 QUIZ_SIZE = 10
-DIFFICULTY_QUOTAS = {1: 4, 2: 4, 3: 2}
+# Quiz exigeant : 2 faciles pour se lancer, 4 moyennes, 4 difficiles.
+DIFFICULTY_QUOTAS = {1: 2, 2: 4, 3: 4}
 MAX_PER_CATEGORY = 3
 MIN_CATEGORIES = 5
 MIN_NUMERIC = 2
@@ -23,6 +24,8 @@ MIN_THINKING = 4
 # Taille minimale du vivier après exclusion des questions déjà posées.
 MIN_POOL = 40
 ATTEMPTS_PER_LEVEL = 60
+# Types longs ou particuliers : pas trop par jour pour garder un quiz rythmé.
+TYPE_CAPS = {"dictation": 1, "order": 2, "size": 2}
 
 # Ordre d'assouplissement (section 7) : difficulté, puis catégories, puis images.
 RELAX_LEVELS = (
@@ -68,7 +71,7 @@ def _is_numeric(q: dict) -> bool:
 
 
 def _has_image(q: dict) -> bool:
-    return bool(q.get("image_url"))
+    return bool(q.get("images") or q.get("image_url"))
 
 
 def _is_thinking(q: dict) -> bool:
@@ -83,6 +86,9 @@ def _try_build(order: list[dict], level: dict) -> list[dict] | None:
 
     def can_add(q: dict) -> bool:
         if q["id"] in chosen_ids:
+            return False
+        cap = TYPE_CAPS.get(q.get("type", ""))
+        if cap is not None and sum(1 for s in selected if s.get("type") == q.get("type")) >= cap:
             return False
         if level["categories"] and cat_count.get(q["category"], 0) >= MAX_PER_CATEGORY:
             return False

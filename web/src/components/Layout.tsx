@@ -1,71 +1,66 @@
-import { useEffect, useState, type ReactNode } from "react";
+// Cadre de l'interface joueur : barre du haut, onglets en bas sur mobile.
+import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { APP_NAME, DEV_TOOLS } from "../lib/config";
-import { DevTools } from "./DevTools";
+import { APP_NAME } from "../lib/config";
 
-function useHtmlClass(cls: string, key: string, initial: () => boolean) {
-  const [on, setOn] = useState(initial);
-  useEffect(() => {
-    document.documentElement.classList.toggle(cls, on);
-    try { localStorage.setItem(key, on ? "on" : "off"); } catch { /* stockage indisponible */ }
-  }, [on, cls, key]);
-  return [on, setOn] as const;
-}
-
-export function Logo() {
+export function Logo({ to = "/" }: { to?: string }) {
   return (
-    <Link to="/" className="flex items-center gap-2 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30" aria-label={`${APP_NAME}, accueil`}>
+    <Link
+      to={to}
+      className="flex items-center gap-2 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
+      aria-label={`${APP_NAME}, accueil`}
+    >
       <span className="flex gap-0.5" aria-hidden="true">
-        <span className="h-3 w-3 rounded-full bg-accent" />
-        <span className="h-3 w-3 rounded-full bg-good" />
-        <span className="h-3 w-3 rounded-full bg-mid" />
+        <span className="h-2.5 w-2.5 rounded-full bg-accent" />
+        <span className="h-2.5 w-2.5 rounded-full bg-good" />
+        <span className="h-2.5 w-2.5 rounded-full bg-mid" />
       </span>
       <span className="whitespace-nowrap font-display text-lg font-extrabold tracking-tight">{APP_NAME}</span>
     </Link>
   );
 }
 
+const TABS = [
+  { to: "/", label: "Jouer", icon: "M8 5.14v13.72a1 1 0 0 0 1.52.85l10.98-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z" },
+  { to: "/profil", label: "Profil", icon: "M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.24-8 5v1h16v-1c0-2.76-3.6-5-8-5Z" },
+];
+
+/** Interface joueur : barre du haut minimale, onglets en bas sur mobile. */
 export function Layout({ children }: { children: ReactNode }) {
-  const [dark, setDark] = useHtmlClass("dark", "cervo-theme-dark", () => document.documentElement.classList.contains("dark"));
-  const [large, setLarge] = useHtmlClass("text-large", "cervo-text-large", () => {
-    try { return localStorage.getItem("cervo-text-large") === "on"; } catch { return false; }
-  });
-  useEffect(() => {
-    try { localStorage.setItem("cervo-theme", dark ? "dark" : "light"); } catch { /* ignore */ }
-  }, [dark]);
-
-  const navClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-xl px-2 py-2 text-sm font-semibold transition sm:px-3 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30 ${isActive ? "bg-accent/10 text-accent" : "text-muted hover:text-ink"}`;
-
+  const tab = ({ isActive }: { isActive: boolean }) =>
+    `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-semibold transition sm:flex-none sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:text-sm ${
+      isActive ? "text-ink sm:bg-ink/5" : "text-muted hover:text-ink"
+    }`;
   return (
     <div className="flex min-h-screen flex-col">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-card focus:px-4 focus:py-2">Aller au contenu</a>
-      <header className="sticky top-0 z-30 border-b border-line/60 bg-bg/85 backdrop-blur">
-        <div className="mx-auto flex max-w-app items-center justify-between gap-2 px-4 py-3">
+      <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-app items-center justify-between px-5 py-3">
           <Logo />
-          <nav className="flex items-center gap-0.5 sm:gap-1" aria-label="Navigation principale">
-            <NavLink to="/" end className={navClass}>Jouer</NavLink>
-            <NavLink to="/profil" className={navClass}>Profil</NavLink>
-            <button type="button" onClick={() => setLarge(!large)} className="rounded-xl px-2 py-2 text-sm font-bold text-muted hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
-              aria-pressed={large} aria-label={large ? "Texte normal" : "Agrandir le texte"} title="Taille du texte">
-              A<span className="text-xs">A</span>
-            </button>
-            <button type="button" onClick={() => setDark(!dark)} className="rounded-xl px-2 py-2 text-muted hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
-              aria-label={dark ? "Passer en mode clair" : "Passer en mode sombre"} title="Thème">
-              {dark ? "☀︎" : "☾"}
-            </button>
+          <nav className="hidden gap-1 sm:flex" aria-label="Navigation">
+            {TABS.map((t) => (
+              <NavLink key={t.to} to={t.to} end className={tab}>
+                {t.label}
+              </NavLink>
+            ))}
           </nav>
         </div>
       </header>
-      <main id="main" className="mx-auto w-full max-w-app flex-1 px-4 pb-16 pt-6">{children}</main>
-      <footer className="mx-auto w-full max-w-app px-4 pb-8 text-center text-sm text-muted">
-        <p>Dix questions par jour. Zéro IA.</p>
-        <p className="mt-2 space-x-4">
-          <Link to="/a-propos" className="link">À propos</Link>
-          <Link to="/confidentialite" className="link">Confidentialité</Link>
-        </p>
-      </footer>
-      {DEV_TOOLS && <DevTools />}
+      <main id="main" className="mx-auto w-full max-w-app flex-1 px-5 pb-28 pt-2 sm:pb-12">
+        {children}
+      </main>
+      <nav
+        className="fixed inset-x-0 bottom-0 z-30 flex border-t border-line bg-card/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden"
+        aria-label="Navigation"
+      >
+        {TABS.map((t) => (
+          <NavLink key={t.to} to={t.to} end className={tab}>
+            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
+              <path d={t.icon} />
+            </svg>
+            {t.label}
+          </NavLink>
+        ))}
+      </nav>
     </div>
   );
 }
