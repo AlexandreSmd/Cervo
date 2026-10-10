@@ -4,7 +4,7 @@ Déploiement : `npm run prod:deploy` (voir docs/DEPLOIEMENT.md). Directement :
     uvx --from modal modal deploy modal_app.py
 
 Le secret Modal « vif-prod » fournit la configuration de production :
-    APP_ENV=production, FIREBASE_PROJECT_ID, FIREBASE_SERVICE_ACCOUNT_JSON, ADMIN_EMAILS, TIMEZONE
+    APP_ENV=production, FIREBASE_PROJECT_ID, FIREBASE_SERVICE_ACCOUNT_JSON, ADMIN_EMAILS, TIMEZONE, FIRESTORE_DATABASE
 Il est créé (ou mis à jour) par `npm run prod:deploy` à partir de secrets/firebase-admin.json.
 """
 

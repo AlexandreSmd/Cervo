@@ -45,7 +45,9 @@ def db() -> firestore.Client:
     project = os.environ.get("FIRESTORE_PROJECT_ID") or get_settings().project_id
     if os.environ.get("FIRESTORE_EMULATOR_HOST"):
         return firestore.Client(project=project, credentials=AnonymousCredentials())
-    return firestore.Client(project=project, credentials=app().credential.get_credential())
+    # FIRESTORE_DATABASE : nom de la base si ce n'est pas la base « (default) » du projet.
+    database = os.environ.get("FIRESTORE_DATABASE") or "(default)"
+    return firestore.Client(project=project, database=database, credentials=app().credential.get_credential())
 
 
 def verify_token(token: str) -> dict:
