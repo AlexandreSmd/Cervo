@@ -75,7 +75,7 @@ Remplis dans TextEdit, puis enregistre :
 1. Crée un compte sur https://modal.com (bouton « Sign up », avec GitHub ou Google).
 2. Dans le Terminal :
    ```
-   uvx --from modal modal setup
+   uvx --python 3.12 --from modal modal setup
    ```
    Le navigateur s'ouvre : valide. Le Terminal affiche « Token verified ».
 3. Puis :

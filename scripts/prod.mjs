@@ -12,7 +12,8 @@ const ENV_FILE = join(ROOT, ".env.production");
 const SERVICE_ACCOUNT = join(ROOT, "secrets", "firebase-admin.json");
 const STATE_FILE = join(ROOT, ".prod-state.json");
 const WRANGLER_DIR = join(ROOT, "infra", "cloudflare");
-const MODAL = ["--from", "modal", "modal"];
+// Modal ne supporte pas encore Python 3.15 : on fixe la version utilisée par uvx.
+const MODAL = ["--python", "3.12", "--from", "modal", "modal"];
 const SECRET_NAME = "vif-prod";
 
 function fail(message) {
@@ -78,7 +79,7 @@ function check({ quiet = false } = {}) {
     }
   }
   const modalToken = existsSync(join(homedir(), ".modal.toml")) || process.env.MODAL_TOKEN_ID;
-  if (!modalToken) problems.push("Modal n'est pas connecté : lance « uvx --from modal modal setup » (étape 4)");
+  if (!modalToken) problems.push("Modal n'est pas connecté : lance « uvx --python 3.12 --from modal modal setup » (étape 4)");
   if (capture("npx", ["wrangler", "whoami"]).out.match(/not authenticated|You are not logged in/i)) problems.push("Cloudflare n'est pas connecté : lance « npx wrangler login » (étape 4)");
 
   if (problems.length) {
