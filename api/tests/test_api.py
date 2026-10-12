@@ -62,6 +62,13 @@ def h(token):
     return {"Authorization": f"Bearer {token}"}
 
 
+def play(client, token, day, q, answer):
+    """Lance la question (chrono) puis répond, comme le navigateur."""
+    body = {"date": day, "question_id": q["id"]}
+    client.post("/api/question-start", headers=h(token), json=body)
+    return client.post("/api/answer", headers=h(token), json={**body, "answer": answer})
+
+
 def answer_for(q):
     return {
         "binary": True,
@@ -104,7 +111,7 @@ def test_full_day_flow(client):
     assert skip.status_code == 409
 
     for q in today["questions"]:
-        res = client.post("/api/answer", headers=h(token), json={"date": today["date"], "question_id": q["id"], "answer": answer_for(q)})
+        res = play(client, token, today["date"], q, answer_for(q))
         assert res.status_code == 200, res.text
         body = res.json()
         assert 0 <= body["score"] <= 100 and "correct_answer" in body
@@ -134,7 +141,7 @@ def test_answer_creates_profile(client):
     token = anon_token()
     q = client.get("/api/today", headers=h(anon_token())).json()["questions"][0]
     day = client.get("/api/health").json()["today"]
-    res = client.post("/api/answer", headers=h(token), json={"date": day, "question_id": q["id"], "answer": answer_for(q)})
+    res = play(client, token, day, q, answer_for(q))
     assert res.status_code == 200, res.text
     profile = client.get("/api/profile", headers=h(token)).json()
     assert profile["username"].startswith("Vif-") and profile["is_anonymous"] is True
@@ -306,16 +313,22 @@ def test_timer_started_once_and_late_answer_scores_zero(client, monkeypatch):
 def test_timeout_without_answer(client):
     token = anon_token()
     data = client.get("/api/today", headers=h(token)).json()
-    res = client.post(
-        "/api/answer", headers=h(token), json={"date": data["date"], "question_id": data["questions"][0]["id"], "answer": None}
-    ).json()
+    res = play(client, token, data["date"], data["questions"][0], None).json()
     assert res["timed_out"] and res["score"] == 0
+
+
+def test_timed_question_must_be_started(client):
+    token = anon_token()
+    data = client.get("/api/today", headers=h(token)).json()
+    q = data["questions"][0]
+    res = client.post("/api/answer", headers=h(token), json={"date": data["date"], "question_id": q["id"], "answer": answer_for(q)})
+    assert res.status_code == 409
 
 
 def _answer_until(client, token, data, position):
     """Répond (n'importe quoi) aux questions jusqu'à `position` exclue."""
     for q in data["questions"][:position]:
-        res = client.post("/api/answer", headers=h(token), json={"date": data["date"], "question_id": q["id"], "answer": answer_for(q)})
+        res = play(client, token, data["date"], q, answer_for(q))
         assert res.status_code == 200, res.text
 
 
@@ -379,3 +392,36 @@ def test_legacy_questions_are_retired_and_future_days_recomposed(client):
     assert bank.by_id(client_db)["histoire-old"]["status"] == "retired"
     assert not client_db.collection(col.DAILY_QUIZZES).document(future).get().exists
     assert retire_legacy(client_db, today()) == (0, 0)  # idempotent
+
+
+def test_delete_question_replaces_it_today_and_in_future_days(client):
+    admin = admin_token(client)
+    client.post("/api/admin/schedule/fill", headers=h(admin), json={"days": 6})
+    sched = client.get("/api/admin/schedule?days=6", headers=h(admin)).json()["days"]
+    today_ids = [q["id"] for q in sched[0]["questions"]]
+
+    # Un joueur est en train de jouer la question 1 (taille) quand l'admin la supprime
+    token = anon_token()
+    data = client.get("/api/today", headers=h(token)).json()
+    play(client, token, data["date"], data["questions"][0], answer_for(data["questions"][0]))
+    client.post("/api/question-start", headers=h(token), json={"date": data["date"], "question_id": today_ids[1]})
+
+    res = client.delete(f"/api/admin/questions/{today_ids[1]}", headers=h(admin)).json()
+    assert data["date"] in res["replaced"] and res["replaced"][data["date"]] != today_ids[1]
+    new_today = client.get("/api/admin/schedule?days=1", headers=h(admin)).json()["days"][0]["questions"]
+    assert today_ids[1] not in [q["id"] for q in new_today]
+    assert new_today[1]["category"] == "taille"  # remplacée par une question du même type
+    # Plus jamais proposée ni listée
+    listing = [q["id"] for q in client.get("/api/admin/questions", headers=h(admin)).json()["questions"]]
+    assert today_ids[1] not in listing
+    planned = [q["id"] for d in client.get("/api/admin/schedule?days=6", headers=h(admin)).json()["days"] for q in d["questions"]]
+    assert today_ids[1] not in planned
+
+    # Le joueur en cours reçoit la nouvelle question, avec un chrono neuf
+    from cervo.services import quiz
+
+    quiz.invalidate_cache()
+    state = client.get("/api/today", headers=h(token)).json()
+    assert state["questions"][1]["id"] == res["replaced"][data["date"]] and state["current"] is None
+    assert play(client, token, data["date"], state["questions"][1], answer_for(state["questions"][1])).status_code == 200
+    assert client.delete(f"/api/admin/questions/{today_ids[1]}", headers=h(admin)).status_code == 404

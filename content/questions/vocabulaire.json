@@ -1,53 +1,53 @@
 [
   {
-    "id": "vocabulaire-001",
+    "id": "vocabulaire-101",
     "type": "mcq",
     "category": "vocabulaire",
     "difficulty": 1,
-    "prompt": "Quel est le synonyme de « éphémère » ?",
+    "prompt": "Au sens figuré, qu'est-ce qu'un « thuriféraire » ?",
     "choices": [
-      "Passager",
-      "Éternel",
-      "Fragile",
-      "Lumineux"
+      "Un flatteur zélé",
+      "Un marchand d'encens",
+      "Un gardien de tour",
+      "Un prêtre itinérant"
     ],
-    "correct_answer": "Passager",
-    "explanation": "Éphémère vient du grec ephêmeros, « qui ne dure qu'un jour ». L'insecte du même nom ne vit souvent que quelques heures une fois adulte.",
-    "source_url": "https://www.cnrtl.fr/definition/%C3%A9ph%C3%A9m%C3%A8re",
+    "correct_answer": "Un flatteur zélé",
+    "explanation": "Au sens propre, le thuriféraire porte l'encensoir pendant la messe. Au figuré, c'est celui qui « encense » quelqu'un : un admirateur servile.",
+    "source_url": "https://www.cnrtl.fr/definition/thurif%C3%A9raire",
     "status": "published"
   },
   {
-    "id": "vocabulaire-002",
+    "id": "vocabulaire-102",
     "type": "mcq",
     "category": "vocabulaire",
     "difficulty": 2,
-    "prompt": "Quel est le contraire de « prolixe » ?",
+    "prompt": "Comment appelle-t-on une personne qui ne boit que de l'eau ?",
     "choices": [
-      "Concis",
-      "Prolifique",
-      "Généreux",
-      "Hésitant"
+      "Hydropote",
+      "Hydrophobe",
+      "Aquariophile",
+      "Hygiéniste"
     ],
-    "correct_answer": "Concis",
-    "explanation": "Prolixe : qui parle ou écrit trop longuement. Son contraire est concis. Le piège, « prolifique », veut dire « qui produit beaucoup » : un auteur peut être prolifique sans être prolixe.",
-    "source_url": "https://www.cnrtl.fr/definition/prolixe",
+    "correct_answer": "Hydropote",
+    "explanation": "Du grec hudôr (eau) et potês (buveur). L'hydrophobe, lui, a peur de l'eau ; l'aquariophile élève des poissons.",
+    "source_url": "https://www.cnrtl.fr/definition/hydropote",
     "status": "published"
   },
   {
-    "id": "vocabulaire-003",
+    "id": "vocabulaire-103",
     "type": "mcq",
     "category": "vocabulaire",
     "difficulty": 3,
-    "prompt": "« Ce mot a plusieurs … » : quel terme désigne les différents sens d'un mot ?",
+    "prompt": "« Il nous a expliqué l'affaire compendieusement. » Comment l'a-t-il expliquée ?",
     "choices": [
-      "acceptions",
-      "acceptations",
-      "exceptions",
-      "conceptions"
+      "Brièvement",
+      "Longuement",
+      "Avec mépris",
+      "Dans le désordre"
     ],
-    "correct_answer": "acceptions",
-    "explanation": "Une acception est l'un des sens d'un mot (« dans toutes les acceptions du terme »). L'acceptation, c'est le fait d'accepter. Les deux viennent du latin acceptio, mais ne s'échangent pas.",
-    "source_url": "https://www.cnrtl.fr/definition/acception",
+    "correct_answer": "Brièvement",
+    "explanation": "Compendieux vient du latin compendium, « abrégé » : compendieusement veut dire « en résumé ». Le mot est très souvent employé à contresens, pour « longuement ».",
+    "source_url": "https://www.cnrtl.fr/definition/compendieusement",
     "status": "published"
   }
 ]

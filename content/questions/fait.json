@@ -1,41 +1,41 @@
 [
   {
-    "id": "fait-001",
+    "id": "fait-101",
     "type": "binary",
     "category": "fait",
     "difficulty": 1,
-    "prompt": "Une pieuvre a trois cœurs.",
+    "prompt": "Il y a plus d'arbres sur Terre que d'étoiles dans la Voie lactée.",
     "correct_answer": true,
-    "explanation": "Deux cœurs « branchiaux » envoient le sang vers les branchies, un troisième l'envoie dans le reste du corps. Et ce sang est bleu : il transporte l'oxygène grâce à l'hémocyanine, une protéine à base de cuivre.",
-    "source_url": "https://www.nhm.ac.uk/discover/octopuses-keep-surprising-us-here-are-eight-examples-how.html",
+    "explanation": "Une étude publiée dans Nature en 2015 estime à environ 3 000 milliards le nombre d'arbres sur Terre. La Voie lactée compte entre 100 et 400 milliards d'étoiles.",
+    "source_url": "https://www.nature.com/articles/nature14967",
     "status": "published"
   },
   {
-    "id": "fait-002",
+    "id": "fait-102",
     "type": "binary",
     "category": "fait",
     "difficulty": 2,
-    "prompt": "La Grande Muraille de Chine est visible à l'œil nu depuis la Lune.",
-    "correct_answer": false,
-    "explanation": "Mythe tenace : la muraille est très longue, mais large de 6 à 9 m seulement. Depuis la Lune, à 384 000 km, on ne distingue aucune construction humaine. Même depuis la Station spatiale (400 km), les astronautes ont du mal à la repérer.",
-    "source_url": "https://www.nasa.gov/image-article/great-wall/",
+    "prompt": "Les requins existaient déjà avant les arbres.",
+    "correct_answer": true,
+    "explanation": "Les premiers requins sont apparus il y a environ 450 millions d'années. Les premiers vrais arbres, comme Archaeopteris, ont poussé environ 60 millions d'années plus tard.",
+    "source_url": "https://www.nhm.ac.uk/discover/news/2019/december/fossil-forest-in-new-york-is-the-oldest-on-record.html",
     "status": "published"
   },
   {
-    "id": "fait-003",
+    "id": "fait-103",
     "type": "mcq",
     "category": "fait",
     "difficulty": 3,
-    "prompt": "Lequel de ces fruits est, au sens botanique, une baie ?",
+    "prompt": "Sur quelle planète un jour dure-t-il plus longtemps qu'une année ?",
     "choices": [
-      "La banane",
-      "La fraise",
-      "La framboise",
-      "La cerise"
+      "Vénus",
+      "Mercure",
+      "Mars",
+      "Neptune"
     ],
-    "correct_answer": "La banane",
-    "explanation": "Pour un botaniste, une baie est un fruit charnu issu d'une seule fleur, aux graines dans la chair : banane, tomate, raisin, kiwi. La fraise est un « faux fruit » (les vrais fruits sont les petits grains à sa surface), la framboise un assemblage de petites drupes et la cerise une drupe, à noyau.",
-    "source_url": "https://www.britannica.com/science/berry-plant-reproductive-body",
+    "correct_answer": "Vénus",
+    "explanation": "Vénus tourne sur elle-même en 243 jours terrestres, et à l'envers, mais boucle son tour du Soleil en 225 jours. Son « jour » est plus long que son année.",
+    "source_url": "https://science.nasa.gov/venus/facts/",
     "status": "published"
   }
 ]

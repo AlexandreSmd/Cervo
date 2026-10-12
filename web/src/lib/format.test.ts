@@ -29,7 +29,7 @@ describe("formatAnswer", () => {
     expect(formatAnswer(true, "binary")).toBe("Vrai");
     expect(formatAnswer(false, "binary")).toBe("Faux");
     expect(formatAnswer(634, "numeric", "m")).toMatch(/^634 m$/);
-    expect(formatAnswer(null, "mcq")).toBe("—");
+    expect(formatAnswer(null, "mcq")).toBe("-");
   });
 });
 

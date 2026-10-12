@@ -32,7 +32,7 @@ function ActivityChart({ series, selected, onSelect }: { series: Overview["serie
             rx="5"
             fill={s.date === selected ? "rgb(var(--accent))" : "rgb(var(--ink) / 0.12)"}
           >
-            <title>{`${shortDate(s.date)} : ${s.players} joueurs, score moyen ${s.average ?? "—"}`}</title>
+            <title>{`${shortDate(s.date)} : ${s.players} joueurs, score moyen ${s.average ?? "-"}`}</title>
           </rect>
         </g>
       ))}
@@ -94,7 +94,7 @@ function DayQuestions({ day }: { day: DayStats }) {
                 <KindTag category={q.category} />
               </td>
               <td className="py-3 pr-4 tabular-nums">{q.answers}</td>
-              <td className="py-3 pr-4 tabular-nums">{q.average ?? "—"}</td>
+              <td className="py-3 pr-4 tabular-nums">{q.average ?? "-"}</td>
               <td className="py-3">
                 <Rate value={q.success} />
               </td>
@@ -136,7 +136,7 @@ function KindTable({ kinds }: { kinds: Overview["kinds"] }) {
               </td>
               <td className="py-2.5 pr-4 tabular-nums text-muted">{k.levels.join(" / ")}</td>
               <td className="py-2.5 pr-4 tabular-nums">{k.answers}</td>
-              <td className="py-2.5 pr-4 tabular-nums">{k.average ?? "—"}</td>
+              <td className="py-2.5 pr-4 tabular-nums">{k.average ?? "-"}</td>
               <td className="py-2.5">
                 <Rate value={k.success} />
               </td>
@@ -175,8 +175,8 @@ export function Dashboard() {
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <Kpi accent label="Joueurs aujourd'hui" value={k.players_today} />
-        <Kpi label="Score moyen" value={data.today.average ?? "—"} hint="aujourd'hui" />
-        <Kpi label="Terminent le quiz" value={data.today.completion !== null ? `${data.today.completion}%` : "—"} />
+        <Kpi label="Score moyen" value={data.today.average ?? "-"} hint="aujourd'hui" />
+        <Kpi label="Terminent le quiz" value={data.today.completion !== null ? `${data.today.completion}%` : "-"} />
         <Kpi label="Joueurs 7 jours" value={k.players_7d} hint="parties commencées" />
         <Kpi label="Inscrits" value={k.total_users} hint="sessions et comptes" />
         <Kpi label="Planifié" value={`${k.days_planned_ahead} j`} hint={`${k.questions_published} questions publiées`} />
@@ -212,7 +212,7 @@ export function Dashboard() {
         <Panel title={`Scores du ${shortDate(current.date)}`}>
           <Distribution values={current.distribution} />
           <p className="mt-3 text-sm text-muted">
-            Score moyen : <strong className="text-ink">{current.average ?? "—"}</strong>
+            Score moyen : <strong className="text-ink">{current.average ?? "-"}</strong>
           </p>
         </Panel>
         {(

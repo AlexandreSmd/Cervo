@@ -84,13 +84,23 @@ export interface Today {
   current: { position: number; question_id: string; started_at: string } | null;
 }
 
+/** Les joueurs du jour sur une question (null tant qu'ils sont trop peu). */
+export interface QuestionCommunity {
+  players: number;
+  /** Part des joueurs qui ont tout bon (%). */
+  success: number;
+  average: number;
+}
+
 export interface SubmitResult extends AnswerResult {
+  community?: QuestionCommunity | null;
   completed: boolean;
   score_total: number | null;
   streak: number;
 }
 
 export interface DayItem extends PublicQuestion, Reveal {
+  community?: QuestionCommunity | null;
   question_id: string;
   user_answer: Answer | null;
   score: number;
@@ -99,6 +109,8 @@ export interface DayItem extends PublicQuestion, Reveal {
 export interface DayDetail {
   date: string;
   score_total: number;
+  /** Ta place parmi les joueurs du jour (null tant qu'ils sont trop peu). */
+  community: { players: number; average: number; percentile: number | null } | null;
   completed_at: string;
   items: DayItem[];
 }

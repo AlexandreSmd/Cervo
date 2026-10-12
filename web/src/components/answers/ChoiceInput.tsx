@@ -26,8 +26,8 @@ export function ChoiceInput({
             aria-checked={selected}
             disabled={disabled}
             onClick={() => onChange(opt.value)}
-            className={`min-h-[56px] rounded-2xl px-5 text-base font-semibold transition ${binary ? "text-center text-lg" : "text-left"} ${
-              selected ? "bg-accent text-white" : "bg-ink/5 hover:bg-ink/10"
+            className={`min-h-[56px] rounded-xl border-2 px-5 text-base font-semibold transition ${binary ? "text-center text-lg" : "text-left"} ${
+              selected ? "border-ink bg-ink text-bg" : "border-ink/15 bg-card hover:border-ink/40"
             }`}
           >
             {opt.label}

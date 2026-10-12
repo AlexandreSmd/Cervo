@@ -1,10 +1,77 @@
 [
   {
-    "id": "memoire-001",
-    "type": "mcq",
+    "id": "memoire-101",
+    "type": "recall",
     "category": "memoire",
     "difficulty": 1,
-    "prompt": "Lequel de ces mots n'était PAS dans la liste ?",
+    "prompt": "Écris les 8 mots dont tu te souviens, dans n'importe quel ordre.",
+    "memorize": {
+      "items": [
+        "Horloge",
+        "Sable",
+        "Violon",
+        "Orage",
+        "Plume",
+        "Cerise",
+        "Phare",
+        "Glacier"
+      ]
+    },
+    "correct_answer": [
+      "Horloge",
+      "Sable",
+      "Violon",
+      "Orage",
+      "Plume",
+      "Cerise",
+      "Phare",
+      "Glacier"
+    ],
+    "recall_ordered": false,
+    "explanation": "Les mots du début et de la fin d'une liste sont les mieux retenus (effets de primauté et de récence). Ceux du milieu, ici « orage » et « plume », sont les plus souvent oubliés.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-102",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Retape les 9 chiffres, dans l'ordre.",
+    "memorize": {
+      "items": [
+        "5",
+        "8",
+        "1",
+        "9",
+        "3",
+        "6",
+        "2",
+        "7",
+        "4"
+      ]
+    },
+    "correct_answer": [
+      "5",
+      "8",
+      "1",
+      "9",
+      "3",
+      "6",
+      "2",
+      "7",
+      "4"
+    ],
+    "recall_ordered": true,
+    "explanation": "Neuf chiffres, c'est au-delà de ce que retient la mémoire à court terme (environ 7). L'astuce : les regrouper en trois paquets, 581 · 936 · 274, comme un numéro de téléphone.",
+    "source_url": "https://psycnet.apa.org/doi/10.1037/h0043158",
+    "status": "published"
+  },
+  {
+    "id": "memoire-103",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Quel élément était en 6e position ?",
     "memorize": {
       "items": [
         "🍋 Citron",
@@ -12,75 +79,19 @@
         "🐢 Tortue",
         "🎸 Guitare",
         "⛵ Voilier",
-        "🌵 Cactus"
+        "🌵 Cactus",
+        "🔔 Cloche",
+        "🧲 Aimant"
       ]
     },
     "choices": [
-      "Guitare",
-      "Tortue",
-      "Parapluie",
-      "Citron"
+      "Cactus",
+      "Voilier",
+      "Cloche",
+      "Guitare"
     ],
-    "correct_answer": "Parapluie",
-    "explanation": "La liste : citron, vélo, tortue, guitare, voilier, cactus. Astuce de mémorisation : relier les mots dans une petite histoire absurde (une tortue joue de la guitare sur un voilier…), on retient bien mieux une scène qu'une liste.",
-    "status": "published"
-  },
-  {
-    "id": "memoire-002",
-    "type": "recall",
-    "category": "memoire",
-    "difficulty": 2,
-    "prompt": "Retape les 7 chiffres, dans l'ordre.",
-    "memorize": {
-      "items": [
-        "7",
-        "2",
-        "9",
-        "4",
-        "1",
-        "8",
-        "3"
-      ]
-    },
-    "correct_answer": [
-      "7",
-      "2",
-      "9",
-      "4",
-      "1",
-      "8",
-      "3"
-    ],
-    "recall_ordered": true,
-    "explanation": "Notre mémoire à court terme retient environ 7 éléments, à 2 près (George Miller, 1956). Pour aller au-delà, on regroupe : « 729 – 41 – 83 » se retient bien mieux que sept chiffres isolés.",
-    "source_url": "https://psycnet.apa.org/doi/10.1037/h0043158",
-    "status": "published"
-  },
-  {
-    "id": "memoire-003",
-    "type": "order",
-    "category": "memoire",
-    "difficulty": 3,
-    "prompt": "Remets-les dans l'ordre où ils sont apparus.",
-    "memorize": {
-      "items": [
-        "🦊 Renard",
-        "🍉 Pastèque",
-        "🚀 Fusée",
-        "🎩 Chapeau",
-        "🐙 Pieuvre",
-        "🔑 Clé"
-      ]
-    },
-    "correct_answer": [
-      "🦊 Renard",
-      "🍉 Pastèque",
-      "🚀 Fusée",
-      "🎩 Chapeau",
-      "🐙 Pieuvre",
-      "🔑 Clé"
-    ],
-    "explanation": "Les champions de mémoire utilisent le « palais de la mémoire » : on dépose chaque objet dans une pièce de sa maison, dans l'ordre de la visite. Un renard dans l'entrée, une pastèque sur le canapé, une fusée dans la cuisine…",
+    "correct_answer": "Cactus",
+    "explanation": "Ordre : citron, vélo, tortue, guitare, voilier, cactus, cloche, aimant. Retenir une position demande de mémoriser l'ordre, pas seulement les objets : bien plus dur.",
     "status": "published"
   }
 ]

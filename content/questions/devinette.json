@@ -1,68 +1,66 @@
 [
   {
-    "id": "devinette-001",
+    "id": "devinette-101",
     "type": "riddle",
     "category": "devinette",
     "difficulty": 1,
     "prompt": "Quel animal suis-je ?",
     "clues": [
-      "Je dors jusqu'à 20 heures par jour.",
-      "Je ne mange presque que les feuilles d'un seul genre d'arbre.",
-      "Je vis en Australie.",
-      "On m'appelle parfois « ours », mais je suis un marsupial."
+      "Je peux faire repousser mes pattes, mon cœur et même une partie de mon cerveau.",
+      "Je garde toute ma vie mon apparence de larve.",
+      "Je viens des lacs autour de Mexico.",
+      "Je suis une salamandre qui a toujours l'air de sourire."
     ],
-    "correct_answer": "koala",
+    "correct_answer": "axolotl",
     "accepted_aliases": [
-      "koalas"
+      "axolotls",
+      "axolotle"
     ],
-    "explanation": "Le koala se nourrit de feuilles d'eucalyptus, pauvres en énergie et difficiles à digérer : il dort 18 à 22 heures par jour pour économiser ses forces.",
-    "source_url": "https://www.savethekoala.com/about-koalas/",
+    "explanation": "L'axolotl reste toute sa vie à l'état larvaire (néoténie) et régénère des organes entiers. Presque éteint à l'état sauvage, il est étudié dans le monde entier pour ses capacités de régénération.",
+    "source_url": "https://www.nationalgeographic.com/animals/amphibians/facts/axolotl",
     "status": "published"
   },
   {
-    "id": "devinette-002",
+    "id": "devinette-102",
     "type": "riddle",
     "category": "devinette",
     "difficulty": 2,
     "prompt": "Quel pays suis-je ?",
     "clues": [
-      "Je n'ai pas d'armée.",
-      "Aucun moustique ne vit chez moi.",
-      "Mon parlement, fondé en 930, est l'un des plus anciens du monde.",
-      "Je suis une île de volcans et de glaciers, au bord du cercle polaire.",
-      "Ma capitale est Reykjavik."
+      "Je mesure mon développement au « bonheur national brut ».",
+      "Mes forêts absorbent plus de CO₂ que je n'en émets.",
+      "Je suis un royaume himalayen, entre la Chine et l'Inde.",
+      "Ma capitale est Thimphou."
     ],
-    "correct_answer": "Islande",
+    "correct_answer": "Bhoutan",
     "accepted_aliases": [
-      "Iceland",
-      "Ísland"
+      "Bhutan"
     ],
-    "explanation": "L'Islande n'a pas d'armée (sa défense repose sur l'OTAN et des accords bilatéraux), pas de moustiques, et son parlement, l'Althing, se réunit depuis 930.",
-    "source_url": "https://www.government.is/topics/foreign-affairs/",
+    "explanation": "Le Bhoutan a inscrit le bonheur national brut dans sa Constitution, qui impose aussi de garder au moins 60 % du pays en forêt. Il fait partie des rares pays au bilan carbone négatif.",
+    "source_url": "https://www.undp.org/bhutan",
     "status": "published"
   },
   {
-    "id": "devinette-003",
+    "id": "devinette-103",
     "type": "riddle",
     "category": "devinette",
     "difficulty": 3,
     "prompt": "Qui suis-je ?",
     "clues": [
-      "Je suis née à Varsovie.",
-      "J'ai découvert deux éléments chimiques ; l'un porte le nom de mon pays natal.",
-      "Je suis la seule personne récompensée par un prix Nobel dans deux sciences différentes.",
-      "Je repose au Panthéon, aux côtés de mon mari Pierre."
+      "Mon père était un poète célèbre que je n'ai jamais connu.",
+      "J'ai écrit en 1843 ce qu'on considère comme le premier programme informatique.",
+      "J'ai travaillé sur la machine analytique de Charles Babbage.",
+      "Un langage de programmation porte mon prénom."
     ],
-    "correct_answer": "Marie Curie",
+    "correct_answer": "Ada Lovelace",
     "accepted_aliases": [
-      "Curie",
-      "Marie Skłodowska-Curie",
-      "Marie Sklodowska-Curie",
-      "Maria Skłodowska",
-      "Maria Sklodowska"
+      "Lovelace",
+      "Ada King",
+      "Augusta Ada King",
+      "Ada Byron"
     ],
-    "explanation": "Marie Curie a découvert le polonium (nommé d'après la Pologne) et le radium. Prix Nobel de physique en 1903 et de chimie en 1911, elle entre au Panthéon en 1995 avec Pierre Curie.",
-    "source_url": "https://www.nobelprize.org/prizes/physics/1903/marie-curie/biographical/",
+    "explanation": "Fille du poète Lord Byron, Ada Lovelace a décrit un algorithme pour la machine analytique de Babbage, une machine jamais construite. Le langage Ada, créé pour la défense américaine, porte son nom.",
+    "source_url": "https://www.britannica.com/biography/Ada-Lovelace",
     "status": "published"
   }
 ]

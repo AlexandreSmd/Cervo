@@ -9,6 +9,7 @@ import type { AdminQuestion, QuestionSummary, Schedule, ScheduleDay } from "../l
 import { KINDS, kindInfo } from "./meta";
 import { applyDrop, dropRefusal, readDrag, writeDrag, type DragSource } from "./planningLogic";
 import { QuestionEditor } from "./QuestionEditor";
+import { DeleteQuestionButton } from "./DeleteButton";
 import { DiffBars, Drawer, KindTag, Rate, shortDate } from "./ui";
 
 /** État d'une journée, résumé en une couleur pour la frise. */
@@ -73,18 +74,20 @@ function QuestionRow({
   day,
   onOpen,
   onDrop,
+  onMessage,
 }: {
   q: QuestionSummary;
   index: number;
   day: ScheduleDay;
   onOpen: () => void;
   onDrop: (src: DragSource) => void;
+  onMessage: (m: string) => void;
 }) {
   const [over, setOver] = useState(false);
   const editable = !day.locked;
   const unpublished = q.status && q.status !== "published";
   return (
-    <li>
+    <li className="flex items-start gap-1">
       <button
         type="button"
         draggable={editable}
@@ -128,6 +131,11 @@ function QuestionRow({
           </span>
         )}
       </button>
+      {!q.missing && (
+        <span className="pt-3">
+          <DeleteQuestionButton id={q.id} onDone={onMessage} />
+        </span>
+      )}
     </li>
   );
 }
@@ -137,11 +145,13 @@ function DaySection({
   onOpen,
   onDrop,
   onAction,
+  onMessage,
 }: {
   day: ScheduleDay;
   onOpen: (index: number) => void;
   onDrop: (src: DragSource, index: number) => void;
   onAction: (a: "regenerate" | "clear") => void;
+  onMessage: (m: string) => void;
 }) {
   return (
     <section
@@ -183,7 +193,15 @@ function DaySection({
       {day.planned ? (
         <ol className="divide-y divide-line">
           {day.questions.map((q, i) => (
-            <QuestionRow key={`${q.id}-${i}`} q={q} index={i} day={day} onOpen={() => onOpen(i)} onDrop={(src) => onDrop(src, i)} />
+            <QuestionRow
+              key={`${q.id}-${i}`}
+              q={q}
+              index={i}
+              day={day}
+              onOpen={() => onOpen(i)}
+              onDrop={(src) => onDrop(src, i)}
+              onMessage={onMessage}
+            />
           ))}
         </ol>
       ) : (
@@ -408,6 +426,7 @@ export function Planning() {
             day={d}
             onOpen={(index) => setOpen({ date: d.date, index })}
             onDrop={(src, index) => drop(src, d.date, index)}
+            onMessage={setMessage}
             onAction={(a) =>
               run(a === "clear" ? "Journée vidée" : "Journée planifiée", () =>
                 a === "clear" ? api.admin.clearDay(d.date) : api.admin.regenerate(d.date),

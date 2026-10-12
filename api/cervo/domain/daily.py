@@ -127,3 +127,21 @@ def build_daily_quiz(day: str, questions: list[dict], planned: dict[str, list[st
             if kind not in chosen:
                 chosen[kind] = spare.pop(0)
     return [chosen[kind]["id"] for kind in DAILY_ORDER]
+
+
+def replacement_for(day: str, category: str, questions: list[dict], planned: dict[str, list[str]], exclude: set[str]) -> str | None:
+    """Remplaçant d'une question supprimée dans la journée `day` : une question publiée du même
+    type, la moins récemment posée ; à défaut (type épuisé), la plus fraîche d'un autre type."""
+    by_kind = published_by_kind(questions)
+    gaps = _gap_days(day, planned)
+    rng = seeded_rng(f"replace:{day}:{category}")
+
+    def freshest(pool: list[dict]) -> str | None:
+        pool = [q for q in pool if q["id"] not in exclude]
+        if not pool:
+            return None
+        rng.shuffle(pool)
+        pool.sort(key=lambda q: -gaps.get(q["id"], 10**6))
+        return pool[0]["id"]
+
+    return freshest(list(by_kind.get(category, []))) or freshest([q for pool in by_kind.values() for q in pool])

@@ -1,53 +1,53 @@
 [
   {
-    "id": "estimation-001",
+    "id": "estimation-101",
     "type": "numeric",
     "category": "estimation",
     "difficulty": 1,
-    "prompt": "Combien pèse en moyenne un éléphant d'Afrique mâle adulte ?",
-    "correct_answer": 6,
+    "prompt": "Combien de fois le cœur d'un adulte au repos bat-il en une journée ?",
+    "correct_answer": 100000,
     "numeric_config": {
       "scale": "log",
-      "factor": 3,
-      "unit": "tonnes",
-      "exact_margin": 0.5
+      "factor": 2,
+      "unit": "battements",
+      "exact_margin": 5000
     },
-    "explanation": "Un éléphant de savane mâle pèse environ 6 tonnes (parfois plus de 7), une femelle autour de 3. C'est l'animal terrestre le plus lourd.",
-    "source_url": "https://www.worldwildlife.org/species/african-elephant",
+    "explanation": "Environ 70 battements par minute, multipliés par 1 440 minutes : à peu près 100 000 battements par jour, soit plus de 2,5 milliards dans une vie.",
+    "source_url": "https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/all-about-heart-rate-pulse",
     "status": "published"
   },
   {
-    "id": "estimation-002",
+    "id": "estimation-102",
     "type": "numeric",
     "category": "estimation",
     "difficulty": 2,
-    "prompt": "Quelle est la taille moyenne d'un bébé à la naissance ?",
-    "correct_answer": 50,
+    "prompt": "Combien pèse la charpente métallique de la tour Eiffel ?",
+    "correct_answer": 7300,
     "numeric_config": {
       "scale": "log",
-      "factor": 1.5,
-      "unit": "cm",
-      "exact_margin": 1
+      "factor": 2,
+      "unit": "tonnes",
+      "exact_margin": 200
     },
-    "explanation": "Un nouveau-né mesure en moyenne 50 cm et pèse environ 3,3 kg. Il aura gagné environ 25 cm à son premier anniversaire : la croissance la plus rapide de toute sa vie.",
-    "source_url": "https://www.who.int/tools/child-growth-standards/standards/length-height-for-age",
+    "explanation": "La structure en fer pèse 7 300 tonnes (10 100 tonnes au total avec le reste). Si on la fondait, ce fer formerait une plaque de 6 cm d'épaisseur à peine sur sa base de 125 m de côté.",
+    "source_url": "https://www.toureiffel.paris/fr/le-monument/chiffres-cles",
     "status": "published"
   },
   {
-    "id": "estimation-003",
+    "id": "estimation-103",
     "type": "numeric",
     "category": "estimation",
     "difficulty": 3,
-    "prompt": "Combien pèse l'eau d'un petit nuage cumulus d'un kilomètre cube ?",
-    "correct_answer": 500,
+    "prompt": "À quelle vitesse la Terre se déplace-t-elle autour du Soleil ?",
+    "correct_answer": 107000,
     "numeric_config": {
       "scale": "log",
-      "factor": 3,
-      "unit": "tonnes",
-      "exact_margin": 25
+      "factor": 2,
+      "unit": "km/h",
+      "exact_margin": 2000
     },
-    "explanation": "Un cumulus contient environ 0,5 g d'eau par mètre cube : 500 tonnes de gouttelettes pour un kilomètre cube, le poids de plus de 80 éléphants. Il flotte parce que ces gouttelettes, minuscules, tombent extrêmement lentement et sont portées par l'air chaud qui monte.",
-    "source_url": "https://www.usgs.gov/special-topics/water-science-school/science/how-much-does-a-cloud-weigh",
+    "explanation": "Environ 107 000 km/h, soit près de 30 km par seconde. Pendant le temps de lire cette phrase, tu as parcouru une centaine de kilomètres autour du Soleil.",
+    "source_url": "https://science.nasa.gov/earth/facts/",
     "status": "published"
   }
 ]

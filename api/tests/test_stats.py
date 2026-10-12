@@ -83,3 +83,14 @@ def test_legacy_pillars_are_merged():
 def test_profile_summary_empty():
     p = profile_summary(empty_stats(), [], "2026-10-10")
     assert p["days_played"] == 0 and p["average"] is None and p["best_day"] is None
+
+
+def test_community():
+    from cervo.domain.community import day_community, question_community
+
+    assert question_community({"count": 2, "correct": 2, "sum": 200}) is None  # trop peu de joueurs
+    assert question_community({"count": 4, "correct": 1, "sum": 250}) == {"players": 4, "success": 25, "average": 63}
+    daily = {"completed": 5, "score_sum": 300, "buckets": {"3": 1, "5": 2, "7": 1, "9": 1}}
+    # 55 points : 1 joueur en dessous, 1 ex aequo (compté pour moitié), sur 4 autres
+    assert day_community(daily, 55) == {"players": 5, "average": 60, "percentile": 38}
+    assert day_community({**daily, "completed": 2}, 55) is None

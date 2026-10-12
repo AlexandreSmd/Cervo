@@ -76,7 +76,7 @@ def check_bank(raws: list[dict]) -> tuple[list[Question], list[str]]:
         except ValidationError as exc:
             for err in exc.errors():
                 loc = ".".join(str(x) for x in err["loc"]) or "question"
-                errors.append(f"{where} : {loc} — {err['msg']}")
+                errors.append(f"{where} : {loc} · {err['msg']}")
             continue
         if q.id in ids:
             errors.append(f"{where} : identifiant en double (déjà dans {ids[q.id]})")
