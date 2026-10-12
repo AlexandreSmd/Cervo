@@ -88,6 +88,3 @@ export async function shareMessage(text: string, title: string): Promise<ShareOu
   }
   return (await copyText(text)) ? "copied" : "failed";
 }
-
-/** Ouvre l'application Messenger (le message, déjà copié, se colle dans la conversation). */
-export const MESSENGER_APP_URL = "fb-messenger://";

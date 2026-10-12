@@ -3,7 +3,7 @@ import { playFullQuiz } from "./helpers";
 
 test.use({ ...devices["iPhone 13"], defaultBrowserType: "chromium" });
 
-test("sur mobile, le bouton ouvre la feuille de partage (Messenger) avec les 10 résultats en couleur", async ({ page }) => {
+test("sur mobile, « Partager » ouvre la feuille de partage du téléphone avec les 10 résultats en couleur", async ({ page }) => {
   // Simule la feuille de partage du téléphone et garde le message envoyé.
   await page.addInitScript(() => {
     (window as unknown as { __shared: unknown[] }).__shared = [];
@@ -16,7 +16,7 @@ test("sur mobile, le bouton ouvre la feuille de partage (Messenger) avec les 10 
   });
   await playFullQuiz(page);
   const button = page.getByTestId("share");
-  await expect(button).toHaveText(/Envoyer sur Messenger/);
+  await expect(button).toHaveText(/Partager/);
   await button.click();
   await expect(page.getByText("Envoyé !")).toBeVisible();
 

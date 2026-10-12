@@ -59,18 +59,29 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
   return (
     <div className="space-y-5 text-center" data-testid="memorize">
       <p className="font-display text-2xl font-extrabold">Mémorise !</p>
-      {items.length > 0 && (
-        <div className={short ? "flex flex-wrap justify-center gap-2" : "grid grid-cols-2 gap-2"}>
-          {items.map((it, i) => (
-            <span
-              key={i}
-              className={`rounded-xl border-2 border-ink bg-card font-display font-extrabold ${short ? "min-w-[52px] px-3 py-3 text-4xl" : "px-3 py-3 text-xl"}`}
-            >
-              {it}
-            </span>
-          ))}
-        </div>
-      )}
+      {items.length > 0 &&
+        // Toujours une seule ligne (chiffres) ou une seule colonne numérotée (mots) : l'ordre se lit sans hésiter.
+        (short ? (
+          <ol className="flex gap-1.5" aria-label="À mémoriser, dans l'ordre">
+            {items.map((it, i) => (
+              <li
+                key={i}
+                className="flex aspect-[3/4] min-w-0 flex-1 items-center justify-center rounded-lg border-2 border-ink bg-card font-display text-3xl font-extrabold"
+              >
+                {it}
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <ol className="mx-auto max-w-[300px] space-y-1.5 text-left" aria-label="À mémoriser, dans l'ordre">
+            {items.map((it, i) => (
+              <li key={i} className="flex items-center gap-3 rounded-lg border-2 border-ink bg-card px-3 py-2">
+                <span className="w-5 text-right font-display text-sm font-bold text-muted">{i + 1}</span>
+                <span className="font-display text-lg font-extrabold">{it}</span>
+              </li>
+            ))}
+          </ol>
+        ))}
       <div className="h-2 overflow-hidden rounded-full bg-ink/10">
         <div className="h-full rounded-full bg-accent" style={{ width: `${Math.max(0, left / seconds) * 100}%` }} />
       </div>

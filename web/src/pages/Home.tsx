@@ -67,6 +67,16 @@ export function Home() {
         )}
       </section>
       <p className="text-center text-sm text-muted">{data.completed ? <Countdown /> : "Sans aide · un chrono adapté à chaque question"}</p>
+      <button
+        className="mx-auto flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-muted hover:text-ink"
+        onClick={() => setIntro(true)}
+        data-testid="show-intro"
+      >
+        <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-current text-[10px]" aria-hidden="true">
+          ▶
+        </span>
+        C'est quoi, Vif ?
+      </button>
     </div>
   );
 }

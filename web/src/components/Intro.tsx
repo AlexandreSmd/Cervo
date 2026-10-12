@@ -1,13 +1,16 @@
 // Première visite : trois écrans courts qui présentent la mission, façon story (défilement
 // automatique, toucher pour avancer, « Passer » à tout moment). Montrée une seule fois par appareil.
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { KINDS } from "../lib/kinds";
 import { KindIcon } from "./KindIcon";
 import { BrainMark } from "./Layout";
 
 const SEEN_KEY = "vif-intro-seen";
-const STEP_MS = 3200;
+// Temps de lecture de chaque écran (on peut aussi toucher pour avancer, ou maintenir pour lire).
+const STEP_MS = 7000;
+// Un appui plus long qu'un toucher : on met en pause, sans changer d'écran.
+const HOLD_MS = 250;
 
 export function introSeen(): boolean {
   try {
@@ -122,22 +125,36 @@ function Progress() {
 
 const STEPS = [Mission, Daily, Progress];
 
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+}
+
 export function Intro({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const pressedAt = useRef(0);
   const last = step === STEPS.length - 1;
+  // Sans animations (réglage du téléphone), pas de défilement automatique : on avance au toucher.
+  const auto = !last && !prefersReducedMotion();
 
-  // Défilement automatique, sauf sur le dernier écran (on attend le choix du joueur).
-  useEffect(() => {
-    if (last) return;
-    const id = window.setTimeout(() => setStep((s) => s + 1), STEP_MS);
-    return () => window.clearTimeout(id);
-  }, [step, last]);
-
+  const go = (to: number) => setStep(Math.max(0, Math.min(STEPS.length - 1, to)));
   const close = () => {
     markSeen();
     onDone();
   };
   const Step = STEPS[step];
+
+  // Comme une story : toucher à gauche = écran précédent, ailleurs = suivant ; maintenir = pause.
+  const onPointerDown = () => {
+    pressedAt.current = Date.now();
+    setPaused(true);
+  };
+  const onPointerUp = (e: React.PointerEvent<HTMLElement>) => {
+    setPaused(false);
+    if (Date.now() - pressedAt.current > HOLD_MS) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    go(e.clientX - rect.left < rect.width * 0.3 ? step - 1 : step + 1);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-bg" role="dialog" aria-label="Bienvenue sur Vif" data-testid="intro">
@@ -146,14 +163,17 @@ export function Intro({ onDone }: { onDone: () => void }) {
           <div className="flex flex-1 gap-1.5" aria-hidden="true">
             {STEPS.map((_, i) => (
               <span key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-ink/15">
-                <span
-                  key={`${i}-${step}`}
-                  className={`block h-full rounded-full bg-ink ${i === step && !last ? "intro-bar" : ""}`}
-                  style={{
-                    width: i < step || (i === step && last) ? "100%" : i === step ? undefined : "0%",
-                    animationDuration: `${STEP_MS}ms`,
-                  }}
-                />
+                {i === step && auto ? (
+                  // La barre de l'écran en cours fait office de minuterie : à la fin de l'animation, on avance.
+                  <span
+                    key={`bar-${step}`}
+                    className="intro-bar block h-full rounded-full bg-ink"
+                    style={{ animationDuration: `${STEP_MS}ms`, animationPlayState: paused ? "paused" : "running" }}
+                    onAnimationEnd={() => go(step + 1)}
+                  />
+                ) : (
+                  <span className="block h-full rounded-full bg-ink" style={{ width: i <= step ? "100%" : "0%" }} />
+                )}
               </span>
             ))}
           </div>
@@ -164,18 +184,18 @@ export function Intro({ onDone }: { onDone: () => void }) {
           )}
         </div>
 
-        {/* Toucher l'écran fait avancer, comme une story. */}
-        <button
-          type="button"
-          className="flex flex-1 items-center text-left focus:outline-none"
-          onClick={() => !last && setStep(step + 1)}
-          aria-label={last ? undefined : "Écran suivant"}
-          tabIndex={last ? -1 : 0}
+        <div
+          className="flex flex-1 cursor-pointer select-none items-center"
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerLeave={() => setPaused(false)}
+          onPointerCancel={() => setPaused(false)}
+          data-testid="intro-stage"
         >
           <div key={step} className="w-full">
             <Step />
           </div>
-        </button>
+        </div>
 
         <div className="space-y-3">
           {last ? (
@@ -183,14 +203,30 @@ export function Intro({ onDone }: { onDone: () => void }) {
               <button className="btn-primary w-full text-lg" onClick={close} data-testid="intro-start">
                 Commencer le quiz du jour
               </button>
-              <Link to="/connexion" onClick={markSeen} className="btn-ghost w-full">
-                J'ai déjà un compte
-              </Link>
+              <div className="grid grid-cols-2 gap-2">
+                <button className="btn-ghost w-full" onClick={() => go(0)} data-testid="intro-replay">
+                  Revoir
+                </button>
+                <Link to="/connexion" onClick={markSeen} className="btn-ghost w-full">
+                  J'ai déjà un compte
+                </Link>
+              </div>
             </>
           ) : (
-            <button className="btn-dark w-full text-lg" onClick={() => setStep(step + 1)} data-testid="intro-next">
-              Suivant
-            </button>
+            <div className="grid grid-cols-[auto_1fr] gap-2">
+              <button
+                className="btn-ghost w-14 px-0"
+                onClick={() => go(step - 1)}
+                disabled={step === 0}
+                aria-label="Écran précédent"
+                data-testid="intro-prev"
+              >
+                ←
+              </button>
+              <button className="btn-dark w-full text-lg" onClick={() => go(step + 1)} data-testid="intro-next">
+                Suivant
+              </button>
+            </div>
           )}
         </div>
       </div>
