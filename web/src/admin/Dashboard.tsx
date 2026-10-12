@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { ErrorBox, Loading } from "../components/States";
 import { api } from "../lib/api";
 import type { DayStats, Overview } from "../lib/types";
-import { CategoryDot, Kpi, Panel, Rate, shortDate } from "./ui";
+import { KindTag, Kpi, Panel, Rate, shortDate } from "./ui";
 
 function ActivityChart({ series, selected, onSelect }: { series: Overview["series"]; selected: string; onSelect: (d: string) => void }) {
   const w = 900,
@@ -77,7 +77,7 @@ function DayQuestions({ day }: { day: DayStats }) {
           <tr>
             <th className="py-2 pr-2">#</th>
             <th className="py-2 pr-4">Question</th>
-            <th className="py-2 pr-4">Format</th>
+            <th className="py-2 pr-4">Type</th>
             <th className="py-2 pr-4">Réponses</th>
             <th className="py-2 pr-4">Moyenne</th>
             <th className="py-2">Bonnes réponses</th>
@@ -88,13 +88,10 @@ function DayQuestions({ day }: { day: DayStats }) {
             <tr key={q.id}>
               <td className="py-3 pr-2 font-bold text-muted">{q.position + 1}</td>
               <td className="py-3 pr-4">
-                <span className="flex max-w-[460px] items-center gap-2">
-                  <CategoryDot category={q.category} />
-                  <span className="truncate">{q.prompt}</span>
-                </span>
+                <span className="block max-w-[460px] truncate">{q.prompt}</span>
               </td>
-              <td className="whitespace-nowrap py-3 pr-4 text-muted">
-                {q.input_label} → {q.answer_label}
+              <td className="whitespace-nowrap py-3 pr-4">
+                <KindTag category={q.category} />
               </td>
               <td className="py-3 pr-4 tabular-nums">{q.answers}</td>
               <td className="py-3 pr-4 tabular-nums">{q.average ?? "—"}</td>
@@ -105,6 +102,49 @@ function DayQuestions({ day }: { day: DayStats }) {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+/** Pour chaque type : réussite, score moyen, et réserve de questions (en jours de rotation). */
+function KindTable({ kinds }: { kinds: Overview["kinds"] }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm" data-testid="kind-table">
+        <thead className="text-left text-xs uppercase tracking-wider text-muted">
+          <tr>
+            <th className="py-2 pr-4">Type</th>
+            <th className="py-2 pr-4">Questions</th>
+            <th className="py-2 pr-4">F / M / D</th>
+            <th className="py-2 pr-4">Réponses</th>
+            <th className="py-2 pr-4">Moyenne</th>
+            <th className="py-2">Bonnes réponses</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-line">
+          {kinds.map((k) => (
+            <tr key={k.category}>
+              <td className="py-2.5 pr-4">
+                <KindTag category={k.category} />
+              </td>
+              <td
+                className={`py-2.5 pr-4 tabular-nums ${k.published < 7 ? "font-semibold text-mid" : ""}`}
+                title="Jours avant qu'une question ne revienne"
+              >
+                {k.published}
+                {k.published < 7 && " ⚠"}
+              </td>
+              <td className="py-2.5 pr-4 tabular-nums text-muted">{k.levels.join(" / ")}</td>
+              <td className="py-2.5 pr-4 tabular-nums">{k.answers}</td>
+              <td className="py-2.5 pr-4 tabular-nums">{k.average ?? "—"}</td>
+              <td className="py-2.5">
+                <Rate value={k.success} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="mt-2 text-xs text-muted">⚠ moins de 7 questions : une même question revient en moins d'une semaine.</p>
     </div>
   );
 }
@@ -157,6 +197,17 @@ export function Dashboard() {
         <DayQuestions day={current} />
       </Panel>
 
+      <Panel
+        title="Par type de question"
+        action={
+          <Link to="/admin/questions" className="text-sm font-semibold text-accent">
+            Banque →
+          </Link>
+        }
+      >
+        <KindTable kinds={data.kinds} />
+      </Panel>
+
       <div className="grid gap-5 lg:grid-cols-3">
         <Panel title={`Scores du ${shortDate(current.date)}`}>
           <Distribution values={current.distribution} />
@@ -177,7 +228,7 @@ export function Dashboard() {
               <ul className="divide-y divide-line">
                 {list.map((q) => (
                   <li key={q.id} className="flex items-center gap-3 py-2.5 text-sm">
-                    <CategoryDot category={q.category} />
+                    <KindTag category={q.category} short />
                     <span className="flex-1 truncate">{q.prompt}</span>
                     <span className="text-muted tabular-nums">moy. {q.average}</span>
                   </li>

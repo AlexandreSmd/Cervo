@@ -1,12 +1,6 @@
-// En-tête d'une question : catégorie, difficulté, énoncé, photos (A et B s'il y en a deux).
+// En-tête d'une question : type (emoji + nom), difficulté, consigne, énoncé, photos (A et B s'il y en a deux).
+import { kindInfo } from "../lib/kinds";
 import type { ImageRef, PublicQuestion } from "../lib/types";
-
-const PILLAR_DOT: Record<string, string> = {
-  raisonnement: "bg-accent",
-  estimation: "bg-mid",
-  memoire: "bg-good",
-  esprit_critique: "bg-bad",
-};
 
 export function Difficulty({ level }: { level: number }) {
   const label = ["", "Facile", "Moyen", "Difficile"][level] ?? "";
@@ -19,10 +13,12 @@ export function Difficulty({ level }: { level: number }) {
   );
 }
 
-export function CategoryChip({ label, pillar }: { label: string; pillar: string }) {
+/** Le type de la question : emoji + nom, sur la couleur du type. */
+export function KindChip({ category, label, emoji }: { category: string; label: string; emoji?: string }) {
+  const info = kindInfo(category, label);
   return (
-    <span className="chip">
-      <span className={`h-2 w-2 rounded-full ${PILLAR_DOT[pillar] ?? "bg-muted"}`} aria-hidden="true" />
+    <span className="chip font-bold" style={{ backgroundColor: `${info.color}1A`, color: info.color }} data-testid="kind-chip">
+      <span aria-hidden="true">{emoji ?? info.emoji}</span>
       {label}
     </span>
   );
@@ -64,14 +60,15 @@ export function QuestionMedia({ images, eager = true }: { images: ImageRef[]; ea
 export function QuestionHeader({
   question,
 }: {
-  question: Pick<PublicQuestion, "category_label" | "pillar" | "difficulty" | "prompt" | "images">;
+  question: Pick<PublicQuestion, "category" | "category_label" | "emoji" | "instruction" | "difficulty" | "prompt" | "images">;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <CategoryChip label={question.category_label} pillar={question.pillar} />
+        <KindChip category={question.category} label={question.category_label} emoji={question.emoji} />
         <Difficulty level={question.difficulty} />
       </div>
+      {question.instruction && <p className="text-xs font-bold uppercase tracking-wider text-muted">{question.instruction}</p>}
       <h1 className="text-[26px] font-bold leading-tight" data-testid="question-prompt">
         {question.prompt}
       </h1>

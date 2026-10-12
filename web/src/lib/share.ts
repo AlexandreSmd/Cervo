@@ -8,15 +8,24 @@ export function shareDot(score: number): string {
   return score >= SHARE_GOOD_THRESHOLD ? "🟢" : "🔴";
 }
 
-/** Message de partage : une ligne par question, sans dévoiler les questions ni les réponses. */
-export function buildShareMessage(appName: string, date: string, total: number, scores: number[], streak: number, url: string): string {
+/** Message de partage : une ligne par question (score et type), sans dévoiler les questions ni les réponses. */
+export function buildShareMessage(
+  appName: string,
+  date: string,
+  total: number,
+  scores: number[],
+  streak: number,
+  url: string,
+  kinds: { emoji: string; label: string }[] = [],
+): string {
   const good = scores.filter((s) => s >= SHARE_GOOD_THRESHOLD).length;
+  const kind = (i: number) => (kinds[i] ? `  ${kinds[i].emoji} ${kinds[i].label}` : "");
   const lines = [
     `🧠 ${appName} · ${formatDay(date, "short")}`,
     `Mon score : ${total}/100${streak > 1 ? ` · 🔥 ${streak} jours de suite` : ""}`,
     "",
     scores.map(shareDot).join(""),
-    ...scores.map((s, i) => `${String(i + 1).padStart(2, " ")}. ${shareDot(s)} ${s}/100`),
+    ...scores.map((s, i) => `${String(i + 1).padStart(2, " ")}. ${shareDot(s)} ${s}/100${kind(i)}`),
     "",
     `${good}/10 questions réussies. Sans aide, zéro IA.`,
     `Tente ta chance : ${url}`,

@@ -1,3 +1,9 @@
+> **Mise à jour : les 10 types de question.** Depuis la version 7, chaque quiz pose une question de
+> chacun des 10 types (vocabulaire, taille, fait étonnant, mémoire, statistique, chronologie,
+> estimation, devinette, énigme, dictée), avec un chrono adapté à chacune. Cela remplace les
+> catégories, piliers et règles de composition décrits plus bas : voir `DECISIONS.md` (version 7),
+> `docs/ARCHITECTURE.md` et `docs/QUESTIONS.md`.
+
 # Product Management — Vif
 
 *Cahier des charges de la V1, destiné à Claude Code*

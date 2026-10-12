@@ -51,10 +51,10 @@ test("captures espace fondateur", async ({ page }) => {
   await page.getByRole("link", { name: "Pas encore posées" }).click();
   await shot(page, "8-admin-banque", 1440);
   await page.getByTestId("new-question").click();
-  await page.getByTestId("template-taille").click();
-  await page.getByLabel("Emoji de référence").fill("☕");
-  await page.getByLabel("Objet de référence").fill("Tasse");
-  await page.getByLabel("Emoji à ajuster").fill("🍽️");
-  await page.getByLabel("Objet à ajuster").fill("Assiette");
-  await page.screenshot({ path: join(OUT, "9-admin-editeur-taille-1440.png") });
+  await page.screenshot({ path: join(OUT, "9-admin-types-1440.png") });
+  await page.getByTestId("kind-devinette").click();
+  for (const [i, clue] of ["Je suis rayé.", "Je vis en Afrique.", "Je suis un cheval… presque."].entries())
+    await page.getByLabel(`Indice ${i + 1}`).fill(clue);
+  await page.getByLabel("Réponse (koala, Islande…)").fill("zèbre");
+  await page.screenshot({ path: join(OUT, "10-admin-editeur-devinette-1440.png") });
 });

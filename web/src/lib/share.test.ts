@@ -21,6 +21,11 @@ describe("partage", () => {
     expect(text).toContain("https://playvif.com");
   });
 
+  it("ajoute le type de chaque question", () => {
+    const kinds = Array(10).fill({ emoji: "📏", label: "Taille" });
+    expect(buildShareMessage("Vif", "2026-10-10", 50, Array(10).fill(50), 1, "x", kinds)).toContain(" 1. 🟢 50/100  📏 Taille");
+  });
+
   it("n'affiche pas de série pour un seul jour", () => {
     expect(buildShareMessage("Vif", "2026-10-10", 50, Array(10).fill(50), 1, "x")).not.toContain("🔥");
   });

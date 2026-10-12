@@ -1,8 +1,9 @@
-// Écran après une réponse : verdict coloré, points, bonne réponse, explication.
+// Écran après une réponse : verdict coloré, points, correction propre au type, explication.
 import { useState } from "react";
 import { api } from "../lib/api";
 import { formatAnswer } from "../lib/format";
-import type { Answer, PublicQuestion, SubmitResult } from "../lib/types";
+import type { PublicQuestion, SubmitResult } from "../lib/types";
+import { DictationReveal, OrderReveal, PercentReveal, RecallReveal, RiddleReveal, SizeReveal } from "./reveals/Reveals";
 
 const VERDICTS = {
   good: { title: "Bravo !", icon: "✓", bg: "bg-good", text: "text-good" },
@@ -18,25 +19,27 @@ export function verdictOf(score: number, timedOut?: boolean) {
   return VERDICTS.bad;
 }
 
-/** Ordre attendu, avec ✓ quand l'élément est à la bonne place. */
-function OrderReveal({ correct, given }: { correct: string[]; given: Answer | null }) {
-  const mine = Array.isArray(given) ? given : [];
-  return (
-    <ol className="space-y-1.5">
-      {correct.map((item, i) => {
-        const ok = mine[i] === item;
-        return (
-          <li key={item} className="flex items-center gap-3 rounded-xl bg-ink/5 px-3 py-2 font-semibold">
-            <span className="w-5 text-center text-sm text-muted">{i + 1}</span>
-            <span className="flex-1">{item}</span>
-            <span className={ok ? "text-good" : "text-bad"} aria-label={ok ? "bien placé" : "mal placé"}>
-              {ok ? "✓" : "✗"}
-            </span>
-          </li>
-        );
-      })}
-    </ol>
-  );
+/** Correction propre à la mécanique ; null : affichage générique (bonne réponse + ta réponse). */
+function TypedReveal({ question, result }: { question: PublicQuestion; result: SubmitResult }) {
+  const truth = result.correct_answer;
+  switch (question.type) {
+    case "order":
+      return Array.isArray(truth) ? <OrderReveal correct={truth} details={result.order_details} given={result.user_answer} /> : null;
+    case "percent":
+      return <PercentReveal truth={Number(truth)} given={result.user_answer} />;
+    case "size":
+      return result.size ? <SizeReveal config={result.size} truth={Number(truth)} given={result.user_answer} /> : null;
+    case "dictation":
+      return <DictationReveal expected={String(truth)} given={result.user_answer} />;
+    case "recall":
+      return Array.isArray(truth) ? (
+        <RecallReveal expected={truth} given={result.user_answer} singleChars={!!question.recall?.single_chars} />
+      ) : null;
+    case "riddle":
+      return <RiddleReveal answer={String(truth)} clues={result.clues ?? []} seen={result.clues_seen ?? 1} />;
+    default:
+      return null;
+  }
 }
 
 /** Résultat d'une question : verdict + points, bonne réponse, ta réponse, explication. */
@@ -55,7 +58,9 @@ export function Feedback({
   const [reason, setReason] = useState("");
   const [reported, setReported] = useState(false);
   const v = verdictOf(result.score, result.timed_out);
-  const perfect = result.score === 100 && question.type !== "dictation";
+  const typed = TypedReveal({ question, result });
+  const perfect = result.score === 100;
+  const isFact = question.category === "fait";
 
   const sendReport = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,10 +89,8 @@ export function Feedback({
         </span>
       </div>
 
-      {question.type === "order" && Array.isArray(result.correct_answer) ? (
-        <OrderReveal correct={result.correct_answer as string[]} given={result.user_answer} />
-      ) : (
-        !perfect && (
+      {typed ??
+        (!perfect && (
           <div className="space-y-1 px-1">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">Bonne réponse</p>
             <p className="font-display text-2xl font-extrabold leading-tight" data-testid="correct-answer">
@@ -99,14 +102,24 @@ export function Feedback({
               </p>
             )}
           </div>
-        )
-      )}
+        ))}
 
-      {result.explanation && (
-        <p className="rounded-2xl bg-ink/5 p-4 text-[15px] leading-relaxed">
-          <span aria-hidden="true">💡 </span>
-          {result.explanation}
-        </p>
+      {result.explanation &&
+        (isFact ? (
+          <div className="rounded-2xl bg-accent/10 p-4" data-testid="did-you-know">
+            <p className="mb-1 text-xs font-bold uppercase tracking-wider text-accent">Le savais-tu ?</p>
+            <p className="text-[16px] leading-relaxed">{result.explanation}</p>
+          </div>
+        ) : (
+          <p className="rounded-2xl bg-ink/5 p-4 text-[15px] leading-relaxed">
+            <span aria-hidden="true">💡 </span>
+            {result.explanation}
+          </p>
+        ))}
+      {result.source_url && (
+        <a href={result.source_url} target="_blank" rel="noreferrer" className="block text-center text-xs text-muted underline">
+          Source
+        </a>
       )}
 
       <button className="btn-dark w-full text-lg" onClick={onNext} autoFocus data-testid="next">

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 
-from .catalog import CATEGORIES, PILLARS, pillar_of
+from .catalog import KINDS, LEGACY_PILLARS, PILLARS, pillar_of
 from .daily import previous_day
 from .scoring import round_half_up
 
@@ -111,27 +111,32 @@ def profile_summary(stats: dict, attempts: list[dict], today: str) -> dict:
     best = max(completed, key=lambda a: (a["score_total"], a["date"]), default=None)
     worst = min(completed, key=lambda a: (a["score_total"], a["date"]), default=None)
 
+    # Les 10 types, dans l'ordre du quiz, même ceux pas encore joués : la « forme » du joueur.
     categories = [
-        {"category": key, "label": CATEGORIES.get(key, key), "average": _avg(entry), "count": entry.get("count", 0)}
-        for key, entry in stats["category_stats"].items()
-        if entry.get("count")
+        {
+            "category": key,
+            "label": kind.label,
+            "emoji": kind.emoji,
+            "average": _avg(stats["category_stats"].get(key)),
+            "count": (stats["category_stats"].get(key) or {}).get("count", 0),
+        }
+        for key, kind in KINDS.items()
     ]
-    categories.sort(key=lambda c: (-(c["average"] or 0), c["label"]))
 
-    pillars = []
-    for key, label in PILLARS.items():
-        pillars.append(
-            {
-                "pillar": key,
-                "label": label,
-                "average": _avg(stats["pillar_stats"].get(key)),
-                "count": (stats["pillar_stats"].get(key) or {}).get("count", 0),
-                "trend": _pillar_trend(completed, key, today),
-            }
-        )
+    pillar_stats = _merge_legacy_pillars(stats["pillar_stats"])
+    pillars = [
+        {
+            "pillar": key,
+            "label": label,
+            "average": _avg(pillar_stats.get(key)),
+            "count": (pillar_stats.get(key) or {}).get("count", 0),
+            "trend": _pillar_trend(completed, key, today),
+        }
+        for key, label in PILLARS.items()
+    ]
 
     types = stats["type_stats"]
-    closed = [types.get(t) for t in ("binary", "mcq", "short_text") if types.get(t)]
+    closed = [types.get(t) for t in ("binary", "mcq", "short_text", "riddle") if types.get(t)]
     closed_count = sum(e.get("count", 0) for e in closed)
     correct_rate = round_half_up(100 * sum(e.get("correct", 0) for e in closed) / closed_count) if closed_count else None
 
@@ -144,10 +149,27 @@ def profile_summary(stats: dict, attempts: list[dict], today: str) -> dict:
         "best_day": {"date": best["date"], "score": best["score_total"]} if best else None,
         "worst_day": {"date": worst["date"], "score": worst["score_total"]} if worst else None,
         "correct_rate": correct_rate,
-        "numeric_precision": _avg(types.get("numeric")),
+        "numeric_precision": _avg(_sum_entries(types.get(t) for t in ("numeric", "size", "percent"))),
         "categories": categories,
         "pillars": pillars,
     }
+
+
+def _sum_entries(entries) -> dict:
+    out = {"sum": 0, "count": 0, "correct": 0}
+    for entry in entries:
+        for k in out:
+            out[k] += (entry or {}).get(k, 0)
+    return out
+
+
+def _merge_legacy_pillars(pillar_stats: dict) -> dict:
+    """Profils d'avant les 10 types : leurs anciens piliers sont comptés dans les nouveaux."""
+    merged: dict[str, dict] = {}
+    for key, entry in pillar_stats.items():
+        target = LEGACY_PILLARS.get(key, key)
+        merged[target] = _sum_entries([merged.get(target), entry])
+    return merged
 
 
 def _pillar_trend(completed: list[dict], pillar: str, today: str) -> int | None:

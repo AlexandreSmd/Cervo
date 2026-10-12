@@ -150,3 +150,39 @@ def test_mcq_is_accent_sensitive():
     assert score_answer(q, "Hypothèse") == 100
     assert score_answer(q, "hypothèse") == 100
     assert score_answer(q, "Hypothése") == 0
+
+
+def test_percent_scored_in_points_not_proportion():
+    q = {"type": "percent", "correct_answer": 10}
+    assert score_answer(q, 10) == 100
+    assert score_answer(q, 11) == 100  # à 1 point près
+    assert score_answer(q, 20) == 50  # 10 points d'écart sur 20
+    assert score_answer(q, 35) == 0
+    assert score_answer(q, 120) == 0
+    assert score_answer({**q, "numeric_config": {"tolerance": 40}}, 30) == 50
+
+
+def test_recall_ordered_and_unordered():
+    digits = list("7294183")
+    ordered = {"type": "recall", "correct_answer": digits, "recall_ordered": True}
+    assert score_answer(ordered, "7294183") == 100
+    assert score_answer(ordered, "7 2 9 4 1 8 3") == 100
+    assert score_answer(ordered, digits) == 100
+    assert score_answer(ordered, "7294138") == 71  # deux chiffres inversés : 2 erreurs sur 7
+    assert score_answer(ordered, "") == 0
+    words = {"type": "recall", "correct_answer": ["Citron", "Vélo", "Tortue", "Cactus"], "recall_ordered": False}
+    assert score_answer(words, "cactus, tortue, velo, citron") == 100
+    assert score_answer(words, ["tortue", "cactus"]) == 50
+    assert score_answer(words, ["tortue", "cactus", "chien", "chat"]) == 25  # inventer coûte des points
+
+
+def test_riddle_costs_points_per_clue_and_ignores_articles():
+    q = {"type": "riddle", "correct_answer": "koala", "accepted_aliases": ["koalas"]}
+    assert score_answer(q, "Koala", clues_seen=1) == 100
+    assert score_answer(q, "le koala", clues_seen=2) == 75
+    assert score_answer(q, "un koala", clues_seen=3) == 50
+    assert score_answer(q, "koalas", clues_seen=4) == 30
+    assert score_answer(q, "panda", clues_seen=1) == 0
+    country = {"type": "riddle", "correct_answer": "Islande", "accepted_aliases": []}
+    assert score_answer(country, "l'Islande") == 100
+    assert score_answer({"type": "riddle", "correct_answer": "Marie Curie"}, "marie curie") == 100

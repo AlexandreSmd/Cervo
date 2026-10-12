@@ -1,166 +1,146 @@
-// Libellés, couleurs, icônes et modèles de l'espace fondateur (miroir de api/cervo/domain/catalog.py).
+// Libellés et règles de l'espace fondateur (miroir de api/cervo/domain/catalog.py et domain/timing.py).
+import { KINDS, kindInfo } from "../lib/kinds";
 import type { QuestionType } from "../lib/types";
 
-export const CATEGORIES: Record<string, { label: string; pillar: string }> = {
-  culture: { label: "Culture générale", pillar: "memoire" },
-  logique: { label: "Logique", pillar: "raisonnement" },
-  reflexion: { label: "Réflexion", pillar: "raisonnement" },
-  geographie: { label: "Géographie", pillar: "estimation" },
-  histoire: { label: "Histoire", pillar: "memoire" },
-  sciences: { label: "Sciences", pillar: "estimation" },
-  nature: { label: "Nature et animaux", pillar: "memoire" },
-  arts: { label: "Arts et culture", pillar: "memoire" },
-  sport: { label: "Sport", pillar: "memoire" },
-  estimation: { label: "Estimation", pillar: "estimation" },
-  vrai_faux: { label: "Vrai ou faux", pillar: "esprit_critique" },
-  langue: { label: "Langue française", pillar: "memoire" },
-  memoire: { label: "Mémoire", pillar: "memoire" },
-};
+export { KINDS, kindInfo };
 
-export const CATEGORY_COLOR: Record<string, string> = {
-  culture: "#1FA971",
-  histoire: "#0EA5A4",
-  arts: "#16A34A",
-  nature: "#65A30D",
-  sport: "#0891B2",
-  logique: "#5B4BFF",
-  reflexion: "#8B5CF6",
-  estimation: "#F2A33A",
-  geographie: "#EA8A1A",
-  sciences: "#D97706",
-  vrai_faux: "#E5484D",
-  langue: "#DB2777",
-  memoire: "#0284C7",
-};
+/** Ce qu'il faut savoir pour écrire une bonne question de chaque type, et les mécaniques possibles. */
+export interface KindRules {
+  instruction: string;
+  guide: string;
+  answerTypes: QuestionType[];
+  /** Chrono de base (facile, moyen, difficile) ; null : sans chrono. */
+  baseTime: [number, number, number] | null;
+  /** Énoncé proposé pour une nouvelle question. */
+  prompt: string;
+}
 
-export const INPUT_FORMATS = { text: "Texte", image: "Photo", images2: "2 photos" } as const;
-export type InputFormat = keyof typeof INPUT_FORMATS;
+export const KIND_RULES: Record<string, KindRules> = {
+  vocabulaire: {
+    instruction: "Le mot juste",
+    guide: "Synonyme, contraire, sens précis d'un mot. 4 choix plausibles : les pièges sont des paronymes ou des faux amis.",
+    answerTypes: ["mcq"],
+    baseTime: [12, 15, 18],
+    prompt: "Quel est le synonyme de « … » ?",
+  },
+  taille: {
+    instruction: "Ajuste la taille",
+    guide: "Deux objets : l'un est fixe, le joueur ajuste l'autre. Le rapport doit être vérifiable (hauteur, longueur ou diamètre).",
+    answerTypes: ["size"],
+    baseTime: [15, 18, 20],
+    prompt: "Ajuste … par rapport à … (hauteur).",
+  },
+  fait: {
+    instruction: "Vrai ou faux ?",
+    guide: "Un fait surprenant et sourcé. L'explication est le cœur de la question : elle doit donner envie de la raconter.",
+    answerTypes: ["binary", "mcq"],
+    baseTime: [15, 18, 20],
+    prompt: "",
+  },
+  memoire: {
+    instruction: "Regarde bien, puis réponds",
+    guide:
+      "Une liste montrée quelques secondes puis cachée. Ensuite : trouver l'intrus (QCM), tout réécrire (rappel) ou remettre dans l'ordre d'apparition.",
+    answerTypes: ["recall", "mcq", "order"],
+    baseTime: [15, 20, 25],
+    prompt: "Retape-les, dans l'ordre.",
+  },
+  stat: {
+    instruction: "Devine le pourcentage",
+    guide: "Un pourcentage réel sur une population. Source fiable obligatoire, chiffre récent.",
+    answerTypes: ["percent"],
+    baseTime: [15, 18, 20],
+    prompt: "Quelle part de … ?",
+  },
+  chronologie: {
+    instruction: "Du plus ancien au plus récent",
+    guide: "4 à 5 événements à classer. Mélange des époques proches et lointaines ; chaque élément a sa date, montrée après la réponse.",
+    answerTypes: ["order"],
+    baseTime: [20, 25, 30],
+    prompt: "Classe ces événements, du plus ancien au plus récent.",
+  },
+  estimation: {
+    instruction: "Ton estimation",
+    guide: "Une grandeur moyenne (poids, taille, durée…). Score en proportion : l'ordre de grandeur compte plus que le chiffre exact.",
+    answerTypes: ["numeric"],
+    baseTime: [15, 20, 25],
+    prompt: "Combien pèse en moyenne … ?",
+  },
+  devinette: {
+    instruction: "Trouve avec le moins d'indices",
+    guide: "Un animal, un pays, une personne… 3 à 5 indices du plus vague au plus précis. Chaque indice demandé coûte des points.",
+    answerTypes: ["riddle"],
+    baseTime: [40, 45, 50],
+    prompt: "Quel animal suis-je ?",
+  },
+  enigme: {
+    instruction: "Prends le temps de réfléchir",
+    guide: "Un problème qui se résout par le raisonnement, pas par la culture : suite, logique, petit calcul malin, piège d'intuition.",
+    answerTypes: ["mcq", "short_text"],
+    baseTime: [45, 60, 90],
+    prompt: "",
+  },
+  dictee: {
+    instruction: "Écoute et écris",
+    guide:
+      "Deux phrases lues par la voix du téléphone. Pas de chrono : le joueur réécoute autant qu'il veut. Viser les accords et les pièges.",
+    answerTypes: ["dictation"],
+    baseTime: null,
+    prompt: "Écoute et écris les deux phrases.",
+  },
+};
 
 export const ANSWER_FORMATS: Record<QuestionType, string> = {
   binary: "Vrai / Faux",
   mcq: "QCM",
   numeric: "Nombre",
   short_text: "Texte libre",
-  order: "Ordre",
+  order: "Classement",
   size: "Taille",
   dictation: "Dictée",
+  recall: "Rappel",
+  percent: "Pourcentage",
+  riddle: "Indices",
+};
+
+/** Ce que la mécanique demande au joueur (affiché dans l'éditeur). */
+export const ANSWER_HINTS: Partial<Record<QuestionType, string>> = {
+  binary: "Le joueur répond Vrai ou Faux.",
+  mcq: "4 choix, mélangés pour le joueur.",
+  recall: "Le joueur réécrit la liste mémorisée.",
+  order: "Le joueur remet les éléments dans l'ordre d'apparition.",
+  short_text: "Le joueur tape sa réponse (casse et accents ignorés).",
 };
 
 export const DIFFICULTIES: Record<number, string> = { 1: "Facile", 2: "Moyen", 3: "Difficile" };
 export const STATUSES = { published: "Publiée", draft: "Brouillon", retired: "Retirée" } as const;
 
-export const INPUT_ICON: Record<string, string> = { text: "Aa", image: "▣", images2: "▣▣" };
-export const ANSWER_ICON: Record<QuestionType, string> = {
-  binary: "V/F",
-  mcq: "ABCD",
-  numeric: "123",
-  short_text: "abc",
-  order: "1·2·3",
-  size: "↔",
-  dictation: "🎧",
-};
-
-/** Modèles de questions : un format d'entrée + un format de réponse, pré-remplis. */
-export interface Template {
-  key: string;
-  title: string;
-  hint: string;
-  input: InputFormat;
-  type: QuestionType;
+/** Chrono calculé (miroir de domain/timing.py), pour l'aperçu de l'éditeur. */
+export function computeTimeLimit(q: {
   category: string;
-  prompt?: string;
-  choices?: string[];
-  slider?: boolean;
-  memorize?: boolean;
+  type: QuestionType;
+  difficulty: number;
+  prompt: string;
+  choices?: string[] | null;
+  images?: unknown[];
+  correct_answer?: unknown;
+}): number | null {
+  const rules = KIND_RULES[q.category];
+  if (!rules) return 15;
+  if (!rules.baseTime) return null;
+  const words = (t: string) => (t.match(/[\p{L}\p{N}_]+/gu) ?? []).length;
+  let seconds = rules.baseTime[Math.min(3, Math.max(1, q.difficulty)) - 1];
+  let reading = Math.max(0, words(q.prompt) - 15) / 3;
+  if (q.type === "mcq") reading += Math.max(0, (q.choices ?? []).reduce((n, c) => n + words(c), 0) - 8) / 3;
+  seconds += Math.min(20, reading) + 3 * (q.images?.length ?? 0);
+  if (q.type === "order" && Array.isArray(q.correct_answer)) seconds += 4 * Math.max(0, q.correct_answer.length - 4);
+  if (q.type === "recall" && Array.isArray(q.correct_answer)) seconds += 2 * q.correct_answer.length;
+  return Math.ceil(seconds / 5) * 5;
 }
 
-export const TEMPLATES: Template[] = [
-  { key: "vf", title: "Vrai ou faux", hint: "Texte → Vrai/Faux", input: "text", type: "binary", category: "vrai_faux" },
-  { key: "qcm", title: "QCM", hint: "Texte → 4 choix", input: "text", type: "mcq", category: "culture" },
-  { key: "nombre", title: "Estimation", hint: "Texte → nombre", input: "text", type: "numeric", category: "estimation" },
-  { key: "libre", title: "Réponse libre", hint: "Texte → mot", input: "text", type: "short_text", category: "logique" },
-  {
-    key: "personne",
-    title: "Reconnaître une personne",
-    hint: "Photo → nom",
-    input: "image",
-    type: "short_text",
-    category: "culture",
-    prompt: "Qui est cette personne ?",
-  },
-  {
-    key: "lieu",
-    title: "Reconnaître un lieu",
-    hint: "Photo → 4 choix",
-    input: "image",
-    type: "mcq",
-    category: "geographie",
-    prompt: "Où a été prise cette photo ?",
-  },
-  {
-    key: "photo-nombre",
-    title: "Estimer sur photo",
-    hint: "Photo → nombre",
-    input: "image",
-    type: "numeric",
-    category: "estimation",
-    prompt: "Quelle est la hauteur de ce monument, en mètres ?",
-  },
-  {
-    key: "comparer",
-    title: "Comparer 2 photos",
-    hint: "2 photos → A ou B",
-    input: "images2",
-    type: "mcq",
-    category: "estimation",
-    prompt: "Laquelle… ?",
-    choices: ["La photo A", "La photo B", "Les deux", "Aucune des deux"],
-  },
-  {
-    key: "dictee",
-    title: "Dictée",
-    hint: "Écouter → écrire",
-    input: "text",
-    type: "dictation",
-    category: "langue",
-    prompt: "Écoute et écris la phrase.",
-  },
-  {
-    key: "taille",
-    title: "Comparer des tailles",
-    hint: "Objet fixe → ajuster l'autre",
-    input: "text",
-    type: "size",
-    category: "estimation",
-    prompt: "Ajuste la taille de … par rapport à …",
-  },
-  {
-    key: "ordre",
-    title: "Remettre dans l'ordre",
-    hint: "3 à 6 éléments à classer",
-    input: "text",
-    type: "order",
-    category: "histoire",
-    prompt: "Du plus ancien au plus récent.",
-  },
-  {
-    key: "frise",
-    title: "Curseur / frise",
-    hint: "Glisser vers la bonne valeur",
-    input: "text",
-    type: "numeric",
-    category: "histoire",
-    prompt: "Place sur la frise : …",
-    slider: true,
-  },
-  {
-    key: "memoire",
-    title: "Mémoire flash",
-    hint: "Montrer, cacher, demander",
-    input: "text",
-    type: "mcq",
-    category: "memoire",
-    prompt: "Quel mot n'était pas dans la liste ?",
-    memorize: true,
-  },
-];
+/** Durée de mémorisation calculée (miroir de domain/timing.py). */
+export function computeMemorizeSeconds(items: number, difficulty: number): number {
+  if (!items) return 5;
+  const perItem = { 1: 1.2, 2: 0.9, 3: 0.7 }[Math.min(3, Math.max(1, difficulty)) as 1 | 2 | 3];
+  return Math.min(15, Math.max(3, Math.round(2 + perItem * items)));
+}

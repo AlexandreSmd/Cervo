@@ -1,0 +1,68 @@
+[
+  {
+    "id": "devinette-001",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Quel animal suis-je ?",
+    "clues": [
+      "Je dors jusqu'à 20 heures par jour.",
+      "Je ne mange presque que les feuilles d'un seul genre d'arbre.",
+      "Je vis en Australie.",
+      "On m'appelle parfois « ours », mais je suis un marsupial."
+    ],
+    "correct_answer": "koala",
+    "accepted_aliases": [
+      "koalas"
+    ],
+    "explanation": "Le koala se nourrit de feuilles d'eucalyptus, pauvres en énergie et difficiles à digérer : il dort 18 à 22 heures par jour pour économiser ses forces.",
+    "source_url": "https://www.savethekoala.com/about-koalas/",
+    "status": "published"
+  },
+  {
+    "id": "devinette-002",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quel pays suis-je ?",
+    "clues": [
+      "Je n'ai pas d'armée.",
+      "Aucun moustique ne vit chez moi.",
+      "Mon parlement, fondé en 930, est l'un des plus anciens du monde.",
+      "Je suis une île de volcans et de glaciers, au bord du cercle polaire.",
+      "Ma capitale est Reykjavik."
+    ],
+    "correct_answer": "Islande",
+    "accepted_aliases": [
+      "Iceland",
+      "Ísland"
+    ],
+    "explanation": "L'Islande n'a pas d'armée (sa défense repose sur l'OTAN et des accords bilatéraux), pas de moustiques, et son parlement, l'Althing, se réunit depuis 930.",
+    "source_url": "https://www.government.is/topics/foreign-affairs/",
+    "status": "published"
+  },
+  {
+    "id": "devinette-003",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Qui suis-je ?",
+    "clues": [
+      "Je suis née à Varsovie.",
+      "J'ai découvert deux éléments chimiques ; l'un porte le nom de mon pays natal.",
+      "Je suis la seule personne récompensée par un prix Nobel dans deux sciences différentes.",
+      "Je repose au Panthéon, aux côtés de mon mari Pierre."
+    ],
+    "correct_answer": "Marie Curie",
+    "accepted_aliases": [
+      "Curie",
+      "Marie Skłodowska-Curie",
+      "Marie Sklodowska-Curie",
+      "Maria Skłodowska",
+      "Maria Sklodowska"
+    ],
+    "explanation": "Marie Curie a découvert le polonium (nommé d'après la Pologne) et le radium. Prix Nobel de physique en 1903 et de chimie en 1911, elle entre au Panthéon en 1995 avec Pierre Curie.",
+    "source_url": "https://www.nobelprize.org/prizes/physics/1903/marie-curie/biographical/",
+    "status": "published"
+  }
+]

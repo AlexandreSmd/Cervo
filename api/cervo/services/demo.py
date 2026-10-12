@@ -36,12 +36,13 @@ def seed_history(db, uid: str, today: str, days: int = 21, seed: str | None = No
         for position, qid in enumerate(quiz.question_ids(db, day)):
             q = qs[qid]
             answer = fake_answer(q, skill, rng)
+            clues = rng.randint(1, len(q.get("clues") or [1]))
             answers.append(
                 {
                     "question_id": qid,
                     "position": position,
                     "user_answer": answer,
-                    "score": score_answer(q, answer),
+                    "score": score_answer(q, answer, clues),
                     "answered_at": f"{day}T08:00:00+00:00",
                     "category": q["category"],
                     "type": q["type"],
@@ -84,6 +85,13 @@ def fake_answer(q: dict, skill: float, rng: random.Random):
             return items
         case "size":
             return round(float(correct) * (1 if good else rng.uniform(0.5, 1.8)), 2)
+        case "recall":
+            items = list(correct)
+            return items if good else items[: max(1, len(items) - 2)]
+        case "riddle":
+            return str(correct) if good else "aucune idée"
+        case "percent":
+            return float(correct) if good else max(0.0, min(100.0, float(correct) + rng.uniform(-25, 25)))
     value = float(correct)
     cfg = q.get("numeric_config") or {}
     if cfg.get("scale") == "log":
@@ -110,7 +118,11 @@ def simulate_players(db, today: str, days: int = 14) -> int:
             q = qs[qid]
             base = {1: 0.8, 2: 0.6, 3: 0.4}[int(q.get("difficulty", 2))]
             correct = int(completed * min(0.97, max(0.05, rng.gauss(base, 0.12))))
-            partial = int((completed - correct) * rng.uniform(20, 60)) if q["type"] in ("numeric", "size", "order", "dictation") else 0
+            partial = (
+                int((completed - correct) * rng.uniform(20, 60))
+                if q["type"] in ("numeric", "size", "order", "dictation", "recall", "percent", "riddle")
+                else 0
+            )
             per_question[qid] = {"sum": correct * 100 + partial, "count": completed, "correct": correct}
         average = sum(v["sum"] for v in per_question.values()) / (10 * completed) if completed else 0
         buckets: Counter = Counter()

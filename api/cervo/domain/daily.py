@@ -11,29 +11,14 @@ import random
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from .catalog import THINKING_PILLARS, pillar_of
+from .catalog import DAILY_ORDER, KINDS
 
-QUIZ_SIZE = 10
-# Quiz exigeant : 2 faciles pour se lancer, 4 moyennes, 4 difficiles.
-DIFFICULTY_QUOTAS = {1: 2, 2: 4, 3: 4}
-MAX_PER_CATEGORY = 3
-MIN_CATEGORIES = 5
-MIN_NUMERIC = 2
-MIN_IMAGES = 1
-MIN_THINKING = 4
-# Taille minimale du vivier après exclusion des questions déjà posées.
-MIN_POOL = 40
-ATTEMPTS_PER_LEVEL = 60
-# Types longs ou particuliers : pas trop par jour pour garder un quiz rythmé.
-TYPE_CAPS = {"dictation": 1, "order": 2, "size": 2}
-
-# Ordre d'assouplissement (section 7) : difficulté, puis catégories, puis images.
-RELAX_LEVELS = (
-    {"difficulty": True, "categories": True, "images": True},
-    {"difficulty": False, "categories": True, "images": True},
-    {"difficulty": False, "categories": False, "images": True},
-    {"difficulty": False, "categories": False, "images": False},
-)
+# Une question de chaque type, toujours dans le même ordre (catalog.DAILY_ORDER).
+QUIZ_SIZE = len(DAILY_ORDER)
+# Répartition visée des difficultés sur une journée : on se lance, on transpire, on finit fier.
+DIFFICULTY_TARGET = {1: 3, 2: 4, 3: 3}
+# Une question posée il y a au moins ce nombre de jours est considérée comme « fraîche ».
+COMFORT_GAP_DAYS = 60
 
 
 def seeded_rng(seed: str) -> random.Random:
@@ -66,105 +51,79 @@ def stable_choices(question_id: str, choices: list[str]) -> list[str]:
     return shuffled
 
 
-def _is_numeric(q: dict) -> bool:
-    return q.get("type") == "numeric"
+def _gap_days(day: str, planned: dict[str, list[str]]) -> dict[str, int]:
+    """Pour chaque question, l'écart (en jours) avec son utilisation la plus proche de `day`.
 
-
-def _has_image(q: dict) -> bool:
-    return bool(q.get("images") or q.get("image_url"))
-
-
-def _is_thinking(q: dict) -> bool:
-    return pillar_of(q.get("category", "")) in THINKING_PILLARS
-
-
-def _try_build(order: list[dict], level: dict) -> list[dict] | None:
-    selected: list[dict] = []
-    cat_count: dict[str, int] = {}
-    diff_count: dict[int, int] = {}
-    chosen_ids: set[str] = set()
-
-    def can_add(q: dict) -> bool:
-        if q["id"] in chosen_ids:
-            return False
-        cap = TYPE_CAPS.get(q.get("type", ""))
-        if cap is not None and sum(1 for s in selected if s.get("type") == q.get("type")) >= cap:
-            return False
-        if level["categories"] and cat_count.get(q["category"], 0) >= MAX_PER_CATEGORY:
-            return False
-        if level["difficulty"]:
-            d = int(q.get("difficulty", 2))
-            if diff_count.get(d, 0) >= DIFFICULTY_QUOTAS.get(d, 0):
-                return False
-        return True
-
-    def add(q: dict) -> None:
-        selected.append(q)
-        chosen_ids.add(q["id"])
-        cat_count[q["category"]] = cat_count.get(q["category"], 0) + 1
-        d = int(q.get("difficulty", 2))
-        diff_count[d] = diff_count.get(d, 0) + 1
-
-    def fill(predicate, target_count) -> None:
-        for q in order:
-            if len(selected) >= QUIZ_SIZE or sum(1 for s in selected if predicate(s)) >= target_count:
-                return
-            if predicate(q) and can_add(q):
-                add(q)
-
-    strict = level["categories"]
-    if level["images"]:
-        fill(_has_image, MIN_IMAGES)
-    if strict:
-        fill(_is_numeric, MIN_NUMERIC)
-        fill(_is_thinking, MIN_THINKING)
-    fill(lambda q: True, QUIZ_SIZE)
-
-    if len(selected) != QUIZ_SIZE:
-        return None
-    if level["images"] and sum(_has_image(q) for q in selected) < MIN_IMAGES:
-        return None
-    if strict:
-        if len(cat_count) < MIN_CATEGORIES:
-            return None
-        if sum(_is_numeric(q) for q in selected) < MIN_NUMERIC:
-            return None
-        if sum(_is_thinking(q) for q in selected) < MIN_THINKING:
-            return None
-    return selected
-
-
-def candidate_pool(questions: list[dict], history: list[list[str]] | None = None) -> list[dict]:
-    """Questions publiées, sans celles posées récemment tant que le vivier reste suffisant.
-
-    `history` : listes d'identifiants des jours précédents, du plus récent au plus ancien.
+    Le futur compte aussi : une question déjà planifiée dans 10 jours n'est pas reprise aujourd'hui.
     """
-    published = sorted(
-        (q for q in questions if q.get("status", "published") == "published"),
-        key=lambda q: q["id"],
-    )
-    excluded: set[str] = set()
-    for day_ids in history or []:
-        candidate = excluded | set(day_ids)
-        if sum(1 for q in published if q["id"] not in candidate) < MIN_POOL:
-            break
-        excluded = candidate
-    return [q for q in published if q["id"] not in excluded]
+    target = date.fromisoformat(day)
+    gaps: dict[str, int] = {}
+    for other, ids in planned.items():
+        if other == day:
+            continue
+        gap = abs((date.fromisoformat(other) - target).days)
+        for qid in ids:
+            gaps[qid] = min(gaps.get(qid, gap), gap)
+    return gaps
 
 
-def build_daily_quiz(day: str, questions: list[dict], history: list[list[str]] | None = None) -> list[str]:
-    """Renvoie les identifiants des 10 questions du jour `day` (AAAA-MM-JJ)."""
-    pool = candidate_pool(questions, history)
-    if len(pool) < QUIZ_SIZE:
-        raise ValueError(f"Banque insuffisante : {len(pool)} questions publiées, il en faut {QUIZ_SIZE}.")
+def _difficulty(q: dict) -> int:
+    return int(q.get("difficulty", 2))
+
+
+def published_by_kind(questions: list[dict]) -> dict[str, list[dict]]:
+    """Questions publiées des 10 types, triées par identifiant (résultat indépendant de l'ordre reçu)."""
+    by_kind: dict[str, list[dict]] = {k: [] for k in DAILY_ORDER}
+    for q in sorted(questions, key=lambda q: q["id"]):
+        if q.get("status", "published") == "published" and q.get("category") in KINDS:
+            by_kind[q["category"]].append(q)
+    return by_kind
+
+
+def build_daily_quiz(day: str, questions: list[dict], planned: dict[str, list[str]] | None = None) -> list[str]:
+    """Les 10 identifiants du jour `day`, un par type, dans l'ordre du quiz.
+
+    Pour chaque type : la question la moins récemment posée (jamais posée d'abord), et parmi
+    les plus fraîches, celle qui rapproche la journée de la répartition 3 faciles, 4 moyennes,
+    3 difficiles. Le hasard (graine = date) départage : même date, même banque = même quiz.
+    `planned` : les autres journées connues {date: [ids]}, passées et à venir.
+
+    Si un type n'a aucune question publiée, sa place est prise par la question la plus fraîche
+    d'un autre type (le quiz garde ses 10 questions ; le planning le signale).
+    """
+    by_kind = published_by_kind(questions)
+    total = sum(len(v) for v in by_kind.values())
+    if total < QUIZ_SIZE:
+        raise ValueError(f"Banque insuffisante : {total} questions publiées, il en faut {QUIZ_SIZE}.")
     rng = seeded_rng(f"daily:{day}")
-    for level in RELAX_LEVELS:
-        for _ in range(ATTEMPTS_PER_LEVEL):
-            order = list(pool)
-            rng.shuffle(order)
-            selected = _try_build(order, level)
-            if selected:
-                rng.shuffle(selected)
-                selected.sort(key=lambda q: int(q.get("difficulty", 2)))
-                return [q["id"] for q in selected]
-    raise ValueError("Impossible de composer le quiz du jour.")  # pragma: no cover
+    gaps = _gap_days(day, planned or {})
+    never = 10**6
+
+    def freshness(q: dict) -> int:
+        return gaps.get(q["id"], never)
+
+    remaining = dict(DIFFICULTY_TARGET)
+    chosen: dict[str, dict] = {}
+    kinds = list(DAILY_ORDER)
+    rng.shuffle(kinds)  # l'ordre de choix varie : pas toujours le même type servi en premier
+    for kind in kinds:
+        pool = by_kind[kind]
+        if not pool:
+            continue
+        best = max(freshness(q) for q in pool)
+        tier = [q for q in pool if freshness(q) >= min(best, COMFORT_GAP_DAYS)]
+        rng.shuffle(tier)
+        tier.sort(key=lambda q: -remaining.get(_difficulty(q), 0))  # tri stable : le hasard départage
+        pick = tier[0]
+        chosen[kind] = pick
+        remaining[_difficulty(pick)] = remaining.get(_difficulty(pick), 0) - 1
+
+    if len(chosen) < QUIZ_SIZE:
+        taken = {q["id"] for q in chosen.values()}
+        spare = [q for kind in DAILY_ORDER for q in by_kind[kind] if q["id"] not in taken]
+        rng.shuffle(spare)
+        spare.sort(key=lambda q: -freshness(q))
+        for kind in DAILY_ORDER:
+            if kind not in chosen:
+                chosen[kind] = spare.pop(0)
+    return [chosen[kind]["id"] for kind in DAILY_ORDER]

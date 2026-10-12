@@ -1,0 +1,53 @@
+[
+  {
+    "id": "vocabulaire-001",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "Quel est le synonyme de « éphémère » ?",
+    "choices": [
+      "Passager",
+      "Éternel",
+      "Fragile",
+      "Lumineux"
+    ],
+    "correct_answer": "Passager",
+    "explanation": "Éphémère vient du grec ephêmeros, « qui ne dure qu'un jour ». L'insecte du même nom ne vit souvent que quelques heures une fois adulte.",
+    "source_url": "https://www.cnrtl.fr/definition/%C3%A9ph%C3%A9m%C3%A8re",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-002",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "Quel est le contraire de « prolixe » ?",
+    "choices": [
+      "Concis",
+      "Prolifique",
+      "Généreux",
+      "Hésitant"
+    ],
+    "correct_answer": "Concis",
+    "explanation": "Prolixe : qui parle ou écrit trop longuement. Son contraire est concis. Le piège, « prolifique », veut dire « qui produit beaucoup » : un auteur peut être prolifique sans être prolixe.",
+    "source_url": "https://www.cnrtl.fr/definition/prolixe",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-003",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "« Ce mot a plusieurs … » : quel terme désigne les différents sens d'un mot ?",
+    "choices": [
+      "acceptions",
+      "acceptations",
+      "exceptions",
+      "conceptions"
+    ],
+    "correct_answer": "acceptions",
+    "explanation": "Une acception est l'un des sens d'un mot (« dans toutes les acceptions du terme »). L'acceptation, c'est le fait d'accepter. Les deux viennent du latin acceptio, mais ne s'échangent pas.",
+    "source_url": "https://www.cnrtl.fr/definition/acception",
+    "status": "published"
+  }
+]

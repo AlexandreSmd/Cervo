@@ -42,7 +42,13 @@ export function Results() {
           {streak > 0 && <span className="chip bg-mid/15">🔥 {streak}</span>}
         </div>
         <Pearls scores={scores} size="lg" />
-        <ShareCard date={date} total={data.score_total} scores={scores} streak={streak} />
+        <ShareCard
+          date={date}
+          total={data.score_total}
+          scores={scores}
+          streak={streak}
+          kinds={data.items.map((i) => ({ emoji: i.emoji ?? "❔", label: i.category_label }))}
+        />
       </section>
       <DayItems items={data.items} />
       <Link to="/profil" className="btn-ghost w-full" data-testid="to-profile">

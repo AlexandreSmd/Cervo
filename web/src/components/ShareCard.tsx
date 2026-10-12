@@ -8,16 +8,17 @@ interface Props {
   total: number;
   scores: number[];
   streak: number;
+  kinds?: { emoji: string; label: string }[];
 }
 
 /** Partage du résultat : feuille de partage du téléphone (Messenger…) sur mobile, copie sur ordinateur. */
-export function ShareCard({ date, total, scores, streak }: Props) {
+export function ShareCard({ date, total, scores, streak, kinds }: Props) {
   const [mobile, setMobile] = useState(false);
   const [outcome, setOutcome] = useState<ShareOutcome | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   useEffect(() => setMobile(isMobileDevice()), []);
 
-  const message = buildShareMessage(APP_NAME, date, total, scores, streak, PUBLIC_URL || window.location.origin);
+  const message = buildShareMessage(APP_NAME, date, total, scores, streak, PUBLIC_URL || window.location.origin, kinds);
 
   const share = async () => {
     setOutcome(await shareMessage(message, `${APP_NAME} · ${total}/100`));

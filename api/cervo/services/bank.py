@@ -18,19 +18,12 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from ..config import CONTENT_DIR
-from ..domain.catalog import (
-    ANSWER_FORMATS,
-    CATEGORIES,
-    DEFAULT_TIME_LIMIT,
-    DIFFICULTIES,
-    INPUT_FORMATS,
-    TYPE_TIME_LIMIT,
-    input_format,
-    pillar_of,
-)
+from ..domain.catalog import ANSWER_FORMATS, DIFFICULTIES, INPUT_FORMATS, KINDS, category_label, input_format, pillar_of
 from ..domain.daily import stable_choices
 from ..domain.models import Question
 from ..domain.scoring import normalize_text
+from ..domain.timing import memorize_seconds
+from ..domain.timing import time_limit as computed_time_limit
 from . import collections as col
 
 PUBLIC_IMAGES = CONTENT_DIR.parents[1] / "web" / "public"
@@ -64,8 +57,8 @@ def _content_key(q: Question) -> str:
     Deux questions peuvent partager un énoncé générique (« Quel est l'intrus ? », dictées…) :
     on compare donc aussi les photos, les choix, les éléments à mémoriser et le contenu dicté/classé.
     """
-    content = [*(i.url for i in q.images), *(q.choices or []), *(q.memorize.items if q.memorize else [])]
-    if q.type in ("order", "dictation"):
+    content = [*(i.url for i in q.images), *(q.choices or []), *(q.memorize.items if q.memorize else []), *q.clues]
+    if q.type in ("order", "dictation", "riddle", "recall"):
         content.append(str(q.correct_answer))
     return normalize_text(q.prompt) + "|" + "|".join(normalize_text(c) for c in content)
 
@@ -171,9 +164,21 @@ def images_of(q: dict) -> list[dict]:
     return []
 
 
-def time_limit(q: dict) -> int:
-    """Chrono de la question, en secondes."""
-    return int(q.get("time_limit") or TYPE_TIME_LIMIT.get(q["type"], DEFAULT_TIME_LIMIT))
+def time_limit(q: dict) -> int | None:
+    """Chrono de la question en secondes (None : sans chrono). Voir domain/timing.py."""
+    return computed_time_limit(q)
+
+
+def kind_view(category: str) -> dict:
+    """Ce que le joueur voit du type de la question : nom, emoji, consigne."""
+    kind = KINDS.get(category)
+    return {
+        "category": category,
+        "category_label": category_label(category),
+        "emoji": kind.emoji if kind else "❔",
+        "instruction": kind.instruction if kind else None,
+        "pillar": pillar_of(category),
+    }
 
 
 def describe(q: dict) -> dict:
@@ -184,28 +189,46 @@ def describe(q: dict) -> dict:
         "input_label": INPUT_FORMATS[fmt],
         "answer_label": ANSWER_FORMATS.get(q["type"], q["type"]),
         "difficulty_label": DIFFICULTIES.get(q.get("difficulty", 2), ""),
-        "category_label": CATEGORIES.get(q["category"], q["category"]),
+        "category_label": category_label(q["category"]),
+        "emoji": kind_view(q["category"])["emoji"],
+        "legacy": q["category"] not in KINDS,
+        "computed_time_limit": computed_time_limit({**q, "time_limit": None}),
+        "computed_memorize_seconds": memorize_seconds({**q, "memorize": {**q["memorize"], "seconds": None}}) if q.get("memorize") else None,
     }
 
 
-def public_view(q: dict, position: int) -> dict:
-    """Question telle qu'envoyée au joueur AVANT sa réponse : jamais la bonne réponse."""
+def public_view(q: dict, position: int, clues_seen: int = 1) -> dict:
+    """Question telle qu'envoyée au joueur AVANT sa réponse : jamais la bonne réponse.
+
+    `clues_seen` : indices de devinette déjà dévoilés (les suivants restent sur le serveur).
+    """
     cfg = q.get("numeric_config") or {}
+    memorize = q.get("memorize")
     view = {
         "id": q["id"],
         "position": position,
         "type": q["type"],
-        "category": q["category"],
-        "category_label": CATEGORIES.get(q["category"], q["category"]),
-        "pillar": pillar_of(q["category"]),
+        **kind_view(q["category"]),
         "difficulty": q.get("difficulty", 2),
         "prompt": q["prompt"],
         "images": images_of(q),
         "choices": stable_choices(q["id"], q["choices"]) if q["type"] == "mcq" and q.get("choices") else None,
         "unit": cfg.get("unit"),
-        "memorize": q.get("memorize"),
+        "memorize": {**memorize, "seconds": memorize_seconds(q)} if memorize else None,
         "time_limit": time_limit(q),
     }
+    if q["type"] == "riddle":
+        clues = list(q.get("clues") or [])
+        view["clues"] = clues[: max(1, min(clues_seen, len(clues)))]
+        view["clue_total"] = len(clues)
+    if q["type"] == "recall":
+        expected = list(q["correct_answer"])
+        view["recall"] = {
+            "count": len(expected),
+            "ordered": bool(q.get("recall_ordered")),
+            # Une suite de chiffres ou de lettres se tape d'un bloc : « 4815 ».
+            "single_chars": all(len(normalize_text(e)) == 1 for e in expected),
+        }
     if q["type"] == "order":
         # Les éléments sont mélangés (de façon stable) : l'ordre stocké est la réponse.
         view["items"] = stable_choices(q["id"], list(q["correct_answer"]))
@@ -222,8 +245,15 @@ def public_view(q: dict, position: int) -> dict:
 
 def reveal(q: dict) -> dict:
     """Ce qu'on montre APRÈS la réponse."""
-    return {
+    out = {
         "correct_answer": q["correct_answer"],
         "explanation": q.get("explanation"),
         "source_url": q.get("source_url"),
     }
+    if q.get("order_details"):
+        out["order_details"] = q["order_details"]
+    if q["type"] == "riddle":
+        out["clues"] = list(q.get("clues") or [])
+    if q["type"] == "size":
+        out["size"] = q.get("size_config")
+    return out

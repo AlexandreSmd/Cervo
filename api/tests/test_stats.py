@@ -1,6 +1,6 @@
 from cervo.domain.stats import apply_answer, apply_completion, displayed_streak, empty_stats, profile_summary, recompute
 
-Q = {"id": "q1", "category": "logique", "type": "short_text"}
+Q = {"id": "q1", "category": "enigme", "type": "short_text"}
 QN = {"id": "q2", "category": "estimation", "type": "numeric"}
 
 
@@ -11,8 +11,8 @@ def attempt(day, score, answers=None):
 def test_apply_answer_buckets():
     s = apply_answer(empty_stats(), Q, 100)
     s = apply_answer(s, Q, 0)
-    assert s["category_stats"]["logique"] == {"sum": 100, "count": 2, "correct": 1}
-    assert s["pillar_stats"]["raisonnement"]["count"] == 2
+    assert s["category_stats"]["enigme"] == {"sum": 100, "count": 2, "correct": 1}
+    assert s["pillar_stats"]["logique"]["count"] == 2
     assert s["type_stats"]["short_text"]["correct"] == 1
 
 
@@ -41,7 +41,7 @@ def test_displayed_streak_resets_after_missed_day():
 
 def test_recompute_matches_incremental():
     answers = [
-        {"question_id": "q1", "score": 100, "category": "logique"},
+        {"question_id": "q1", "score": 100, "category": "enigme"},
         {"question_id": "q2", "score": 40, "category": "estimation"},
     ]
     attempts = [attempt("2026-10-02", 70, answers), attempt("2026-10-01", 50, answers)]
@@ -51,8 +51,8 @@ def test_recompute_matches_incremental():
 
 
 def test_profile_summary():
-    answers_old = [{"question_id": "q1", "score": 0, "category": "logique"}]
-    answers_new = [{"question_id": "q1", "score": 100, "category": "logique"}]
+    answers_old = [{"question_id": "q1", "score": 0, "category": "enigme"}]
+    answers_new = [{"question_id": "q1", "score": 100, "category": "enigme"}]
     attempts = [attempt("2026-09-20", 30, answers_old), attempt("2026-10-09", 90, answers_new)]
     s = recompute(attempts, {"q1": Q})
     p = profile_summary(s, attempts, "2026-10-10")
@@ -62,9 +62,22 @@ def test_profile_summary():
     assert p["worst_day"]["score"] == 30
     assert len(p["last_30_days"]) == 30 and p["last_30_days"][-1]["date"] == "2026-10-10"
     assert p["current_streak"] == 1
-    raisonnement = next(x for x in p["pillars"] if x["pillar"] == "raisonnement")
-    assert raisonnement["trend"] == 100
+    logique = next(x for x in p["pillars"] if x["pillar"] == "logique")
+    assert logique["trend"] == 100
     assert p["correct_rate"] == 50
+    # Les 10 types, dans l'ordre du quiz, même ceux jamais joués
+    assert [c["category"] for c in p["categories"]][:2] == ["vocabulaire", "taille"] and len(p["categories"]) == 10
+    assert next(c for c in p["categories"] if c["category"] == "enigme")["average"] == 50
+
+
+def test_legacy_pillars_are_merged():
+    stats = {
+        **empty_stats(),
+        "pillar_stats": {"raisonnement": {"sum": 80, "count": 1, "correct": 0}, "logique": {"sum": 40, "count": 1, "correct": 0}},
+    }
+    p = profile_summary(stats, [], "2026-10-10")
+    logique = next(x for x in p["pillars"] if x["pillar"] == "logique")
+    assert logique["count"] == 2 and logique["average"] == 60
 
 
 def test_profile_summary_empty():

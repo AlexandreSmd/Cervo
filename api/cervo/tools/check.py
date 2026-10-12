@@ -1,12 +1,12 @@
-"""Valide la banque de questions : format, doublons, réponses incohérentes."""
+"""Valide la banque de questions : format, doublons, réponses incohérentes, couverture des 10 types."""
 
 from __future__ import annotations
 
 import sys
 from collections import Counter
 
-from ..domain.catalog import CATEGORIES
-from ..domain.daily import MIN_POOL
+from ..domain.catalog import DAILY_ORDER, DIFFICULTIES, KINDS
+from ..domain.timing import time_limit
 from ..services.bank import check_bank, load_files
 
 
@@ -14,25 +14,27 @@ def main() -> None:
     raws = load_files()
     valid, errors = check_bank(raws)
     published = [q for q in valid if q.status == "published"]
-    print(f"{len(raws)} questions lues, {len(valid)} valides, {len(published)} publiées.")
-    by_cat = Counter(q.category for q in published)
-    for key, label in CATEGORIES.items():
-        print(f"  {label:<20} {by_cat.get(key, 0):>4}")
-    by_type = Counter(q.type for q in published)
-    by_diff = Counter(q.difficulty for q in published)
-    print("  types :", dict(by_type))
-    print("  difficultés :", dict(sorted(by_diff.items())))
-    by_input = Counter(q.input_format for q in published)
-    print("  formats d'entrée :", dict(by_input))
+    print(f"{len(raws)} questions lues, {len(valid)} valides, {len(published)} publiées.\n")
+    print(f"  {'Type':<16} {'Questions':>9}   {'Niveaux (F/M/D)':<16} Chronos")
+    empty = []
+    for key in DAILY_ORDER:
+        mine = [q for q in published if q.category == key]
+        diff = Counter(q.difficulty for q in mine)
+        levels = "/".join(str(diff.get(d, 0)) for d in DIFFICULTIES)
+        chronos = sorted({time_limit(q.model_dump()) or 0 for q in mine})
+        shown = ", ".join("sans" if c == 0 else f"{c} s" for c in chronos)
+        print(f"  {KINDS[key].emoji} {KINDS[key].label:<14} {len(mine):>9}   {levels:<16} {shown}")
+        if not mine:
+            empty.append(KINDS[key].label)
+    rotation = min((sum(1 for q in published if q.category == k) for k in DAILY_ORDER), default=0)
+    print(f"\n  Rotation : {rotation} jour(s) avant qu'une question ne revienne.")
     if errors:
         print(f"\n{len(errors)} problème(s) :", file=sys.stderr)
         for err in errors:
             print(f"  - {err}", file=sys.stderr)
         sys.exit(1)
-    if len(published) < 120:
-        print(f"\nAttention : {len(published)} questions publiées, le MVP en demande au moins 120.", file=sys.stderr)
-        sys.exit(1)
-    if len(published) < MIN_POOL:
+    if empty:
+        print(f"\nAucune question publiée pour : {', '.join(empty)}.", file=sys.stderr)
         sys.exit(1)
     print("\nBanque valide.")
 

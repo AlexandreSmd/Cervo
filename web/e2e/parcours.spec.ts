@@ -44,47 +44,73 @@ test("espace fondateur : tableau de bord, planning par glisser-déposer, nouvell
   await adminLogin(page);
   await expect(page.getByText("Joueurs aujourd'hui")).toBeVisible();
 
-  // Planning : on remplit 4 semaines, puis on glisse une question de la banque sur un jour futur
+  // Planning : on remplit 4 semaines ; chaque jour = une question par type, dans l'ordre
   await page.getByRole("link", { name: "Planning" }).click();
   await page.getByTestId("fill").click();
   await expect(page.getByRole("status")).toHaveText("Jours vides planifiés");
   const future = new Date(Date.now() + 5 * 86400_000).toLocaleDateString("sv-SE", { timeZone: "Europe/Paris" });
   const slot = page.getByTestId(`slot-${future}-0`);
-  await expect(slot).toBeVisible();
-  const bankItem = page.getByTestId("bank").locator("button").first();
-  const prompt = (await bankItem.textContent())!.trim();
-  await bankItem.dragTo(slot);
+  await expect(slot).toContainText("Vocabulaire");
+  await expect(page.getByTestId(`slot-${future}-9`)).toContainText("Dictée");
+
+  // Une question d'un autre type est refusée sur cette ligne
+  await page.getByLabel("Type").selectOption("taille");
+  await page.getByTestId("bank").locator("button").first().dragTo(slot);
+  await expect(page.getByRole("status")).toHaveText("Dépose la question sur la ligne de son type.");
+
+  // Une autre question de vocabulaire la remplace
+  await page.getByLabel("Type").selectOption("vocabulaire");
+  const current = (await slot.textContent())!;
+  const candidates = page.getByTestId("bank").locator("button");
+  let prompt = "";
+  for (const candidate of await candidates.all()) {
+    const text = (await candidate.textContent())!.trim();
+    if (!current.includes(text.slice(0, 20))) {
+      prompt = text;
+      await candidate.dragTo(slot);
+      break;
+    }
+  }
   await expect(page.getByRole("status")).toHaveText("Planning mis à jour");
   await page.reload();
   await expect(page.getByTestId(`slot-${future}-0`)).toContainText(prompt.slice(0, 20));
 
-  // Réordonner : le badge 1 glissé en position 3
-  const first = (await page.getByTestId(`slot-${future}-0`).textContent())!;
+  // L'ordre des types est fixe : on ne réordonne pas une journée
   await page.getByTestId(`slot-${future}-0`).dragTo(page.getByTestId(`slot-${future}-2`));
-  await expect(page.getByTestId(`slot-${future}-2`)).toContainText(first.slice(1, 20));
+  await expect(page.getByRole("status")).toContainText("L'ordre des types est fixe");
 
   // Questions déjà posées : celles du jour (des joueurs ont joué dans le premier test)
   await page.getByRole("link", { name: "Déjà posées" }).click();
   await expect(page.getByRole("heading", { name: "Déjà posées" })).toBeVisible();
   await expect(page.getByTestId("admin-question").first()).toBeVisible();
 
-  // Nouvelle question à partir d'un modèle
+  // Nouvelle question : on choisit d'abord le type, le formulaire s'adapte
   await page.getByRole("link", { name: "Pas encore posées" }).click();
+  await expect(page.getByTestId("coverage")).toContainText("Devinette");
   await page.getByTestId("new-question").click();
-  await page.getByTestId("template-vf").click();
-  await page.locator("#q-prompt").fill(`Le test de bout en bout ajoute une question (${Date.now()}).`);
+  await page.getByTestId("kind-fait").click();
+  await expect(page.getByTestId("editor-kind")).toHaveText("Fait étonnant");
+  await page.getByLabel("Question", { exact: true }).fill(`Le test de bout en bout ajoute une question (${Date.now()}).`);
   await page.getByRole("radiogroup", { name: "Bonne réponse" }).getByRole("radio", { name: "Vrai" }).click();
-  await page.locator("#q-expl").fill("Question ajoutée automatiquement par le test Playwright.");
+  await page.getByLabel("Explication").fill("Question ajoutée automatiquement par le test Playwright.");
   await page.getByRole("radiogroup", { name: "Statut" }).getByRole("radio", { name: "Brouillon" }).click();
   await page.getByTestId("admin-save").click();
   await expect(page.getByTestId("admin-created")).toBeVisible();
 
-  // Modèle « Remettre dans l'ordre »
-  await page.getByTestId("new-question").click();
-  await page.getByTestId("template-ordre").click();
-  for (const [i, v] of ["Antiquité", "Moyen Âge", "Renaissance", "Époque moderne"].entries())
-    await page.getByLabel(`Élément ${i + 1}`).fill(v);
-  await page.locator("#q-expl").fill("Les grandes périodes de l'histoire, dans l'ordre.");
+  // Chronologie : événements + dates, chrono calculé dans l'aperçu
+  await page.getByTestId("add-chronologie").click();
+  await expect(page.getByTestId("editor-kind")).toHaveText("Chronologie");
+  for (const [i, [event, year]] of [
+    ["Antiquité", "−3000"],
+    ["Moyen Âge", "476"],
+    ["Renaissance", "1453"],
+    ["Époque moderne", "1789"],
+  ].entries()) {
+    await page.getByLabel(`Événement ${i + 1}`).fill(event);
+    await page.getByLabel(`Date ${i + 1}`).fill(year);
+  }
+  await expect(page.getByTestId("preview-timer")).toContainText("s");
+  await page.getByLabel("Explication").fill("Les grandes périodes de l'histoire, dans l'ordre.");
   await page.getByTestId("admin-save").click();
   await expect(page.getByTestId("admin-created")).toBeVisible();
 });

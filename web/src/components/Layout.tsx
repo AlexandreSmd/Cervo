@@ -1,6 +1,6 @@
 // Cadre de l'interface joueur : barre du haut, onglets en bas sur mobile.
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { APP_NAME } from "../lib/config";
 
 export function Logo({ to = "/" }: { to?: string }) {
@@ -27,6 +27,8 @@ const TABS = [
 
 /** Interface joueur : barre du haut minimale, onglets en bas sur mobile. */
 export function Layout({ children }: { children: ReactNode }) {
+  // Pendant le quiz, pas d'onglets en bas : toute la place pour la question.
+  const playing = useLocation().pathname === "/jouer";
   const tab = ({ isActive }: { isActive: boolean }) =>
     `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-semibold transition sm:flex-none sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:text-sm ${
       isActive ? "text-ink sm:bg-ink/5" : "text-muted hover:text-ink"
@@ -45,11 +47,11 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </header>
-      <main id="main" className="mx-auto w-full max-w-app flex-1 px-5 pb-28 pt-2 sm:pb-12">
+      <main id="main" className={`mx-auto w-full max-w-app flex-1 px-5 pt-2 sm:pb-12 ${playing ? "pb-8" : "pb-28"}`}>
         {children}
       </main>
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 flex border-t border-line bg-card/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden"
+        className={`${playing ? "hidden" : "flex"} fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden`}
         aria-label="Navigation"
       >
         {TABS.map((t) => (

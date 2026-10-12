@@ -1,6 +1,6 @@
 // Composants d'interface de l'espace fondateur : KPI, panneaux, sélecteurs, tiroir latéral.
 import { useEffect, type ReactNode } from "react";
-import { CATEGORY_COLOR } from "./meta";
+import { kindInfo } from "../lib/kinds";
 
 export function Kpi({ label, value, hint, accent }: { label: string; value: ReactNode; hint?: string; accent?: boolean }) {
   return (
@@ -69,9 +69,20 @@ export function CategoryDot({ category, className = "h-2.5 w-2.5" }: { category:
   return (
     <span
       className={`inline-block shrink-0 rounded-full ${className}`}
-      style={{ backgroundColor: CATEGORY_COLOR[category] ?? "#888" }}
+      style={{ backgroundColor: kindInfo(category).color }}
       aria-hidden="true"
     />
+  );
+}
+
+/** Emoji et nom du type d'une question. */
+export function KindTag({ category, short }: { category: string; short?: boolean }) {
+  const info = kindInfo(category);
+  return (
+    <span className="inline-flex items-center gap-1.5 whitespace-nowrap font-semibold" style={{ color: info.color }}>
+      <span aria-hidden="true">{info.emoji}</span>
+      {short ? null : info.label}
+    </span>
   );
 }
 

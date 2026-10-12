@@ -11,9 +11,9 @@ from firebase_admin import auth as fb_auth
 from .. import APP_NAME
 from ..clock import today
 from ..config import get_settings
-from ..domain.catalog import CATEGORIES, PILLARS
+from ..domain.catalog import CATEGORIES, DAILY_ORDER, KINDS, PILLARS
 from ..domain.daily import is_valid_day
-from ..domain.models import AnswerIn, ReportIn, StartIn, UsernameIn
+from ..domain.models import AnswerIn, ClueIn, ReportIn, StartIn, UsernameIn
 from ..domain.stats import profile_summary
 from ..firebase import app as firebase_app
 from ..firebase import db
@@ -35,7 +35,8 @@ def health():
 
 @router.get("/meta")
 def meta():
-    return {"app": APP_NAME, "categories": CATEGORIES, "pillars": PILLARS, "today": today()}
+    kinds = [{"key": k, "label": KINDS[k].label, "emoji": KINDS[k].emoji, "pillar": KINDS[k].pillar} for k in DAILY_ORDER]
+    return {"app": APP_NAME, "categories": CATEGORIES, "kinds": kinds, "pillars": PILLARS, "today": today()}
 
 
 @router.get("/today")
@@ -51,6 +52,13 @@ def post_question_start(body: StartIn, claims: Claims):
     _ensure_today(body.date)
     # Pas de lecture du profil ici : la participation vit dans sa propre sous-collection.
     return play.start_question(db(), claims["uid"], body.date, body.question_id)
+
+
+@router.post("/clue")
+def post_clue(body: ClueIn, claims: Claims):
+    rate_limit(f"clue:{claims['uid']}", limit=20)
+    _ensure_today(body.date)
+    return play.reveal_clue(db(), claims["uid"], body.date, body.question_id)
 
 
 @router.post("/answer")

@@ -16,6 +16,9 @@ export function DayItems({ items }: { items: DayItem[] }) {
                 style={{ backgroundColor: COLOR_HEX[scoreColor(it.score)] }}
                 aria-hidden="true"
               />
+              <span className="shrink-0 text-lg" aria-hidden="true">
+                {it.emoji ?? "❔"}
+              </span>
               <span className="flex-1 truncate text-[15px] font-semibold">
                 {i + 1}. {it.prompt}
               </span>

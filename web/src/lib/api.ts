@@ -71,6 +71,8 @@ export const api = {
       method: "POST",
       body: json({ date, question_id }),
     }),
+  clue: (date: string, question_id: string) =>
+    request<{ clues: string[]; clue_total: number }>("/clue", { method: "POST", body: json({ date, question_id }) }),
   answer: (date: string, question_id: string, answer: Answer | null) =>
     request<SubmitResult>("/answer", { method: "POST", body: json({ date, question_id, answer }) }),
   results: (date: string) => request<DayDetail>(`/results/${date}`),
