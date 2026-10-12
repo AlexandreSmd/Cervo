@@ -1,5 +1,6 @@
 // En-tête d'une question : type (emoji + nom), difficulté, consigne, énoncé, photos (A et B s'il y en a deux).
 import { kindInfo } from "../lib/kinds";
+import { KindIcon } from "./KindIcon";
 import type { ImageRef, PublicQuestion } from "../lib/types";
 
 export function Difficulty({ level }: { level: number }) {
@@ -13,13 +14,24 @@ export function Difficulty({ level }: { level: number }) {
   );
 }
 
-/** Le type de la question : emoji + nom, sur la couleur du type. */
-export function KindChip({ category, label, emoji }: { category: string; label: string; emoji?: string }) {
+/**
+ * Badge du type de question, façon tampon : l'icône sur la couleur du type, le nom en capitales,
+ * et le numéro de la question dans le quiz.
+ */
+export function KindChip({ category, label, position }: { category: string; label: string; position?: number }) {
   const info = kindInfo(category, label);
   return (
-    <span className="chip font-bold" style={{ backgroundColor: `${info.color}1A`, color: info.color }} data-testid="kind-chip">
-      <span aria-hidden="true">{emoji ?? info.emoji}</span>
-      {label}
+    <span className="inline-flex items-center gap-2" data-testid="kind-chip">
+      <span
+        className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-ink text-white shadow-hard-sm"
+        style={{ backgroundColor: info.color }}
+      >
+        <KindIcon kind={category} className="h-[18px] w-[18px]" />
+      </span>
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.14em]">{label}</span>
+      {position !== undefined && (
+        <span className="font-display text-[12px] font-bold text-muted">{String(position + 1).padStart(2, "0")}</span>
+      )}
     </span>
   );
 }
@@ -60,12 +72,14 @@ export function QuestionMedia({ images, eager = true }: { images: ImageRef[]; ea
 export function QuestionHeader({
   question,
 }: {
-  question: Pick<PublicQuestion, "category" | "category_label" | "emoji" | "instruction" | "difficulty" | "prompt" | "images">;
+  question: Pick<PublicQuestion, "category" | "category_label" | "emoji" | "instruction" | "difficulty" | "prompt" | "images"> & {
+    position?: number;
+  };
 }) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <KindChip category={question.category} label={question.category_label} emoji={question.emoji} />
+        <KindChip category={question.category} label={question.category_label} position={question.position} />
         <Difficulty level={question.difficulty} />
       </div>
       {question.instruction && <p className="text-xs font-bold uppercase tracking-wider text-muted">{question.instruction}</p>}

@@ -1,6 +1,7 @@
 // Le programme du jour : les 10 types dans l'ordre, colorés selon le score une fois joués.
 import { COLOR_HEX, scoreColor } from "../lib/format";
 import { kindInfo } from "../lib/kinds";
+import { KindIcon } from "./KindIcon";
 import type { PublicQuestion } from "../lib/types";
 
 export function KindLineup({ questions, scores }: { questions: Pick<PublicQuestion, "category" | "category_label">[]; scores: number[] }) {
@@ -14,14 +15,14 @@ export function KindLineup({ questions, scores }: { questions: Pick<PublicQuesti
           <li
             key={i}
             title={played ? `${info.label} : ${score}/100` : info.label}
-            className="flex aspect-square flex-col items-center justify-center rounded-xl border border-ink/10 text-2xl transition"
+            className="flex aspect-square flex-col items-center justify-center rounded-xl border-2 transition"
             style={
               played
-                ? { backgroundColor: `${COLOR_HEX[scoreColor(score)]}26`, boxShadow: `inset 0 0 0 2px ${COLOR_HEX[scoreColor(score)]}` }
-                : { backgroundColor: "rgb(var(--ink) / 0.05)" }
+                ? { backgroundColor: COLOR_HEX[scoreColor(score)], borderColor: "rgb(var(--ink))", color: "#fff" }
+                : { borderColor: `${info.color}55`, color: info.color, backgroundColor: `${info.color}12` }
             }
           >
-            <span aria-hidden="true">{info.emoji}</span>
+            <KindIcon kind={q.category} className="h-6 w-6" />
             <span className="sr-only">
               {info.label}
               {played ? ` : ${score} points` : ""}

@@ -1,5 +1,6 @@
 // Composants d'interface de l'espace fondateur : KPI, panneaux, sélecteurs, tiroir latéral.
 import { useEffect, type ReactNode } from "react";
+import { KindIcon } from "../components/KindIcon";
 import { kindInfo } from "../lib/kinds";
 
 export function Kpi({ label, value, hint, accent }: { label: string; value: ReactNode; hint?: string; accent?: boolean }) {
@@ -80,7 +81,7 @@ export function KindTag({ category, short }: { category: string; short?: boolean
   const info = kindInfo(category);
   return (
     <span className="inline-flex items-center gap-1.5 whitespace-nowrap font-semibold" style={{ color: info.color }}>
-      <span aria-hidden="true">{info.emoji}</span>
+      <KindIcon kind={category} className="h-4 w-4" />
       {short ? null : info.label}
     </span>
   );
