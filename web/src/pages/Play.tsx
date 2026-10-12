@@ -51,7 +51,10 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
 }
 
 export function Play() {
-  const { data, isLoading, error, refetch } = useToday();
+  const today = useToday();
+  const { isLoading, error, refetch } = today;
+  // Le jeu n'utilise que des données fraîches (chrono, position) : jamais celles gardées sur l'appareil.
+  const data = today.isPlaceholderData ? undefined : today.data;
   const { user } = useAuth();
   const qc = useQueryClient();
   const navigate = useNavigate();

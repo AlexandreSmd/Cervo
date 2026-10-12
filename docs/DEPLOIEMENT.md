@@ -9,7 +9,7 @@ l'espace fondateur réservé à ton compte.
 | --- | --- | --- | --- |
 | Nom de domaine | Cloudflare (`.com`) ou OVH (`.fr`) | L'adresse du site | 8 à 12 € par an |
 | Site + aiguillage `/api` | Cloudflare (Worker) | Sert les pages, transmet les appels à l'API | Gratuit |
-| API (le « serveur ») | Modal | Calcule les scores, garde les règles | Gratuit (30 $ de crédit offerts par mois) |
+| API (le « serveur ») | Modal | Calcule les scores, garde les règles | Environ 5 $/mois, couverts par les 30 $ de crédit offerts par mois (carte requise) |
 | Comptes + base de données | Firebase (Google) | Connexion, questions, parties | Gratuit à ton échelle (offre Spark) |
 
 Tu crées les comptes et achètes le domaine (une seule fois). Ensuite, une seule commande
@@ -132,6 +132,7 @@ celles créées depuis l'admin sont déjà en ligne.
 | --- | --- |
 | « Connexion impossible » avec Google | Étape 2.3 : ajoute ton domaine aux domaines autorisés |
 | Les e-mails de connexion n'arrivent pas | Regarde les indésirables (expéditeur `noreply@…firebaseapp.com`) |
-| La première page met 3 secondes | Normal après une pause : l'API se réveille (gratuit). Les suivantes sont rapides |
+| La première page met 3 secondes | `API_WARM_CONTAINERS=0` dans `.env.production` ? L'API se réveille après une pause. Mets `1` (ou laisse vide), puis `npm run prod:api` |
+| Google refuse la connexion dans Messenger | Normal : Google bloque les navigateurs intégrés. Ouvre le site dans Safari ou Chrome, ou utilise le lien par e-mail |
 | `npm run prod:deploy` refuse de démarrer | Lance `npm run prod:check` : il dit ce qui manque |
 | Le domaine n'affiche rien | Attends la fin de l'activation Cloudflare (étape 1.3), puis relance `npm run prod:web` |

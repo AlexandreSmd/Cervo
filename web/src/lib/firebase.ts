@@ -1,12 +1,17 @@
 // Firebase côté navigateur : uniquement l'authentification (émulateur en local).
 import { initializeApp } from "firebase/app";
-import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { browserLocalPersistence, connectAuthEmulator, indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
 import { AUTH_EMULATOR_URL, FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, USE_EMULATOR } from "./config";
 
 // Le navigateur n'utilise Firebase que pour l'authentification :
 // Firestore n'est accessible qu'à travers l'API.
 const app = initializeApp({ apiKey: FIREBASE_API_KEY, authDomain: FIREBASE_AUTH_DOMAIN, projectId: FIREBASE_PROJECT_ID });
-export const auth = getAuth(app);
+// initializeAuth plutôt que getAuth, pour démarrer vite et partout (téléphones, navigateur de Messenger…) :
+// - session gardée d'abord dans localStorage (lecture immédiate) ; IndexedDB, qui peut rester bloqué dans
+//   certains navigateurs intégrés, ne sert plus qu'à récupérer les sessions déjà enregistrées là ;
+// - pas de module « popup/redirection » au démarrage : il charge une iframe Google et n'est utile qu'à la
+//   connexion avec Google (voir pages/Login.tsx, qui le fournit au moment du clic).
+export const auth = initializeAuth(app, { persistence: [browserLocalPersistence, indexedDBLocalPersistence] });
 auth.languageCode = "fr";
 if (USE_EMULATOR) connectAuthEmulator(auth, AUTH_EMULATOR_URL, { disableWarnings: true });
 

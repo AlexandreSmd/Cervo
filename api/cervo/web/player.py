@@ -40,26 +40,24 @@ def meta():
 
 @router.get("/today")
 def get_today(claims: Claims):
-    client = db()
-    user = users.ensure_user(client, claims)
-    return {**play.today_state(client, claims["uid"], today(), user), "is_admin": is_admin(claims)}
+    client, day = db(), today()
+    user_snap, attempt_snap = play.read_user_and_attempt(client, claims["uid"], day)
+    user = users.ensure_user(client, claims, user_snap)
+    return {**play.today_state(client, claims["uid"], day, user, attempt_snap), "is_admin": is_admin(claims)}
 
 
 @router.post("/question-start")
 def post_question_start(body: StartIn, claims: Claims):
     _ensure_today(body.date)
-    client = db()
-    users.ensure_user(client, claims)
-    return play.start_question(client, claims["uid"], body.date, body.question_id)
+    # Pas de lecture du profil ici : la participation vit dans sa propre sous-collection.
+    return play.start_question(db(), claims["uid"], body.date, body.question_id)
 
 
 @router.post("/answer")
 def post_answer(body: AnswerIn, claims: Claims):
     rate_limit(f"answer:{claims['uid']}")
     _ensure_today(body.date)
-    client = db()
-    users.ensure_user(client, claims)
-    return play.submit_answer(client, claims["uid"], body.date, body.question_id, body.answer)
+    return play.submit_answer(db(), claims, body.date, body.question_id, body.answer)
 
 
 @router.get("/results/{day}")

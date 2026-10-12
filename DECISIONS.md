@@ -114,4 +114,30 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 - **Connexion** : invité automatique, puis « Continuer avec Google » ou lien magique par e-mail ; dans les deux cas le compte est rattaché à la session invité (historique conservé).
 - **Quota Firestore** : la banque de questions est gardée en mémoire et rechargée seulement quand `meta/bank.version` change (incrémentée à chaque modification) : une lecture toutes les 30 s par serveur au lieu de plusieurs centaines.
 - **Domaine** : les `.com` s'achètent chez Cloudflare (déjà branchés) ; les `.fr` chez OVH, puis serveurs DNS pointés vers Cloudflare.
-- **Réveil de l'API** : aucun conteneur gardé en veille (coût nul) ; la première requête après une pause prend 2 à 4 s.
+- **Réveil de l'API** : voir « Performance mobile » ci-dessous (un conteneur gardé allumé par défaut).
+
+## Performance mobile (version 6)
+
+Constat après la mise en ligne : sur téléphone, écrans lents ou qui ne se chargent pas.
+
+- **API toujours chaude** : `API_WARM_CONTAINERS=1` par défaut (`.env.production`), environ 5 $ par mois, couverts par les 30 $ de crédit Modal. Un serveur neuf se préchauffe en tâche de fond dès son démarrage : connexion Firestore, banque de questions, quiz du jour (`api/cervo/warmup.py`). `0` reste possible (gratuit, 3 à 6 s d'attente après une pause).
+- **Moins d'allers-retours vers Firestore** (le serveur Modal et la base ne sont pas sur le même continent : chaque aller-retour compte) :
+  - `/today` lit le profil et la participation en une seule lecture groupée (`get_all`) ;
+  - les 10 questions du jour sont gardées 30 s en mémoire, et le cache est vidé dès qu'une modification du planning passe par ce serveur ;
+  - `/answer` ne relit plus le profil avant la transaction : le profil est créé dans la transaction s'il manque ;
+  - `/question-start` ne touche plus au profil.
+- **Session Firebase fiable sur mobile** : `initializeAuth` avec la session gardée d'abord dans localStorage. IndexedDB peut rester bloqué dans les navigateurs intégrés (Messenger, Instagram) ; il ne sert plus qu'à récupérer les sessions déjà enregistrées, qui sont migrées automatiquement. Le module popup de Google (et son iframe) n'est chargé qu'au clic sur « Continuer avec Google ».
+- **Jamais de chargement sans fin** :
+  - au-delà de 12 s sans session, message avec « Réessayer » ;
+  - requêtes limitées à 20 s ;
+  - 2 nouvelles tentatives automatiques, seulement sur les erreurs réseau ou serveur.
+- **Affichage instantané** :
+  - écran de démarrage dans `index.html`, avant même le JavaScript ;
+  - dernières données de l'accueil et du profil gardées sur l'appareil (`lib/cache.ts`), affichées tout de suite puis remplacées par les fraîches ;
+  - le jeu lui-même attend toujours les données du serveur ;
+  - l'accueil se met à jour au retour dans l'appli (nouveau quiz à minuit).
+- **Moins à télécharger** :
+  - espace fondateur et page de connexion chargés à la demande, jamais pour un joueur ;
+  - React et Firebase dans des fichiers séparés ;
+  - les fichiers `/assets/*` (nom à empreinte) sont mis en cache un an, la page est toujours revalidée.
+- **Messenger** : la page de connexion explique que Google y bloque la connexion et propose d'ouvrir le site dans Safari ou Chrome, ou de recevoir un lien par e-mail.

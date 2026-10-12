@@ -1,21 +1,25 @@
 // Routes : l'interface joueur (onglets Jouer / Profil) et l'espace fondateur (/admin).
+// Ce qui ne sert pas à jouer (espace fondateur, connexion) est chargé à la demande :
+// le premier affichage sur téléphone ne télécharge que le nécessaire.
+import { lazy, Suspense } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
-import { AdminLayout } from "./admin/AdminLayout";
-import { Dashboard } from "./admin/Dashboard";
-import { Planning } from "./admin/Planning";
-import { QuestionsPage, ReportsPage } from "./admin/QuestionsPage";
 import { Layout } from "./components/Layout";
+import { Loading } from "./components/States";
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
 import { Play } from "./pages/Play";
 import { Profile } from "./pages/Profile";
 import { PastDay, Results } from "./pages/Results";
 import { NotFound, Privacy } from "./pages/Static";
 
+const AdminArea = lazy(() => import("./admin/AdminArea"));
+const Login = lazy(() => import("./pages/Login").then((m) => ({ default: m.Login })));
+
 function PlayerShell() {
   return (
     <Layout>
-      <Outlet />
+      <Suspense fallback={<Loading />}>
+        <Outlet />
+      </Suspense>
     </Layout>
   );
 }
@@ -23,13 +27,14 @@ function PlayerShell() {
 export function App() {
   return (
     <Routes>
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="planning" element={<Planning />} />
-        <Route path="questions" element={<QuestionsPage key="bank" mode="bank" />} />
-        <Route path="questions/passees" element={<QuestionsPage key="past" mode="past" />} />
-        <Route path="signalements" element={<ReportsPage />} />
-      </Route>
+      <Route
+        path="/admin/*"
+        element={
+          <Suspense fallback={<Loading />}>
+            <AdminArea />
+          </Suspense>
+        }
+      />
       <Route element={<PlayerShell />}>
         <Route path="/" element={<Home />} />
         <Route path="/jouer" element={<Play />} />

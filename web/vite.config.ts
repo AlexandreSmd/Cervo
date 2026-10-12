@@ -6,6 +6,18 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   envDir: "..",
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        // Bibliothèques dans des fichiers à part : elles changent rarement et restent en cache
+        // sur le téléphone d'une mise à jour du site à l'autre.
+        manualChunks: {
+          react: ["react", "react-dom", "react-router-dom", "@tanstack/react-query"],
+          firebase: ["firebase/app", "firebase/auth"],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     strictPort: true,

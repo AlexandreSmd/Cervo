@@ -24,9 +24,18 @@ export default {
       return withHeaders(response, { "Cache-Control": response.headers.get("Cache-Control") ?? "no-store" });
     }
 
-    return withHeaders(await env.ASSETS.fetch(request));
+    return withHeaders(await env.ASSETS.fetch(request), { "Cache-Control": cacheFor(url.pathname) });
   },
 };
+
+// Fichiers du site : ceux de /assets/ ont un nom qui change à chaque version (empreinte du contenu),
+// le téléphone peut donc les garder un an sans jamais redemander. La page elle-même est toujours
+// revalidée : une mise à jour du site est visible immédiatement.
+function cacheFor(pathname) {
+  if (pathname.startsWith("/assets/")) return "public, max-age=31536000, immutable";
+  if (pathname.startsWith("/questions/")) return "public, max-age=86400";
+  return "no-cache";
+}
 
 function withHeaders(response, extra = {}) {
   const out = new Response(response.body, response);

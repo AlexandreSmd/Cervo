@@ -1,6 +1,7 @@
 // Connexion par lien magique ; rattache l'e-mail à la session invité (même uid).
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  browserPopupRedirectResolver,
   EmailAuthProvider,
   GoogleAuthProvider,
   isSignInWithEmailLink,
@@ -20,6 +21,9 @@ import { DEV_TOOLS, USE_EMULATOR } from "../lib/config";
 import { auth, latestEmulatorLink } from "../lib/firebase";
 
 const EMAIL_KEY = "cervo-email-for-signin";
+
+// Navigateurs intégrés aux applis (Messenger, Instagram…) : Google y refuse la connexion.
+const IN_APP_BROWSER = /FBAN|FBAV|FB_IAB|Messenger|Instagram|Snapchat|TikTok|musical_ly|Line\//i.test(navigator.userAgent);
 
 export function Login() {
   const { user, ready } = useAuth();
@@ -107,17 +111,17 @@ export function Login() {
     try {
       if (auth.currentUser?.isAnonymous) {
         try {
-          await linkWithPopup(auth.currentUser, provider);
+          await linkWithPopup(auth.currentUser, provider, browserPopupRedirectResolver);
         } catch (err) {
           const code = (err as { code?: string }).code ?? "";
           if (!code.includes("already-in-use")) throw err;
           // Ce compte Google existe déjà : on s'y connecte (l'historique invité de cet appareil n'est pas fusionné).
           const credential = GoogleAuthProvider.credentialFromError(err as never);
           if (credential) await signInWithCredential(auth, credential);
-          else await signInWithPopup(auth, provider);
+          else await signInWithPopup(auth, provider, browserPopupRedirectResolver);
         }
       } else {
-        await signInWithPopup(auth, provider);
+        await signInWithPopup(auth, provider, browserPopupRedirectResolver);
       }
       await finish();
     } catch (err) {
@@ -209,6 +213,12 @@ export function Login() {
         </div>
       ) : (
         <div className="space-y-4">
+          {IN_APP_BROWSER && (
+            <p className="rounded-2xl bg-mid/15 p-3 text-sm" data-testid="in-app-hint">
+              Tu es dans le navigateur de l'appli (Messenger…) : Google y bloque la connexion. Ouvre Vif dans Safari ou Chrome (menu ⋯ → «
+              Ouvrir dans le navigateur »), ou reçois un lien par e-mail ci-dessous.
+            </p>
+          )}
           <button
             type="button"
             onClick={google}

@@ -99,7 +99,9 @@ function deployApi(conf) {
   if (secret.code !== 0) fail(`Création du secret Modal impossible :\n${secret.out}`);
 
   log("API : déploiement sur Modal (1 à 3 minutes la première fois)…");
-  const deploy = capture("uvx", [...MODAL, "deploy", "modal_app.py"]);
+  // API_WARM_CONTAINERS est lu par modal_app.py au moment du déploiement (1 par défaut).
+  const deployEnv = { ...process.env, API_WARM_CONTAINERS: conf.API_WARM_CONTAINERS || "1" };
+  const deploy = capture("uvx", [...MODAL, "deploy", "modal_app.py"], { env: deployEnv });
   process.stdout.write(deploy.out);
   const url = deploy.out.match(/https:\/\/[\w.-]+\.modal\.run/)?.[0];
   if (deploy.code !== 0 || !url) fail("Le déploiement Modal a échoué (voir ci-dessus).");

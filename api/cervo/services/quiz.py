@@ -7,6 +7,8 @@ Le site se met donc à jour seul à minuit, même si personne n'a rien planifié
 
 from __future__ import annotations
 
+import threading
+import time
 from datetime import date
 
 from google.api_core.exceptions import AlreadyExists
@@ -18,6 +20,14 @@ from . import collections as col
 
 # Fenêtre d'historique prise en compte pour éviter de reposer une question.
 HISTORY_DAYS = 365
+
+# Les 10 identifiants d'un jour sont relus à chaque requête de jeu : on les garde en mémoire
+# quelques secondes (une lecture Firestore de moins par requête). Une modification faite depuis
+# ce serveur vide le cache aussitôt ; depuis un autre serveur, elle est vue en moins de _TTL s.
+# Sans risque en pratique : le planning d'un jour est verrouillé dès le premier joueur.
+_TTL = 30.0
+_lock = threading.Lock()
+_ids_cache: dict[tuple[str, str], tuple[float, list[str]]] = {}
 
 
 def planned_days(db) -> dict[str, list[str]]:
@@ -44,6 +54,18 @@ def compute_day(db, day: str, planned: dict[str, list[str]] | None = None) -> li
 
 def question_ids(db, day: str) -> list[str]:
     """Les 10 identifiants du jour : planifiés, sinon calculés puis figés (création atomique)."""
+    key = (db.project, day)
+    with _lock:
+        hit = _ids_cache.get(key)
+    if hit and time.monotonic() - hit[0] < _TTL:
+        return list(hit[1])
+    ids = _load_or_create(db, day)
+    with _lock:
+        _ids_cache[key] = (time.monotonic(), ids)
+    return list(ids)
+
+
+def _load_or_create(db, day: str) -> list[str]:
     ref = db.collection(col.DAILY_QUIZZES).document(day)
     snap = ref.get()
     if snap.exists:
@@ -56,5 +78,17 @@ def question_ids(db, day: str) -> list[str]:
     return ids
 
 
+def invalidate_cache() -> None:
+    """À appeler après toute écriture dans `daily_quizzes`."""
+    with _lock:
+        _ids_cache.clear()
+
+
 def save_day(db, day: str, ids: list[str], source: str) -> None:
     db.collection(col.DAILY_QUIZZES).document(day).set({"question_ids": ids, "updated_at": now_iso(), "source": source})
+    invalidate_cache()
+
+
+def delete_day(db, day: str) -> None:
+    db.collection(col.DAILY_QUIZZES).document(day).delete()
+    invalidate_cache()
