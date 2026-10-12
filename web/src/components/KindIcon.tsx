@@ -22,8 +22,11 @@ const PATHS: Record<string, string> = {
   dictee: "M4 20h16 M5 16l10.5-10.5a2.1 2.1 0 0 1 3 3L8 19H5z",
 };
 
+// Anciennes questions (avant les 10 types) : un simple point.
+const FALLBACK = "M12 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z";
+
 export function KindIcon({ kind, className = "h-4 w-4" }: { kind: string; className?: string }) {
-  const d = PATHS[kind] ?? PATHS.enigme;
+  const d = PATHS[kind] ?? FALLBACK;
   return (
     <svg
       viewBox="0 0 24 24"

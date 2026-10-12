@@ -1,6 +1,6 @@
 // Accueil : quiz du jour, série, bouton commencer ou score du jour.
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Countdown } from "../components/Countdown";
 import { Intro, introSeen } from "../components/Intro";
 import { KindLineup } from "../components/KindLineup";
@@ -11,9 +11,18 @@ import { useToday } from "../lib/hooks";
 
 export function Home() {
   const { data, isLoading, error, refetch } = useToday();
-  // Première visite : l'intro présente la mission avant le premier quiz.
-  const [intro, setIntro] = useState(() => !introSeen());
-  if (intro && !data?.answers.length) return <Intro onDone={() => setIntro(false)} />;
+  // L'intro présente la mission une fois par appareil (ou à la demande : /?intro).
+  const [intro, setIntro] = useState(() => !introSeen() || new URLSearchParams(window.location.search).has("intro"));
+  const navigate = useNavigate();
+  if (intro)
+    return (
+      <Intro
+        onDone={() => {
+          setIntro(false);
+          navigate("/", { replace: true });
+        }}
+      />
+    );
   if (error) return <ErrorBox message={(error as Error).message} onRetry={() => refetch()} />;
   if (isLoading || !data) return <Loading />;
 

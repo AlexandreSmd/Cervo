@@ -262,6 +262,9 @@ export function Profile() {
             Espace fondateur
           </Link>
         )}
+        <Link to="/?intro" className="block px-5 py-4 font-semibold" data-testid="replay-intro">
+          Revoir la présentation
+        </Link>
         <Link to="/confidentialite" className="block px-5 py-4 font-semibold">
           Confidentialité
         </Link>
