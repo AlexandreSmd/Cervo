@@ -1,6 +1,8 @@
 // Liste repliable des 10 questions d'une journée (résultats, historique).
 import { COLOR_HEX, formatAnswer, scoreColor } from "../lib/format";
 import type { DayItem } from "../lib/types";
+import { kindInfo } from "../lib/kinds";
+import { KindIcon } from "./KindIcon";
 import { QuestionMedia } from "./QuestionCard";
 
 /** Les 10 questions d'une journée, repliées : on déplie pour voir le détail. */
@@ -16,8 +18,8 @@ export function DayItems({ items }: { items: DayItem[] }) {
                 style={{ backgroundColor: COLOR_HEX[scoreColor(it.score)] }}
                 aria-hidden="true"
               />
-              <span className="shrink-0 text-lg" aria-hidden="true">
-                {it.emoji ?? "❔"}
+              <span className="shrink-0" style={{ color: kindInfo(it.category).color }}>
+                <KindIcon kind={it.category} className="h-[18px] w-[18px]" />
               </span>
               <span className="flex-1 truncate text-[15px] font-semibold">
                 {i + 1}. {it.prompt}

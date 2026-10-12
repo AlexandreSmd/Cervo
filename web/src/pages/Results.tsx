@@ -52,8 +52,10 @@ export function Results() {
           streak={streak}
           kinds={data.items.map((i) => ({ emoji: i.emoji ?? "❔", label: i.category_label }))}
         />
+      </section>
+      <div className="space-y-2">
         <div className={`grid gap-2 ${user?.isAnonymous ? "grid-cols-2" : ""}`}>
-          <Link to="/profil" className="btn-ghost w-full px-3" data-testid="to-profile">
+          <Link to="/profil" className="btn-dark w-full px-3" data-testid="to-profile">
             Voir mon profil
           </Link>
           {user?.isAnonymous && (
@@ -63,7 +65,7 @@ export function Results() {
           )}
         </div>
         {user?.isAnonymous && <p className="text-center text-xs text-muted">Connecte-toi pour garder ta série sur tous tes appareils.</p>}
-      </section>
+      </div>
       {data.community && <Standing community={data.community} score={data.score_total} />}
       <DayItems items={data.items} />
     </div>
