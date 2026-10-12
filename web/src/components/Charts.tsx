@@ -104,20 +104,22 @@ export function Heatmap({ days, today, weeks = 12 }: { days: { date: string; sco
 }
 
 /** Barres horizontales (score moyen par catégorie). */
-export function Bars({ items }: { items: { label: string; value: number | null; hint?: string }[] }) {
+export function Bars({ items }: { items: { label: string; value: number | null; hint?: string; icon?: React.ReactNode }[] }) {
   return (
-    <ul className="space-y-3">
+    <ul className="space-y-3.5">
       {items.map((it) => (
         <li key={it.label}>
-          <div className="mb-1 flex justify-between text-sm">
-            <span className="font-semibold">{it.label}</span>
-            <span className="text-muted">
-              {it.value ?? "-"}
-              {it.value !== null && "/100"}
-              {it.hint ? ` · ${it.hint}` : ""}
+          <div className="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
+            <span className="flex items-center gap-2 font-semibold">
+              {it.icon}
+              {it.label}
+            </span>
+            <span className="shrink-0 tabular-nums text-muted">
+              {it.hint && <span className="mr-2 text-xs">{it.hint}</span>}
+              <span className="font-display font-bold text-ink">{it.value ?? "-"}</span>
             </span>
           </div>
-          <div className="h-2.5 overflow-hidden rounded-full bg-line/70">
+          <div className="h-2 overflow-hidden rounded-full bg-line">
             <div
               className="h-full rounded-full transition-all"
               style={{ width: `${it.value ?? 0}%`, backgroundColor: COLOR_HEX[scoreColor(it.value ?? 0)] }}

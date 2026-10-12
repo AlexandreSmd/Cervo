@@ -36,7 +36,7 @@ export function PercentReveal({ truth, given }: { truth: number; given: Answer |
   const mine = typeof given === "number" ? given : null;
   return (
     <div className="space-y-3">
-      <div className="flex items-end justify-around text-center">
+      <div className="grid grid-cols-2 items-end text-center">
         <div>
           <p className="font-display text-4xl font-extrabold text-good" data-testid="correct-answer">
             {formatNumber(truth)} %

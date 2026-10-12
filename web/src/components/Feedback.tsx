@@ -118,12 +118,12 @@ export function Feedback({
 
       {result.explanation &&
         (isFact ? (
-          <div className="rounded-xl border-l-4 border-accent bg-accent/10 px-4 py-3" data-testid="did-you-know">
+          <div className="rounded-r-xl border-l-4 border-accent bg-accent/10 py-3 pl-4 pr-4" data-testid="did-you-know">
             <p className="mb-1 text-xs font-bold uppercase tracking-wider text-accent">Le savais-tu ?</p>
             <p className="text-[16px] leading-relaxed">{result.explanation}</p>
           </div>
         ) : (
-          <div className="rounded-xl border-l-4 border-ink bg-ink/[0.04] px-4 py-3">
+          <div className="rounded-r-xl border-l-4 border-ink bg-ink/[0.04] py-3 pl-4 pr-4">
             <p className="label mb-1">Pourquoi</p>
             <p className="text-[15px] leading-relaxed">{result.explanation}</p>
           </div>

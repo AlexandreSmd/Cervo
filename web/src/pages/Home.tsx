@@ -39,7 +39,7 @@ export function Home() {
           </span>
         )}
       </div>
-      <h1 className="text-[40px] font-extrabold leading-[1.05]">{BASELINE}</h1>
+      <h1 className="pb-2 text-[40px] font-extrabold leading-[1.05]">{BASELINE}</h1>
 
       <section className="card-strong space-y-6 p-6" aria-label="Quiz du jour">
         {data.completed ? (

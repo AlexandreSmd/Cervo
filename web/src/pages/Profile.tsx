@@ -10,6 +10,7 @@ import { auth } from "../lib/firebase";
 import { COLOR_HEX, formatAnswer, formatDay, scoreColor } from "../lib/format";
 import { useDays, useProfile } from "../lib/hooks";
 import { kindInfo } from "../lib/kinds";
+import { KindIcon } from "../components/KindIcon";
 
 function Tile({ label, value }: { label: string; value: string | number }) {
   return (
@@ -176,9 +177,14 @@ export function Profile() {
             <h2 className="text-lg font-bold">Tes 10 défis</h2>
             <Bars
               items={p.categories.map((c) => ({
-                label: `${c.emoji} ${c.label}`,
+                label: c.label,
+                icon: (
+                  <span style={{ color: kindInfo(c.category).color }}>
+                    <KindIcon kind={c.category} className="h-4 w-4" />
+                  </span>
+                ),
                 value: c.average,
-                hint: c.count ? `${c.count} réponse${c.count > 1 ? "s" : ""}` : "pas encore joué",
+                hint: c.count ? `${c.count} rép.` : "à jouer",
               }))}
             />
           </section>
@@ -188,13 +194,13 @@ export function Profile() {
             <Heatmap days={(days.data?.days ?? []).map((d) => ({ date: d.date, score: d.score_total }))} today={p.today} />
           </section>
 
-          <section className="space-y-3" aria-labelledby="mes-questions">
-            <div className="flex items-center justify-between">
+          <section className="card space-y-3 p-5" aria-labelledby="mes-questions">
+            <div className="flex items-center justify-between gap-3">
               <h2 id="mes-questions" className="text-lg font-bold">
                 Mes questions
               </h2>
               <select
-                className="rounded-full bg-ink/5 px-3 py-1.5 text-sm font-semibold"
+                className="rounded-lg border-2 border-ink/15 bg-card px-3 py-1.5 text-sm font-semibold"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 aria-label="Type de question"
@@ -202,25 +208,25 @@ export function Profile() {
                 <option value="all">Tous les types</option>
                 {p.categories.map((c) => (
                   <option key={c.category} value={c.category}>
-                    {c.emoji} {c.label}
+                    {c.label}
                   </option>
                 ))}
               </select>
             </div>
-            <div className="flex gap-1 rounded-full bg-ink/5 p-1" role="tablist">
+            <div className="flex gap-1 rounded-xl bg-ink/5 p-1" role="tablist">
               {FILTERS.map(([key, label]) => (
                 <button
                   key={key}
                   role="tab"
                   aria-selected={filter === key}
                   onClick={() => setFilter(key)}
-                  className={`flex-1 rounded-full py-2 text-sm font-semibold ${filter === key ? "bg-card shadow-sm" : "text-muted"}`}
+                  className={`flex-1 rounded-lg py-2 text-sm font-semibold ${filter === key ? "bg-ink text-bg" : "text-muted"}`}
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <ul className="card divide-y divide-line overflow-hidden">
+            <ul className="-mx-5 divide-y divide-line border-t border-line">
               {review.slice(0, shown).map((a) => (
                 <li key={`${a.date}-${a.position}`} className="flex gap-3 px-5 py-4">
                   <span
@@ -230,14 +236,15 @@ export function Profile() {
                   />
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold">{a.prompt}</p>
-                    <p className="text-sm text-muted">
-                      {formatAnswer(a.correct_answer, a.type, a.unit)} · toi : {formatAnswer(a.user_answer, a.type, a.unit)}
+                    <p className="mt-0.5 text-sm text-muted">
+                      <span className="text-good">✓ {formatAnswer(a.correct_answer, a.type, a.unit)}</span>
+                      <span className="mx-1.5">·</span>toi : {formatAnswer(a.user_answer, a.type, a.unit)}
                     </p>
                     <p className="text-xs text-muted">
                       {formatDay(a.date, "short")} · {catLabels.get(a.category) ?? kindInfo(a.category).label}
                     </p>
                   </div>
-                  <span className="font-display font-extrabold">{a.score}</span>
+                  <span className="w-10 shrink-0 text-right font-display font-extrabold tabular-nums">{a.score}</span>
                 </li>
               ))}
               {review.length === 0 && <li className="px-5 py-6 text-center text-sm text-muted">Rien ici pour l'instant</li>}

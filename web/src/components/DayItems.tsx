@@ -24,7 +24,7 @@ export function DayItems({ items }: { items: DayItem[] }) {
               <span className="flex-1 truncate text-[15px] font-semibold">
                 {i + 1}. {it.prompt}
               </span>
-              <span className="font-display text-lg font-extrabold">{it.score}</span>
+              <span className="w-10 shrink-0 text-right font-display text-lg font-extrabold tabular-nums">{it.score}</span>
             </summary>
             <div className="space-y-3 px-5 pb-5 text-sm">
               {it.images.length > 0 && (
