@@ -9,13 +9,7 @@ import { api } from "../lib/api";
 import { auth } from "../lib/firebase";
 import { COLOR_HEX, formatAnswer, formatDay, scoreColor } from "../lib/format";
 import { useDays, useProfile } from "../lib/hooks";
-
-const PILLAR_SHORT: Record<string, string> = {
-  raisonnement: "Raisonnement",
-  estimation: "Estimation",
-  memoire: "Mémoire",
-  esprit_critique: "Esprit critique",
-};
+import { kindInfo } from "../lib/kinds";
 
 function Tile({ label, value }: { label: string; value: string | number }) {
   return (
@@ -165,7 +159,18 @@ export function Profile() {
 
           <section className="card space-y-3 p-5">
             <h2 className="text-lg font-bold">Forme du cerveau</h2>
-            <Bars items={p.pillars.map((x) => ({ label: PILLAR_SHORT[x.pillar] ?? x.label, value: x.average }))} />
+            <Bars items={p.pillars.map((x) => ({ label: x.label, value: x.average }))} />
+          </section>
+
+          <section className="card space-y-3 p-5" data-testid="kind-skills">
+            <h2 className="text-lg font-bold">Tes 10 défis</h2>
+            <Bars
+              items={p.categories.map((c) => ({
+                label: `${c.emoji} ${c.label}`,
+                value: c.average,
+                hint: c.count ? `${c.count} réponse${c.count > 1 ? "s" : ""}` : "pas encore joué",
+              }))}
+            />
           </section>
 
           <section className="card space-y-3 p-5">
@@ -182,12 +187,12 @@ export function Profile() {
                 className="rounded-full bg-ink/5 px-3 py-1.5 text-sm font-semibold"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                aria-label="Catégorie"
+                aria-label="Type de question"
               >
-                <option value="all">Toutes catégories</option>
+                <option value="all">Tous les types</option>
                 {p.categories.map((c) => (
                   <option key={c.category} value={c.category}>
-                    {c.label}
+                    {c.emoji} {c.label}
                   </option>
                 ))}
               </select>
@@ -219,7 +224,7 @@ export function Profile() {
                       {formatAnswer(a.correct_answer, a.type, a.unit)} · toi : {formatAnswer(a.user_answer, a.type, a.unit)}
                     </p>
                     <p className="text-xs text-muted">
-                      {formatDay(a.date, "short")} · {catLabels.get(a.category) ?? a.category}
+                      {formatDay(a.date, "short")} · {catLabels.get(a.category) ?? kindInfo(a.category).label}
                     </p>
                   </div>
                   <span className="font-display font-extrabold">{a.score}</span>

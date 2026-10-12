@@ -1,6 +1,6 @@
 // Accueil : quiz du jour, série, bouton commencer ou score du jour.
 import { Link } from "react-router-dom";
-import { Pearls } from "../components/Pearls";
+import { KindLineup } from "../components/KindLineup";
 import { ErrorBox, Loading } from "../components/States";
 import { BASELINE } from "../lib/config";
 import { capitalize, formatDay } from "../lib/format";
@@ -37,10 +37,10 @@ export function Home() {
         ) : (
           <div>
             <p className="text-sm font-semibold text-muted">Quiz du jour</p>
-            <p className="font-display text-3xl font-extrabold">10 questions</p>
+            <p className="font-display text-3xl font-extrabold">10 questions, 10 défis</p>
           </div>
         )}
-        <Pearls scores={scores} size="lg" />
+        <KindLineup questions={data.questions} scores={scores} />
         {data.completed ? (
           <Link to={`/resultats/${data.date}`} className="btn-dark w-full text-lg">
             Voir le détail
@@ -51,7 +51,9 @@ export function Home() {
           </Link>
         )}
       </section>
-      <p className="text-center text-sm text-muted">{data.completed ? "Nouveau quiz à minuit" : "Sans aide · 15 s par question"}</p>
+      <p className="text-center text-sm text-muted">
+        {data.completed ? "Nouveau quiz à minuit" : "Sans aide · un chrono adapté à chaque question"}
+      </p>
     </div>
   );
 }

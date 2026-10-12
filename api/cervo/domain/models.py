@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from .catalog import CATEGORIES, MAX_IMAGES, input_format
-from .scoring import normalize_text, same_choice
+from .catalog import KINDS, MAX_IMAGES, input_format
+from .scoring import normalize_guess, normalize_text, same_choice
 
 
 class NumericConfig(BaseModel):
@@ -47,10 +48,13 @@ class SizeConfig(BaseModel):
 
 
 class MemorizeConfig(BaseModel):
-    """Phase de mémorisation : on montre, on cache, puis on pose la question."""
+    """Phase de mémorisation : on montre, on cache, puis on pose la question.
+
+    `seconds` vide : durée calculée selon le nombre d'éléments et la difficulté (domain/timing.py).
+    """
 
     items: list[str] = Field(default_factory=list, max_length=12)
-    seconds: int = Field(default=5, ge=2, le=15)
+    seconds: int | None = Field(default=None, ge=2, le=15)
     hide_images: bool = False
 
 
@@ -60,9 +64,14 @@ class ImageRef(BaseModel):
     credit: str | None = Field(default=None, max_length=300)
 
 
+QuestionType = Literal["binary", "mcq", "numeric", "short_text", "order", "size", "dictation", "recall", "percent", "riddle"]
+
+
 class Question(BaseModel):
+    """Une question de la banque. `category` = son type parmi les 10 (catalog.KINDS)."""
+
     id: str = Field(min_length=1, max_length=80, pattern=r"^[a-z0-9][a-z0-9_-]*$")
-    type: Literal["binary", "mcq", "numeric", "short_text", "order", "size", "dictation"]
+    type: QuestionType
     category: str
     tags: list[str] = Field(default_factory=list)
     difficulty: int = Field(ge=1, le=3)
@@ -74,7 +83,14 @@ class Question(BaseModel):
     accepted_aliases: list[str] = Field(default_factory=list)
     size_config: SizeConfig | None = None
     memorize: MemorizeConfig | None = None
-    time_limit: int | None = Field(default=None, ge=5, le=120)
+    # Devinette : indices du plus vague au plus précis (le premier est offert).
+    clues: list[str] = Field(default_factory=list, max_length=5)
+    # Classement : précision montrée après la réponse pour chaque élément (date, mesure…).
+    order_details: list[str] | None = None
+    # Rappel : faut-il retrouver les éléments dans l'ordre ?
+    recall_ordered: bool = False
+    # Vide : chrono calculé (domain/timing.py).
+    time_limit: int | None = Field(default=None, ge=5, le=180)
     explanation: str = Field(min_length=10, max_length=1000)
     source_url: str | None = None
     status: Literal["draft", "published", "retired"] = "published"
@@ -102,16 +118,23 @@ class Question(BaseModel):
     @field_validator("category")
     @classmethod
     def known_category(cls, v: str) -> str:
-        if v not in CATEGORIES:
-            raise ValueError(f"catégorie inconnue « {v} » (attendu : {', '.join(CATEGORIES)})")
+        if v not in KINDS:
+            raise ValueError(f"type de question inconnu « {v} » (attendu : {', '.join(KINDS)})")
         return v
 
     @model_validator(mode="after")
     def coherent_answer(self) -> Question:
-        """La bonne réponse doit avoir la forme attendue par le format de réponse."""
+        """La mécanique doit convenir au type, et la bonne réponse avoir la forme attendue."""
+        kind = KINDS[self.category]
+        if self.type not in kind.answer_types:
+            allowed = ", ".join(kind.answer_types)
+            raise ValueError(f"une question « {kind.label} » se joue en : {allowed} (pas {self.type})")
         _ANSWER_CHECKS[self.type](self)
+        _KIND_CHECKS.get(self.category, lambda q: None)(self)
         if self.memorize and not self.memorize.items and not (self.memorize.hide_images and self.images):
             raise ValueError("la mémorisation attend des éléments à montrer ou des photos à cacher")
+        if self.order_details is not None and (self.type != "order" or len(self.order_details) != len(self.correct_answer)):
+            raise ValueError("order_details attend une précision par élément à classer")
         return self
 
 
@@ -174,6 +197,26 @@ def _check_dictation(q: Question) -> None:
         raise ValueError("une dictée attend un texte d'au moins 3 mots")
 
 
+def _check_recall(q: Question) -> None:
+    items = q.correct_answer
+    if not isinstance(items, list) or not 3 <= len(items) <= 12 or not all(isinstance(i, str) and normalize_text(i) for i in items):
+        raise ValueError("un rappel attend 3 à 12 éléments à retrouver")
+    if q.memorize is None or not q.memorize.items:
+        raise ValueError("un rappel attend une phase de mémorisation (memorize.items)")
+
+
+def _check_percent(q: Question) -> None:
+    if not _is_number(q.correct_answer) or not 0 <= q.correct_answer <= 100:
+        raise ValueError("un pourcentage attend un nombre entre 0 et 100")
+
+
+def _check_riddle(q: Question) -> None:
+    if not isinstance(q.correct_answer, str) or not normalize_guess(q.correct_answer):
+        raise ValueError("une devinette attend la réponse en texte")
+    if not 3 <= len(q.clues) <= 5 or not all(c.strip() for c in q.clues):
+        raise ValueError("une devinette attend 3 à 5 indices, du plus vague au plus précis")
+
+
 _ANSWER_CHECKS = {
     "binary": _check_binary,
     "mcq": _check_mcq,
@@ -182,7 +225,32 @@ _ANSWER_CHECKS = {
     "order": _check_order,
     "size": _check_size,
     "dictation": _check_dictation,
+    "recall": _check_recall,
+    "percent": _check_percent,
+    "riddle": _check_riddle,
 }
+
+
+# --- Règles propres à certains types ------------------------------------------------
+
+
+def _kind_chronologie(q: Question) -> None:
+    if not q.order_details:
+        raise ValueError("une chronologie attend la date de chaque événement (order_details)")
+
+
+def _kind_memoire(q: Question) -> None:
+    if q.memorize is None:
+        raise ValueError("une question de mémoire attend une phase de mémorisation (memorize)")
+
+
+def _kind_dictee(q: Question) -> None:
+    sentences = [s for s in re.split(r"[.!?…]+", str(q.correct_answer)) if s.strip()]
+    if len(sentences) < 2:
+        raise ValueError("une dictée attend deux phrases")
+
+
+_KIND_CHECKS = {"chronologie": _kind_chronologie, "memoire": _kind_memoire, "dictee": _kind_dictee}
 
 
 # --- Requêtes de l'API ------------------------------------------------------------
@@ -199,7 +267,7 @@ class AnswerIn(BaseModel):
         if v is None:
             return v
         if isinstance(v, list):
-            if len(v) > 8 or not all(isinstance(i, str) and len(i) <= 120 for i in v):
+            if len(v) > 12 or not all(isinstance(i, str) and len(i) <= 120 for i in v):
                 raise ValueError("réponse invalide")
             return v
         if isinstance(v, str) and len(v) > 600:
@@ -212,6 +280,10 @@ class AnswerIn(BaseModel):
 class StartIn(BaseModel):
     date: str
     question_id: str = Field(max_length=80)
+
+
+class ClueIn(StartIn):
+    """Demande de l'indice suivant d'une devinette."""
 
 
 class ReportIn(BaseModel):
@@ -233,7 +305,7 @@ class StatusIn(BaseModel):
 
 
 class ScheduleDayIn(BaseModel):
-    question_ids: list[str] = Field(min_length=10, max_length=10)
+    question_ids: list[str] = Field(min_length=1, max_length=10)
 
 
 class FillIn(BaseModel):

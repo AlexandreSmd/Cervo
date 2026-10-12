@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import ValidationError
 
 from ..clock import now_iso, today
-from ..domain.catalog import ANSWER_FORMATS, CATEGORIES, DIFFICULTIES, INPUT_FORMATS
+from ..domain.catalog import ANSWER_FORMATS, DAILY_ORDER, DIFFICULTIES, INPUT_FORMATS, KINDS, PILLARS
 from ..domain.daily import is_valid_day
 from ..domain.models import FillIn, ImportIn, MediaIn, ScheduleDayIn, StatusIn
 from ..firebase import db
@@ -29,8 +29,22 @@ def _errors(exc: ValidationError) -> list[str]:
 
 @router.get("/meta")
 def admin_meta():
+    kinds = [
+        {
+            "key": key,
+            "label": KINDS[key].label,
+            "emoji": KINDS[key].emoji,
+            "pillar": KINDS[key].pillar,
+            "instruction": KINDS[key].instruction,
+            "guide": KINDS[key].guide,
+            "answer_types": list(KINDS[key].answer_types),
+            "base_time": KINDS[key].base_time,
+        }
+        for key in DAILY_ORDER
+    ]
     return {
-        "categories": CATEGORIES,
+        "kinds": kinds,
+        "pillars": PILLARS,
         "input_formats": INPUT_FORMATS,
         "answer_formats": ANSWER_FORMATS,
         "difficulties": DIFFICULTIES,
@@ -158,8 +172,7 @@ def fill_schedule(body: FillIn):
 
 @router.put("/schedule/{day}")
 def set_day(day: str, body: ScheduleDayIn):
-    planning.set_day(db(), _valid_day(day), body.question_ids, today())
-    return {"date": day, "question_ids": body.question_ids}
+    return {"date": day, "question_ids": planning.set_day(db(), _valid_day(day), body.question_ids, today())}
 
 
 @router.post("/schedule/{day}/regenerate")

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "enigme-001",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Quel nombre continue la suite : 2, 6, 12, 20, 30, … ?",
+    "choices": [
+      "40",
+      "42",
+      "44",
+      "36"
+    ],
+    "correct_answer": "42",
+    "explanation": "Les écarts augmentent de 2 à chaque fois : +4, +6, +8, +10, puis +12. Autre lecture : ce sont les produits 1×2, 2×3, 3×4, 4×5, 5×6… et 6×7 = 42.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-002",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Une batte et une balle coûtent 1,10 € au total. La batte coûte 1 € de plus que la balle. Combien coûte la balle, en centimes ?",
+    "correct_answer": 5,
+    "explanation": "La balle coûte 5 centimes et la batte 1,05 €. L'intuition répond 10 centimes, mais la batte coûterait alors 1,10 € et le total 1,20 €. Ce piège, rendu célèbre par le psychologue Shane Frederick, trompe plus de la moitié des étudiants testés.",
+    "source_url": "https://doi.org/10.1257/089533005775196732",
+    "status": "published"
+  },
+  {
+    "id": "enigme-003",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "Dans une famille, chaque fille a autant de frères que de sœurs, et chaque garçon a deux fois plus de sœurs que de frères. Combien y a-t-il d'enfants ?",
+    "correct_answer": 7,
+    "explanation": "4 filles et 3 garçons. Une fille a 3 sœurs et 3 frères ; un garçon a 2 frères et 4 sœurs, deux fois plus. On pose f − 1 = g (filles) et f = 2 × (g − 1) (garçons), d'où g = 3 et f = 4.",
+    "status": "published"
+  }
+]

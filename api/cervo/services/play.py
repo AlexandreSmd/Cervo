@@ -31,13 +31,21 @@ def _new_attempt(day: str, ids: list[str]) -> dict:
 
 
 def _answer_view(ans: dict) -> dict:
-    return {
+    view = {
         "question_id": ans["question_id"],
         "position": ans["position"],
         "user_answer": ans.get("user_answer"),
         "score": ans["score"],
         "timed_out": ans.get("timed_out", False),
     }
+    if ans.get("clues_seen"):
+        view["clues_seen"] = ans["clues_seen"]
+    return view
+
+
+def _clues_seen(current: dict, position: int) -> int:
+    """Indices de devinette dévoilés pour la question en cours (le premier est offert)."""
+    return int(current.get("clues", 1)) if current.get("position") == position else 1
 
 
 def read_user_and_attempt(db, uid: str, day: str):
@@ -62,7 +70,7 @@ def today_state(db, uid: str, day: str, user: dict, attempt_snap=None) -> dict:
         "server_time": now_iso(),
         # Chrono déjà lancé pour la question en cours (reprise après rechargement).
         "current": current if current.get("position") == len(answers) else None,
-        "questions": [bank.public_view(qs[qid], i) for i, qid in enumerate(ids) if qid in qs],
+        "questions": [bank.public_view(qs[qid], i, _clues_seen(current, i)) for i, qid in enumerate(ids) if qid in qs],
         "answers": answers,
         "completed": bool(attempt.get("completed_at")),
         "score_total": attempt.get("score_total"),
@@ -85,12 +93,42 @@ def start_question(db, uid: str, day: str, question_id: str) -> dict:
             raise ApiError(409, "Cette question n'est pas la suivante.")
         current = attempt.get("current") or {}
         if current.get("position") != position:
-            current = {"position": position, "question_id": question_id, "started_at": now_iso()}
+            current = {"position": position, "question_id": question_id, "started_at": now_iso(), "clues": 1}
             attempt["current"] = current
             tx.set(ref, attempt)
         return current
 
     return {**run(db.transaction()), "server_time": now_iso()}
+
+
+def reveal_clue(db, uid: str, day: str, question_id: str) -> dict:
+    """Devinette : dévoile l'indice suivant de la question en cours (chaque indice coûte des points).
+
+    Le nombre d'indices vus est gardé côté serveur : c'est lui qui fixe le score de la réponse.
+    """
+    ids = quiz.question_ids(db, day)
+    question = bank.by_id(db).get(question_id)
+    if not question or question["type"] != "riddle":
+        raise ApiError(400, "Cette question n'a pas d'indices.")
+    clues = list(question.get("clues") or [])
+    ref = attempt_ref(db, uid, day)
+
+    @firestore.transactional
+    def run(tx):
+        snap = ref.get(transaction=tx)
+        attempt = snap.to_dict() if snap.exists else {}
+        position = len(attempt.get("answers", []))
+        current = attempt.get("current") or {}
+        if position >= len(ids) or ids[position] != question_id or current.get("position") != position:
+            raise ApiError(409, "Cette question n'est pas en cours.")
+        seen = min(len(clues), int(current.get("clues", 1)) + 1)
+        if seen != current.get("clues"):
+            attempt["current"] = {**current, "clues": seen}
+            tx.set(ref, attempt)
+        return seen
+
+    seen = run(db.transaction())
+    return {"clues": clues[:seen], "clue_total": len(clues)}
 
 
 def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
@@ -124,20 +162,23 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
 
         current = attempt.pop("current", None) or {}
         elapsed = seconds_since(current.get("started_at")) if current.get("position") == position else None
-        timed_out = answer is None or (elapsed is not None and elapsed > bank.time_limit(question) + TIME_GRACE)
-        score = 0 if timed_out else score_answer(question, answer)
-        answers.append(
-            {
-                "question_id": question_id,
-                "position": position,
-                "user_answer": answer,
-                "score": score,
-                "timed_out": timed_out,
-                "answered_at": now_iso(),
-                "category": question["category"],
-                "type": question["type"],
-            }
-        )
+        limit = bank.time_limit(question)  # None : question sans chrono (dictée)
+        timed_out = answer is None or (limit is not None and elapsed is not None and elapsed > limit + TIME_GRACE)
+        clues_seen = _clues_seen(current, position)
+        score = 0 if timed_out else score_answer(question, answer, clues_seen)
+        record = {
+            "question_id": question_id,
+            "position": position,
+            "user_answer": answer,
+            "score": score,
+            "timed_out": timed_out,
+            "answered_at": now_iso(),
+            "category": question["category"],
+            "type": question["type"],
+        }
+        if question["type"] == "riddle":
+            record["clues_seen"] = clues_seen
+        answers.append(record)
         attempt["answers"] = answers
 
         profile = u_snap.to_dict() if u_snap.exists else None
@@ -156,15 +197,11 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
         else:
             tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
         _record_stats(tx, db, day, question_id, score, position, attempt["score_total"] if completed else None)
-        return score, position, completed, attempt.get("score_total"), stats, timed_out
+        return record, completed, attempt.get("score_total"), stats
 
-    score, position, completed, total, stats, timed_out = run(db.transaction())
+    record, completed, total, stats = run(db.transaction())
     return {
-        "question_id": question_id,
-        "position": position,
-        "user_answer": answer,
-        "score": score,
-        "timed_out": timed_out,
+        **_answer_view(record),
         **bank.reveal(question),
         "completed": completed,
         "score_total": total,

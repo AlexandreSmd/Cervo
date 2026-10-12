@@ -1,0 +1,71 @@
+[
+  {
+    "id": "taille-001",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste la balle de tennis par rapport au ballon de football (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Ballon de foot",
+        "emoji": "⚽"
+      },
+      "target": {
+        "label": "Balle de tennis",
+        "emoji": "🟡"
+      },
+      "min": 0.1,
+      "max": 2
+    },
+    "correct_answer": 0.3,
+    "explanation": "Une balle de tennis mesure environ 6,7 cm de diamètre, un ballon de football (taille 5) environ 22 cm : la balle fait à peu près 0,3 fois le ballon.",
+    "source_url": "https://www.itftennis.com/en/about-us/governance/rules-and-regulations/",
+    "status": "published"
+  },
+  {
+    "id": "taille-002",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste la Lune par rapport à la Terre (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Terre",
+        "emoji": "🌍"
+      },
+      "target": {
+        "label": "Lune",
+        "emoji": "🌕"
+      },
+      "min": 0.05,
+      "max": 2
+    },
+    "correct_answer": 0.27,
+    "explanation": "La Lune mesure 3 474 km de diamètre, la Terre 12 742 km : 0,27 fois. Il faudrait environ 3,7 Lunes alignées pour traverser la Terre.",
+    "source_url": "https://science.nasa.gov/moon/facts/",
+    "status": "published"
+  },
+  {
+    "id": "taille-003",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste la statue de la Liberté (socle compris) par rapport à la tour Eiffel (hauteur).",
+    "size_config": {
+      "reference": {
+        "label": "Tour Eiffel",
+        "emoji": "🗼"
+      },
+      "target": {
+        "label": "Statue de la Liberté",
+        "emoji": "🗽"
+      },
+      "min": 0.05,
+      "max": 2
+    },
+    "correct_answer": 0.28,
+    "explanation": "La statue de la Liberté mesure 93 m du sol à la flamme (46 m sans son socle). La tour Eiffel culmine à 330 m avec ses antennes : la statue fait 0,28 fois la tour.",
+    "source_url": "https://www.toureiffel.paris/fr/le-monument/chiffres-cles",
+    "status": "published"
+  }
+]

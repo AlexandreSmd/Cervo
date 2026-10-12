@@ -12,6 +12,7 @@ import sys
 from ..clock import now_iso
 from ..firebase import db
 from ..services.bank import bump_version, check_bank, load_files, to_doc
+from .migrate import retire_legacy
 
 
 def seed(force: bool = False) -> int:
@@ -37,6 +38,9 @@ def seed(force: bool = False) -> int:
         print(f"{count} question(s) chargée(s) dans Firestore ({len(valid)} dans la banque).")
     else:
         print(f"Banque à jour : {len(valid)} questions déjà dans Firestore.")
+    retired, cleared = retire_legacy(client)
+    if retired or cleared:
+        print(f"Anciennes questions retirées : {retired} · journées à venir recomposées : {cleared}.")
     return count
 
 

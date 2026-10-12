@@ -141,3 +141,62 @@ Constat après la mise en ligne : sur téléphone, écrans lents ou qui ne se ch
   - React et Firebase dans des fichiers séparés ;
   - les fichiers `/assets/*` (nom à empreinte) sont mis en cache un an, la page est toujours revalidée.
 - **Messenger** : la page de connexion explique que Google y bloque la connexion et propose d'ouvrir le site dans Safari ou Chrome, ou de recevoir un lien par e-mail.
+
+## Les 10 types de question (version 7)
+
+La philosophie : des questions **intéressantes à jouer**, pas seulement de la culture générale.
+
+- **Une question de chaque type par jour, toujours dans le même ordre** : 📖 Vocabulaire, 📏 Taille, 💡 Fait étonnant, 🧠 Mémoire, 📊 Statistique, ⏳ Chronologie, ⚖️ Estimation, 🕵️ Devinette, 🧩 Énigme, ✍️ Dictée.
+  - L'ordre est pensé pour le rythme : un échauffement rapide, puis une alternance de mécaniques (toucher, glisser, taper) et de rythmes.
+  - Le gros effort de réflexion arrive en 9ᵉ position, et la dictée, sans chrono, permet de finir au calme.
+  - C'est un ordre de jeu, pas l'ordre de la liste d'origine.
+- **Modèle** : le champ `category` porte le type (référentiel `domain/catalog.KINDS`), le champ `type` la mécanique de réponse, contrainte par le type. Trois mécaniques nouvelles :
+  - `recall` : réécrire une liste mémorisée ;
+  - `percent` : pourcentage, scoré en points d'écart ;
+  - `riddle` : devinette à indices.
+- **Chrono intelligent** (`domain/timing.py`) :
+  - une base par type et par difficulté (de 12 s pour le vocabulaire facile à 90 s pour l'énigme difficile) ;
+  - plus le temps de lecture : environ 3 mots par seconde au-delà de 15 mots, choix de QCM compris ;
+  - plus 3 s par photo, 4 s par élément à classer au-delà de 4, 2 s par élément à réécrire ;
+  - arrondi aux 5 s ;
+  - la durée de mémorisation dépend du nombre d'éléments et de la difficulté ;
+  - la dictée se joue sans chrono.
+- **Propre à chaque type** :
+  - **Dictée** :
+    - écoute complète ou phrase par phrase, réécoute illimitée, vitesse lente, normale ou rapide ;
+    - correction mot à mot : la faute en rouge à côté de ce qui a été tapé, les mots oubliés en orange.
+  - **Devinette** :
+    - les indices restent sur le serveur et sont dévoilés un à un (`POST /api/clue`), leur nombre est gardé dans la partie ;
+    - 100, 75, 50, 30 puis 20 points ;
+    - casse, accents et articles ignorés.
+  - **Statistique** : grille de 100 points, la réalité en vert après la réponse.
+  - **Taille** : les deux objets à leur vraie proportion après la réponse, ta réponse en transparence.
+  - **Chronologie** : la date de chaque élément après la réponse.
+  - **Mémoire** :
+    - grandes tuiles pour les chiffres et les emojis ;
+    - réécrire une suite de chiffres d'un bloc (« 7294183 »), avec un compteur.
+  - **Fait étonnant** : l'explication est mise en avant (« Le savais-tu ? »).
+- **Sélection du jour** :
+  - pour chaque type, la question la moins récemment posée (passé et planning compris) ;
+  - parmi les plus fraîches, celle qui rapproche la journée de 3 faciles, 4 moyennes et 3 difficiles ;
+  - avec 3 questions par type, chacune revient tous les 3 jours, c'est voulu pour démarrer ;
+  - un type sans question publiée est remplacé par une question d'un autre type, et le planning le signale.
+- **Planning** :
+  - une ligne par type, dans l'ordre ; on remplace la question d'un type par une autre du même type (glisser-déposer ou liste), l'ordre ne se change pas ;
+  - le serveur refuse une journée sans un type disponible ou avec un doublon ;
+  - alertes : type manquant, question reprise à moins de 7 jours, journée trop facile ou trop difficile.
+- **Banque** :
+  - en haut, la réserve de chaque type : questions, niveaux, tous les combien de jours elles reviennent, bouton + ;
+  - l'éditeur commence par le choix du type, puis ne demande que ce que ce type utilise (calculette de rapport pour la taille, dates pour la chronologie, indices pour la devinette, écoute de contrôle pour la dictée), avec l'aperçu téléphone et le chrono calculé.
+- **Tableau de bord** : réussite et réserve par type.
+- **Profil** :
+  - « Tes 10 défis » : la moyenne par type ;
+  - la « forme du cerveau » passe à 5 piliers : Logique, Estimation, Mémoire, Langage, Culture ;
+  - les anciens piliers des profils sont regroupés dans les nouveaux.
+- **Partage** : chaque ligne du message indique aussi le type (« 1. 🟢 100/100  📖 Vocabulaire »).
+- **Pendant le quiz**, les onglets du bas sont masqués : toute la place pour la question.
+- **Anciennes questions** :
+  - au déploiement, `tools/migrate.py` les retire ; elles restent en base pour l'historique des joueurs ;
+  - les journées à venir qui en contenaient sont recomposées, une journée déjà commencée n'est jamais touchée ;
+  - elles restent visibles en lecture seule dans l'admin (« Anciennes questions »).
+- **Contenu de départ** : 30 questions, 3 par type, un niveau de chaque, toutes avec explication (et source pour les faits et les chiffres). Guide d'écriture : `docs/QUESTIONS.md`.

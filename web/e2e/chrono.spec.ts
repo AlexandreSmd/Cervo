@@ -14,10 +14,10 @@ test("chrono : sans réponse, la question est perdue à la fin du temps", async 
   // Recharger ne relance pas le chrono de la question suivante
   await page.getByTestId("next").click();
   await expect(page.getByTestId("timer")).toBeVisible({ timeout: 20_000 });
+  const secondsLeft = async () => Number((await page.getByTestId("timer").getAttribute("aria-label"))?.split(" ")[0]);
+  const before = await secondsLeft();
   await page.waitForTimeout(3000);
   await page.reload();
   await expect(page.getByTestId("timer")).toBeVisible({ timeout: 20_000 });
-  const label = await page.getByTestId("timer").getAttribute("aria-label");
-  const left = Number(label?.split(" ")[0]);
-  expect(left).toBeLessThan(14);
+  expect(await secondsLeft()).toBeLessThanOrEqual(before - 2);
 });

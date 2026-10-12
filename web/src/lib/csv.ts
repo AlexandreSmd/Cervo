@@ -1,4 +1,6 @@
 // Import CSV de l'admin : une ligne = une question. Les listes sont séparées par « | ».
+// `category` = le type de question (vocabulaire, taille, fait, memoire, stat, chronologie, estimation,
+// devinette, enigme, dictee). Les questions « taille » demandent des objets : utiliser l'éditeur ou le JSON.
 export const CSV_COLUMNS = [
   "id",
   "type",
@@ -19,6 +21,10 @@ export const CSV_COLUMNS = [
   "image1_alt",
   "image2_url",
   "image2_alt",
+  "clues",
+  "order_details",
+  "memorize_items",
+  "recall_ordered",
   "tags",
   "status",
 ];
@@ -73,7 +79,8 @@ export function csvToQuestions(text: string): Record<string, unknown>[] {
     const type = r.type;
     let correct: unknown = r.correct_answer;
     if (type === "binary") correct = ["vrai", "true", "oui", "1"].includes(r.correct_answer.toLowerCase());
-    else if (type === "numeric") correct = num(r.correct_answer);
+    else if (type === "numeric" || type === "percent" || type === "size") correct = num(r.correct_answer);
+    else if (type === "order" || type === "recall") correct = list(r.correct_answer);
     else if (type === "short_text" && /^-?\d+([.,]\d+)?$/.test(r.correct_answer)) correct = num(r.correct_answer);
     const q: Record<string, unknown> = {
       type,
@@ -89,6 +96,10 @@ export function csvToQuestions(text: string): Record<string, unknown>[] {
     if (r.accepted_aliases) q.accepted_aliases = list(r.accepted_aliases);
     if (r.tags) q.tags = list(r.tags);
     if (r.source_url) q.source_url = r.source_url;
+    if (r.clues) q.clues = list(r.clues);
+    if (r.order_details) q.order_details = list(r.order_details);
+    if (r.memorize_items) q.memorize = { items: list(r.memorize_items) };
+    if (r.recall_ordered) q.recall_ordered = ["oui", "true", "1", "vrai"].includes(r.recall_ordered.toLowerCase());
     const images = [1, 2]
       .map((n) => ({
         url: r[`image${n}_url`] || (n === 1 ? r.image_url : ""),
@@ -98,7 +109,7 @@ export function csvToQuestions(text: string): Record<string, unknown>[] {
     if (images.length) q.images = images;
     if (type === "numeric") {
       q.numeric_config = {
-        scale: r.scale === "log" ? "log" : "linear",
+        scale: r.scale === "linear" ? "linear" : "log",
         tolerance: num(r.tolerance ?? ""),
         factor: num(r.factor ?? ""),
         unit: r.unit || undefined,

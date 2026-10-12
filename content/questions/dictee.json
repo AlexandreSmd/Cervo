@@ -1,0 +1,32 @@
+[
+  {
+    "id": "dictee-001",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les enfants sont partis tôt ce matin. Ils ont emporté leurs affaires et quelques fruits.",
+    "explanation": "« Partis » s'accorde avec le sujet (avec l'auxiliaire être), « emporté » ne s'accorde pas (avec avoir, le complément est placé après). « Quelques fruits » : quelques, au pluriel, signifie « un petit nombre de ».",
+    "status": "published"
+  },
+  {
+    "id": "dictee-002",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les fleurs que j'ai cueillies hier se sont déjà fanées. Quels que soient tes efforts, elles ne reviendront pas.",
+    "explanation": "« Cueillies » s'accorde avec le complément placé avant (que = les fleurs). « Se sont fanées » s'accorde avec le sujet. « Quels que soient » s'écrit en deux mots et s'accorde avec « efforts ».",
+    "status": "published"
+  },
+  {
+    "id": "dictee-003",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les quelques milliers d'euros qu'a coûté ce voyage ne nous ont pas paru excessifs. Nous nous sommes souvenus des paysages que nous avions vus.",
+    "explanation": "« Coûté » reste invariable : « que » est ici un complément de prix, pas un complément d'objet. « Paru » ne s'accorde pas (verbe d'état avec avoir), mais « excessifs » s'accorde avec « milliers ». « Souvenus » s'accorde avec le sujet, « vus » avec « que » mis pour « paysages ».",
+    "status": "published"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "fait-001",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "Une pieuvre a trois cœurs.",
+    "correct_answer": true,
+    "explanation": "Deux cœurs « branchiaux » envoient le sang vers les branchies, un troisième l'envoie dans le reste du corps. Et ce sang est bleu : il transporte l'oxygène grâce à l'hémocyanine, une protéine à base de cuivre.",
+    "source_url": "https://www.nhm.ac.uk/discover/octopuses-keep-surprising-us-here-are-eight-examples-how.html",
+    "status": "published"
+  },
+  {
+    "id": "fait-002",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "La Grande Muraille de Chine est visible à l'œil nu depuis la Lune.",
+    "correct_answer": false,
+    "explanation": "Mythe tenace : la muraille est très longue, mais large de 6 à 9 m seulement. Depuis la Lune, à 384 000 km, on ne distingue aucune construction humaine. Même depuis la Station spatiale (400 km), les astronautes ont du mal à la repérer.",
+    "source_url": "https://www.nasa.gov/image-article/great-wall/",
+    "status": "published"
+  },
+  {
+    "id": "fait-003",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Lequel de ces fruits est, au sens botanique, une baie ?",
+    "choices": [
+      "La banane",
+      "La fraise",
+      "La framboise",
+      "La cerise"
+    ],
+    "correct_answer": "La banane",
+    "explanation": "Pour un botaniste, une baie est un fruit charnu issu d'une seule fleur, aux graines dans la chair : banane, tomate, raisin, kiwi. La fraise est un « faux fruit » (les vrais fruits sont les petits grains à sa surface), la framboise un assemblage de petites drupes et la cerise une drupe, à noyau.",
+    "source_url": "https://www.britannica.com/science/berry-plant-reproductive-body",
+    "status": "published"
+  }
+]

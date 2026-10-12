@@ -49,8 +49,8 @@ En local, clique sur **« Se connecter (local) »**.
 | Page | Ce qu'on y fait |
 | --- | --- |
 | **Tableau de bord** | Joueurs du jour et des 7 derniers jours, score moyen, taux de quiz terminés, courbe sur 30 jours (clic sur un jour = détail), taux de bonnes réponses par question, répartition des scores, questions les plus dures et les plus faciles |
-| **Planning** | Les 10 questions de chaque jour à venir, dans l'ordre où les joueurs les verront. « Planifier les 28 prochains jours » remplit les jours vides. Glisser un badge sur un autre : réordonner (même jour) ou échanger (deux jours). Glisser une question de la banque sur un badge : la remplacer. Un jour avec des joueurs est verrouillé |
-| **Pas encore posées** | Ta base de questions en réserve (jamais jouées), filtrable par catégorie, difficulté, format et statut, avec leur date si elles sont déjà planifiées. « Nouvelle question » propose des modèles. Import JSON/CSV |
+| **Planning** | Les 10 questions de chaque jour à venir : une par type, toujours dans le même ordre. « Planifier les jours vides » les remplit. Glisser une question de la banque sur la ligne de son type : la remplacer ; glisser une ligne sur la même ligne d'un autre jour : les échanger. Un jour avec des joueurs est verrouillé |
+| **Pas encore posées** | En haut, la réserve de chaque type (combien de questions, tous les combien de jours elles reviennent, bouton + pour en écrire une). Puis la liste filtrable par type, difficulté et statut. « Nouvelle question » : on choisit le type, le formulaire s'adapte. Import JSON/CSV |
 | **Déjà posées** | Les questions déjà jouées, avec la date et le taux de bonnes réponses |
 | **Signalements** | Les erreurs signalées par les joueurs, avec accès direct à la question |
 
@@ -66,7 +66,7 @@ web/src/             Interface React (pages, components, admin, lib)
 content/questions/   Banque de questions (JSON)
 scripts/             Scripts npm (Node) et génération des illustrations
 infra/, modal_app.py Mise en ligne (Cloudflare, Modal)
-docs/                Architecture et captures d'écran
+docs/                Architecture, guide des 10 types (QUESTIONS.md), captures d'écran
 ```
 
 Détails : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Pour contribuer : [CONTRIBUTING.md](CONTRIBUTING.md).

@@ -10,17 +10,32 @@ export async function answerCurrent(page: Page) {
   const radios = page.getByRole("radiogroup", { name: "Choix" }).getByRole("radio");
   const orderItems = page.getByTestId("order-item");
   const slider = page.getByRole("slider", { name: "Curseur" });
+  const percent = page.getByRole("slider", { name: "Pourcentage" });
   if (await radios.count()) {
     await radios.first().click();
   } else if (await orderItems.count()) {
     for (const item of await orderItems.all()) await item.click();
   } else if (await slider.count()) {
     await slider.click();
+  } else if (await percent.count()) {
+    await percent.click();
   } else if (await page.getByTestId("size-value").count()) {
     // le curseur de taille a une valeur par défaut
+  } else if (await page.getByTestId("next-clue").count()) {
+    // Devinette : un indice de plus fait baisser les points
+    await expect(page.getByTestId("riddle-points")).toHaveText("100 pts");
+    await page.getByTestId("next-clue").click();
+    await expect(page.getByTestId("clue")).toHaveCount(2);
+    await expect(page.getByTestId("riddle-points")).toHaveText("75 pts");
+    await page.locator("#answer").fill("koala");
+  } else if (await page.getByTestId("listen").count()) {
+    // Dictée : pas de chrono
+    await expect(page.getByTestId("no-timer")).toBeVisible();
+    await page.locator("#answer").fill("Les enfants sont partis tôt ce matin.");
   } else {
     const input = page.locator("#answer");
-    await input.fill((await input.getAttribute("inputmode")) === "decimal" ? "100" : "Il faut cultiver notre jardin");
+    const mode = await input.getAttribute("inputmode");
+    await input.fill(mode === "decimal" ? "100" : mode === "numeric" ? "7294183" : "Il faut cultiver notre jardin");
   }
   await validate.click();
   await expect(page.getByTestId("feedback")).toBeVisible();

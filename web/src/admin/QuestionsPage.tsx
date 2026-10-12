@@ -1,13 +1,13 @@
-// Banque de questions : « Pas encore posées », « Déjà posées », import JSON/CSV, signalements.
+// Banque de questions : couverture des 10 types, « Pas encore posées », « Déjà posées », import, signalements.
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ErrorBox, Loading } from "../components/States";
 import { api } from "../lib/api";
 import { csvToQuestions, CSV_COLUMNS } from "../lib/csv";
 import type { AdminQuestion } from "../lib/types";
-import { ANSWER_FORMATS, CATEGORIES, DIFFICULTIES, INPUT_FORMATS, STATUSES } from "./meta";
+import { DIFFICULTIES, KINDS, STATUSES } from "./meta";
 import { QuestionEditor } from "./QuestionEditor";
-import { CategoryDot, DiffBars, Drawer, Rate, shortDate } from "./ui";
+import { DiffBars, Drawer, KindTag, Rate, shortDate } from "./ui";
 
 function Filter({
   label,
@@ -43,18 +43,20 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
   const meta = useQuery({ queryKey: ["admin-meta-today"], queryFn: api.admin.meta, staleTime: 60_000 });
   const today = meta.data?.today ?? new Date().toISOString().slice(0, 10);
   const [search, setSearch] = useState("");
-  const [f, setF] = useState({ category: "all", difficulty: "all", input: "all", answer: "all", status: "all" });
-  const [editing, setEditing] = useState<AdminQuestion | "new" | null>(null);
+  const [f, setF] = useState({ category: "all", difficulty: "all", status: "all" });
+  const [legacy, setLegacy] = useState(false);
+  const [editing, setEditing] = useState<AdminQuestion | { kind?: string } | null>(null);
   const [importing, setImporting] = useState(false);
   const [created, setCreated] = useState<string | null>(null);
 
   const scoped = useMemo(
     () =>
       (data?.questions ?? []).filter((q) => {
+        if (q.legacy !== legacy) return false;
         const asked = q.days.some((d) => d <= today);
         return mode === "past" ? asked : !asked;
       }),
-    [data, mode, today],
+    [data, mode, today, legacy],
   );
   const list = useMemo(
     () =>
@@ -62,8 +64,6 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
         (q) =>
           (f.category === "all" || q.category === f.category) &&
           (f.difficulty === "all" || String(q.difficulty) === f.difficulty) &&
-          (f.input === "all" || q.input_format === f.input) &&
-          (f.answer === "all" || q.type === f.answer) &&
           (f.status === "all" || q.status === f.status) &&
           (!search || `${q.id} ${q.prompt}`.toLowerCase().includes(search.toLowerCase())),
       ),
@@ -73,6 +73,7 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
   if (error) return <ErrorBox message={(error as Error).message} />;
   if (isLoading || !data) return <Loading />;
   const set = (k: keyof typeof f) => (v: string) => setF({ ...f, [k]: v });
+  const legacyCount = data.questions.filter((q) => q.legacy).length;
 
   return (
     <div className="space-y-5">
@@ -90,7 +91,7 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
             <button className="btn-ghost" onClick={() => setImporting(true)}>
               Importer
             </button>
-            <button className="btn-dark" onClick={() => setEditing("new")} data-testid="new-question">
+            <button className="btn-dark" onClick={() => setEditing({})} data-testid="new-question">
               + Nouvelle question
             </button>
           </div>
@@ -102,7 +103,24 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
         </p>
       )}
 
-      <div className="flex flex-wrap gap-2">
+      {mode === "bank" && !legacy && <Coverage questions={data.questions} today={today} onAdd={(kind) => setEditing({ kind })} />}
+
+      <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Type de question">
+        {[{ key: "all", label: "Tous", emoji: "" }, ...KINDS].map((k) => (
+          <button
+            key={k.key}
+            role="tab"
+            aria-selected={f.category === k.key}
+            onClick={() => set("category")(k.key)}
+            className={`rounded-full px-3 py-1.5 text-sm font-semibold ${f.category === k.key ? "bg-ink text-bg" : "bg-card"}`}
+          >
+            {k.emoji ? `${k.emoji} ` : ""}
+            {k.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
         <input
           className="input max-w-xs bg-card py-2 text-sm"
           placeholder="Rechercher"
@@ -110,16 +128,13 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Filter
-          label="Catégorie"
-          value={f.category}
-          onChange={set("category")}
-          options={Object.entries(CATEGORIES).map(([k, v]) => [k, v.label])}
-        />
         <Filter label="Difficulté" value={f.difficulty} onChange={set("difficulty")} options={Object.entries(DIFFICULTIES)} />
-        <Filter label="Entrée" value={f.input} onChange={set("input")} options={Object.entries(INPUT_FORMATS)} />
-        <Filter label="Réponse" value={f.answer} onChange={set("answer")} options={Object.entries(ANSWER_FORMATS)} />
         <Filter label="Statut" value={f.status} onChange={set("status")} options={Object.entries(STATUSES)} />
+        {legacyCount > 0 && (
+          <label className="ml-auto flex items-center gap-2 text-sm text-muted">
+            <input type="checkbox" checked={legacy} onChange={(e) => setLegacy(e.target.checked)} /> Anciennes questions ({legacyCount})
+          </label>
+        )}
       </div>
 
       <div className="overflow-x-auto rounded-3xl bg-card">
@@ -128,7 +143,7 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
             <tr>
               <th className="px-5 py-3">Question</th>
               <th className="px-3 py-3">Niveau</th>
-              <th className="px-3 py-3">Entrée → réponse</th>
+              <th className="px-3 py-3">Mécanique</th>
               <th className="px-3 py-3">Bonnes rép.</th>
               <th className="px-3 py-3">{mode === "past" ? "Posée le" : "Planifiée"}</th>
               <th className="px-5 py-3">Statut</th>
@@ -149,9 +164,8 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
                       )}
                       <span className="min-w-0">
                         <span className="block truncate font-semibold">{q.prompt}</span>
-                        <span className="flex items-center gap-1.5 text-xs text-muted">
-                          <CategoryDot category={q.category} className="h-2 w-2" />
-                          {q.category_label}
+                        <span className="flex items-center gap-1.5 text-xs">
+                          <KindTag category={q.category} />
                           {q.reports > 0 && <span className="text-bad"> · ⚑ {q.reports}</span>}
                         </span>
                       </span>
@@ -161,7 +175,8 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
                     <DiffBars level={q.difficulty} />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-muted">
-                    {q.input_label} → {q.answer_label}
+                    {q.answer_label}
+                    {q.images.length ? " · photo" : ""}
                   </td>
                   <td className="px-3 py-3">
                     <Rate value={q.stats.success} />
@@ -188,13 +203,14 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
       <Drawer
         open={!!editing}
         onClose={() => setEditing(null)}
-        title={editing === "new" ? "Nouvelle question" : "Modifier la question"}
+        title={editing && "id" in editing ? "Modifier la question" : "Nouvelle question"}
         wide
       >
         {editing && (
           <QuestionEditor
-            key={editing === "new" ? "new" : editing.id}
-            question={editing === "new" ? undefined : editing}
+            key={"id" in editing ? editing.id : `new-${editing.kind ?? ""}`}
+            question={"id" in editing ? (editing as AdminQuestion) : undefined}
+            initialKind={"id" in editing ? undefined : (editing as { kind?: string }).kind}
             onSaved={(id) => {
               setEditing(null);
               setCreated(id);
@@ -205,6 +221,44 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
       <Drawer open={importing} onClose={() => setImporting(false)} title="Importer des questions">
         <ImportBox />
       </Drawer>
+    </div>
+  );
+}
+
+/** Couverture de la banque : pour chaque type, les questions prêtes et combien de jours elles couvrent. */
+function Coverage({ questions, today, onAdd }: { questions: AdminQuestion[]; today: string; onAdd: (kind: string) => void }) {
+  return (
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-5" data-testid="coverage">
+      {KINDS.map((k) => {
+        const mine = questions.filter((q) => q.category === k.key && q.status === "published");
+        const fresh = mine.filter((q) => !q.days.some((d) => d <= today)).length;
+        const levels = [1, 2, 3].map((d) => mine.filter((q) => q.difficulty === d).length);
+        const low = mine.length < 7;
+        return (
+          <div key={k.key} className="flex flex-col gap-1 rounded-2xl bg-card p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold">
+                {k.emoji} {k.label}
+              </span>
+              <button
+                className="chip px-2 py-0.5"
+                onClick={() => onAdd(k.key)}
+                aria-label={`Ajouter une question ${k.label}`}
+                data-testid={`add-${k.key}`}
+              >
+                +
+              </button>
+            </div>
+            <span className={`font-display text-2xl font-extrabold ${low ? "text-mid" : ""}`}>{mine.length}</span>
+            <span className="text-xs text-muted">
+              {fresh} jamais posée{fresh > 1 ? "s" : ""} · F/M/D {levels.join("/")}
+            </span>
+            <span className={`text-xs ${low ? "font-semibold text-mid" : "text-muted"}`}>
+              {mine.length ? `revient tous les ${mine.length} j` : "aucune question"}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

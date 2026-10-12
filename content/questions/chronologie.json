@@ -1,0 +1,69 @@
+[
+  {
+    "id": "chronologie-001",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Quatre moments clés de l'histoire : remets-les dans l'ordre.",
+    "correct_answer": [
+      "Les premiers Jeux olympiques antiques",
+      "L'imprimerie de Gutenberg",
+      "La Révolution française",
+      "Le premier pas sur la Lune"
+    ],
+    "order_details": [
+      "776 av. J.-C.",
+      "vers 1450",
+      "1789",
+      "1969"
+    ],
+    "explanation": "Près de 2 750 ans séparent les premiers Jeux d'Olympie (776 av. J.-C.) des premiers pas de Neil Armstrong sur la Lune (1969).",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-002",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Ces objets du quotidien : lequel est apparu en premier ?",
+    "correct_answer": [
+      "Le papier",
+      "Les lunettes de vue",
+      "La boîte de conserve",
+      "Le timbre-poste",
+      "Le jean"
+    ],
+    "order_details": [
+      "vers 105, en Chine",
+      "vers 1285, en Italie",
+      "1810",
+      "1840",
+      "1873"
+    ],
+    "explanation": "Le papier (vers 105, attribué à Cai Lun) précède de loin les lunettes (Italie, vers 1285). Puis tout s'accélère : la conserve (1810), le premier timbre, le Penny Black (1840), et le jean riveté de Levi Strauss et Jacob Davis (1873).",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-003",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Attention aux idées reçues : remets ces repères dans l'ordre.",
+    "correct_answer": [
+      "La pyramide de Khéops",
+      "La disparition des derniers mammouths",
+      "Le règne de Cléopâtre",
+      "Les premiers cours à Oxford",
+      "La fondation de la capitale aztèque"
+    ],
+    "order_details": [
+      "vers 2560 av. J.-C.",
+      "vers 2000 av. J.-C.",
+      "51 à 30 av. J.-C.",
+      "1096",
+      "1325"
+    ],
+    "explanation": "Des mammouths vivaient encore sur l'île Wrangel quand la pyramide de Khéops était déjà construite. Cléopâtre a vécu plus près de nous que de Khéops. Et Oxford enseignait déjà depuis plus de deux siècles quand les Aztèques ont fondé Tenochtitlan.",
+    "status": "published"
+  }
+]

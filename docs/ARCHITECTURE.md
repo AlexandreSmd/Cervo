@@ -22,7 +22,7 @@ Navigateur (React)  ──/api──▶  API FastAPI (Python)  ──SDK Admin�
 
 | Couche | Rôle | Règle |
 | --- | --- | --- |
-| `domain/` | Règles métier pures : `catalog` (référentiels), `models` (format d'une question), `scoring` (score 0–100), `daily` (composition du quiz du jour), `stats` (profil) | Aucune entrée/sortie. Testé sans émulateur. |
+| `domain/` | Règles métier pures : `catalog` (les 10 types et leur ordre), `models` (format d'une question), `scoring` (score 0–100), `timing` (chrono de chaque question), `daily` (composition du quiz du jour), `stats` (profil) | Aucune entrée/sortie. Testé sans émulateur. |
 | `services/` | Cas d'usage sur Firestore : `bank`, `quiz`, `users`, `play`, `planning`, `insights`, `media`, `demo` | Reçoivent le client `db` en argument. Lèvent `ApiError` pour une erreur métier. |
 | `web/` | Routes FastAPI : `player`, `admin`, `dev` ; `deps` (authentification, droits, débit) ; `app` (assemblage) | Fines : valider, authentifier, déléguer. Pas de logique métier. |
 
@@ -47,6 +47,34 @@ Dépendances autorisées : `web → services → domain`. Jamais l'inverse.
 
 Les noms sont centralisés dans `services/collections.py`.
 
+## Les 10 types de question
+
+Chaque jour : **une question de chaque type, toujours dans le même ordre** (`catalog.DAILY_ORDER`).
+Le champ `category` d'une question porte son type, le champ `type` sa mécanique de réponse :
+
+| Type (`category`) | Mécaniques (`type`) | Particularités |
+| --- | --- | --- |
+| `vocabulaire` | `mcq` | |
+| `taille` | `size` | deux objets, curseur logarithmique |
+| `fait` | `binary`, `mcq` | l'explication est mise en avant (« Le savais-tu ? ») |
+| `memoire` | `recall`, `mcq`, `order` | phase de mémorisation obligatoire, durée calculée |
+| `stat` | `percent` | score en points d'écart, grille de 100 points |
+| `chronologie` | `order` | une date par élément (`order_details`), montrée après |
+| `estimation` | `numeric` | score en proportion (échelle log) |
+| `devinette` | `riddle` | indices dévoilés un à un par le serveur (`POST /api/clue`), chacun coûte des points |
+| `enigme` | `mcq`, `short_text` | chrono long |
+| `dictee` | `dictation` | deux phrases, **sans chrono**, réécoute illimitée, vitesse réglable, correction mot à mot |
+
+- **Chrono** (`domain/timing.py`) : base par type et difficulté, plus le temps de lecture
+  (énoncé, choix), des photos, des éléments à classer ou à réécrire ; arrondi aux 5 s.
+- **Sélection du jour** (`domain/daily.py`) : pour chaque type, la question la moins récemment
+  posée ; parmi les plus fraîches, celle qui rapproche la journée de 3 faciles, 4 moyennes,
+  3 difficiles.
+- Les **anciennes questions** (d'avant les 10 types) sont retirées par `tools/migrate.py`
+  (lancé par `seed`) mais gardées pour l'historique des joueurs.
+
+Le guide pour écrire des questions de chaque type est dans `docs/QUESTIONS.md`.
+
 ## Garanties importantes
 
 - **Même quiz pour tous** : `daily_quizzes/{date}` est la seule source de vérité. S'il
@@ -56,6 +84,8 @@ Les noms sont centralisés dans `services/collections.py`.
   dans une transaction ; la participation, le profil et les statistiques sont écrits ensemble.
 - **Chrono honnête** : `start_question` enregistre l'heure de début côté serveur ; une réponse
   au-delà du temps imparti (+ 4 s de marge) vaut 0, et recharger ne relance pas le chrono.
+- **Indices honnêtes** : les indices d'une devinette restent sur le serveur tant qu'ils ne
+  sont pas demandés ; leur nombre, gardé dans la partie, fixe le score.
 - **Planning verrouillé** dès qu'un joueur a commencé une journée.
 
 ## Interface (`web/src/`)
@@ -63,9 +93,9 @@ Les noms sont centralisés dans `services/collections.py`.
 | Dossier | Contenu |
 | --- | --- |
 | `pages/` | Écrans du joueur : accueil, quiz, résultats, profil, connexion |
-| `components/` | Briques du joueur : `AnswerInput` (une saisie par format), `Feedback`, `Timer`, `Pearls`, `QuestionCard`… |
-| `admin/` | Espace fondateur : `Dashboard`, `Planning` (+ `planningLogic`, testée), `QuestionsPage`, `QuestionEditor`, `meta` (libellés, modèles) |
-| `lib/` | `api` (client typé), `types` (contrats de l'API), `format`, `share`, `csv`, `firebase`, `auth`, `hooks`, `config` |
+| `components/` | Briques du joueur : `AnswerInput` et `answers/` (une saisie par mécanique), `Feedback` et `reveals/` (une correction par mécanique), `Timer`, `KindLineup`, `QuestionCard`… |
+| `admin/` | Espace fondateur : `Dashboard`, `Planning` (+ `planningLogic`, testée), `QuestionsPage`, `QuestionEditor` (+ `editor/draft`, testé), `meta` (règles des 10 types) |
+| `lib/` | `api` (client typé), `types` (contrats de l'API), `kinds` (les 10 types), `format`, `diff` (correction de dictée), `speech` (voix), `share`, `csv`, `firebase`, `auth`, `hooks`, `cache`, `config` |
 
 Les données distantes passent par TanStack Query (`lib/hooks.ts`), le style par Tailwind avec
 des couleurs en variables CSS (`index.css`), mode sombre automatique.
@@ -76,12 +106,14 @@ des couleurs en variables CSS (`index.css`), mode sombre automatique.
    fonction `_check_<type>` dans `_ANSWER_CHECKS`.
 2. `domain/scoring.py` : `score_<type>` et son `case` dans `score_answer`. Tests dans
    `api/tests/test_scoring.py`.
-3. `domain/catalog.py` : libellé dans `ANSWER_FORMATS` (et chrono dans `TYPE_TIME_LIMIT` si besoin).
+3. `domain/catalog.py` : libellé dans `ANSWER_FORMATS`, et la mécanique dans les `answer_types`
+   du ou des types concernés ; temps supplémentaire éventuel dans `domain/timing.py`.
 4. `services/bank.py` : ce que le joueur doit recevoir dans `public_view` (jamais la réponse).
 5. `services/demo.py` : une réponse fictive dans `fake_answer`.
-6. Interface : type dans `lib/types.ts`, saisie dans `components/AnswerInput.tsx`, affichage de la
-   réponse dans `lib/format.ts` (`formatAnswer`), libellé et icône dans `admin/meta.ts`, champs
-   dans `admin/QuestionEditor.tsx`.
+6. Interface : type dans `lib/types.ts`, saisie dans `components/answers/` (branchée dans
+   `AnswerInput.tsx`), correction dans `components/reveals/` (branchée dans `Feedback.tsx`),
+   affichage dans `lib/format.ts` (`formatAnswer`), règles dans `admin/meta.ts`, champs dans
+   `admin/QuestionEditor.tsx` et `admin/editor/draft.ts`.
 7. Quelques questions dans `content/questions/`, puis `npm run check`.
 
 ## Qualité

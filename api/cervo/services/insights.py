@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections import Counter
 from datetime import date, timedelta
 
+from ..domain.catalog import DAILY_ORDER, KINDS
 from ..domain.scoring import round_half_up
 from . import bank, quiz
 from . import collections as col
@@ -31,6 +32,30 @@ def rate(entry: dict | None) -> dict:
 
 def question_rates(db) -> dict[str, dict]:
     return {s.id: rate(s.to_dict()) for s in db.collection(col.QUESTION_STATS).stream()}
+
+
+def kind_overview(qs: dict[str, dict], raw_stats: dict[str, dict]) -> list[dict]:
+    """Par type : questions disponibles (et donc jours de rotation), réussite et score moyen."""
+    out = []
+    for key in DAILY_ORDER:
+        mine = [q for q in qs.values() if q.get("category") == key]
+        published = [q for q in mine if q.get("status", "published") == "published"]
+        total = {"sum": 0, "count": 0, "correct": 0}
+        for q in mine:
+            for field in total:
+                total[field] += (raw_stats.get(q["id"]) or {}).get(field, 0)
+        out.append(
+            {
+                "category": key,
+                "label": KINDS[key].label,
+                "emoji": KINDS[key].emoji,
+                "published": len(published),
+                "draft": sum(1 for q in mine if q.get("status") == "draft"),
+                "levels": [sum(1 for q in published if int(q.get("difficulty", 2)) == d) for d in (1, 2, 3)],
+                **rate(total),
+            }
+        )
+    return out
 
 
 def day_view(day: str, raw: dict | None, ids: list[str], qs: dict[str, dict]) -> dict:
@@ -75,7 +100,9 @@ def overview(db, today: str, days: int = 30) -> dict:
             }
         )
 
-    rated = [{**summarize(qs[qid]), **r} for qid, r in question_rates(db).items() if qid in qs and r["answers"] >= MIN_ANSWERS_FOR_RANKING]
+    raw_stats = {s.id: s.to_dict() for s in db.collection(col.QUESTION_STATS).stream()}
+    rates = {qid: rate(entry) for qid, entry in raw_stats.items()}
+    rated = [{**summarize(qs[qid]), **r} for qid, r in rates.items() if qid in qs and r["answers"] >= MIN_ANSWERS_FOR_RANKING]
     rated.sort(key=lambda r: r["average"] or 0)
 
     ahead = 0  # jours consécutifs déjà planifiés à partir d'aujourd'hui
@@ -84,7 +111,8 @@ def overview(db, today: str, days: int = 30) -> dict:
             break
         ahead += 1
 
-    statuses = Counter(q.get("status", "published") for q in qs.values())
+    current = {k: q for k, q in qs.items() if q.get("category") in KINDS}
+    statuses = Counter(q.get("status", "published") for q in current.values())
     return {
         "today": day_view(today, daily.get(today), planned.get(today, []), qs),
         "series": series,
@@ -99,4 +127,5 @@ def overview(db, today: str, days: int = 30) -> dict:
         },
         "hardest": rated[:5],
         "easiest": list(reversed(rated[-5:])),
+        "kinds": kind_overview(current, raw_stats),
     }

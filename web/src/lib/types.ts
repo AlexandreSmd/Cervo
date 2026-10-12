@@ -1,5 +1,5 @@
 // Contrats de l'API (miroir des réponses de api/cervo/web/*).
-export type QuestionType = "binary" | "mcq" | "numeric" | "short_text" | "order" | "size" | "dictation";
+export type QuestionType = "binary" | "mcq" | "numeric" | "short_text" | "order" | "size" | "dictation" | "recall" | "percent" | "riddle";
 export type Answer = string | number | boolean | string[];
 
 export interface ImageRef {
@@ -12,25 +12,34 @@ export interface PublicQuestion {
   id: string;
   position: number;
   type: QuestionType;
+  /** Type de question parmi les 10 (vocabulaire, taille…). */
   category: string;
   category_label: string;
+  emoji: string;
+  /** Consigne courte du type (« Ajuste la taille »). */
+  instruction: string | null;
   pillar: string;
   difficulty: number;
   prompt: string;
   images: ImageRef[];
   choices: string[] | null;
   unit: string | null;
-  time_limit: number;
+  /** Chrono en secondes ; null : sans chrono (dictée). */
+  time_limit: number | null;
   memorize?: Memorize | null;
   items?: string[];
   size?: SizeConfig;
   slider?: { min: number; max: number; step: number };
   speech?: string;
+  /** Devinette : indices déjà dévoilés, et nombre total d'indices. */
+  clues?: string[];
+  clue_total?: number;
+  recall?: { count: number; ordered: boolean; single_chars: boolean };
 }
 
 export interface Memorize {
   items: string[];
-  seconds: number;
+  seconds: number | null;
   hide_images?: boolean;
 }
 
@@ -45,6 +54,11 @@ export interface Reveal {
   correct_answer: Answer;
   explanation: string | null;
   source_url: string | null;
+  /** Classement : précision de chaque élément (date…), dans l'ordre attendu. */
+  order_details?: string[];
+  /** Devinette : tous les indices. */
+  clues?: string[];
+  size?: SizeConfig;
 }
 
 export interface AnswerResult extends Reveal {
@@ -53,6 +67,8 @@ export interface AnswerResult extends Reveal {
   user_answer: Answer | null;
   score: number;
   timed_out?: boolean;
+  /** Devinette : indices vus au moment de répondre. */
+  clues_seen?: number;
 }
 
 export interface Today {
@@ -104,7 +120,7 @@ export interface Profile {
   worst_day: { date: string; score: number } | null;
   correct_rate: number | null;
   numeric_precision: number | null;
-  categories: { category: string; label: string; average: number | null; count: number }[];
+  categories: { category: string; label: string; emoji: string; average: number | null; count: number }[];
   pillars: { pillar: string; label: string; average: number | null; count: number; trend: number | null }[];
 }
 
@@ -158,6 +174,9 @@ export interface QuestionDoc {
   accepted_aliases?: string[];
   size_config?: SizeConfig | null;
   memorize?: Memorize | null;
+  clues?: string[];
+  order_details?: string[] | null;
+  recall_ordered?: boolean;
   time_limit?: number | null;
   explanation: string;
   source_url?: string | null;
@@ -171,6 +190,11 @@ export interface AdminQuestion extends QuestionDoc {
   answer_label: string;
   difficulty_label: string;
   category_label: string;
+  emoji: string;
+  /** Ancienne question, d'avant les 10 types (lecture seule). */
+  legacy: boolean;
+  computed_time_limit: number | null;
+  computed_memorize_seconds: number | null;
   reports: number;
   stats: RateStats;
   days: string[];
@@ -191,6 +215,9 @@ export interface QuestionSummary {
   correct_answer?: Answer;
   unit?: string | null;
   memorize?: boolean;
+  order_details?: string[] | null;
+  emoji?: string;
+  legacy?: boolean;
   missing?: boolean;
 }
 
@@ -202,6 +229,8 @@ export interface ScheduleDay {
   players: number;
   questions: QuestionSummary[];
   warnings: string[];
+  /** Nombre de questions faciles, moyennes, difficiles. */
+  difficulty: [number, number, number];
 }
 
 export interface Schedule {
@@ -234,4 +263,12 @@ export interface Overview {
   };
   hardest: (QuestionSummary & RateStats)[];
   easiest: (QuestionSummary & RateStats)[];
+  kinds: (RateStats & {
+    category: string;
+    label: string;
+    emoji: string;
+    published: number;
+    draft: number;
+    levels: [number, number, number];
+  })[];
 }

@@ -30,13 +30,17 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
     return () => window.clearInterval(id);
   }, [seconds, onDone]);
   const items = question.memorize?.items ?? [];
+  const short = items.every((it) => it.length <= 2);
   return (
     <div className="space-y-5 text-center" data-testid="memorize">
       <p className="font-display text-2xl font-extrabold">Mémorise !</p>
       {items.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className={short ? "flex flex-wrap justify-center gap-2" : "grid grid-cols-2 gap-2"}>
           {items.map((it, i) => (
-            <span key={i} className="rounded-2xl bg-accent/10 px-4 py-3 font-display text-2xl font-extrabold">
+            <span
+              key={i}
+              className={`rounded-2xl bg-accent/10 font-display font-extrabold ${short ? "min-w-[52px] px-3 py-3 text-4xl" : "px-3 py-3 text-xl"}`}
+            >
               {it}
             </span>
           ))}
@@ -98,6 +102,16 @@ export function Play() {
 
   const onExpire = useCallback(() => setExpired(true), []);
   const doneMemorizing = useCallback(() => setMemorized(index), [index]);
+
+  /** Devinette : l'indice suivant vient du serveur, qui garde le compte (il fixe le score). */
+  const askClue = useCallback(async () => {
+    if (!data || !question) return;
+    const { clues } = await api.clue(data.date, question.id);
+    qc.setQueryData(["today", user?.uid], {
+      ...data,
+      questions: data.questions.map((q) => (q.id === question.id ? { ...q, clues } : q)),
+    });
+  }, [data, question, qc, user?.uid]);
 
   if (error) return <ErrorBox message={(error as Error).message} onRetry={() => refetch()} />;
   if (isLoading || !data || !question) return <Loading />;
@@ -165,7 +179,11 @@ export function Play() {
         ) : (
           <>
             {!feedback &&
-              (timerReady ? (
+              (question.time_limit === null ? (
+                <p className="flex h-7 items-center justify-center text-xs font-semibold text-muted" data-testid="no-timer">
+                  Sans chrono · prends ton temps
+                </p>
+              ) : timerReady ? (
                 <Timer startedAt={started!.at} limit={question.time_limit} onExpire={onExpire} paused={submitting} />
               ) : (
                 <div className="h-7" />
@@ -174,7 +192,13 @@ export function Play() {
             {feedback ? (
               <Feedback question={question} result={feedback} onNext={next} isLast={feedback.completed} />
             ) : (
-              <AnswerInput question={question} disabled={submitting || !timerReady} expired={expired} onSubmit={submit} />
+              <AnswerInput
+                question={question}
+                disabled={submitting || !timerReady}
+                expired={expired}
+                onSubmit={submit}
+                onClue={question.type === "riddle" ? askClue : undefined}
+              />
             )}
           </>
         )}
@@ -184,7 +208,9 @@ export function Play() {
           </p>
         )}
       </article>
-      {index === 0 && !feedback && <p className="text-center text-xs text-muted">🧠 Sans aide · {question.time_limit} s par question</p>}
+      {index === 0 && !feedback && (
+        <p className="text-center text-xs text-muted">🧠 Sans aide · 10 types de questions, un chrono adapté à chacune</p>
+      )}
     </div>
   );
 }

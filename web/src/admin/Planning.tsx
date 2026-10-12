@@ -1,15 +1,15 @@
-// Planning : les 10 questions de chaque jour à venir, dans l'ordre où les joueurs les verront.
-// Glisser-déposer : réordonner (même jour), échanger (deux jours), remplacer (depuis la banque).
+// Planning : les 10 questions de chaque jour à venir, une par type, dans l'ordre du quiz.
+// Glisser-déposer : remplacer (depuis la banque, même type) ou échanger (même ligne, deux jours).
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ErrorBox, Loading } from "../components/States";
 import { api } from "../lib/api";
 import { capitalize, formatAnswer, formatDay } from "../lib/format";
 import type { AdminQuestion, QuestionSummary, Schedule, ScheduleDay } from "../lib/types";
-import { CATEGORIES } from "./meta";
-import { applyDrop, readDrag, writeDrag, type DragSource } from "./planningLogic";
+import { KINDS, kindInfo } from "./meta";
+import { applyDrop, dropRefusal, readDrag, writeDrag, type DragSource } from "./planningLogic";
 import { QuestionEditor } from "./QuestionEditor";
-import { CategoryDot, DiffBars, Drawer, Rate, shortDate } from "./ui";
+import { DiffBars, Drawer, KindTag, Rate, shortDate } from "./ui";
 
 /** État d'une journée, résumé en une couleur pour la frise. */
 function dayTone(day: ScheduleDay): { dot: string; label: string } {
@@ -106,19 +106,15 @@ function QuestionRow({
         onClick={onOpen}
         className={`group flex w-full items-start gap-3 rounded-2xl px-3 py-3 text-left transition ${over ? "bg-accent/15 ring-2 ring-accent" : "hover:bg-ink/[0.04]"} ${editable ? "cursor-grab active:cursor-grabbing" : ""}`}
       >
-        <span className="mt-0.5 w-6 shrink-0 text-right font-display text-lg font-extrabold text-muted">{index + 1}</span>
+        <span className="mt-0.5 flex w-28 shrink-0 flex-col gap-0.5 text-xs">
+          <span className="font-display text-base font-extrabold text-muted">{index + 1}</span>
+          <KindTag category={q.category} />
+        </span>
         <span className="min-w-0 flex-1">
           <span className="block text-[15px] font-semibold leading-snug">{q.missing ? "Question supprimée" : q.prompt}</span>
           <span className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
-            <span className="flex items-center gap-1.5">
-              <CategoryDot category={q.category} />
-              {CATEGORIES[q.category]?.label ?? q.category}
-            </span>
             <DiffBars level={q.difficulty} />
-            <span>
-              {q.input_label} → {q.answer_label}
-              {q.memorize ? " · ⚡ mémoire" : ""}
-            </span>
+            <span>{q.answer_label}</span>
             {unpublished && <span className="font-semibold text-mid">non publiée</span>}
           </span>
           {q.correct_answer !== undefined && (
@@ -157,6 +153,11 @@ function DaySection({
       <header className="mb-2 flex flex-wrap items-center gap-2 px-1">
         <h2 className="mr-auto text-xl font-bold">{capitalize(formatDay(day.date))}</h2>
         {day.is_today && <span className="chip bg-accent text-white">Aujourd'hui</span>}
+        {day.planned && (
+          <span className="chip" title="Faciles / moyennes / difficiles">
+            F/M/D {day.difficulty.join("/")}
+          </span>
+        )}
         {day.locked && (
           <span className="chip">
             🔒 {day.players} joueur{day.players > 1 ? "s" : ""}
@@ -187,7 +188,7 @@ function DaySection({
         </ol>
       ) : (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-dashed border-line p-4 text-sm text-muted">
-          <span>Pas encore planifié : sans action, 10 questions seront choisies automatiquement à minuit.</span>
+          <span>Pas encore planifié : sans action, une question de chaque type sera choisie automatiquement à minuit.</span>
           <button className="btn-dark btn-sm" onClick={() => onAction("regenerate")}>
             Planifier ce jour
           </button>
@@ -202,12 +203,13 @@ function Bank({ questions, used, onOpen }: { questions: AdminQuestion[]; used: S
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [difficulty, setDifficulty] = useState(0);
-  const [fresh, setFresh] = useState(true);
+  const [fresh, setFresh] = useState(false);
   const list = useMemo(
     () =>
       questions.filter(
         (q) =>
           q.status === "published" &&
+          !q.legacy &&
           (category === "all" || q.category === category) &&
           (!difficulty || q.difficulty === difficulty) &&
           (!fresh || !used[q.id]?.length) &&
@@ -218,7 +220,7 @@ function Bank({ questions, used, onOpen }: { questions: AdminQuestion[]; used: S
   return (
     <div className="flex h-full flex-col rounded-3xl bg-card p-4">
       <h2 className="text-lg font-bold">Banque</h2>
-      <p className="mb-3 text-xs text-muted">Glisse une question sur une ligne pour la remplacer.</p>
+      <p className="mb-3 text-xs text-muted">Glisse une question sur la ligne de son type pour la remplacer.</p>
       <div className="space-y-2">
         <input
           className="input py-2 text-sm"
@@ -228,16 +230,11 @@ function Bank({ questions, used, onOpen }: { questions: AdminQuestion[]; used: S
           onChange={(e) => setSearch(e.target.value)}
         />
         <div className="flex gap-2">
-          <select
-            className="input flex-1 py-2 text-sm"
-            aria-label="Catégorie"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="all">Catégories</option>
-            {Object.entries(CATEGORIES).map(([k, v]) => (
-              <option key={k} value={k}>
-                {v.label}
+          <select className="input flex-1 py-2 text-sm" aria-label="Type" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="all">Tous les types</option>
+            {KINDS.map((k) => (
+              <option key={k.key} value={k.key}>
+                {k.emoji} {k.label}
               </option>
             ))}
           </select>
@@ -270,8 +267,8 @@ function Bank({ questions, used, onOpen }: { questions: AdminQuestion[]; used: S
               className="flex w-full cursor-grab items-start gap-2 rounded-xl px-2 py-2 text-left text-sm hover:bg-ink/5 active:cursor-grabbing"
             >
               <span className="min-w-0 flex-1 leading-snug">{q.prompt}</span>
-              <span className="mt-1 flex shrink-0 items-center gap-1.5">
-                <CategoryDot category={q.category} />
+              <span className="mt-0.5 flex shrink-0 items-center gap-1.5">
+                <KindTag category={q.category} short />
                 <DiffBars level={q.difficulty} />
               </span>
             </button>
@@ -282,37 +279,31 @@ function Bank({ questions, used, onOpen }: { questions: AdminQuestion[]; used: S
   );
 }
 
+/** Remplacer la question d'une ligne : les autres questions publiées du même type, les moins récentes d'abord. */
 function ReplacePicker({
   questions,
   used,
+  category,
   exclude,
   onPick,
 }: {
   questions: AdminQuestion[];
   used: Schedule["used"];
+  category: string;
   exclude: string[];
   onPick: (id: string) => void;
 }) {
-  const [search, setSearch] = useState("");
+  const last = (id: string) => (used[id]?.length ? used[id][used[id].length - 1] : "");
   const list = questions
-    .filter(
-      (q) =>
-        q.status === "published" &&
-        !exclude.includes(q.id) &&
-        !used[q.id]?.length &&
-        (!search || q.prompt.toLowerCase().includes(search.toLowerCase())),
-    )
-    .slice(0, 30);
+    .filter((q) => q.status === "published" && q.category === category && !exclude.includes(q.id))
+    .sort((a, b) => last(a.id).localeCompare(last(b.id)));
+  const info = kindInfo(category);
   return (
     <div className="space-y-2">
-      <p className="label">Remplacer par</p>
-      <input
-        className="input py-2 text-sm"
-        placeholder="Rechercher une question jamais posée"
-        aria-label="Rechercher une question de remplacement"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <p className="label">
+        Remplacer par une autre question {info.emoji} {info.label}
+      </p>
+      {list.length === 0 && <p className="text-sm text-muted">Aucune autre question de ce type : crée-en une dans la banque.</p>}
       <ul className="max-h-72 space-y-1 overflow-y-auto">
         {list.map((q) => (
           <li key={q.id}>
@@ -320,8 +311,8 @@ function ReplacePicker({
               className="flex w-full items-start gap-2 rounded-xl px-2 py-2 text-left text-sm hover:bg-ink/5"
               onClick={() => onPick(q.id)}
             >
-              <CategoryDot category={q.category} className="mt-1.5 h-2.5 w-2.5" />
               <span className="flex-1">{q.prompt}</span>
+              <span className="shrink-0 text-xs text-muted">{last(q.id) ? shortDate(last(q.id)) : "jamais"}</span>
               <DiffBars level={q.difficulty} />
             </button>
           </li>
@@ -364,9 +355,10 @@ export function Planning() {
     }
   };
 
+  const kindOf = (id: string) => byId.get(id)?.category ?? days.flatMap((d) => d.questions).find((q) => q.id === id)?.category;
   const drop = (src: DragSource, date: string, index: number) => {
-    const changes = applyDrop(ids, src, date, index);
-    if (!Object.keys(changes).length) return setMessage("Rien à changer : la question est déjà dans cette journée.");
+    const changes = applyDrop(ids, src, date, index, kindOf);
+    if (!Object.keys(changes).length) return setMessage(dropRefusal(ids, src, date, index, kindOf));
     // Affichage immédiat (optimiste), puis enregistrement des journées touchées.
     const all = new Map(days.flatMap((d) => d.questions).map((q) => [q.id, q]));
     qc.setQueryData<Schedule>(
@@ -384,13 +376,6 @@ export function Planning() {
 
   const current = open ? days.find((d) => d.date === open.date) : null;
   const currentQ = current && open ? byId.get(current.questions[open.index]?.id) : undefined;
-  const move = (delta: number) => {
-    if (!current || !open) return;
-    const target = open.index + delta;
-    if (target < 0 || target > 9) return;
-    drop({ kind: "slot", date: current.date, index: open.index }, current.date, target);
-    setOpen({ ...open, index: target });
-  };
 
   return (
     <div className="grid gap-5 xl:grid-cols-[1fr_340px]">
@@ -398,7 +383,9 @@ export function Planning() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="text-4xl font-extrabold">Planning</h1>
-            <p className="text-sm text-muted">Même quiz pour tous, dans cet ordre, à minuit (heure de Paris).</p>
+            <p className="text-sm text-muted">
+              Même quiz pour tous à minuit (heure de Paris) : une question de chaque type, toujours dans cet ordre.
+            </p>
           </div>
           <button
             className="btn-dark"
@@ -439,7 +426,7 @@ export function Planning() {
       <Drawer
         open={!!currentQ}
         onClose={() => setOpen(null)}
-        title={current && open ? `${shortDate(current.date)} · question ${open.index + 1}` : ""}
+        title={current && open && currentQ ? `${shortDate(current.date)} · ${open.index + 1}. ${kindInfo(currentQ.category).label}` : ""}
       >
         {currentQ && current && open && (
           <div className="space-y-5">
@@ -447,12 +434,10 @@ export function Planning() {
             <p className="text-good">✓ {formatAnswer(currentQ.correct_answer, currentQ.type, currentQ.numeric_config?.unit)}</p>
             <div className="flex flex-wrap gap-2 text-sm">
               <span className="chip">
-                <CategoryDot category={currentQ.category} /> {currentQ.category_label}
+                <KindTag category={currentQ.category} />
               </span>
               <span className="chip">{currentQ.difficulty_label}</span>
-              <span className="chip">
-                {currentQ.input_label} → {currentQ.answer_label}
-              </span>
+              <span className="chip">{currentQ.answer_label}</span>
             </div>
             <div className="rounded-2xl bg-card p-4 text-sm">
               <p className="flex items-center justify-between">
@@ -464,16 +449,6 @@ export function Planning() {
                 <span>{currentQ.stats.answers}</span>
               </p>
             </div>
-            {!current.locked && (
-              <div className="flex gap-2">
-                <button className="btn-ghost btn-sm" disabled={open.index === 0} onClick={() => move(-1)}>
-                  ↑ Avant
-                </button>
-                <button className="btn-ghost btn-sm" disabled={open.index === 9} onClick={() => move(1)}>
-                  ↓ Après
-                </button>
-              </div>
-            )}
             <button
               className="btn-dark w-full"
               onClick={() => {
@@ -487,6 +462,7 @@ export function Planning() {
               <ReplacePicker
                 questions={questions.data.questions}
                 used={schedule.data.used}
+                category={currentQ.category}
                 exclude={ids[current.date]}
                 onPick={(id) => {
                   drop({ kind: "bank", id }, current.date, open.index);
@@ -521,7 +497,7 @@ function summary(q: AdminQuestion | undefined): QuestionSummary {
       id: "?",
       prompt: "…",
       type: "mcq",
-      category: "culture",
+      category: "",
       category_label: "",
       difficulty: 1,
       status: "published",
@@ -545,5 +521,6 @@ function summary(q: AdminQuestion | undefined): QuestionSummary {
     correct_answer: q.correct_answer,
     unit: q.numeric_config?.unit,
     memorize: !!q.memorize,
+    emoji: q.emoji,
   };
 }

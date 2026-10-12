@@ -1,5 +1,7 @@
-"""Planning (admin) : préparer, réordonner, remplacer les questions des jours à venir.
+"""Planning (admin) : préparer et remplacer les questions des jours à venir.
 
+Une journée = une question de chaque type, dans l'ordre du quiz (catalog.DAILY_ORDER) : le
+fondateur choisit QUELLE question pour chaque type, jamais l'ordre.
 Une journée est verrouillée dès qu'elle est passée, ou dès qu'un joueur l'a commencée :
 la modifier rendrait incohérentes les réponses déjà données.
 """
@@ -10,14 +12,16 @@ from collections import Counter
 from datetime import date, timedelta
 
 from ..clock import now_iso
-from ..domain.catalog import THINKING_PILLARS, pillar_of
-from ..domain.daily import DIFFICULTY_QUOTAS, MAX_PER_CATEGORY, MIN_CATEGORIES, MIN_NUMERIC, MIN_THINKING, QUIZ_SIZE
+from ..domain.catalog import DAILY_ORDER, KINDS, category_label
+from ..domain.daily import published_by_kind
 from ..errors import ApiError
 from . import bank, quiz
 from . import collections as col
 
-# Deux journées à moins de 60 jours d'écart ne devraient pas partager de question.
-NEIGHBOUR_DAYS = 60
+# Une question reprise à moins de 7 jours d'écart est signalée (la banque est trop petite).
+REPEAT_WARNING_DAYS = 7
+# Au-delà, une journée est jugée trop facile ou trop difficile.
+UNBALANCED_DAY = 6
 
 
 def date_range(start: str, count: int) -> list[str]:
@@ -39,36 +43,43 @@ def summarize(q: dict) -> dict:
         "correct_answer": q.get("correct_answer"),
         "unit": cfg.get("unit"),
         "memorize": bool(q.get("memorize")),
+        "order_details": q.get("order_details"),
         **bank.describe(q),
     }
 
 
 def day_warnings(ids: list[str], qs: dict[str, dict], repeated: set[str]) -> list[str]:
-    """Écarts aux règles de composition. Indicatifs : le fondateur garde la main."""
+    """Écarts aux règles de composition, en clair pour le fondateur."""
     items = [qs[i] for i in ids if i in qs]
     warnings = []
-    if len(set(ids)) != QUIZ_SIZE:
-        warnings.append("Questions en double dans la journée")
+    if len(set(ids)) != len(ids):
+        warnings.append("Question en double dans la journée")
     if any(i not in qs for i in ids):
         warnings.append("Question introuvable")
     if any(q.get("status") != "published" for q in items):
         warnings.append("Question non publiée")
+    kinds = Counter(q["category"] for q in items)
+    missing = [KINDS[k].label for k in DAILY_ORDER if not kinds.get(k)]
+    if missing:
+        warnings.append(f"Il manque : {', '.join(missing)}")
+    doubled = [category_label(k) for k, n in kinds.items() if n > 1]
+    if doubled:
+        warnings.append(f"En double : {', '.join(doubled)}")
     if repeated:
-        warnings.append("Question aussi posée un autre jour proche")
+        labels = sorted({category_label(qs[i]["category"]) for i in repeated if i in qs})
+        warnings.append(f"Reprise à moins de {REPEAT_WARNING_DAYS} jours : {', '.join(labels)}")
     diff = Counter(int(q.get("difficulty", 2)) for q in items)
-    if any(diff.get(level, 0) != n for level, n in DIFFICULTY_QUOTAS.items()):
-        expected = "/".join(str(DIFFICULTY_QUOTAS[k]) for k in sorted(DIFFICULTY_QUOTAS))
-        warnings.append(f"Difficulté {diff.get(1, 0)}/{diff.get(2, 0)}/{diff.get(3, 0)} au lieu de {expected}")
-    cats = Counter(q["category"] for q in items)
-    if len(cats) < MIN_CATEGORIES or (cats and max(cats.values()) > MAX_PER_CATEGORY):
-        warnings.append("Catégories peu variées")
-    if sum(q["type"] == "numeric" for q in items) < MIN_NUMERIC:
-        warnings.append("Moins de 2 questions « nombre »")
-    if not any(bank.images_of(q) for q in items):
-        warnings.append("Aucune photo")
-    if sum(pillar_of(q["category"]) in THINKING_PILLARS for q in items) < MIN_THINKING:
-        warnings.append("Pas assez de questions de réflexion")
+    if diff.get(3, 0) >= UNBALANCED_DAY:
+        warnings.append(f"Journée très difficile ({diff[3]} questions difficiles)")
+    if diff.get(1, 0) >= UNBALANCED_DAY:
+        warnings.append(f"Journée très facile ({diff[1]} questions faciles)")
     return warnings
+
+
+def kind_order(ids: list[str], qs: dict[str, dict]) -> list[str]:
+    """Range les questions dans l'ordre du quiz (ordre des types)."""
+    rank = {k: i for i, k in enumerate(DAILY_ORDER)}
+    return sorted(ids, key=lambda i: rank.get(qs.get(i, {}).get("category"), len(rank)))
 
 
 def _started(db, day: str) -> bool:
@@ -92,7 +103,7 @@ def schedule(db, today: str, start: str, count: int) -> dict:
         players = (stats.get(day) or {}).get("started", 0)
         neighbours: set[str] = set()
         for other, other_ids in planned.items():
-            if other != day and abs((date.fromisoformat(other) - date.fromisoformat(day)).days) <= NEIGHBOUR_DAYS:
+            if other != day and abs((date.fromisoformat(other) - date.fromisoformat(day)).days) < REPEAT_WARNING_DAYS:
                 neighbours |= set(other_ids)
         days.append(
             {
@@ -103,20 +114,37 @@ def schedule(db, today: str, start: str, count: int) -> dict:
                 "players": players,
                 "questions": [summarize(qs[i]) if i in qs else {"id": i, "missing": True} for i in (ids or [])],
                 "warnings": day_warnings(ids, qs, set(ids) & neighbours) if ids else [],
+                "difficulty": [sum(1 for i in ids or [] if int(qs.get(i, {}).get("difficulty", 0)) == d) for d in (1, 2, 3)],
             }
         )
     return {"today": today, "days": days, "used": _usage(planned)}
 
 
-def set_day(db, day: str, ids: list[str], today: str) -> None:
+def set_day(db, day: str, ids: list[str], today: str) -> list[str]:
+    """Enregistre une journée choisie à la main : une question par type, rangées dans l'ordre du quiz.
+
+    Un type peut manquer (ou un autre être doublé) seulement s'il n'a aucune question publiée.
+    """
     ensure_editable(db, day, today)
     qs = bank.by_id(db)
     unknown = [i for i in ids if i not in qs]
     if unknown:
         raise ApiError(400, f"Question introuvable : {', '.join(unknown)}")
-    if len(set(ids)) != QUIZ_SIZE:
-        raise ApiError(400, "Une journée compte 10 questions différentes.")
-    quiz.save_day(db, day, ids, source="admin")
+    if len(set(ids)) != len(ids):
+        raise ApiError(400, "La même question apparaît deux fois.")
+    legacy = [i for i in ids if qs[i]["category"] not in KINDS]
+    if legacy:
+        raise ApiError(400, f"Ancienne question (hors des 10 types) : {', '.join(legacy)}")
+    available = {k for k, pool in published_by_kind(list(qs.values())).items() if pool}
+    kinds = Counter(qs[i]["category"] for i in ids)
+    missing = [KINDS[k].label for k in DAILY_ORDER if k in available and not kinds.get(k)]
+    if missing:
+        raise ApiError(400, f"Il manque une question : {', '.join(missing)}.")
+    if len(ids) != len(DAILY_ORDER):
+        raise ApiError(400, "Une journée compte 10 questions.")
+    ordered = kind_order(ids, qs)
+    quiz.save_day(db, day, ordered, source="admin")
+    return ordered
 
 
 def regenerate_day(db, day: str, today: str) -> list[str]:

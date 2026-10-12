@@ -13,6 +13,13 @@ from typing import Any
 # Échelle log : 0 point quand on se trompe d'un facteur 3 (estimations) ou 2 (tailles).
 DEFAULT_LOG_FACTOR = 3.0
 SIZE_LOG_FACTOR = 2.0
+# Pourcentage : 100 points à 1 point près, 0 point à 20 points d'écart (réglable par question).
+PERCENT_EXACT = 1.0
+DEFAULT_PERCENT_TOLERANCE = 20.0
+# Devinette : points selon le nombre d'indices vus au moment de répondre (1er indice offert).
+CLUE_SCORES = (100, 75, 50, 30, 20)
+# Rappel sans ordre : un élément inventé coûte la moitié d'un élément retrouvé.
+RECALL_EXTRA_PENALTY = 0.5
 
 
 def round_half_up(x: float) -> int:
@@ -97,6 +104,74 @@ def score_short_text(answer: Any, expected: Any, aliases: list | None = None) ->
     return 100 if normalized in accepted else 0
 
 
+_ARTICLES = re.compile(r"^(?:le|la|les|l|un|une|des|du|de|d)\b[\s']*", re.IGNORECASE)
+
+
+def normalize_guess(value: Any) -> str:
+    """Réponse à une devinette : sans article au début (« le koala » = « koala »), ni casse ni accents."""
+    text = unicodedata.normalize("NFC", str(value)).strip().replace("’", "'")
+    return normalize_text(_ARTICLES.sub("", text, count=1)) or normalize_text(text)
+
+
+def score_riddle(answer: Any, expected: Any, aliases: list | None, clues_seen: int) -> int:
+    """Devinette : bonne réponse = points selon les indices vus ; mauvaise réponse = 0."""
+    if answer is None or not normalize_guess(answer):
+        return 0
+    accepted = {normalize_guess(expected)} | {normalize_guess(a) for a in (aliases or [])}
+    if normalize_guess(answer) not in accepted:
+        return 0
+    index = min(max(clues_seen, 1), len(CLUE_SCORES)) - 1
+    return CLUE_SCORES[index]
+
+
+def score_percent(answer: Any, truth: float, tolerance: float | None = None) -> int:
+    """Pourcentage : écart en points (et non en proportion) ; 100 points à 1 point près."""
+    value = parse_number(answer)
+    if value is None or not 0 <= value <= 100:
+        return 0
+    gap = abs(value - float(truth))
+    if gap <= PERCENT_EXACT:
+        return 100
+    return clamp_score(100 * (1 - gap / float(tolerance or DEFAULT_PERCENT_TOLERANCE)))
+
+
+def recall_tokens(answer: Any, expected: list) -> list[str]:
+    """Éléments saisis par le joueur, normalisés (une liste, ou un texte à découper).
+
+    Si chaque élément attendu tient en un caractère (une suite de chiffres), « 4 8 1 5 »,
+    « 4815 » et « 4-8-1-5 » donnent la même chose.
+    """
+    if isinstance(answer, list):
+        raw = [str(a) for a in answer]
+    elif isinstance(answer, (str, int, float)) and not isinstance(answer, bool):
+        text = str(answer)
+        if all(len(normalize_text(e)) == 1 for e in expected):
+            raw = list(re.sub(r"[^0-9A-Za-zÀ-ÿ]", "", text))
+        else:
+            raw = re.split(r"[\s,;/]+", text)
+    else:
+        return []
+    return [t for t in (normalize_text(r) for r in raw) if t]
+
+
+def score_recall(answer: Any, expected: list, ordered: bool) -> int:
+    """Rappel : retrouver les éléments mémorisés, dans l'ordre ou non."""
+    target = [normalize_text(e) for e in expected]
+    given = recall_tokens(answer, expected)
+    if not target or not given:
+        return 0
+    if ordered:
+        return clamp_score(100 * (1 - word_distance(given, target) / len(target)))
+    remaining = list(target)
+    hits = 0
+    for token in given:
+        if token in remaining:
+            remaining.remove(token)
+            hits += 1
+    extras = len(given) - hits
+    return clamp_score(100 * (hits - RECALL_EXTRA_PENALTY * extras) / len(target))
+
+
 def to_bool(value: Any) -> bool | None:
     if isinstance(value, bool):
         return value
@@ -150,9 +225,10 @@ def score_order(answer: Any, expected: list) -> int:
     return clamp_score(100 * good / pairs) if pairs else 0
 
 
-def score_answer(question: dict, answer: Any) -> int:
+def score_answer(question: dict, answer: Any, clues_seen: int = 1) -> int:
     """Score (0 à 100) d'une réponse pour une question au format de la banque.
 
+    `clues_seen` : indices vus par le joueur (devinettes uniquement).
     Pour ajouter un format de réponse : une fonction `score_<type>` ici, un cas ci-dessous,
     un contrôle dans `models._ANSWER_CHECKS` (voir docs/ARCHITECTURE.md).
     """
@@ -177,6 +253,12 @@ def score_answer(question: dict, answer: Any) -> int:
             return score_numeric(answer, correct, {"scale": "log", "factor": factor})
         case "dictation":
             return score_dictation(answer, correct)
+        case "percent":
+            return score_percent(answer, correct, (question.get("numeric_config") or {}).get("tolerance"))
+        case "recall":
+            return score_recall(answer, correct, bool(question.get("recall_ordered")))
+        case "riddle":
+            return score_riddle(answer, correct, question.get("accepted_aliases"), clues_seen)
     raise ValueError(f"Type de question inconnu : {question['type']}")
 
 

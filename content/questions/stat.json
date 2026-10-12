@@ -1,0 +1,35 @@
+[
+  {
+    "id": "stat-001",
+    "type": "percent",
+    "category": "stat",
+    "difficulty": 1,
+    "prompt": "Quelle part de la surface de la Terre est recouverte par les océans ?",
+    "correct_answer": 71,
+    "explanation": "Environ 71 % de la surface de la Terre est couverte d'océans, soit 361 millions de km². Le Pacifique, à lui seul, est plus vaste que toutes les terres émergées réunies.",
+    "source_url": "https://www.noaa.gov/ocean",
+    "status": "published"
+  },
+  {
+    "id": "stat-002",
+    "type": "percent",
+    "category": "stat",
+    "difficulty": 2,
+    "prompt": "Quelle part de la population mondiale est gauchère ?",
+    "correct_answer": 10,
+    "explanation": "Environ 10 % des humains sont gauchers, une proportion étonnamment stable à travers les pays et même les époques. Les hommes le sont un peu plus souvent que les femmes.",
+    "source_url": "https://doi.org/10.1037/bul0000229",
+    "status": "published"
+  },
+  {
+    "id": "stat-003",
+    "type": "percent",
+    "category": "stat",
+    "difficulty": 3,
+    "prompt": "Quelle part de la population mondiale vit dans l'hémisphère Nord ?",
+    "correct_answer": 88,
+    "explanation": "Environ 88 % des humains vivent au nord de l'équateur. C'est là que se trouvent les deux tiers des terres émergées, ainsi que la Chine, l'Inde, l'Europe et l'Amérique du Nord.",
+    "source_url": "https://bigthink.com/strange-maps/hemispheres-population/",
+    "status": "published"
+  }
+]
