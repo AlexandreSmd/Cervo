@@ -1,32 +1,32 @@
 [
   {
-    "id": "dictee-001",
+    "id": "dictee-101",
     "type": "dictation",
     "category": "dictee",
     "difficulty": 1,
     "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
-    "correct_answer": "Les enfants sont partis tôt ce matin. Ils ont emporté leurs affaires et quelques fruits.",
-    "explanation": "« Partis » s'accorde avec le sujet (avec l'auxiliaire être), « emporté » ne s'accorde pas (avec avoir, le complément est placé après). « Quelques fruits » : quelques, au pluriel, signifie « un petit nombre de ».",
+    "correct_answer": "Les journées que j'ai passées à Lyon m'ont paru trop courtes. Je me suis promis d'y retourner dès que possible.",
+    "explanation": "« Passées » s'accorde avec « que » (les journées), placé avant. « Paru » reste invariable. « Promis » aussi : « me » est ici complément indirect (promettre à soi-même).",
     "status": "published"
   },
   {
-    "id": "dictee-002",
+    "id": "dictee-102",
     "type": "dictation",
     "category": "dictee",
     "difficulty": 2,
     "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
-    "correct_answer": "Les fleurs que j'ai cueillies hier se sont déjà fanées. Quels que soient tes efforts, elles ne reviendront pas.",
-    "explanation": "« Cueillies » s'accorde avec le complément placé avant (que = les fleurs). « Se sont fanées » s'accorde avec le sujet. « Quels que soient » s'écrit en deux mots et s'accorde avec « efforts ».",
+    "correct_answer": "Quelque fatigués qu'ils fussent, ils ont continué leur route. Les efforts qu'il leur a fallu ont été considérables.",
+    "explanation": "Devant un adjectif, « quelque » veut dire « si » et reste invariable. « Fallu » ne s'accorde jamais : falloir est un verbe impersonnel.",
     "status": "published"
   },
   {
-    "id": "dictee-003",
+    "id": "dictee-103",
     "type": "dictation",
     "category": "dictee",
     "difficulty": 3,
     "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
-    "correct_answer": "Les quelques milliers d'euros qu'a coûté ce voyage ne nous ont pas paru excessifs. Nous nous sommes souvenus des paysages que nous avions vus.",
-    "explanation": "« Coûté » reste invariable : « que » est ici un complément de prix, pas un complément d'objet. « Paru » ne s'accorde pas (verbe d'état avec avoir), mais « excessifs » s'accorde avec « milliers ». « Souvenus » s'accorde avec le sujet, « vus » avec « que » mis pour « paysages ».",
+    "correct_answer": "Les sœurs se sont succédé à la tête de l'entreprise et se sont partagé les bénéfices. Ci-joint la facture que vous nous avez demandée.",
+    "explanation": "« Succédé » est invariable (on succède à quelqu'un). « Partagé » aussi, car le complément « les bénéfices » est placé après. En tête de phrase, « ci-joint » reste invariable, et « demandée » s'accorde avec « que » (la facture).",
     "status": "published"
   }
 ]

@@ -5,8 +5,14 @@ const AUTH = "http://127.0.0.1:9099";
 const PROJECT = "demo-cervo-daily";
 
 test("parcours joueur : quiz invité, résultats, partage, profil, compte par lien magique", async ({ page, request }) => {
+  await page.goto("/");
+  // Un invité peut se connecter depuis n'importe quelle page
+  await expect(page.getByTestId("header-login")).toBeVisible();
   await playFullQuiz(page);
   await expect(page.getByTestId("day-score")).toBeVisible();
+  // Juste sous le partage : son profil et la connexion
+  await expect(page.getByTestId("to-profile")).toBeVisible();
+  await expect(page.getByTestId("results-login")).toBeVisible();
   await expect(page.getByTestId("pearl")).toHaveCount(10);
 
   // Partage sur ordinateur : le message est copié
@@ -78,6 +84,15 @@ test("espace fondateur : tableau de bord, planning par glisser-déposer, nouvell
   // L'ordre des types est fixe : on ne réordonne pas une journée
   await page.getByTestId(`slot-${future}-0`).dragTo(page.getByTestId(`slot-${future}-2`));
   await expect(page.getByRole("status")).toContainText("L'ordre des types est fixe");
+
+  // La croix supprime une question à jamais et la remplace par une autre du même type
+  const doomed = page.getByTestId(`slot-${future}-1`);
+  const doomedText = (await doomed.textContent())!;
+  await page.getByTestId(`slot-${future}-1`).locator("xpath=..").getByRole("button", { name: "Supprimer la question" }).click();
+  await page.getByRole("button", { name: "Supprimer", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Question supprimée et remplacée");
+  await expect(page.getByTestId(`slot-${future}-1`)).toContainText("Taille");
+  await expect(page.getByTestId(`slot-${future}-1`)).not.toHaveText(doomedText);
 
   // Questions déjà posées : celles du jour (des joueurs ont joué dans le premier test)
   await page.getByRole("link", { name: "Déjà posées" }).click();

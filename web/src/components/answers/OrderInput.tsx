@@ -22,10 +22,10 @@ export function OrderInput({
             disabled={disabled}
             data-testid="order-item"
             onClick={() => onChange(chosen ? picked.filter((p) => p !== item) : [...picked, item])}
-            className={`flex min-h-[56px] w-full items-center gap-3 rounded-2xl px-4 text-left text-base font-semibold transition ${chosen ? "bg-accent text-white" : "bg-ink/5 hover:bg-ink/10"}`}
+            className={`flex min-h-[56px] w-full items-center gap-3 rounded-xl border-2 px-4 text-left text-base font-semibold transition ${chosen ? "border-ink bg-ink text-bg" : "border-ink/15 bg-card hover:border-ink/40"}`}
           >
             <span
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${chosen ? "bg-white text-accent" : "border-2 border-dashed border-ink/20"}`}
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-extrabold ${chosen ? "bg-bg text-ink" : "border-2 border-dashed border-ink/25"}`}
             >
               {chosen ? rank + 1 : ""}
             </span>

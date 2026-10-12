@@ -854,7 +854,7 @@ export function QuestionEditor({
             </p>
             <p className="flex justify-between">
               <span className="text-muted">Score moyen</span>
-              <span>{question.stats.average ?? "—"}</span>
+              <span>{question.stats.average ?? "-"}</span>
             </p>
             <p className="flex items-center justify-between">
               <span className="text-muted">Bonnes réponses</span>

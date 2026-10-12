@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { csvToQuestions, CSV_COLUMNS } from "../lib/csv";
 import type { AdminQuestion } from "../lib/types";
 import { DIFFICULTIES, KINDS, STATUSES } from "./meta";
+import { DeleteQuestionButton } from "./DeleteButton";
 import { QuestionEditor } from "./QuestionEditor";
 import { DiffBars, Drawer, KindTag, Rate, shortDate } from "./ui";
 
@@ -99,7 +100,7 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
       </div>
       {created && (
         <p className="chip bg-good/15 py-2" role="status" data-testid="admin-created">
-          Question {created} enregistrée
+          {created.includes(" ") ? created : `Question ${created} enregistrée`}
         </p>
       )}
 
@@ -147,6 +148,7 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
               <th className="px-3 py-3">Bonnes rép.</th>
               <th className="px-3 py-3">{mode === "past" ? "Posée le" : "Planifiée"}</th>
               <th className="px-5 py-3">Statut</th>
+              <th className="py-3 pr-3" aria-label="Supprimer" />
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
@@ -182,14 +184,15 @@ export function QuestionsPage({ mode = "bank" }: { mode?: "bank" | "past" }) {
                     <Rate value={q.stats.success} />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-muted">
-                    {next ? shortDate(next) : mode === "past" ? "—" : "Non planifiée"}
+                    {next ? shortDate(next) : mode === "past" ? "-" : "Non planifiée"}
                     {mode === "past" && asked.length > 1 ? ` (×${asked.length})` : ""}
                   </td>
                   <td className="px-5 py-3">
                     <span className={`chip ${q.status === "published" ? "bg-good/15" : q.status === "draft" ? "bg-mid/20" : ""}`}>
-                      {STATUSES[q.status]}
+                      {STATUSES[q.status as keyof typeof STATUSES] ?? q.status}
                     </span>
                   </td>
+                  <td className="py-3 pr-3">{!q.legacy && <DeleteQuestionButton id={q.id} onDone={setCreated} />}</td>
                 </tr>
               );
             })}

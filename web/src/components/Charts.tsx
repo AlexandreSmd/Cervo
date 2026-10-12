@@ -112,7 +112,7 @@ export function Bars({ items }: { items: { label: string; value: number | null; 
           <div className="mb-1 flex justify-between text-sm">
             <span className="font-semibold">{it.label}</span>
             <span className="text-muted">
-              {it.value ?? "—"}
+              {it.value ?? "-"}
               {it.value !== null && "/100"}
               {it.hint ? ` · ${it.hint}` : ""}
             </span>

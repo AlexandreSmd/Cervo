@@ -1,7 +1,48 @@
 // Cadre de l'interface joueur : barre du haut, onglets en bas sur mobile.
 import type { ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAuth } from "../lib/auth";
 import { APP_NAME } from "../lib/config";
+
+/** Le logo : un cerveau en deux hémisphères (violet, vert) et une étincelle (orange). */
+export function BrainMark({ className = "h-7 w-7" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" className={className} aria-hidden="true">
+      <path
+        d="M19 31V10.5a5 5 0 0 0-9.4-2.4A5.2 5.2 0 0 0 5.8 15a5.6 5.6 0 0 0 .9 9.4A5 5 0 0 0 12.5 31a4.6 4.6 0 0 0 6.5 0Z"
+        fill="#5B4BFF"
+      />
+      <path
+        d="M21 31V10.5a5 5 0 0 1 9.4-2.4 5.2 5.2 0 0 1 3.8 6.9 5.6 5.6 0 0 1-.9 9.4A5 5 0 0 1 27.5 31a4.6 4.6 0 0 1-6.5 0Z"
+        fill="#1FA971"
+      />
+      <circle cx="20" cy="36" r="2.4" fill="#F2A33A" />
+    </svg>
+  );
+}
+
+/** En haut à droite : « Se connecter » pour un invité, sinon l'initiale du compte (vers le profil). */
+function AccountButton() {
+  const { user } = useAuth();
+  if (!user) return null;
+  if (user.isAnonymous) {
+    return (
+      <Link to="/connexion" className="btn-ghost btn-sm bg-card" data-testid="header-login">
+        Se connecter
+      </Link>
+    );
+  }
+  const initial = (user.displayName || user.email || "?").charAt(0).toUpperCase();
+  return (
+    <Link
+      to="/profil"
+      aria-label="Mon profil"
+      className="flex h-9 w-9 items-center justify-center rounded-full bg-accent font-display font-extrabold text-white"
+    >
+      {initial}
+    </Link>
+  );
+}
 
 export function Logo({ to = "/" }: { to?: string }) {
   return (
@@ -10,12 +51,8 @@ export function Logo({ to = "/" }: { to?: string }) {
       className="flex items-center gap-2 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
       aria-label={`${APP_NAME}, accueil`}
     >
-      <span className="flex gap-0.5" aria-hidden="true">
-        <span className="h-2.5 w-2.5 rounded-full bg-accent" />
-        <span className="h-2.5 w-2.5 rounded-full bg-good" />
-        <span className="h-2.5 w-2.5 rounded-full bg-mid" />
-      </span>
-      <span className="whitespace-nowrap font-display text-lg font-extrabold tracking-tight">{APP_NAME}</span>
+      <BrainMark />
+      <span className="whitespace-nowrap font-display text-xl font-extrabold tracking-tight">{APP_NAME}</span>
     </Link>
   );
 }
@@ -35,23 +72,26 @@ export function Layout({ children }: { children: ReactNode }) {
     }`;
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-line bg-bg">
         <div className="mx-auto flex max-w-app items-center justify-between px-5 py-3">
           <Logo />
-          <nav className="hidden gap-1 sm:flex" aria-label="Navigation">
-            {TABS.map((t) => (
-              <NavLink key={t.to} to={t.to} end className={tab}>
-                {t.label}
-              </NavLink>
-            ))}
-          </nav>
+          <div className="flex items-center gap-2">
+            <nav className="hidden gap-1 sm:flex" aria-label="Navigation">
+              {TABS.map((t) => (
+                <NavLink key={t.to} to={t.to} end className={tab}>
+                  {t.label}
+                </NavLink>
+              ))}
+            </nav>
+            {!playing && <AccountButton />}
+          </div>
         </div>
       </header>
       <main id="main" className={`mx-auto w-full max-w-app flex-1 px-5 pt-2 sm:pb-12 ${playing ? "pb-8" : "pb-28"}`}>
         {children}
       </main>
       <nav
-        className={`${playing ? "hidden" : "flex"} fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:hidden`}
+        className={`${playing ? "hidden" : "flex"} fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card pb-[env(safe-area-inset-bottom)] sm:hidden`}
         aria-label="Navigation"
       >
         {TABS.map((t) => (

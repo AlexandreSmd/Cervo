@@ -3,19 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vif — Garde ton esprit affûté, vif et précis.</title>
+    <title>Vif · Garde ton esprit affûté, vif et précis.</title>
     <meta
       name="description"
       content="Garder son esprit affûté, vif et précis. 10 questions par jour, sans aide, et la preuve de ta progression."
     />
-    <meta property="og:title" content="Vif — Garde ton esprit affûté, vif et précis." />
+    <meta property="og:title" content="Vif · Garde ton esprit affûté, vif et précis." />
     <meta property="og:description" content="Dix questions par jour. Zéro IA. Un score honnête et ta progression dans le temps." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.svg" />
+    <meta property="og:image" content="__PUBLIC_URL__/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="__PUBLIC_URL__/" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#F4F5F8" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F3EFE6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#12110F" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="Vif" />
     <script>
       // Réveille l'API pendant que le site se charge (gagne quelques secondes si le serveur dormait).
       fetch("/api/health", { cache: "no-store" }).catch(function () {});
@@ -25,12 +31,12 @@
       html,
       body {
         margin: 0;
-        background: #f4f5f8;
+        background: #f3efe6;
       }
       @media (prefers-color-scheme: dark) {
         html,
         body {
-          background: #000;
+          background: #12110f;
         }
         .splash {
           color: #f0f1f8;
@@ -42,42 +48,29 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        color: #111322;
+        color: #171512;
         font:
           800 28px/1 system-ui,
           -apple-system,
           sans-serif;
         letter-spacing: -0.02em;
       }
-      .splash i {
-        display: inline-block;
-        width: 11px;
-        height: 11px;
-        border-radius: 50%;
-        margin-right: 3px;
-        animation: splash 1s ease-in-out infinite alternate;
-      }
-      .splash i:nth-child(2) {
-        animation-delay: 0.15s;
-      }
-      .splash i:nth-child(3) {
-        animation-delay: 0.3s;
+      .splash img {
+        animation: splash 0.9s ease-in-out infinite alternate;
       }
       @keyframes splash {
         from {
-          opacity: 0.35;
+          transform: scale(0.92);
         }
         to {
-          opacity: 1;
+          transform: scale(1);
         }
       }
     </style>
   </head>
   <body>
     <div id="root">
-      <div class="splash" aria-label="Chargement de Vif">
-        <span><i style="background: #5b4bff"></i><i style="background: #1fa971"></i><i style="background: #f2a33a"></i></span>Vif
-      </div>
+      <div class="splash" aria-label="Chargement de Vif"><img src="/logo.svg" width="40" height="40" alt="" />Vif</div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

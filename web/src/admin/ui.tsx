@@ -97,7 +97,7 @@ export function DiffBars({ level }: { level: number }) {
 }
 
 export function Rate({ value }: { value: number | null }) {
-  if (value === null) return <span className="text-muted">—</span>;
+  if (value === null) return <span className="text-muted">-</span>;
   const color = value >= 70 ? "#1FA971" : value >= 40 ? "#F2A33A" : "#E5484D";
   return (
     <span className="inline-flex items-center gap-2">

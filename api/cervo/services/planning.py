@@ -13,7 +13,7 @@ from datetime import date, timedelta
 
 from ..clock import now_iso
 from ..domain.catalog import DAILY_ORDER, KINDS, category_label
-from ..domain.daily import published_by_kind
+from ..domain.daily import published_by_kind, replacement_for
 from ..errors import ApiError
 from . import bank, quiz
 from . import collections as col
@@ -185,3 +185,47 @@ def _usage(planned: dict[str, list[str]]) -> dict[str, list[str]]:
 def usage(db) -> dict[str, list[str]]:
     """Pour chaque question, les dates où elle est posée ou planifiée (triées)."""
     return _usage(quiz.planned_days(db))
+
+
+def delete_question(db, question_id: str, today: str) -> dict:
+    """Supprime une question à jamais et la remplace partout où elle était prévue.
+
+    - Aujourd'hui et les jours à venir : remplacée par une question du même type (la moins
+      récemment posée). Aujourd'hui compris, même si des joueurs ont commencé : ceux qui y ont
+      déjà répondu gardent leur réponse, les autres auront la nouvelle question.
+    - Les jours passés ne bougent pas.
+    - Une question déjà jouée n'est pas effacée de la base (l'historique des joueurs y renvoie) :
+      elle passe au statut « deleted », invisible dans l'admin et jamais plus tirée au sort.
+      Jamais jouée : elle est effacée.
+    """
+    qs = bank.by_id(db)
+    question = qs.get(question_id)
+    if not question or question.get("status") == "deleted":
+        raise ApiError(404, "Question introuvable.")
+    # Retirée de la banque d'abord : elle ne peut plus être choisie comme remplaçante.
+    remaining = [q for q in qs.values() if q["id"] != question_id]
+    planned = quiz.planned_days(db)
+    replaced: dict[str, str | None] = {}
+    for day in sorted(d for d, ids in planned.items() if d >= today and question_id in ids):
+        ids = list(planned[day])
+        new_id = replacement_for(day, question["category"], remaining, planned, set(ids) | {question_id})
+        if new_id:
+            ids[ids.index(question_id)] = new_id
+        else:
+            ids.remove(question_id)
+        db.collection(col.DAILY_QUIZZES).document(day).set({"question_ids": ids, "updated_at": now_iso(), "source": "admin"})
+        planned[day] = ids
+        replaced[day] = new_id
+
+    ref = db.collection(col.QUESTIONS).document(question_id)
+    played = (
+        any(question_id in ids for d, ids in planned.items() if d < today)
+        or db.collection(col.QUESTION_STATS).document(question_id).get().exists
+    )
+    if played:
+        ref.update({"status": "deleted", "deleted_at": now_iso()})
+    else:
+        ref.delete()
+    bank.bump_version(db)
+    quiz.invalidate_cache()
+    return {"id": question_id, "erased": not played, "replaced": replaced}

@@ -89,6 +89,9 @@ export const api = {
         method: "POST",
         body: json({ questions, overwrite }),
       }),
+    /** Supprime à jamais et remplace la question aujourd'hui et dans les jours planifiés. */
+    remove: (id: string) =>
+      request<{ id: string; erased: boolean; replaced: Record<string, string | null> }>(`/admin/questions/${id}`, { method: "DELETE" }),
     setStatus: (id: string, status: string) => request(`/admin/questions/${id}`, { method: "PATCH", body: json({ status }) }),
     update: (id: string, question: unknown) => request(`/admin/questions/${id}`, { method: "PUT", body: json(question) }),
     overview: () => request<Overview>("/admin/overview"),

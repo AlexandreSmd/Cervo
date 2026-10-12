@@ -95,6 +95,8 @@ export function Profile() {
   const [category, setCategory] = useState("all");
   const [shown, setShown] = useState(10);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const [leaveError, setLeaveError] = useState<string | null>(null);
   const navigate = useNavigate();
   const qc = useQueryClient();
 
@@ -110,10 +112,18 @@ export function Profile() {
   const catLabels = new Map(p.categories.map((c) => [c.category, c.label]));
 
   const leave = async (fn: () => Promise<unknown>) => {
-    await fn();
-    await signOut(auth);
-    qc.clear();
-    navigate("/");
+    setLeaving(true);
+    setLeaveError(null);
+    try {
+      await fn();
+      await signOut(auth);
+      qc.clear();
+      navigate("/");
+    } catch (err) {
+      setLeaveError((err as Error).message);
+    } finally {
+      setLeaving(false);
+    }
   };
 
   return (
@@ -129,7 +139,7 @@ export function Profile() {
       </header>
 
       <div className="grid grid-cols-3 gap-2">
-        <Tile label="moyenne" value={p.average ?? "—"} />
+        <Tile label="moyenne" value={p.average ?? "-"} />
         <Tile label="série" value={`🔥${p.current_streak}`} />
         <Tile label="jours" value={p.days_played} />
       </div>
@@ -257,8 +267,8 @@ export function Profile() {
         </Link>
         {confirmDelete ? (
           <div className="flex gap-2 p-4">
-            <button className="btn btn-sm flex-1 bg-bad text-white" onClick={() => leave(api.deleteAccount)}>
-              Tout supprimer
+            <button className="btn btn-sm flex-1 bg-bad text-white" disabled={leaving} onClick={() => leave(api.deleteAccount)}>
+              {leaving ? "Suppression…" : "Tout supprimer"}
             </button>
             <button className="btn-ghost btn-sm flex-1" onClick={() => setConfirmDelete(false)}>
               Annuler
@@ -268,6 +278,11 @@ export function Profile() {
           <button className="w-full px-5 py-4 text-left font-semibold text-bad" onClick={() => setConfirmDelete(true)}>
             Supprimer mes données
           </button>
+        )}
+        {leaveError && (
+          <p className="px-5 py-3 text-sm text-bad" role="alert">
+            {leaveError}
+          </p>
         )}
       </section>
     </div>

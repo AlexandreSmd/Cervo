@@ -200,3 +200,39 @@ La philosophie : des questions **intéressantes à jouer**, pas seulement de la 
   - les journées à venir qui en contenaient sont recomposées, une journée déjà commencée n'est jamais touchée ;
   - elles restent visibles en lecture seule dans l'admin (« Anciennes questions »).
 - **Contenu de départ** : 30 questions, 3 par type, un niveau de chaque, toutes avec explication (et source pour les faits et les chiffres). Guide d'écriture : `docs/QUESTIONS.md`.
+
+## Version 8 : chrono juste, comparaison, suppression, identité
+
+- **Chrono** :
+  - il démarre quand la question est vraiment à l'écran : après la mémorisation et une fois les photos chargées (2,5 s au plus) ;
+  - le compte à rebours se cale toujours sur une heure serveur fraîche (`/question-start` est idempotent). Avant, revenir sur une question pouvait afficher un chrono faussé par des données en cache ;
+  - les photos de la question suivante se chargent pendant la correction.
+- **Bugs corrigés** (relecture complète du parcours de jeu) :
+  - une réponse dont l'envoi échoue n'est plus perdue : on peut renvoyer ;
+  - une question chronométrée doit avoir été lancée (le serveur refuse une réponse hors chrono) ;
+  - un jour se verrouille dès le premier joueur qui commence, et non plus à la première réponse ;
+  - le jeu repart proprement si l'appli reste ouverte après minuit ;
+  - les erreurs d'indice et de suppression de compte s'affichent ;
+  - l'indicateur de lecture de la dictée est fiable.
+- **Se comparer aux autres** (`domain/community.py`, à partir des agrégats existants) :
+  - après chaque réponse : « 38 % des joueurs ont trouvé » (ou leur score moyen) ;
+  - en fin de quiz : nombre de joueurs, leur moyenne, et la part des joueurs derrière toi ;
+  - rien n'est affiché sous 3 joueurs.
+- **Accueil** : compte à rebours jusqu'au prochain quiz. Bouton « Se connecter » en haut de chaque page pour un invité.
+- **Fin du quiz** : « Voir mon profil » et « Se connecter », juste sous le partage.
+- **Admin, la croix ×** (planning et banque) :
+  - supprime une question à jamais et la remplace aujourd'hui et dans tous les jours à venir, par la question du même type la moins récemment posée ;
+  - les joueurs en train de jouer la question reçoivent la nouvelle, avec un chrono neuf ;
+  - une question déjà jouée reste en base (statut `deleted`, invisible) pour l'historique des joueurs ;
+  - une question jamais jouée est effacée.
+- **Questions plus dures** : 30 nouvelles questions (3 par type). Les 30 premières sont retirées au déploiement (`tools/migrate.py`).
+- **Logo** :
+  - un cerveau en deux hémisphères, violet et vert, et une étincelle orange : les trois couleurs de la marque ;
+  - icônes PNG pour l'écran d'accueil du téléphone, manifeste web ;
+  - image d'aperçu PNG pour les liens partagés (Messenger n'affiche pas les SVG), avec une adresse absolue ;
+  - `node scripts/make-icons.mjs` régénère le tout.
+- **Design system : un cahier de jeux** :
+  - fond papier chaud, encre presque noire, traits nets, coins peu arrondis ;
+  - ombres « imprimées » décalées sur ce qu'on touche, et les boutons s'enfoncent au clic ;
+  - le violet est réservé à l'action principale, les couleurs vives aux types et aux scores ;
+  - pas de flou ni de dégradé, pas de tiret long dans les textes.

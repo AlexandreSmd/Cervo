@@ -13,6 +13,7 @@ from google.cloud import firestore
 
 from ..clock import now_iso, seconds_since
 from ..domain.catalog import TIME_GRACE
+from ..domain.community import day_community, question_community
 from ..domain.daily import QUIZ_SIZE
 from ..domain.scoring import day_score, score_answer
 from ..domain.stats import apply_answer, apply_completion, displayed_streak, empty_stats, recompute
@@ -43,9 +44,15 @@ def _answer_view(ans: dict) -> dict:
     return view
 
 
-def _clues_seen(current: dict, position: int) -> int:
+def _is_current(current: dict, position: int, question_id: str | None) -> bool:
+    """Le chrono enregistré concerne-t-il bien cette question ? (Une question supprimée par
+    l'admin en cours de journée est remplacée : l'ancien chrono ne compte plus.)"""
+    return current.get("position") == position and (question_id is None or current.get("question_id") in (None, question_id))
+
+
+def _clues_seen(current: dict, position: int, question_id: str | None = None) -> int:
     """Indices de devinette dévoilés pour la question en cours (le premier est offert)."""
-    return int(current.get("clues", 1)) if current.get("position") == position else 1
+    return int(current.get("clues", 1)) if _is_current(current, position, question_id) else 1
 
 
 def read_user_and_attempt(db, uid: str, day: str):
@@ -69,8 +76,8 @@ def today_state(db, uid: str, day: str, user: dict, attempt_snap=None) -> dict:
         "date": day,
         "server_time": now_iso(),
         # Chrono déjà lancé pour la question en cours (reprise après rechargement).
-        "current": current if current.get("position") == len(answers) else None,
-        "questions": [bank.public_view(qs[qid], i, _clues_seen(current, i)) for i, qid in enumerate(ids) if qid in qs],
+        "current": current if _is_current(current, len(answers), ids[len(answers)] if len(answers) < len(ids) else None) else None,
+        "questions": [bank.public_view(qs[qid], i, _clues_seen(current, i, qid)) for i, qid in enumerate(ids) if qid in qs],
         "answers": answers,
         "completed": bool(attempt.get("completed_at")),
         "score_total": attempt.get("score_total"),
@@ -92,10 +99,14 @@ def start_question(db, uid: str, day: str, question_id: str) -> dict:
         if position >= len(ids) or ids[position] != question_id:
             raise ApiError(409, "Cette question n'est pas la suivante.")
         current = attempt.get("current") or {}
-        if current.get("position") != position:
+        if not _is_current(current, position, question_id):
             current = {"position": position, "question_id": question_id, "started_at": now_iso(), "clues": 1}
             attempt["current"] = current
             tx.set(ref, attempt)
+            if not snap.exists:
+                # Premier pas du joueur aujourd'hui : il compte comme « a commencé » (et la journée se
+                # verrouille dans le planning).
+                tx.set(db.collection(col.DAILY_STATS).document(day), {"date": day, "started": firestore.Increment(1)}, merge=True)
         return current
 
     return {**run(db.transaction()), "server_time": now_iso()}
@@ -119,7 +130,7 @@ def reveal_clue(db, uid: str, day: str, question_id: str) -> dict:
         attempt = snap.to_dict() if snap.exists else {}
         position = len(attempt.get("answers", []))
         current = attempt.get("current") or {}
-        if position >= len(ids) or ids[position] != question_id or current.get("position") != position:
+        if position >= len(ids) or ids[position] != question_id or not _is_current(current, position, question_id):
             raise ApiError(409, "Cette question n'est pas en cours.")
         seen = min(len(clues), int(current.get("clues", 1)) + 1)
         if seen != current.get("clues"):
@@ -161,10 +172,14 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
             raise ApiError(409, "Cette question a déjà été validée ou n'est pas la suivante.")
 
         current = attempt.pop("current", None) or {}
-        elapsed = seconds_since(current.get("started_at")) if current.get("position") == position else None
+        on_time = _is_current(current, position, question_id)
         limit = bank.time_limit(question)  # None : question sans chrono (dictée)
+        if limit is not None and not on_time:
+            # Une question chronométrée se lance d'abord (/question-start) : pas de réponse hors chrono.
+            raise ApiError(409, "Cette question n'a pas été lancée.")
+        elapsed = seconds_since(current.get("started_at")) if on_time else None
         timed_out = answer is None or (limit is not None and elapsed is not None and elapsed > limit + TIME_GRACE)
-        clues_seen = _clues_seen(current, position)
+        clues_seen = _clues_seen(current, position, question_id)
         score = 0 if timed_out else score_answer(question, answer, clues_seen)
         record = {
             "question_id": question_id,
@@ -196,26 +211,28 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
             tx.set(u_ref, {**doc, **{k: stats[k] for k in empty_stats()}})
         else:
             tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
-        _record_stats(tx, db, day, question_id, score, position, attempt["score_total"] if completed else None)
+        _record_stats(tx, db, day, question_id, score, attempt["score_total"] if completed else None)
         return record, completed, attempt.get("score_total"), stats
 
     record, completed, total, stats = run(db.transaction())
+    # Lu après la transaction (et non dedans) : tous les joueurs écrivent ce document,
+    # le verrouiller en lecture ralentirait tout le monde.
+    daily = db.collection(col.DAILY_STATS).document(day).get().to_dict() or {}
     return {
         **_answer_view(record),
         **bank.reveal(question),
+        "community": question_community((daily.get("questions") or {}).get(question_id)),
         "completed": completed,
         "score_total": total,
         "streak": displayed_streak(stats, day),
     }
 
 
-def _record_stats(tx, db, day: str, question_id: str, score: int, position: int, day_total: int | None) -> None:
+def _record_stats(tx, db, day: str, question_id: str, score: int, day_total: int | None) -> None:
     """Agrégats du tableau de bord (incréments atomiques, aucune lecture nécessaire)."""
     inc = firestore.Increment
     per_question = {"sum": inc(score), "count": inc(1), "correct": inc(1 if score >= 100 else 0)}
     daily: dict = {"date": day, "questions": {question_id: per_question}}
-    if position == 0:
-        daily["started"] = inc(1)
     if day_total is not None:
         daily["completed"] = inc(1)
         daily["score_sum"] = inc(day_total)
@@ -233,12 +250,25 @@ def day_detail(db, uid: str, day: str) -> dict:
     if not attempt.get("completed_at"):
         raise ApiError(409, "Ce quiz n'est pas encore terminé.")
     qs = bank.by_id(db)
+    daily = db.collection(col.DAILY_STATS).document(day).get().to_dict() or {}
+    per_question = daily.get("questions") or {}
     items = [
-        {**bank.public_view(qs[a["question_id"]], a["position"]), **bank.reveal(qs[a["question_id"]]), **_answer_view(a)}
+        {
+            **bank.public_view(qs[a["question_id"]], a["position"]),
+            **bank.reveal(qs[a["question_id"]]),
+            **_answer_view(a),
+            "community": question_community(per_question.get(a["question_id"])),
+        }
         for a in attempt["answers"]
         if a["question_id"] in qs
     ]
-    return {"date": day, "score_total": attempt["score_total"], "completed_at": attempt["completed_at"], "items": items}
+    return {
+        "date": day,
+        "score_total": attempt["score_total"],
+        "completed_at": attempt["completed_at"],
+        "community": day_community(daily, attempt["score_total"]),
+        "items": items,
+    }
 
 
 def list_attempts(db, uid: str) -> list[dict]:

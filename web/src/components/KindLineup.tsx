@@ -14,7 +14,7 @@ export function KindLineup({ questions, scores }: { questions: Pick<PublicQuesti
           <li
             key={i}
             title={played ? `${info.label} : ${score}/100` : info.label}
-            className="flex aspect-square flex-col items-center justify-center rounded-2xl text-2xl transition"
+            className="flex aspect-square flex-col items-center justify-center rounded-xl border border-ink/10 text-2xl transition"
             style={
               played
                 ? { backgroundColor: `${COLOR_HEX[scoreColor(score)]}26`, boxShadow: `inset 0 0 0 2px ${COLOR_HEX[scoreColor(score)]}` }

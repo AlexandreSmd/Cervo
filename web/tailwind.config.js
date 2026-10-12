@@ -20,6 +20,10 @@ export default {
         sans: ['"DM Sans Variable"', "system-ui", "sans-serif"],
       },
       maxWidth: { app: "520px", admin: "1320px" },
+      // Ombre « imprimée » : un aplat d'encre décalé, pas de flou.
+      boxShadow: { hard: "3px 3px 0 0 rgb(var(--ink))", "hard-sm": "2px 2px 0 0 rgb(var(--ink))" },
+      // Coins moins ronds que la moyenne des applis : plus net, plus « papier ».
+      borderRadius: { lg: "10px", xl: "12px", "2xl": "16px", "3xl": "20px" },
     },
   },
   plugins: [],

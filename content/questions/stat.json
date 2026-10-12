@@ -1,35 +1,35 @@
 [
   {
-    "id": "stat-001",
+    "id": "stat-101",
     "type": "percent",
     "category": "stat",
     "difficulty": 1,
-    "prompt": "Quelle part de la surface de la Terre est recouverte par les océans ?",
-    "correct_answer": 71,
-    "explanation": "Environ 71 % de la surface de la Terre est couverte d'océans, soit 361 millions de km². Le Pacifique, à lui seul, est plus vaste que toutes les terres émergées réunies.",
-    "source_url": "https://www.noaa.gov/ocean",
+    "prompt": "Quelle part de l'eau présente sur Terre est de l'eau douce ?",
+    "correct_answer": 2.5,
+    "explanation": "Seulement 2,5 % de l'eau de la planète est douce, et les deux tiers de cette eau sont bloqués dans les glaciers et les calottes polaires.",
+    "source_url": "https://www.usgs.gov/special-topics/water-science-school/science/how-much-water-there-earth",
     "status": "published"
   },
   {
-    "id": "stat-002",
+    "id": "stat-102",
     "type": "percent",
     "category": "stat",
     "difficulty": 2,
-    "prompt": "Quelle part de la population mondiale est gauchère ?",
-    "correct_answer": 10,
-    "explanation": "Environ 10 % des humains sont gauchers, une proportion étonnamment stable à travers les pays et même les époques. Les hommes le sont un peu plus souvent que les femmes.",
-    "source_url": "https://doi.org/10.1037/bul0000229",
+    "prompt": "Quelle part de la population mondiale vit en Asie ?",
+    "correct_answer": 59,
+    "explanation": "Environ 59 % des humains vivent en Asie, soit près de 4,8 milliards de personnes. L'Inde et la Chine en rassemblent à elles seules plus d'un tiers de l'humanité.",
+    "source_url": "https://population.un.org/wpp/",
     "status": "published"
   },
   {
-    "id": "stat-003",
+    "id": "stat-103",
     "type": "percent",
     "category": "stat",
     "difficulty": 3,
-    "prompt": "Quelle part de la population mondiale vit dans l'hémisphère Nord ?",
-    "correct_answer": 88,
-    "explanation": "Environ 88 % des humains vivent au nord de l'équateur. C'est là que se trouvent les deux tiers des terres émergées, ainsi que la Chine, l'Inde, l'Europe et l'Amérique du Nord.",
-    "source_url": "https://bigthink.com/strange-maps/hemispheres-population/",
+    "prompt": "Parmi tous les humains qui ont vécu depuis l'apparition de notre espèce, quelle part est vivante aujourd'hui ?",
+    "correct_answer": 7,
+    "explanation": "Environ 117 milliards d'humains seraient nés depuis l'apparition d'Homo sapiens, d'après le Population Reference Bureau. Les 8 milliards de vivants en représentent donc à peu près 7 %.",
+    "source_url": "https://www.prb.org/articles/how-many-people-have-ever-lived-on-earth/",
     "status": "published"
   }
 ]

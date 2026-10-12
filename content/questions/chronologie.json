@@ -1,69 +1,69 @@
 [
   {
-    "id": "chronologie-001",
+    "id": "chronologie-101",
     "type": "order",
     "category": "chronologie",
     "difficulty": 1,
-    "prompt": "Quatre moments clés de l'histoire : remets-les dans l'ordre.",
+    "prompt": "Quatre inventions qui ont changé le monde : remets-les dans l'ordre.",
     "correct_answer": [
-      "Les premiers Jeux olympiques antiques",
       "L'imprimerie de Gutenberg",
-      "La Révolution française",
-      "Le premier pas sur la Lune"
+      "La première photographie",
+      "Le premier vol motorisé",
+      "La découverte de la pénicilline"
     ],
     "order_details": [
-      "776 av. J.-C.",
       "vers 1450",
-      "1789",
-      "1969"
+      "vers 1827",
+      "1903",
+      "1928"
     ],
-    "explanation": "Près de 2 750 ans séparent les premiers Jeux d'Olympie (776 av. J.-C.) des premiers pas de Neil Armstrong sur la Lune (1969).",
+    "explanation": "Gutenberg imprime vers 1450. Niépce prend la première photographie connue vers 1827. Les frères Wright volent en 1903, et Fleming découvre la pénicilline en 1928.",
     "status": "published"
   },
   {
-    "id": "chronologie-002",
+    "id": "chronologie-102",
     "type": "order",
     "category": "chronologie",
     "difficulty": 2,
-    "prompt": "Ces objets du quotidien : lequel est apparu en premier ?",
+    "prompt": "Cinq inventions en à peine 35 ans : retrouve leur ordre.",
     "correct_answer": [
-      "Le papier",
-      "Les lunettes de vue",
-      "La boîte de conserve",
-      "Le timbre-poste",
-      "Le jean"
+      "Le téléphone de Bell",
+      "L'ampoule d'Edison",
+      "La tour Eiffel",
+      "La découverte des rayons X",
+      "La traversée de la Manche par Blériot"
     ],
     "order_details": [
-      "vers 105, en Chine",
-      "vers 1285, en Italie",
-      "1810",
-      "1840",
-      "1873"
+      "1876",
+      "1879",
+      "1889",
+      "1895",
+      "1909"
     ],
-    "explanation": "Le papier (vers 105, attribué à Cai Lun) précède de loin les lunettes (Italie, vers 1285). Puis tout s'accélère : la conserve (1810), le premier timbre, le Penny Black (1840), et le jean riveté de Levi Strauss et Jacob Davis (1873).",
+    "explanation": "Bell dépose son brevet en 1876, Edison présente son ampoule en 1879, la tour Eiffel est inaugurée en 1889, Röntgen découvre les rayons X en 1895, et Blériot traverse la Manche en 1909.",
     "status": "published"
   },
   {
-    "id": "chronologie-003",
+    "id": "chronologie-103",
     "type": "order",
     "category": "chronologie",
     "difficulty": 3,
-    "prompt": "Attention aux idées reçues : remets ces repères dans l'ordre.",
+    "prompt": "Attention, piège : du plus ancien au plus récent.",
     "correct_answer": [
-      "La pyramide de Khéops",
-      "La disparition des derniers mammouths",
-      "Le règne de Cléopâtre",
-      "Les premiers cours à Oxford",
-      "La fondation de la capitale aztèque"
+      "Le premier brevet de fax",
+      "La découverte de Neptune",
+      "Le premier métro, à Londres",
+      "La fin de la guerre de Sécession",
+      "La création de Nintendo"
     ],
     "order_details": [
-      "vers 2560 av. J.-C.",
-      "vers 2000 av. J.-C.",
-      "51 à 30 av. J.-C.",
-      "1096",
-      "1325"
+      "1843",
+      "1846",
+      "1863",
+      "1865",
+      "1889"
     ],
-    "explanation": "Des mammouths vivaient encore sur l'île Wrangel quand la pyramide de Khéops était déjà construite. Cléopâtre a vécu plus près de nous que de Khéops. Et Oxford enseignait déjà depuis plus de deux siècles quand les Aztèques ont fondé Tenochtitlan.",
+    "explanation": "Le fax a été breveté par Alexander Bain en 1843, avant même la découverte de Neptune (1846). Le métro de Londres ouvre en 1863, la guerre de Sécession s'achève en 1865 et Nintendo naît en 1889, comme fabricant de cartes à jouer.",
     "status": "published"
   }
 ]

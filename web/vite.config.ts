@@ -1,11 +1,22 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
+
+/** Adresse publique du site dans index.html (aperçu des liens partagés : il faut une URL absolue). */
+function publicUrl(): Plugin {
+  return {
+    name: "vif-public-url",
+    transformIndexHtml(html, ctx) {
+      const env = loadEnv(ctx.server ? "development" : "production", "..", "VITE_");
+      return html.replaceAll("__PUBLIC_URL__", process.env.VITE_PUBLIC_URL || env.VITE_PUBLIC_URL || "");
+    },
+  };
+}
 
 // Un seul .env.local à la racine du dépôt, partagé avec l'API.
 export default defineConfig({
   envDir: "..",
-  plugins: [react()],
+  plugins: [react(), publicUrl()],
   build: {
     rollupOptions: {
       output: {

@@ -71,7 +71,11 @@ export function Feedback({
 
   return (
     <div className="animate-rise space-y-4" data-testid="feedback">
-      <div className={`flex items-center gap-4 rounded-3xl ${v.bg} p-5 text-white`} role="status" aria-live="polite">
+      <div
+        className={`flex items-center gap-4 rounded-2xl border-2 border-ink ${v.bg} p-5 text-white shadow-hard`}
+        role="status"
+        aria-live="polite"
+      >
         <span
           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 text-2xl font-extrabold"
           aria-hidden="true"
@@ -88,6 +92,14 @@ export function Feedback({
           <span className="text-xs font-semibold opacity-80">points</span>
         </span>
       </div>
+
+      {result.community && (
+        <p className="text-center text-sm text-muted" data-testid="community">
+          {["binary", "mcq", "short_text", "riddle"].includes(question.type)
+            ? `${result.community.success} % des joueurs ont trouvé`
+            : `Les autres joueurs : ${result.community.average} points en moyenne`}
+        </p>
+      )}
 
       {typed ??
         (!perfect && (
@@ -106,15 +118,15 @@ export function Feedback({
 
       {result.explanation &&
         (isFact ? (
-          <div className="rounded-2xl bg-accent/10 p-4" data-testid="did-you-know">
+          <div className="rounded-xl border-l-4 border-accent bg-accent/10 px-4 py-3" data-testid="did-you-know">
             <p className="mb-1 text-xs font-bold uppercase tracking-wider text-accent">Le savais-tu ?</p>
             <p className="text-[16px] leading-relaxed">{result.explanation}</p>
           </div>
         ) : (
-          <p className="rounded-2xl bg-ink/5 p-4 text-[15px] leading-relaxed">
-            <span aria-hidden="true">💡 </span>
-            {result.explanation}
-          </p>
+          <div className="rounded-xl border-l-4 border-ink bg-ink/[0.04] px-4 py-3">
+            <p className="label mb-1">Pourquoi</p>
+            <p className="text-[15px] leading-relaxed">{result.explanation}</p>
+          </div>
         ))}
       {result.source_url && (
         <a href={result.source_url} target="_blank" rel="noreferrer" className="block text-center text-xs text-muted underline">

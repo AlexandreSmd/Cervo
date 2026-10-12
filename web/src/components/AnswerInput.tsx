@@ -21,7 +21,10 @@ interface Props {
   disabled: boolean;
   /** Le chrono est fini : on envoie ce qui a été saisi (ou rien). */
   expired?: boolean;
-  onSubmit: (answer: Answer | null) => void;
+  /** Envoie la réponse ; `false` si elle n'a pas été enregistrée (le joueur peut renvoyer). */
+  onSubmit: (answer: Answer | null) => Promise<boolean> | void;
+  /** Réponse en cours d'envoi (le bouton l'indique). */
+  submitting?: boolean;
   /** Devinette : demande l'indice suivant au serveur. */
   onClue?: () => Promise<void>;
 }
@@ -38,7 +41,7 @@ const MISSING: Partial<Record<Q["type"], string>> = {
 };
 
 /** Saisie adaptée à la mécanique de réponse de la question. */
-export function AnswerInput({ question, disabled, expired = false, onSubmit, onClue }: Props) {
+export function AnswerInput({ question, disabled, expired = false, onSubmit, submitting = false, onClue }: Props) {
   // Saisie au clavier (texte, nombre, dictée, rappel, devinette) et valeur choisie (le reste).
   const [raw, setRaw] = useState("");
   const [value, setValue] = useState<Answer | null>(null);
@@ -91,7 +94,10 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, onC
   const send = (answer: Answer | null) => {
     if (sent.current) return;
     sent.current = true;
-    onSubmit(answer);
+    // Échec d'envoi (réseau…) : on peut renvoyer, au lieu de rester bloqué sur la question.
+    Promise.resolve(onSubmit(answer)).then((ok) => {
+      if (ok === false) sent.current = false;
+    });
   };
 
   useEffect(() => {
@@ -221,7 +227,7 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, onC
         </p>
       )}
       <button type="submit" className="btn-dark w-full text-lg" disabled={disabled}>
-        Valider
+        {submitting ? "Vérification…" : "Valider"}
       </button>
     </form>
   );

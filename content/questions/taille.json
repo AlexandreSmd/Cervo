@@ -1,71 +1,71 @@
 [
   {
-    "id": "taille-001",
+    "id": "taille-101",
     "type": "size",
     "category": "taille",
     "difficulty": 1,
-    "prompt": "Ajuste la balle de tennis par rapport au ballon de football (diamètre).",
+    "prompt": "Ajuste l'altitude du mont Everest par rapport à la hauteur de la Burj Khalifa.",
     "size_config": {
       "reference": {
-        "label": "Ballon de foot",
-        "emoji": "⚽"
+        "label": "Burj Khalifa",
+        "emoji": "🏙️"
       },
       "target": {
-        "label": "Balle de tennis",
-        "emoji": "🟡"
+        "label": "Everest",
+        "emoji": "🏔️"
       },
-      "min": 0.1,
-      "max": 2
+      "min": 1,
+      "max": 100
     },
-    "correct_answer": 0.3,
-    "explanation": "Une balle de tennis mesure environ 6,7 cm de diamètre, un ballon de football (taille 5) environ 22 cm : la balle fait à peu près 0,3 fois le ballon.",
-    "source_url": "https://www.itftennis.com/en/about-us/governance/rules-and-regulations/",
+    "correct_answer": 10.7,
+    "explanation": "La Burj Khalifa, plus haute tour du monde, mesure 828 m. Le sommet de l'Everest culmine à 8 849 m au-dessus du niveau de la mer : 10,7 fois plus.",
+    "source_url": "https://www.burjkhalifa.ae/en/the-tower/facts-figures/",
     "status": "published"
   },
   {
-    "id": "taille-002",
+    "id": "taille-102",
     "type": "size",
     "category": "taille",
     "difficulty": 2,
-    "prompt": "Ajuste la Lune par rapport à la Terre (diamètre).",
+    "prompt": "Ajuste Saturne (sans ses anneaux) par rapport à la Terre (diamètre).",
     "size_config": {
       "reference": {
         "label": "Terre",
         "emoji": "🌍"
       },
       "target": {
-        "label": "Lune",
-        "emoji": "🌕"
+        "label": "Saturne",
+        "emoji": "🪐"
       },
-      "min": 0.05,
-      "max": 2
+      "min": 1,
+      "max": 100
     },
-    "correct_answer": 0.27,
-    "explanation": "La Lune mesure 3 474 km de diamètre, la Terre 12 742 km : 0,27 fois. Il faudrait environ 3,7 Lunes alignées pour traverser la Terre.",
-    "source_url": "https://science.nasa.gov/moon/facts/",
+    "correct_answer": 9.1,
+    "explanation": "Saturne mesure 116 460 km de diamètre à l'équateur, la Terre 12 742 km : 9,1 fois plus. Avec ses anneaux, elle ferait plus de 21 Terres de large.",
+    "source_url": "https://science.nasa.gov/saturn/facts/",
     "status": "published"
   },
   {
-    "id": "taille-003",
+    "id": "taille-103",
     "type": "size",
     "category": "taille",
     "difficulty": 3,
-    "prompt": "Ajuste la statue de la Liberté (socle compris) par rapport à la tour Eiffel (hauteur).",
+    "prompt": "Ajuste le Soleil par rapport à la Terre (diamètre).",
     "size_config": {
       "reference": {
-        "label": "Tour Eiffel",
-        "emoji": "🗼"
+        "label": "Terre",
+        "emoji": "🌍"
       },
       "target": {
-        "label": "Statue de la Liberté",
-        "emoji": "🗽"
+        "label": "Soleil",
+        "emoji": "☀️"
       },
-      "min": 0.05,
-      "max": 2
+      "min": 1,
+      "max": 1000
     },
-    "correct_answer": 0.28,
-    "explanation": "La statue de la Liberté mesure 93 m du sol à la flamme (46 m sans son socle). La tour Eiffel culmine à 330 m avec ses antennes : la statue fait 0,28 fois la tour.",
-    "source_url": "https://www.toureiffel.paris/fr/le-monument/chiffres-cles",
+    "correct_answer": 109,
+    "explanation": "Le Soleil mesure 1,39 million de km de diamètre, 109 fois la Terre. En volume, on pourrait y loger environ 1,3 million de Terres.",
+    "source_url": "https://science.nasa.gov/sun/facts/",
     "status": "published"
   }
 ]

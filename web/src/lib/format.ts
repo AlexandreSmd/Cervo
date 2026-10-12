@@ -16,7 +16,7 @@ export function formatNumber(value: number): string {
 }
 
 export function formatAnswer(value: Answer | null | undefined, type: QuestionType, unit?: string | null): string {
-  if (value === null || value === undefined || value === "") return "—";
+  if (value === null || value === undefined || value === "") return "-";
   if (Array.isArray(value)) return value.join(type === "recall" ? " · " : " → ");
   if (type === "percent") {
     const n = typeof value === "number" ? value : Number(String(value).replace(",", "."));

@@ -65,7 +65,11 @@ def list_questions():
         reports[qid] = reports.get(qid, 0) + 1
     rates = insights.question_rates(client)
     used = planning.usage(client)
-    items = sorted(bank.all_questions(client, force=True), key=lambda q: q.get("created_at") or "", reverse=True)
+    items = sorted(
+        (q for q in bank.all_questions(client, force=True) if q.get("status") != "deleted"),
+        key=lambda q: q.get("created_at") or "",
+        reverse=True,
+    )
     legacy = ("image_url", "image_alt", "image_credit")
     return {
         "questions": [
@@ -130,6 +134,12 @@ def set_status(question_id: str, body: StatusIn):
     ref.update({"status": body.status})
     bank.bump_version(db())
     return {"id": question_id, "status": body.status}
+
+
+@router.delete("/questions/{question_id}")
+def delete_question(question_id: str):
+    """Supprime à jamais ; remplace la question aujourd'hui et dans les jours planifiés."""
+    return planning.delete_question(db(), question_id, today())
 
 
 @router.get("/reports")

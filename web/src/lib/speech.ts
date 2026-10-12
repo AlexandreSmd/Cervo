@@ -20,7 +20,11 @@ function frenchVoice(): SpeechSynthesisVoice | undefined {
   return voices.find((v) => v.lang === "fr-FR" && v.localService) ?? voices.find((v) => v.lang.startsWith("fr"));
 }
 
-/** Lit `text` à la vitesse `rate` ; `onEnd` est appelé à la fin (ou à l'interruption). */
+// Lecture en cours. Gardée en mémoire : sinon certains navigateurs (Chrome, Safari) la libèrent
+// et n'annoncent jamais sa fin ; et les fins d'anciennes lectures interrompues sont ignorées.
+let current: SpeechSynthesisUtterance | null = null;
+
+/** Lit `text` à la vitesse `rate` ; `onEnd` est appelé à la fin de CETTE lecture. */
 export function speak(text: string, rate: number, onEnd: () => void): void {
   if (!speechSupported()) return;
   window.speechSynthesis.cancel();
@@ -29,11 +33,19 @@ export function speak(text: string, rate: number, onEnd: () => void): void {
   utterance.rate = rate;
   const voice = frenchVoice();
   if (voice) utterance.voice = voice;
-  utterance.onend = onEnd;
-  utterance.onerror = onEnd;
+  const done = () => {
+    if (current === utterance) {
+      current = null;
+      onEnd();
+    }
+  };
+  utterance.onend = done;
+  utterance.onerror = done;
+  current = utterance;
   window.speechSynthesis.speak(utterance);
 }
 
 export function stopSpeaking(): void {
+  current = null;
   if (speechSupported()) window.speechSynthesis.cancel();
 }

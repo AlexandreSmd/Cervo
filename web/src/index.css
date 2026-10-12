@@ -5,24 +5,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design sobre façon néobanque : fond gris très clair, cartes blanches, gros chiffres. */
+/*
+ * Vif : un cahier de jeux, pas une néobanque.
+ * Papier chaud, encre presque noire, traits nets, ombres « imprimées » décalées.
+ * Une seule couleur d'action (le violet du logo) ; les couleurs vives sont réservées
+ * aux 10 types et aux scores. Les éléments qu'on touche ont du relief et s'enfoncent au clic.
+ */
 :root {
-  --bg: 244 245 248;
-  --card: 255 255 255;
-  --ink: 17 19 34;
-  --muted: 112 116 140;
-  --line: 230 232 240;
+  --bg: 243 239 230;
+  --card: 255 253 248;
+  --ink: 23 21 18;
+  --muted: 112 106 96;
+  --line: 226 220 207;
   --accent: 91 75 255;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: 0 0 0;
-    --card: 22 23 30;
-    --ink: 240 241 248;
-    --muted: 150 154 178;
-    --line: 42 44 58;
-    --accent: 138 126 255;
+    --bg: 18 17 15;
+    --card: 30 28 25;
+    --ink: 242 238 230;
+    --muted: 160 154 142;
+    --line: 56 52 46;
+    --accent: 150 140 255;
     color-scheme: dark;
   }
 }
@@ -32,46 +37,55 @@ html {
 body {
   @apply bg-bg font-sans text-ink antialiased;
   min-height: 100vh;
+  font-feature-settings: "ss01", "tnum";
 }
 h1,
 h2,
 h3 {
   @apply font-display;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
 }
 
 @layer components {
+  /* Surfaces : une carte simple (trait fin), une carte « à jouer » (trait d'encre + ombre décalée). */
   .card {
-    @apply rounded-[28px] bg-card;
+    @apply rounded-2xl border border-line bg-card;
   }
+  .card-strong {
+    @apply rounded-2xl border-2 border-ink bg-card shadow-hard;
+  }
+  /* Boutons : relief imprimé, ils s'enfoncent quand on appuie. */
   .btn {
-    @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full px-6 font-semibold transition
-    focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-6 font-bold transition-[transform,box-shadow,background-color]
+    duration-100 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/40 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-raised {
+    @apply border-2 border-ink shadow-hard active:translate-x-[3px] active:translate-y-[3px] active:shadow-none disabled:active:translate-x-0 disabled:active:translate-y-0;
   }
   .btn-primary {
-    @apply btn bg-accent text-white;
+    @apply btn btn-raised bg-accent text-white;
   }
   .btn-dark {
-    @apply btn bg-ink text-bg;
+    @apply btn btn-raised bg-ink text-bg;
   }
   .btn-ghost {
-    @apply btn bg-ink/5 text-ink hover:bg-ink/10;
+    @apply btn border-2 border-ink/15 bg-card text-ink hover:border-ink/40;
   }
   .btn-sm {
-    @apply min-h-[36px] px-4 text-sm;
+    @apply min-h-[36px] rounded-lg px-4 text-sm;
   }
   .input {
-    @apply w-full rounded-2xl border-0 bg-ink/5 px-4 py-3.5 text-lg text-ink placeholder:text-muted/70
-    focus:outline-none focus:ring-2 focus:ring-accent;
+    @apply w-full rounded-xl border-2 border-ink/15 bg-card px-4 py-3.5 text-lg text-ink placeholder:text-muted/70
+    focus:border-ink focus:outline-none;
   }
   .label {
-    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted;
+    @apply mb-1.5 block text-[11px] font-bold uppercase tracking-[0.12em] text-muted;
   }
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full bg-ink/5 px-3 py-1 text-xs font-semibold;
+    @apply inline-flex items-center gap-1 rounded-md border border-ink/10 bg-card px-2.5 py-1 text-xs font-semibold;
   }
   .link {
-    @apply font-semibold text-accent underline-offset-4 hover:underline;
+    @apply font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4;
   }
 }
 

@@ -44,7 +44,7 @@ export function PercentReveal({ truth, given }: { truth: number; given: Answer |
           <p className="text-xs font-semibold text-muted">réalité</p>
         </div>
         <div>
-          <p className="font-display text-2xl font-extrabold text-muted">{mine === null ? "—" : `${formatNumber(mine)} %`}</p>
+          <p className="font-display text-2xl font-extrabold text-muted">{mine === null ? "-" : `${formatNumber(mine)} %`}</p>
           <p className="text-xs font-semibold text-muted">toi</p>
         </div>
       </div>
