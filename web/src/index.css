@@ -126,3 +126,47 @@ h3 {
 .animate-rise {
   animation: rise 0.25s ease-out both;
 }
+
+/* Intro (première visite) : chaque élément arrive à son tour (délai donné en ligne). */
+@keyframes intro-in {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.intro-in {
+  animation: intro-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.intro-pop {
+  animation: pop 0.35s ease-out both;
+}
+@keyframes intro-underline {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.intro-underline {
+  transform-origin: left;
+  animation: intro-underline 0.45s ease-out both;
+  z-index: -1;
+}
+@keyframes intro-bar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+.intro-bar {
+  animation-name: intro-bar;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}

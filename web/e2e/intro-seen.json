@@ -1,0 +1,4 @@
+{
+  "cookies": [],
+  "origins": [{ "origin": "http://localhost:5173", "localStorage": [{ "name": "vif-intro-seen", "value": "1" }] }]
+}

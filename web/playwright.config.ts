@@ -11,6 +11,8 @@ export default defineConfig({
   reporter: [["list"]],
   use: {
     baseURL: "http://localhost:5173",
+    // L'intro de première visite est déjà vue (elle a son propre test : intro.spec.ts).
+    storageState: "e2e/intro-seen.json",
     trace: "retain-on-failure",
     locale: "fr-FR",
     timezoneId: "Europe/Paris",
