@@ -49,10 +49,11 @@ def client():
     from fastapi.testclient import TestClient
 
     from cervo.main import app
-    from cervo.services import bank
+    from cervo.services import bank, quiz
     from cervo.tools.seed import seed
 
     bank.invalidate_cache()
+    quiz.invalidate_cache()
     assert seed() >= 120
     return TestClient(app)
 
@@ -123,6 +124,19 @@ def test_full_day_flow(client):
     assert profile["days_played"] == 1 and profile["is_anonymous"] is True
     days = client.get("/api/profile/days", headers=h(token)).json()["days"]
     assert days[0]["date"] == today["date"] and len(days[0]["answers"]) == 10
+
+
+def test_answer_creates_profile(client):
+    """Répondre sans être passé par /today crée quand même un profil complet (même transaction)."""
+    token = anon_token()
+    q = client.get("/api/today", headers=h(anon_token())).json()["questions"][0]
+    day = client.get("/api/health").json()["today"]
+    res = client.post("/api/answer", headers=h(token), json={"date": day, "question_id": q["id"], "answer": answer_for(q)})
+    assert res.status_code == 200, res.text
+    profile = client.get("/api/profile", headers=h(token)).json()
+    assert profile["username"].startswith("Vif-") and profile["is_anonymous"] is True
+    state = client.get("/api/today", headers=h(token)).json()
+    assert len(state["answers"]) == 1
 
 
 def test_wrong_date_rejected(client):

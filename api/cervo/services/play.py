@@ -19,7 +19,7 @@ from ..domain.stats import apply_answer, apply_completion, displayed_streak, emp
 from ..errors import ApiError
 from . import bank, quiz
 from . import collections as col
-from .users import user_ref
+from .users import new_user_doc, user_ref
 
 
 def attempt_ref(db, uid: str, day: str):
@@ -40,11 +40,18 @@ def _answer_view(ans: dict) -> dict:
     }
 
 
-def today_state(db, uid: str, day: str, user: dict) -> dict:
+def read_user_and_attempt(db, uid: str, day: str):
+    """Profil et participation du jour en une seule lecture groupée (un aller-retour réseau)."""
+    u_ref, a_ref = user_ref(db, uid), attempt_ref(db, uid, day)
+    snaps = {s.reference.path: s for s in db.get_all([u_ref, a_ref])}
+    return snaps[u_ref.path], snaps[a_ref.path]
+
+
+def today_state(db, uid: str, day: str, user: dict, attempt_snap=None) -> dict:
     """Tout ce qu'il faut pour afficher (ou reprendre) le quiz du jour."""
     ids = quiz.question_ids(db, day)
     qs = bank.by_id(db)
-    snap = attempt_ref(db, uid, day).get()
+    snap = attempt_snap if attempt_snap is not None else attempt_ref(db, uid, day).get()
     attempt = snap.to_dict() if snap.exists else {}
     answers = [
         {**_answer_view(a), **(bank.reveal(qs[a["question_id"]]) if a["question_id"] in qs else {})} for a in attempt.get("answers", [])
@@ -86,12 +93,14 @@ def start_question(db, uid: str, day: str, question_id: str) -> dict:
     return {**run(db.transaction()), "server_time": now_iso()}
 
 
-def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
+def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
     """Valide une réponse : score, révélation, agrégats du joueur et du tableau de bord.
 
     Tout est écrit dans une seule transaction : participation, profil et statistiques
-    restent cohérents même si le joueur valide deux fois très vite.
+    restent cohérents même si le joueur valide deux fois très vite. Le profil est créé
+    dans la même transaction s'il n'existe pas encore (aucune lecture préalable).
     """
+    uid = claims["uid"]
     ids = quiz.question_ids(db, day)
     if question_id not in ids:
         raise ApiError(400, "Cette question ne fait pas partie du quiz du jour.")
@@ -103,8 +112,8 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
 
     @firestore.transactional
     def run(tx):
-        a_snap = a_ref.get(transaction=tx)
-        u_snap = u_ref.get(transaction=tx)
+        snaps = {s.reference.path: s for s in tx.get_all([a_ref, u_ref])}
+        a_snap, u_snap = snaps[a_ref.path], snaps[u_ref.path]
         attempt = a_snap.to_dict() if a_snap.exists else _new_attempt(day, ids)
         answers = list(attempt.get("answers", []))
         position = len(answers)
@@ -131,7 +140,8 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
         )
         attempt["answers"] = answers
 
-        stats = apply_answer(u_snap.to_dict() or empty_stats(), question, score)
+        profile = u_snap.to_dict() if u_snap.exists else None
+        stats = apply_answer(profile or empty_stats(), question, score)
         completed = len(answers) == QUIZ_SIZE
         if completed:
             attempt["score_total"] = day_score([a["score"] for a in answers])
@@ -139,7 +149,12 @@ def submit_answer(db, uid: str, day: str, question_id: str, answer) -> dict:
             stats = apply_completion(stats, day, attempt["score_total"])
 
         tx.set(a_ref, attempt)
-        tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
+        if profile is None:  # premier passage de ce joueur : profil complet + pseudo réservé
+            doc = new_user_doc(claims)
+            tx.set(db.collection(col.USERNAMES).document(doc["username_lower"]), {"uid": uid})
+            tx.set(u_ref, {**doc, **{k: stats[k] for k in empty_stats()}})
+        else:
+            tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
         _record_stats(tx, db, day, question_id, score, position, attempt["score_total"] if completed else None)
         return score, position, completed, attempt.get("score_total"), stats, timed_out
 

@@ -3,7 +3,7 @@ import { useAuth } from "../lib/auth";
 
 export function Loading({ label = "Chargement…" }: { label?: string }) {
   const { error } = useAuth();
-  if (error) return <ErrorBox message={error} />;
+  if (error) return <ErrorBox message={error} onRetry={() => window.location.reload()} />;
   return (
     <div className="flex flex-col items-center gap-4 py-16 text-muted" role="status">
       <div className="flex gap-1.5">

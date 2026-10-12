@@ -128,7 +128,7 @@ def regenerate_day(db, day: str, today: str) -> list[str]:
 
 def clear_day(db, day: str, today: str) -> None:
     ensure_editable(db, day, today)
-    db.collection(col.DAILY_QUIZZES).document(day).delete()
+    quiz.delete_day(db, day)
 
 
 def fill(db, today: str, count: int) -> list[str]:
@@ -142,6 +142,7 @@ def fill(db, today: str, count: int) -> list[str]:
         db.collection(col.DAILY_QUIZZES).document(day).set({"question_ids": ids, "created_at": now_iso(), "source": "auto"})
         planned[day] = ids
         created.append(day)
+    quiz.invalidate_cache()
     return created
 
 

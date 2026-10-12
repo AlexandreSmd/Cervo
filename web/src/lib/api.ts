@@ -11,19 +11,39 @@ export class ApiError extends Error {
   }
 }
 
+// Une requête bloquée (réseau mobile capricieux) échoue au lieu de laisser l'écran en attente.
+const TIMEOUT_MS = 20_000;
+const NETWORK_ERROR = "Connexion impossible. Vérifie ton réseau, puis réessaie.";
+
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = await auth.currentUser?.getIdToken();
-  const res = await fetch(`/api${path}`, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(init.headers || {}),
-    },
-  });
-  const text = await res.text();
-  const data = text ? JSON.parse(text) : null;
-  if (!res.ok) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), TIMEOUT_MS);
+  let res: Response;
+  let text: string;
+  try {
+    res = await fetch(`/api${path}`, {
+      ...init,
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(init.headers || {}),
+      },
+    });
+    text = await res.text();
+  } catch {
+    throw new ApiError(0, NETWORK_ERROR); // hors ligne, délai dépassé, connexion coupée
+  } finally {
+    window.clearTimeout(timer);
+  }
+  let data = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    // réponse non JSON (page d'erreur d'un intermédiaire) : traitée comme une erreur serveur
+  }
+  if (!res.ok || (text && data === null)) {
     const detail = data?.detail;
     const message =
       typeof detail === "string"
@@ -31,9 +51,14 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
         : Array.isArray(detail)
           ? detail.map((d) => (typeof d === "string" ? d : d.msg)).join(" · ")
           : "Oups, quelque chose s'est mal passé. Réessaie dans un instant.";
-    throw new ApiError(res.status, message);
+    throw new ApiError(res.ok ? 502 : res.status, message);
   }
   return data as T;
+}
+
+/** Vaut-il la peine de réessayer ? Oui pour le réseau et les erreurs serveur, jamais pour un refus. */
+export function isTransient(error: unknown): boolean {
+  return !(error instanceof ApiError) || error.status === 0 || error.status >= 500;
 }
 
 const json = (body: unknown) => JSON.stringify(body);

@@ -8,11 +8,17 @@ Le secret Modal « vif-prod » fournit la configuration de production :
 Il est créé (ou mis à jour) par `npm run prod:deploy` à partir de secrets/firebase-admin.json.
 """
 
+import os
 from pathlib import Path
 
 import modal
 
 ROOT = Path(__file__).parent
+
+# Conteneurs gardés allumés en permanence (API_WARM_CONTAINERS dans .env.production).
+# 1 (défaut) : aucune attente au réveil, pour environ 5 $ par mois (couverts par les crédits
+# gratuits de Modal). 0 : gratuit, mais la première visite après une pause attend 3 à 6 s.
+WARM_CONTAINERS = int(os.environ.get("API_WARM_CONTAINERS") or 1)
 
 image = (
     modal.Image.debian_slim(python_version="3.12")
@@ -33,8 +39,8 @@ app = modal.App("vif-api", image=image)
 
 @app.function(
     secrets=[modal.Secret.from_name("vif-prod")],
-    # Aucun conteneur en veille (gratuit) : la première requête après une pause prend 2 à 4 s.
-    min_containers=0,
+    min_containers=WARM_CONTAINERS,
+    # Un conteneur supplémentaire (pic de joueurs) reste disponible 15 min après sa dernière requête.
     scaledown_window=15 * 60,
     timeout=60,
 )
@@ -42,5 +48,7 @@ app = modal.App("vif-api", image=image)
 @modal.asgi_app()
 def api():
     from cervo.main import app as fastapi_app
+    from cervo.warmup import warm_up_in_background
 
+    warm_up_in_background()
     return fastapi_app

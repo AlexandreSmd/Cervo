@@ -14,25 +14,39 @@ def user_ref(db, uid: str):
     return db.collection(col.USERS).document(uid)
 
 
-def ensure_user(db, claims: dict) -> dict:
-    """Profil du joueur, créé au besoin. Met à jour e-mail et statut invité après connexion."""
+def new_user_doc(claims: dict) -> dict:
+    """Profil initial d'un joueur (pseudo provisoire dérivé de son identifiant)."""
+    username = f"Vif-{claims['uid'][:5].upper()}"
+    return {
+        "username": username,
+        "username_lower": username.lower(),
+        "email": claims.get("email"),
+        "is_anonymous": _is_anonymous(claims),
+        "created_at": now_iso(),
+        **empty_stats(),
+    }
+
+
+def _is_anonymous(claims: dict) -> bool:
+    return claims.get("firebase", {}).get("sign_in_provider") == "anonymous"
+
+
+def ensure_user(db, claims: dict, snap=None) -> dict:
+    """Profil du joueur, créé au besoin. Met à jour e-mail et statut invité après connexion.
+
+    `snap` : instantané déjà lu (par exemple avec `get_all`), pour éviter une lecture de plus.
+    """
     uid = claims["uid"]
     ref = user_ref(db, uid)
-    snap = ref.get()
-    is_anonymous = claims.get("firebase", {}).get("sign_in_provider") == "anonymous"
+    snap = snap if snap is not None else ref.get()
+    is_anonymous = _is_anonymous(claims)
     email = claims.get("email")
     if not snap.exists:
-        username = f"Vif-{uid[:5].upper()}"
-        doc = {
-            "username": username,
-            "username_lower": username.lower(),
-            "email": email,
-            "is_anonymous": is_anonymous,
-            "created_at": now_iso(),
-            **empty_stats(),
-        }
-        ref.set(doc)
-        db.collection(col.USERNAMES).document(username.lower()).set({"uid": uid})
+        doc = new_user_doc(claims)
+        batch = db.batch()
+        batch.set(ref, doc)
+        batch.set(db.collection(col.USERNAMES).document(doc["username_lower"]), {"uid": uid})
+        batch.commit()
         return doc
     doc = snap.to_dict()
     if doc.get("is_anonymous") != is_anonymous or doc.get("email") != email:
