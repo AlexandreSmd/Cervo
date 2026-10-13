@@ -42,8 +42,11 @@ export function Results() {
             <p className="font-display text-7xl font-extrabold" style={{ color: COLOR_HEX[scoreColor(data.score_total)] }}>
               {data.score_total}
             </p>
+            <p className="font-display text-lg font-extrabold" data-testid="day-verdict">
+              {dayVerdict(data.score_total, scores)}
+            </p>
           </div>
-          {streak > 0 && <span className="chip bg-mid/15">🔥 {streak}</span>}
+          {streak > 0 && <span className="chip shrink-0 whitespace-nowrap bg-mid/15">🔥 {streak}</span>}
         </div>
         <Pearls scores={scores} size="lg" />
         <ShareCard
@@ -73,6 +76,16 @@ export function Results() {
       <DayItems items={data.items} />
     </div>
   );
+}
+
+/** Une phrase sur la journée, écrite comme un ami la dirait. */
+export function dayVerdict(total: number, scores: number[]): string {
+  const perfect = scores.filter((s) => s === 100).length;
+  if (total >= 90) return "Esprit affûté. Rien à redire.";
+  if (total >= 70) return `Très belle journée : ${perfect} sans faute.`;
+  if (total >= 50) return "Solide. Encore un effort sur les plus durs.";
+  if (perfect > 0) return `${perfect} sans faute, le reste viendra.`;
+  return "Journée difficile. Demain, revanche.";
 }
 
 /** Ta place parmi les joueurs du jour. */

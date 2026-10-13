@@ -251,3 +251,30 @@ La philosophie : des questions **intéressantes à jouer**, pas seulement de la 
   - le verdict vient à l'écran tout seul ;
   - la mémorisation dit ce qu'il faut retenir ;
   - en fin de quiz, une action principale (profil), la connexion en second, et le temps restant avant le prochain quiz.
+
+## Version 10 : 20 améliorations d'usage
+
+Pendant le quiz :
+1. **Correction sur les choix** : après un Vrai/Faux ou un QCM, les choix restent affichés, la bonne réponse en vert, la tienne en rouge si elle est fausse.
+2. **Clavier sur ordinateur** : 1 à 4 pour un QCM, V ou F pour Vrai/Faux. La touche est rappelée sur chaque choix (seulement sur les écrans avec souris).
+3. **Quitter pendant un chrono** : confirmation (« Le chrono continue sans toi »), pour ne pas perdre une question par erreur.
+4. **Fin du chrono** : le chiffre bat dans les 5 dernières secondes, avec un petit coup de vibreur.
+5. **Nombre lisible** : un grand nombre tapé d'un bloc est relu en clair sous le champ (« = 1 250 000, soit 1,25 million »).
+6. **« C'est bon, j'ai retenu »** : la mémorisation peut s'arrêter dès qu'on est prêt.
+7. **Dictée** : à la fin de la première écoute, le curseur attend dans la zone d'écriture.
+8. **Photos en grand** : toucher une photo l'ouvre en plein écran.
+9. **Points animés** : le score de la question défile jusqu'à sa valeur, l'icône du verdict apparaît en rebond.
+10. **Transition** : chaque nouvelle question glisse depuis la droite.
+11. **Classement** : quand il ne reste qu'un élément, sa place (la dernière) est montrée d'office.
+12. **Taps instantanés** : pas d'attente du double tap ni de flash gris au toucher (`touch-action: manipulation`).
+
+Autour du quiz :
+
+13. **Hors ligne** : un bandeau le dit, et disparaît au retour du réseau.
+14. **Chargements** : la forme de l'écran qui arrive, plutôt que trois points.
+15. **Pas de zoom forcé sur iPhone** : tous les champs joueur ont au moins 16 px.
+16. **Accueil** : durée annoncée (« ≈ 5 min », puis « encore 6 ») ; une fois joué, le temps avant le prochain quiz dans la carte et « Voir mes réponses ».
+17. **Réponses de la journée** : une flèche montre que chaque ligne s'ouvre, avec une phrase pour le dire.
+18. **Résultats** : une phrase sur la journée, sous le score (« Très belle journée : 6 sans faute. »).
+19. **Profil** : si le quiz du jour n'est pas fini, « Jouer le quiz du jour » (ou « Reprendre ») en premier.
+20. **Connexion** : ce qu'on y gagne (3 points), les étapes après l'envoi du lien, « Plus tard, je continue à jouer » ; plus de bouton « Se connecter » en double dans l'en-tête de cette page.

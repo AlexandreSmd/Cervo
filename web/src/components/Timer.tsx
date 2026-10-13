@@ -1,5 +1,5 @@
 // Chrono d'une question (démarré côté serveur, voir services/play.py).
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** Barre de chrono : se vide en `limit` secondes à partir de `startedAt` (heure serveur corrigée). */
 export function Timer({ startedAt, limit, onExpire, paused }: { startedAt: number; limit: number; onExpire: () => void; paused: boolean }) {
@@ -13,7 +13,18 @@ export function Timer({ startedAt, limit, onExpire, paused }: { startedAt: numbe
   useEffect(() => {
     if (!paused && left <= 0) onExpire();
   }, [left, paused, onExpire]);
-  const urgent = left <= 5;
+  const urgent = left <= 5 && left > 0;
+  // Un petit coup de vibreur quand il reste 5 secondes (Android ; ignoré ailleurs).
+  const warned = useRef(false);
+  useEffect(() => {
+    if (!urgent || paused || warned.current) return;
+    warned.current = true;
+    try {
+      navigator.vibrate?.(15);
+    } catch {
+      // pas de vibreur
+    }
+  }, [urgent, paused]);
   return (
     <div className="flex items-center gap-3" role="timer" aria-label={`${Math.ceil(left)} secondes restantes`} data-testid="timer">
       <div className="h-2 flex-1 overflow-hidden rounded-full bg-ink/10">
@@ -22,7 +33,9 @@ export function Timer({ startedAt, limit, onExpire, paused }: { startedAt: numbe
           style={{ width: `${(left / limit) * 100}%` }}
         />
       </div>
-      <span className={`w-8 text-right font-display text-lg font-extrabold tabular-nums ${urgent ? "text-bad" : ""}`}>
+      <span
+        className={`w-8 text-right font-display text-lg font-extrabold tabular-nums ${urgent && !paused ? "animate-urgent text-bad" : ""}`}
+      >
         {Math.ceil(left)}
       </span>
     </div>

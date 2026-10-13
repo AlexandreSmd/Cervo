@@ -13,8 +13,10 @@ export function OrderInput({
   return (
     <div className="space-y-2" aria-label="Classement">
       {items.map((item) => {
-        const rank = picked.indexOf(item);
-        const chosen = rank >= 0;
+        // Il n'en reste qu'un : sa place est forcément la dernière, on la montre d'office.
+        const last = !picked.includes(item) && picked.length === items.length - 1;
+        const rank = last ? items.length - 1 : picked.indexOf(item);
+        const chosen = picked.includes(item);
         return (
           <button
             key={item}
@@ -22,12 +24,12 @@ export function OrderInput({
             disabled={disabled}
             data-testid="order-item"
             onClick={() => onChange(chosen ? picked.filter((p) => p !== item) : [...picked, item])}
-            className={`flex min-h-[56px] w-full items-center gap-3 rounded-xl border-2 px-4 text-left text-base font-semibold transition ${chosen ? "border-ink bg-ink text-bg" : "border-ink/15 bg-card hover:border-ink/40"}`}
+            className={`flex min-h-[56px] w-full items-center gap-3 rounded-xl border-2 px-4 text-left text-base font-semibold transition ${chosen ? "border-ink bg-ink text-bg" : last ? "border-ink/40 bg-ink/[0.06]" : "border-ink/15 bg-card hover:border-ink/40"}`}
           >
             <span
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-extrabold ${chosen ? "bg-bg text-ink" : "border-2 border-dashed border-ink/25"}`}
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-extrabold ${chosen ? "bg-bg text-ink" : last ? "border-2 border-ink/40 text-muted" : "border-2 border-dashed border-ink/25"}`}
             >
-              {chosen ? rank + 1 : ""}
+              {chosen || last ? rank + 1 : ""}
             </span>
             {item}
           </button>

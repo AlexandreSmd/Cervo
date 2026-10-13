@@ -1,6 +1,17 @@
 // Zone de réponse : une saisie propre à chaque mécanique (voir components/answers/).
 import { useEffect, useRef, useState } from "react";
 import { parseNumberInput } from "../lib/format";
+
+const GROUPED = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 3 });
+const SPOKEN = new Intl.NumberFormat("fr-FR", { notation: "compact", compactDisplay: "long", maximumFractionDigits: 2 });
+
+/** Un grand nombre tapé d'un bloc, relu en clair : « 1250000 » → « 1 250 000, soit 1,25 million ». */
+export function readableNumber(raw: string): string | null {
+  const n = parseNumberInput(raw);
+  if (n === null || Math.abs(n) < 1000) return null;
+  const grouped = GROUPED.format(n);
+  return Math.abs(n) >= 1_000_000 ? `${grouped}, soit ${SPOKEN.format(n)}` : grouped;
+}
 import type { Answer, PublicQuestion } from "../lib/types";
 import { ChoiceInput } from "./answers/ChoiceInput";
 import { DictationInput } from "./answers/DictationInput";
@@ -260,6 +271,11 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, sub
             <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 font-semibold text-muted">{question.unit}</span>
           )}
         </div>
+      )}
+      {question.type === "numeric" && !question.slider && readableNumber(raw) && (
+        <p className="px-1 text-sm font-semibold text-muted" data-testid="readable-number">
+          = {readableNumber(raw)} {question.unit ?? ""}
+        </p>
       )}
 
       {error && (

@@ -1,5 +1,5 @@
 // Cadre de l'interface joueur : barre du haut, onglets en bas sur mobile.
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 import { APP_NAME } from "../lib/config";
@@ -57,6 +57,27 @@ export function Logo({ to = "/" }: { to?: string }) {
   );
 }
 
+/** Bandeau quand le téléphone perd le réseau (il disparaît dès le retour de la connexion). */
+function OfflineBanner() {
+  const [online, setOnline] = useState(() => navigator.onLine);
+  useEffect(() => {
+    const on = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener("online", on);
+    window.addEventListener("offline", off);
+    return () => {
+      window.removeEventListener("online", on);
+      window.removeEventListener("offline", off);
+    };
+  }, []);
+  if (online) return null;
+  return (
+    <div className="bg-ink px-5 py-2 text-center text-sm font-semibold text-bg" role="status" data-testid="offline">
+      Pas de réseau. Ta partie est gardée : reprends dès que la connexion revient.
+    </div>
+  );
+}
+
 const TABS = [
   { to: "/", label: "Jouer", icon: "M8 5.14v13.72a1 1 0 0 0 1.52.85l10.98-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z" },
   { to: "/profil", label: "Profil", icon: "M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.24-8 5v1h16v-1c0-2.76-3.6-5-8-5Z" },
@@ -65,7 +86,8 @@ const TABS = [
 /** Interface joueur : barre du haut minimale, onglets en bas sur mobile. */
 export function Layout({ children }: { children: ReactNode }) {
   // Pendant le quiz, pas d'onglets en bas : toute la place pour la question.
-  const playing = useLocation().pathname === "/jouer";
+  const path = useLocation().pathname;
+  const playing = path === "/jouer";
   const tab = ({ isActive }: { isActive: boolean }) =>
     `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-semibold transition sm:flex-none sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:text-sm ${
       isActive ? "text-ink sm:bg-ink/5" : "text-muted hover:text-ink"
@@ -83,9 +105,10 @@ export function Layout({ children }: { children: ReactNode }) {
                 </NavLink>
               ))}
             </nav>
-            {!playing && <AccountButton />}
+            {!playing && path !== "/connexion" && <AccountButton />}
           </div>
         </div>
+        <OfflineBanner />
       </header>
       <main id="main" className={`mx-auto w-full max-w-app flex-1 px-5 pt-2 sm:pb-12 ${playing ? "pb-8" : "pb-28"}`}>
         {children}

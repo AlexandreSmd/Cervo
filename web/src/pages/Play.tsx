@@ -93,6 +93,10 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
         <div className="h-full rounded-full bg-accent" style={{ width: `${Math.max(0, left / seconds) * 100}%` }} />
       </div>
       <p className="font-display text-4xl font-extrabold tabular-nums">{Math.max(0, Math.ceil(left))}</p>
+      {/* Déjà retenu ? On passe à la question sans attendre la fin du compte. */}
+      <button type="button" className="btn-ghost w-full" onClick={onDone} data-testid="memorized">
+        C'est bon, j'ai retenu →
+      </button>
     </div>
   );
 }
@@ -117,6 +121,7 @@ export function Play() {
   const [startError, setStartError] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
   const [expired, setExpired] = useState(false);
+  const [quitting, setQuitting] = useState(false);
   // Lancement du chrono côté serveur, en cours ou fini : une réponse l'attend avant de partir.
   const starting = useRef<{ key: string; done: Promise<boolean> } | null>(null);
 
@@ -134,6 +139,7 @@ export function Play() {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    setQuitting(false);
     setExpired(false);
     setSubmitError(null);
   }, [key]);
@@ -242,6 +248,14 @@ export function Play() {
     }
   };
 
+  // Quitter pendant un chrono : le temps continue de courir, on prévient avant.
+  const clockRunning = timerReady && !feedback && question.time_limit !== null;
+  const quit = (e: React.MouseEvent) => {
+    if (!clockRunning) return;
+    e.preventDefault();
+    setQuitting(true);
+  };
+
   const next = () => {
     if (feedback?.completed) {
       qc.invalidateQueries();
@@ -256,8 +270,10 @@ export function Play() {
       <div className="flex items-center gap-3">
         <Link
           to="/"
+          onClick={quit}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 border-ink/15 bg-card text-lg font-bold"
           aria-label="Quitter (ta progression est gardée)"
+          data-testid="quit"
         >
           ×
         </Link>
@@ -269,7 +285,26 @@ export function Play() {
         </span>
       </div>
 
-      <article className="card-strong space-y-5 p-5" aria-labelledby="question-prompt">
+      {quitting && (
+        <div
+          className="card-strong animate-rise space-y-3 p-5"
+          role="alertdialog"
+          aria-label="Quitter la question ?"
+          data-testid="quit-confirm"
+        >
+          <p className="font-display text-lg font-extrabold">Le chrono continue sans toi</p>
+          <p className="text-sm text-muted">Tes réponses sont gardées, mais si tu pars, cette question risque de compter 0.</p>
+          <div className="grid grid-cols-2 gap-2">
+            <button className="btn-dark" onClick={() => setQuitting(false)} autoFocus>
+              Je reste
+            </button>
+            <Link to="/" className="btn-ghost">
+              Quitter
+            </Link>
+          </div>
+        </div>
+      )}
+      <article key={key} className="card-strong animate-slide-in space-y-5 p-5" aria-labelledby="question-prompt">
         {needsMemorize && !feedback ? (
           <>
             {question.memorize?.hide_images && <QuestionHeader question={{ ...question, prompt: "Regarde bien…" }} />}

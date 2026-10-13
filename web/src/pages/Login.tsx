@@ -13,7 +13,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "../components/States";
 import { api } from "../lib/api";
 import { useAuth } from "../lib/auth";
@@ -191,12 +191,32 @@ export function Login() {
   return (
     <div className="card mt-4 space-y-5 p-6">
       <h1 className="text-3xl font-extrabold">Ton compte</h1>
-      <p className="text-muted">Sans mot de passe. Ta progression est gardée.</p>
+      <ul className="space-y-2 text-[15px]" data-testid="login-benefits">
+        {[
+          "Ta série et tes scores gardés pour toujours",
+          "Les mêmes sur ton téléphone et ton ordinateur",
+          "Aucun mot de passe à retenir",
+        ].map((b) => (
+          <li key={b} className="flex items-start gap-2.5">
+            <span
+              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-good text-xs font-extrabold text-white"
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+            {b}
+          </li>
+        ))}
+      </ul>
       {user && !user.isAnonymous && <p className="rounded-2xl bg-good/10 p-3 text-sm">Tu es déjà connecté avec {user.email}.</p>}
       {sent ? (
         <div className="space-y-3" role="status">
           <p className="font-semibold">Lien envoyé à {email} ✉️</p>
-          <p className="text-sm text-muted">Ouvre-le sur cet appareil.</p>
+          <ol className="list-inside list-decimal space-y-1 text-sm text-muted">
+            <li>Ouvre ta boîte mail sur cet appareil (regarde aussi les indésirables).</li>
+            <li>Touche le lien de connexion dans l'e-mail.</li>
+            <li>Tu reviens ici, connecté, avec toute ta progression.</li>
+          </ol>
           {USE_EMULATOR && (
             <div className="rounded-2xl bg-mid/15 p-4 text-sm">
               <p className="font-semibold">En local, aucun e-mail n'est envoyé : le lien est dans le terminal.</p>
@@ -271,6 +291,11 @@ export function Login() {
         </div>
       )}
       {status && <p className="text-muted">{status}</p>}
+      {user?.isAnonymous && !sent && (
+        <Link to="/" className="block text-center text-sm font-semibold text-muted hover:text-ink" data-testid="login-later">
+          Plus tard, je continue à jouer
+        </Link>
+      )}
       {error && (
         <p className="text-bad" role="alert">
           {error}

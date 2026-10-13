@@ -19,10 +19,75 @@ export function verdictOf(score: number, timedOut?: boolean) {
   return VERDICTS.bad;
 }
 
+/** Les points qui défilent jusqu'au score (une demi-seconde). */
+function useCountUp(target: number, ms = 600): number {
+  const reduced = typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const [value, setValue] = useState(reduced ? target : 0);
+  useEffect(() => {
+    if (reduced || target === 0) {
+      setValue(target);
+      return;
+    }
+    const start = performance.now();
+    let frame = 0;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / ms);
+      setValue(Math.round(target * (1 - (1 - t) ** 3)));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [target, ms, reduced]);
+  return value;
+}
+
+/** Vrai/Faux et QCM : les choix restent à l'écran, la bonne réponse en vert, la tienne en rouge si elle est fausse. */
+function ChoiceReveal({ choices, truth, given }: { choices: { label: string; value: unknown }[]; truth: unknown; given: unknown }) {
+  return (
+    <ul className="grid gap-2" aria-label="Correction" data-testid="choice-reveal">
+      {choices.map((c) => {
+        const right = c.value === truth;
+        const mine = c.value === given;
+        const style = right ? "border-good bg-good/10" : mine ? "border-bad bg-bad/10" : "border-ink/10 opacity-60";
+        return (
+          <li key={String(c.value)} className={`flex min-h-[48px] items-center gap-3 rounded-xl border-2 px-4 py-2 font-semibold ${style}`}>
+            <span className="flex-1">{c.label}</span>
+            {mine && <span className="text-xs font-bold uppercase tracking-wider text-muted">toi</span>}
+            {right ? (
+              <span className="font-extrabold text-good" aria-label="bonne réponse">
+                ✓
+              </span>
+            ) : mine ? (
+              <span className="font-extrabold text-bad" aria-label="ta réponse, fausse">
+                ✗
+              </span>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 /** Correction propre à la mécanique ; null : affichage générique (bonne réponse + ta réponse). */
 function TypedReveal({ question, result }: { question: PublicQuestion; result: SubmitResult }) {
   const truth = result.correct_answer;
   switch (question.type) {
+    case "binary":
+      return (
+        <ChoiceReveal
+          choices={[
+            { label: "Vrai", value: true },
+            { label: "Faux", value: false },
+          ]}
+          truth={truth}
+          given={result.user_answer}
+        />
+      );
+    case "mcq":
+      return question.choices?.length ? (
+        <ChoiceReveal choices={question.choices.map((c) => ({ label: c, value: c }))} truth={truth} given={result.user_answer} />
+      ) : null;
     case "order":
       return Array.isArray(truth) ? <OrderReveal correct={truth} details={result.order_details} given={result.user_answer} /> : null;
     case "percent":
@@ -59,6 +124,7 @@ export function Feedback({
   const [reported, setReported] = useState(false);
   const v = verdictOf(result.score, result.timed_out);
   const typed = TypedReveal({ question, result });
+  const points = useCountUp(result.score);
   const perfect = result.score === 100;
   const isFact = question.category === "fait";
   const verdictRef = useRef<HTMLDivElement>(null);
@@ -83,7 +149,7 @@ export function Feedback({
         aria-live="polite"
       >
         <span
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 text-2xl font-extrabold"
+          className="flex h-12 w-12 shrink-0 animate-pop items-center justify-center rounded-full bg-white/25 text-2xl font-extrabold"
           aria-hidden="true"
         >
           {v.icon}
@@ -93,7 +159,7 @@ export function Feedback({
         </span>
         <span className="text-right">
           <span className="block font-display text-4xl font-extrabold leading-none" data-testid="score-value">
-            +{result.score}
+            +{points}
           </span>
           <span className="text-xs font-semibold opacity-80">points</span>
         </span>
@@ -146,7 +212,7 @@ export function Feedback({
         ) : reporting ? (
           <form onSubmit={sendReport} className="flex gap-2">
             <input
-              className="input py-2 text-sm"
+              className="input py-2 text-base"
               aria-label="Qu'est-ce qui ne va pas ?"
               placeholder="Qu'est-ce qui ne va pas ?"
               value={reason}

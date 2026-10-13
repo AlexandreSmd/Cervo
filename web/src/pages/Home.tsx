@@ -50,23 +50,33 @@ export function Home() {
             </p>
           </div>
         ) : (
-          <div>
-            <p className="text-sm font-semibold text-muted">Quiz du jour</p>
-            <p className="font-display text-3xl font-extrabold">10 questions, 10 défis</p>
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-muted">Quiz du jour</p>
+              <p className="font-display text-3xl font-extrabold">10 questions, 10 défis</p>
+            </div>
+            <span className="chip shrink-0" data-testid="duration">
+              {started ? `encore ${10 - scores.length}` : "≈ 5 min"}
+            </span>
           </div>
         )}
         <KindLineup questions={data.questions} scores={scores} />
         {data.completed ? (
-          <Link to={`/resultats/${data.date}`} className="btn-dark w-full text-lg">
-            Voir le détail
-          </Link>
+          <div className="space-y-3">
+            <p className="rounded-xl bg-ink/[0.05] py-3 text-center font-semibold">
+              <Countdown />
+            </p>
+            <Link to={`/resultats/${data.date}`} className="btn-dark w-full text-lg">
+              Voir mes réponses
+            </Link>
+          </div>
         ) : (
           <Link to="/jouer" className="btn-primary w-full text-lg" data-testid="start-quiz">
             {started ? `Reprendre · ${scores.length + 1}/10` : "Commencer"}
           </Link>
         )}
       </section>
-      <p className="text-center text-sm text-muted">{data.completed ? <Countdown /> : "Sans aide · un chrono adapté à chaque question"}</p>
+      {!data.completed && <p className="text-center text-sm text-muted">Sans aide · un chrono adapté à chaque question</p>}
       <button
         className="mx-auto flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-muted hover:text-ink"
         onClick={() => setIntro(true)}

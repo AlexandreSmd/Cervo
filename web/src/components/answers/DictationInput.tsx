@@ -36,7 +36,12 @@ export function DictationInput({
     const rate = SPEEDS.find((s) => s.key === speed)!.rate;
     setPlaying(what);
     setListens((n) => n + 1);
-    speak(what === "all" ? text : parts[what], rate, () => setPlaying(null));
+    const first = listens === 0;
+    speak(what === "all" ? text : parts[what], rate, () => {
+      setPlaying(null);
+      // Fin de la première écoute : le curseur attend dans la zone d'écriture.
+      if (first) inputRef.current?.focus();
+    });
   };
 
   return (

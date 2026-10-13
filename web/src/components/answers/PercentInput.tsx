@@ -38,6 +38,8 @@ export function PercentInput({ value, disabled, onChange }: { value: number | nu
         disabled={disabled}
         aria-label="Pourcentage"
         onChange={(e) => onChange(Number(e.target.value))}
+        // Toucher le curseur sans le bouger, c'est choisir la valeur affichée (dès l'appui, au doigt comme à la souris).
+        onPointerDown={() => value === null && onChange(shown)}
         onClick={() => value === null && onChange(shown)}
         className="w-full accent-[rgb(var(--accent))]"
       />

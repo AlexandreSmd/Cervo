@@ -8,7 +8,7 @@ import { ErrorBox, Loading } from "../components/States";
 import { api } from "../lib/api";
 import { auth } from "../lib/firebase";
 import { COLOR_HEX, formatAnswer, formatDay, scoreColor } from "../lib/format";
-import { useDays, useProfile } from "../lib/hooks";
+import { useDays, useProfile, useToday } from "../lib/hooks";
 import { kindInfo } from "../lib/kinds";
 import { KindIcon } from "../components/KindIcon";
 
@@ -92,6 +92,7 @@ const FILTERS = [
 export function Profile() {
   const { data: p, isLoading, error, refetch } = useProfile();
   const days = useDays();
+  const today = useToday();
   const [filter, setFilter] = useState<(typeof FILTERS)[number][0]>("all");
   const [category, setCategory] = useState("all");
   const [shown, setShown] = useState(10);
@@ -138,6 +139,13 @@ export function Profile() {
           <p className="truncate text-sm text-muted">{p.is_anonymous ? "Invité" : p.email}</p>
         </div>
       </header>
+
+      {today.data && !today.data.completed && (
+        // Le quiz du jour n'est pas fini : c'est la seule chose à faire, on la met en premier.
+        <Link to="/jouer" className="btn-primary w-full text-lg" data-testid="profile-play">
+          {today.data.answers.length ? `Reprendre le quiz · ${today.data.answers.length + 1}/10` : "Jouer le quiz du jour"}
+        </Link>
+      )}
 
       <div className="grid grid-cols-3 gap-2">
         <Tile label="moyenne" value={p.average ?? "-"} />
@@ -200,7 +208,7 @@ export function Profile() {
                 Mes questions
               </h2>
               <select
-                className="rounded-lg border-2 border-ink/15 bg-card px-3 py-1.5 text-sm font-semibold"
+                className="rounded-lg border-2 border-ink/15 bg-card px-3 py-1.5 text-base font-semibold"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 aria-label="Type de question"

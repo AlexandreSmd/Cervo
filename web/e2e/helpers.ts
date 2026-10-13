@@ -18,11 +18,17 @@ export async function answerCurrent(page: Page) {
     await expect(page.getByTestId("feedback")).toBeVisible();
     return;
   } else if (await orderItems.count()) {
-    for (const item of await orderItems.all()) await item.click();
+    for (const item of await orderItems.all()) {
+      await item.evaluate((el) => el.scrollIntoView({ block: "center" }));
+      await item.click();
+    }
   } else if (await slider.count()) {
-    await slider.click();
+    // Au clavier (flèche) : un clic de test peut tomber sous la barre « Valider » collée en bas.
+    await slider.focus();
+    await page.keyboard.press("ArrowRight");
   } else if (await percent.count()) {
-    await percent.click();
+    await percent.focus();
+    await page.keyboard.press("ArrowRight");
   } else if (await page.getByTestId("size-value").count()) {
     // le curseur de taille a une valeur par défaut
   } else if (await page.getByTestId("next-clue").count()) {

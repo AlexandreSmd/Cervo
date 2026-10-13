@@ -1,4 +1,5 @@
 // En-tête d'une question : type (emoji + nom), difficulté, consigne, énoncé, photos (A et B s'il y en a deux).
+import { useEffect, useState } from "react";
 import { kindInfo } from "../lib/kinds";
 import { KindIcon } from "./KindIcon";
 import type { ImageRef, PublicQuestion } from "../lib/types";
@@ -36,35 +37,68 @@ export function KindChip({ category, label, position }: { category: string; labe
   );
 }
 
-/** Une ou deux photos ; avec deux, elles sont repérées A et B. */
+/** Photo en plein écran (toucher n'importe où ou Échap pour fermer). */
+function Zoom({ image, onClose }: { image: ImageRef; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <div
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-ink/90 p-4"
+      role="dialog"
+      aria-label="Photo en grand"
+      onClick={onClose}
+      data-testid="zoom"
+    >
+      <img src={image.url} alt={image.alt} className="max-h-[80vh] max-w-full rounded-xl object-contain" />
+      <span className="text-sm font-semibold text-bg/80">Toucher pour fermer</span>
+    </div>
+  );
+}
+
+/** Une ou deux photos ; avec deux, elles sont repérées A et B. Toucher une photo l'agrandit. */
 export function QuestionMedia({ images, eager = true }: { images: ImageRef[]; eager?: boolean }) {
+  const [zoomed, setZoomed] = useState<ImageRef | null>(null);
   if (!images.length) return null;
   const two = images.length > 1;
   return (
     <div className={two ? "grid grid-cols-2 gap-2" : ""}>
       {images.map((img, i) => (
         <figure key={i} className="relative overflow-hidden rounded-2xl bg-bg">
-          <img
-            src={img.url}
-            alt={img.alt}
-            width={600}
-            height={400}
-            loading={eager ? "eager" : "lazy"}
-            decoding="async"
-            className="h-auto w-full"
-          />
+          <button type="button" className="block w-full cursor-zoom-in" onClick={() => setZoomed(img)} aria-label={`Agrandir : ${img.alt}`}>
+            <img
+              src={img.url}
+              alt={img.alt}
+              width={600}
+              height={400}
+              loading={eager ? "eager" : "lazy"}
+              decoding="async"
+              className="h-auto w-full"
+            />
+          </button>
           {two && (
-            <span className="absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink text-sm font-bold text-bg">
+            <span className="pointer-events-none absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-ink text-sm font-bold text-bg">
               {String.fromCharCode(65 + i)}
             </span>
           )}
+          <span
+            className="pointer-events-none absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-card/90 text-ink"
+            aria-hidden="true"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+            </svg>
+          </span>
           {img.credit && (
-            <figcaption className="absolute bottom-1 right-2 text-[10px] text-muted/80">
+            <figcaption className="pointer-events-none absolute bottom-1 right-2 text-[10px] text-muted/80">
               {img.credit.length > 40 ? "Illustration" : img.credit}
             </figcaption>
           )}
         </figure>
       ))}
+      {zoomed && <Zoom image={zoomed} onClose={() => setZoomed(null)} />}
     </div>
   );
 }
