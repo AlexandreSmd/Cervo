@@ -120,7 +120,7 @@ Décisions prises pendant le développement du MVP, quand PRODUCT.md laissait le
 
 Constat après la mise en ligne : sur téléphone, écrans lents ou qui ne se chargent pas.
 
-- **API toujours chaude** : `API_WARM_CONTAINERS=1` par défaut (`.env.production`), environ 5 $ par mois, couverts par les 30 $ de crédit Modal. Un serveur neuf se préchauffe en tâche de fond dès son démarrage : connexion Firestore, banque de questions, quiz du jour (`api/cervo/warmup.py`). `0` reste possible (gratuit, 3 à 6 s d'attente après une pause).
+- **API toujours chaude** (remplacé en version 9 : gratuit par défaut) : `API_WARM_CONTAINERS=1` par défaut (`.env.production`), environ 5 $ par mois, couverts par les 30 $ de crédit Modal. Un serveur neuf se préchauffe en tâche de fond dès son démarrage : connexion Firestore, banque de questions, quiz du jour (`api/cervo/warmup.py`). `0` reste possible (gratuit, 3 à 6 s d'attente après une pause).
 - **Moins d'allers-retours vers Firestore** (le serveur Modal et la base ne sont pas sur le même continent : chaque aller-retour compte) :
   - `/today` lit le profil et la participation en une seule lecture groupée (`get_all`) ;
   - les 10 questions du jour sont gardées 30 s en mémoire, et le cache est vidé dès qu'une modification du planning passe par ce serveur ;
@@ -236,3 +236,18 @@ La philosophie : des questions **intéressantes à jouer**, pas seulement de la 
   - ombres « imprimées » décalées sur ce qu'on touche, et les boutons s'enfoncent au clic ;
   - le violet est réservé à l'action principale, les couleurs vives aux types et aux scores ;
   - pas de flou ni de dégradé, pas de tiret long dans les textes.
+
+## Version 9 : vérification rapide, zéro coût, parcours évidents
+
+- **Vérifier une réponse en 2 allers-retours vers Firestore au lieu de 4** : une lecture groupée (participation, profil, chiffres du jour) puis une écriture groupée atomique, refusée si la participation a changé entre-temps (`last_update_time`). C'est l'équivalent d'une transaction, sans l'aller-retour d'ouverture ni le verrou. En cas de conflit (double validation), on recommence depuis la lecture : la seconde validation est refusée proprement (test `test_simultaneous_answers_count_once`). Même principe pour `/question-start` et `/clue`.
+- **Comparaison aux autres sans lecture de plus** : les chiffres du jour sont lus dans la lecture groupée, puis la réponse du joueur y est ajoutée.
+- **Le chrono n'attend plus le serveur** : il part à l'affichage de la question, et l'heure de départ est enregistrée en parallèle. Le serveur démarre un peu après l'écran : le chrono le plus strict est toujours celui du joueur. Une réponse envoyée avant la fin de cet enregistrement l'attend. Reprise après rechargement : l'heure du serveur fait foi.
+- **Zéro coût par défaut** : `API_WARM_CONTAINERS=0`. Pour compenser le réveil : instantané mémoire Modal pris après les imports (`enable_memory_snapshot`), préchauffage de Firestore et de la banque au démarrage, réveil déclenché par la page dès son ouverture (`/api/health`), 15 min de veille après le dernier joueur. Serveur limité à 0,25 processeur et 512 Mo.
+- **Photos en cache chez Cloudflare** : `/api/media/*` est servi depuis le cache du Worker (une photo ne change jamais d'adresse), sans réveiller l'API ni lire Firestore.
+- **Parcours** :
+  - Vrai/Faux et QCM se répondent en un toucher ;
+  - une ligne dit le geste attendu au-dessus de chaque zone de réponse ;
+  - « Valider » ne s'allume que quand la réponse est complète, et reste collé en bas de l'écran comme « Question suivante » ;
+  - le verdict vient à l'écran tout seul ;
+  - la mémorisation dit ce qu'il faut retenir ;
+  - en fin de quiz, une action principale (profil), la connexion en second, et le temps restant avant le prochain quiz.

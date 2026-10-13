@@ -71,6 +71,15 @@ h3 {
   .btn-ghost {
     @apply btn border-2 border-ink/15 bg-card text-ink hover:border-ink/40;
   }
+  /* Réponse envoyée : des rayures défilent jusqu'au verdict (le bouton, lui, reste enfoncé). */
+  .busy-stripes {
+    background-image: repeating-linear-gradient(-45deg, transparent 0 10px, rgb(255 255 255 / 0.14) 10px 20px);
+    background-size: 28.28px 28.28px;
+    animation: busy 0.5s linear infinite;
+  }
+  .btn-busy {
+    @apply busy-stripes translate-x-[3px] translate-y-[3px] shadow-none disabled:opacity-100;
+  }
   .btn-sm {
     @apply min-h-[36px] rounded-lg px-4 text-sm;
   }
@@ -95,6 +104,11 @@ h3 {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+@keyframes busy {
+  to {
+    background-position: 28.28px 0;
   }
 }
 @keyframes pop {

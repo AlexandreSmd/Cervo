@@ -1,6 +1,6 @@
 // Déroulé du quiz : mémorisation éventuelle, chrono, réponse, verdict, question suivante.
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AnswerInput } from "../components/AnswerInput";
 import { Feedback } from "../components/Feedback";
@@ -58,7 +58,14 @@ function Memorize({ question, onDone }: { question: PublicQuestion; onDone: () =
   const short = items.every((it) => it.length <= 2);
   return (
     <div className="space-y-5 text-center" data-testid="memorize">
-      <p className="font-display text-2xl font-extrabold">Mémorise !</p>
+      <div>
+        <p className="font-display text-2xl font-extrabold">Mémorise !</p>
+        <p className="text-sm font-semibold text-muted">
+          {items.length > 1
+            ? `Retiens ces ${items.length} éléments, dans l'ordre. Ils vont disparaître.`
+            : "Regarde bien, ça va disparaître."}
+        </p>
+      </div>
       {items.length > 0 &&
         // Toujours une seule ligne (chiffres) ou une seule colonne numérotée (mots) : l'ordre se lit sans hésiter.
         (short ? (
@@ -105,9 +112,13 @@ export function Play() {
   // Chrono de la question affichée, repéré par une clé date + position + question : un nouveau jour
   // (appli restée ouverte après minuit) ou une question remplacée repart de zéro.
   const [started, setStarted] = useState<{ key: string; at: number } | null>(null);
+  // Question dont le départ est bien enregistré côté serveur.
+  const [launched, setLaunched] = useState("");
   const [startError, setStartError] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
   const [expired, setExpired] = useState(false);
+  // Lancement du chrono côté serveur, en cours ou fini : une réponse l'attend avant de partir.
+  const starting = useRef<{ key: string; done: Promise<boolean> } | null>(null);
 
   const index = data ? (feedback ? feedback.position : data.answers.length) : 0;
   const question = data?.questions[index];
@@ -128,35 +139,45 @@ export function Play() {
   }, [key]);
 
   // Le chrono démarre quand la question est vraiment à l'écran : après la mémorisation et une fois
-  // ses photos chargées. Le serveur enregistre l'heure de départ (recharger ne la relance pas) ;
-  // l'appel est idempotent et renvoie toujours une heure serveur fraîche pour caler le compte à rebours.
+  // ses photos chargées. L'écran n'attend pas le serveur : le compte à rebours part tout de suite,
+  // et l'heure de départ est enregistrée en parallèle (recharger ne la relance pas). Le serveur part
+  // un peu plus tard que l'écran : c'est le joueur qui a le chrono le plus strict, jamais l'inverse.
+  // Reprise après rechargement : on attend l'heure de départ déjà enregistrée.
   useEffect(() => {
-    if (!data || !question || feedback || data.completed || needsMemorize || started?.key === key) return;
+    if (!data || !question || feedback || data.completed || needsMemorize || launched === key) return;
     let cancelled = false;
     setStartError(null);
-    (async () => {
+    const done = (async () => {
       await preloadImages(question.images.map((i) => i.url));
+      if (cancelled) return false;
+      const shownAt = Date.now();
+      // Une relance (réseau) garde le compte à rebours déjà affiché.
+      if (!resumed) setStarted((s) => (s?.key === key ? s : { key, at: shownAt }));
       for (let attempt = 0; attempt < 3 && !cancelled; attempt++) {
         try {
           const r = await api.startQuestion(data.date, question.id);
-          if (!cancelled) setStarted({ key, at: Date.parse(r.started_at) + (Date.now() - Date.parse(r.server_time)) });
-          return;
+          if (cancelled) return true;
+          if (resumed) setStarted({ key, at: Date.parse(r.started_at) + (Date.now() - Date.parse(r.server_time)) });
+          setLaunched(key);
+          return true;
         } catch (err) {
           if (err instanceof ApiError && err.status === 409) {
             refetch(); // la question a changé côté serveur (déjà répondue, remplacée…)
-            return;
+            return false;
           }
           await wait(700 * (attempt + 1));
         }
       }
       if (!cancelled) setStartError("Connexion impossible pour lancer la question.");
+      return false;
     })();
+    starting.current = { key, done };
     return () => {
       cancelled = true;
     };
     // `data` change à chaque indice de devinette : la clé suffit à savoir s'il faut (re)lancer.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, feedback, needsMemorize, started, retry, data?.completed]);
+  }, [key, feedback, needsMemorize, launched, retry, data?.completed]);
 
   // Pendant la correction, on charge déjà les photos de la question suivante.
   useEffect(() => {
@@ -194,6 +215,12 @@ export function Play() {
     setSubmitting(true);
     setSubmitError(null);
     try {
+      // Rare : on valide avant que le serveur ait fini d'enregistrer le départ du chrono.
+      const launch = starting.current?.key === key ? starting.current.done : Promise.resolve(true);
+      if (!(await launch)) {
+        setRetry((n) => n + 1); // relance l'enregistrement du départ, puis on pourra renvoyer
+        throw new Error("Connexion impossible.");
+      }
       const result = await api.answer(data.date, question.id, answer);
       buzz(result.score);
       setFeedback(result);
@@ -289,9 +316,6 @@ export function Play() {
           </div>
         )}
       </article>
-      {index === 0 && !feedback && (
-        <p className="text-center text-xs text-muted">🧠 Sans aide · 10 types de questions, un chrono adapté à chacune</p>
-      )}
     </div>
   );
 }

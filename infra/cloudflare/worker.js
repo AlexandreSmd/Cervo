@@ -9,13 +9,24 @@ const SECURITY_HEADERS = {
 };
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     // www.domaine → domaine
     if (url.hostname.startsWith("www.")) {
       url.hostname = url.hostname.slice(4);
       return Response.redirect(url.toString(), 301);
+    }
+
+    // Photos des questions : jamais modifiées (nouvelle photo = nouvelle adresse). Gardées en cache
+    // chez Cloudflare : elles s'affichent sans réveiller l'API ni relire la base (rapide et gratuit).
+    if (request.method === "GET" && url.pathname.startsWith("/api/media/")) {
+      const cache = caches.default;
+      const hit = await cache.match(request);
+      if (hit) return hit;
+      const response = withHeaders(await fetch(new URL(url.pathname, env.API_ORIGIN)));
+      if (response.ok) ctx.waitUntil(cache.put(request, response.clone()));
+      return response;
     }
 
     if (url.pathname.startsWith("/api/")) {

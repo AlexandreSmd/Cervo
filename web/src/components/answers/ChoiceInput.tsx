@@ -6,12 +6,15 @@ export function ChoiceInput({
   value,
   binary,
   disabled,
+  busy = false,
   onChange,
 }: {
   options: { label: string; value: Answer }[];
   value: Answer | null;
   binary: boolean;
   disabled: boolean;
+  /** Réponse envoyée : le choix touché reste marqué pendant la vérification. */
+  busy?: boolean;
   onChange: (v: Answer) => void;
 }) {
   return (
@@ -26,8 +29,10 @@ export function ChoiceInput({
             aria-checked={selected}
             disabled={disabled}
             onClick={() => onChange(opt.value)}
-            className={`min-h-[56px] rounded-xl border-2 px-5 text-base font-semibold transition ${binary ? "text-center text-lg" : "text-left"} ${
-              selected ? "border-ink bg-ink text-bg" : "border-ink/15 bg-card hover:border-ink/40"
+            className={`min-h-[56px] rounded-xl border-2 px-5 text-base font-semibold transition active:scale-[0.98] ${binary ? "text-center text-lg" : "text-left"} ${
+              selected
+                ? `border-ink bg-ink text-bg ${busy ? "busy-stripes" : ""}`
+                : `border-ink/15 bg-card hover:border-ink/40 ${busy ? "opacity-50" : ""}`
             }`}
           >
             {opt.label}

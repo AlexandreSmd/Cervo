@@ -18,7 +18,7 @@ test("sur mobile, à la réouverture l'accueil s'affiche tout de suite, même si
 
   // Le jeu, lui, attend les données fraîches du serveur avant d'afficher la question.
   await page.getByTestId("start-quiz").click();
-  await expect(page.getByRole("button", { name: "Valider" })).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByTestId("gesture")).toBeVisible({ timeout: 15_000 });
 });
 
 test("une API qui ne répond pas affiche un message et un bouton Réessayer, pas un chargement sans fin", async ({ page }) => {

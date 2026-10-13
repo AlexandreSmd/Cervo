@@ -425,3 +425,23 @@ def test_delete_question_replaces_it_today_and_in_future_days(client):
     assert state["questions"][1]["id"] == res["replaced"][data["date"]] and state["current"] is None
     assert play(client, token, data["date"], state["questions"][1], answer_for(state["questions"][1])).status_code == 200
     assert client.delete(f"/api/admin/questions/{today_ids[1]}", headers=h(admin)).status_code == 404
+
+
+def test_simultaneous_answers_count_once(client):
+    """Deux validations simultanées de la même question : une seule est enregistrée."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    token = anon_token()
+    data = client.get("/api/today", headers=h(token)).json()
+    q = data["questions"][0]
+    body = {"date": data["date"], "question_id": q["id"]}
+    client.post("/api/question-start", headers=h(token), json=body)
+
+    def send(_):
+        return client.post("/api/answer", headers=h(token), json={**body, "answer": answer_for(q)}).status_code
+
+    with ThreadPoolExecutor(4) as pool:
+        codes = list(pool.map(send, range(4)))
+    assert codes.count(200) == 1 and set(codes) <= {200, 409}
+    after = client.get("/api/today", headers=h(token)).json()
+    assert len(after["answers"]) == 1

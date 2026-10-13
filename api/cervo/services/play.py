@@ -9,6 +9,7 @@ Règles garanties côté serveur (le navigateur n'est jamais cru sur parole) :
 
 from __future__ import annotations
 
+from google.api_core import exceptions as gexc
 from google.cloud import firestore
 
 from ..clock import now_iso, seconds_since
@@ -25,6 +26,36 @@ from .users import new_user_doc, user_ref
 
 def attempt_ref(db, uid: str, day: str):
     return user_ref(db, uid).collection(col.ATTEMPTS).document(day)
+
+
+# Écritures concurrentes (deux validations très rapprochées) : on relit et on recommence.
+_RETRIES = 5
+_CONFLICTS = (gexc.FailedPrecondition, gexc.AlreadyExists, gexc.Conflict, gexc.Aborted)
+
+
+def _write_if_unchanged(batch, ref, snap, data: dict) -> None:
+    """Remplace le document lu par `data`, à condition qu'il n'ait pas changé depuis la lecture.
+
+    Équivaut à une transaction (lecture, puis écriture refusée si quelqu'un est passé entre les
+    deux) en deux allers-retours réseau au lieu de trois, sans verrou : c'est ce qui rend la
+    vérification d'une réponse rapide, Firestore étant loin du serveur de l'API.
+    """
+    if not snap.exists:
+        batch.create(ref, data)  # refusé si le document a été créé entre-temps
+        return
+    fields = {**data, **{k: firestore.DELETE_FIELD for k in (snap.to_dict() or {}) if k not in data}}
+    batch.update(ref, fields, option=firestore.Client.write_option(last_update_time=snap.update_time))
+
+
+def _retrying(run):
+    """Relance `run` (lecture puis écriture conditionnelle) tant qu'une écriture concurrente l'en empêche."""
+    for attempt in range(_RETRIES):
+        try:
+            return run()
+        except _CONFLICTS:
+            if attempt == _RETRIES - 1:
+                raise ApiError(409, "Ta réponse arrive en même temps qu'une autre. Réessaie.") from None
+    return None  # inatteignable
 
 
 def _new_attempt(day: str, ids: list[str]) -> dict:
@@ -91,9 +122,8 @@ def start_question(db, uid: str, day: str, question_id: str) -> dict:
     ids = quiz.question_ids(db, day)
     ref = attempt_ref(db, uid, day)
 
-    @firestore.transactional
-    def run(tx):
-        snap = ref.get(transaction=tx)
+    def run():
+        snap = ref.get()
         attempt = snap.to_dict() if snap.exists else _new_attempt(day, ids)
         position = len(attempt.get("answers", []))
         if position >= len(ids) or ids[position] != question_id:
@@ -102,14 +132,16 @@ def start_question(db, uid: str, day: str, question_id: str) -> dict:
         if not _is_current(current, position, question_id):
             current = {"position": position, "question_id": question_id, "started_at": now_iso(), "clues": 1}
             attempt["current"] = current
-            tx.set(ref, attempt)
+            batch = db.batch()
+            _write_if_unchanged(batch, ref, snap, attempt)
             if not snap.exists:
                 # Premier pas du joueur aujourd'hui : il compte comme « a commencé » (et la journée se
                 # verrouille dans le planning).
-                tx.set(db.collection(col.DAILY_STATS).document(day), {"date": day, "started": firestore.Increment(1)}, merge=True)
+                batch.set(db.collection(col.DAILY_STATS).document(day), {"date": day, "started": firestore.Increment(1)}, merge=True)
+            batch.commit()
         return current
 
-    return {**run(db.transaction()), "server_time": now_iso()}
+    return {**_retrying(run), "server_time": now_iso()}
 
 
 def reveal_clue(db, uid: str, day: str, question_id: str) -> dict:
@@ -124,9 +156,8 @@ def reveal_clue(db, uid: str, day: str, question_id: str) -> dict:
     clues = list(question.get("clues") or [])
     ref = attempt_ref(db, uid, day)
 
-    @firestore.transactional
-    def run(tx):
-        snap = ref.get(transaction=tx)
+    def run():
+        snap = ref.get()
         attempt = snap.to_dict() if snap.exists else {}
         position = len(attempt.get("answers", []))
         current = attempt.get("current") or {}
@@ -135,19 +166,22 @@ def reveal_clue(db, uid: str, day: str, question_id: str) -> dict:
         seen = min(len(clues), int(current.get("clues", 1)) + 1)
         if seen != current.get("clues"):
             attempt["current"] = {**current, "clues": seen}
-            tx.set(ref, attempt)
+            batch = db.batch()
+            _write_if_unchanged(batch, ref, snap, attempt)
+            batch.commit()
         return seen
 
-    seen = run(db.transaction())
+    seen = _retrying(run)
     return {"clues": clues[:seen], "clue_total": len(clues)}
 
 
 def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
     """Valide une réponse : score, révélation, agrégats du joueur et du tableau de bord.
 
-    Tout est écrit dans une seule transaction : participation, profil et statistiques
-    restent cohérents même si le joueur valide deux fois très vite. Le profil est créé
-    dans la même transaction s'il n'existe pas encore (aucune lecture préalable).
+    Deux allers-retours vers Firestore, quoi qu'il arrive : une lecture groupée (participation,
+    profil, chiffres du jour), puis une écriture groupée atomique. L'écriture est refusée si la
+    participation a changé entre-temps (le joueur a validé deux fois très vite) : on recommence
+    alors depuis la lecture, et la seconde validation est refusée proprement.
     """
     uid = claims["uid"]
     ids = quiz.question_ids(db, day)
@@ -158,11 +192,12 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
         raise ApiError(404, "Question introuvable.")
     a_ref = attempt_ref(db, uid, day)
     u_ref = user_ref(db, uid)
+    d_ref = db.collection(col.DAILY_STATS).document(day)
 
-    @firestore.transactional
-    def run(tx):
-        snaps = {s.reference.path: s for s in tx.get_all([a_ref, u_ref])}
-        a_snap, u_snap = snaps[a_ref.path], snaps[u_ref.path]
+    def run():
+        # Les chiffres du jour sont lus sans verrou : tous les joueurs écrivent ce document.
+        snaps = {s.reference.path: s for s in db.get_all([a_ref, u_ref, d_ref])}
+        a_snap, u_snap, d_snap = snaps[a_ref.path], snaps[u_ref.path], snaps[d_ref.path]
         attempt = a_snap.to_dict() if a_snap.exists else _new_attempt(day, ids)
         answers = list(attempt.get("answers", []))
         position = len(answers)
@@ -204,31 +239,38 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
             attempt["completed_at"] = now_iso()
             stats = apply_completion(stats, day, attempt["score_total"])
 
-        tx.set(a_ref, attempt)
+        batch = db.batch()
+        _write_if_unchanged(batch, a_ref, a_snap, attempt)
         if profile is None:  # premier passage de ce joueur : profil complet + pseudo réservé
             doc = new_user_doc(claims)
-            tx.set(db.collection(col.USERNAMES).document(doc["username_lower"]), {"uid": uid})
-            tx.set(u_ref, {**doc, **{k: stats[k] for k in empty_stats()}})
+            batch.set(db.collection(col.USERNAMES).document(doc["username_lower"]), {"uid": uid})
+            batch.create(u_ref, {**doc, **{k: stats[k] for k in empty_stats()}})
         else:
-            tx.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
-        _record_stats(tx, db, day, question_id, score, attempt["score_total"] if completed else None)
-        return record, completed, attempt.get("score_total"), stats
+            batch.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
+        _record_stats(batch, db, day, question_id, score, attempt["score_total"] if completed else None)
+        batch.commit()
 
-    record, completed, total, stats = run(db.transaction())
-    # Lu après la transaction (et non dedans) : tous les joueurs écrivent ce document,
-    # le verrouiller en lecture ralentirait tout le monde.
-    daily = db.collection(col.DAILY_STATS).document(day).get().to_dict() or {}
+        # Comparaison aux autres : chiffres lus avant l'écriture, plus cette réponse.
+        seen = ((d_snap.to_dict() or {}).get("questions") or {}).get(question_id) or {}
+        mine = {
+            "count": seen.get("count", 0) + 1,
+            "sum": seen.get("sum", 0) + score,
+            "correct": seen.get("correct", 0) + (1 if score >= 100 else 0),
+        }
+        return record, completed, attempt.get("score_total"), stats, mine
+
+    record, completed, total, stats, community = _retrying(run)
     return {
         **_answer_view(record),
         **bank.reveal(question),
-        "community": question_community((daily.get("questions") or {}).get(question_id)),
+        "community": question_community(community),
         "completed": completed,
         "score_total": total,
         "streak": displayed_streak(stats, day),
     }
 
 
-def _record_stats(tx, db, day: str, question_id: str, score: int, day_total: int | None) -> None:
+def _record_stats(batch, db, day: str, question_id: str, score: int, day_total: int | None) -> None:
     """Agrégats du tableau de bord (incréments atomiques, aucune lecture nécessaire)."""
     inc = firestore.Increment
     per_question = {"sum": inc(score), "count": inc(1), "correct": inc(1 if score >= 100 else 0)}
@@ -237,8 +279,8 @@ def _record_stats(tx, db, day: str, question_id: str, score: int, day_total: int
         daily["completed"] = inc(1)
         daily["score_sum"] = inc(day_total)
         daily["buckets"] = {str(min(9, day_total // 10)): inc(1)}  # répartition par tranche de 10
-    tx.set(db.collection(col.DAILY_STATS).document(day), daily, merge=True)
-    tx.set(db.collection(col.QUESTION_STATS).document(question_id), per_question, merge=True)
+    batch.set(db.collection(col.DAILY_STATS).document(day), daily, merge=True)
+    batch.set(db.collection(col.QUESTION_STATS).document(question_id), per_question, merge=True)
 
 
 def day_detail(db, uid: str, day: str) -> dict:

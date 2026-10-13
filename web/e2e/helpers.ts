@@ -4,15 +4,19 @@ import { expect, type Page } from "@playwright/test";
 export async function answerCurrent(page: Page) {
   const memorize = page.getByTestId("memorize");
   if (await memorize.isVisible().catch(() => false)) await memorize.waitFor({ state: "detached", timeout: 20_000 });
+  await expect(page.getByTestId("gesture")).toBeVisible();
   const validate = page.getByRole("button", { name: "Valider" });
-  await expect(validate).toBeEnabled();
 
   const radios = page.getByRole("radiogroup", { name: "Choix" }).getByRole("radio");
   const orderItems = page.getByTestId("order-item");
   const slider = page.getByRole("slider", { name: "Curseur" });
   const percent = page.getByRole("slider", { name: "Pourcentage" });
   if (await radios.count()) {
+    // Vrai/Faux et QCM : toucher un choix suffit à répondre.
+    await expect(radios.first()).toBeEnabled();
     await radios.first().click();
+    await expect(page.getByTestId("feedback")).toBeVisible();
+    return;
   } else if (await orderItems.count()) {
     for (const item of await orderItems.all()) await item.click();
   } else if (await slider.count()) {

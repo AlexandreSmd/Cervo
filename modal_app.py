@@ -16,9 +16,10 @@ import modal
 ROOT = Path(__file__).parent
 
 # Conteneurs gardés allumés en permanence (API_WARM_CONTAINERS dans .env.production).
-# 1 (défaut) : aucune attente au réveil, pour environ 5 $ par mois (couverts par les crédits
-# gratuits de Modal). 0 : gratuit, mais la première visite après une pause attend 3 à 6 s.
-WARM_CONTAINERS = int(os.environ.get("API_WARM_CONTAINERS") or 1)
+# 0 (défaut) : on ne paie que quand quelqu'un joue, ce qui reste très loin des crédits gratuits
+# de Modal. Le réveil après une pause est court grâce à l'instantané mémoire (ci-dessous) et au
+# réveil anticipé déclenché par la page dès son ouverture. 1 : jamais d'attente, environ 5 $/mois.
+WARM_CONTAINERS = int(os.environ.get("API_WARM_CONTAINERS") or 0)
 
 image = (
     modal.Image.debian_slim(python_version="3.12")
@@ -37,18 +38,34 @@ image = (
 app = modal.App("vif-api", image=image)
 
 
-@app.function(
+@app.cls(
     secrets=[modal.Secret.from_name("vif-prod")],
     min_containers=WARM_CONTAINERS,
-    # Un conteneur supplémentaire (pic de joueurs) reste disponible 15 min après sa dernière requête.
+    # Un serveur reste disponible 15 min après sa dernière requête : une partie entière sans réveil.
     scaledown_window=15 * 60,
     timeout=60,
+    # Le plus petit serveur possible : l'API attend surtout le réseau, pas le processeur.
+    cpu=0.25,
+    memory=512,
+    # Instantané mémoire pris après les imports (FastAPI, Firebase…) : un réveil repart de là,
+    # en une fraction de seconde au lieu de plusieurs.
+    enable_memory_snapshot=True,
 )
 @modal.concurrent(max_inputs=50)
-@modal.asgi_app()
-def api():
-    from cervo.main import app as fastapi_app
-    from cervo.warmup import warm_up_in_background
+class Api:
+    @modal.enter(snap=True)
+    def load(self):
+        # Aucun accès réseau ici (rien ne doit être figé dans l'instantané) : seulement les imports.
+        from cervo.main import app as fastapi_app
 
-    warm_up_in_background()
-    return fastapi_app
+        self.app = fastapi_app
+
+    @modal.enter(snap=False)
+    def warm(self):
+        from cervo.warmup import warm_up_in_background
+
+        warm_up_in_background()
+
+    @modal.asgi_app()
+    def api(self):
+        return self.app

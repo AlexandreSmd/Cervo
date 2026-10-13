@@ -1,6 +1,7 @@
 // Résultats d'une journée : score, perles, partage, détail des questions.
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { Countdown } from "../components/Countdown";
 import { DayItems } from "../components/DayItems";
 import { Pearls } from "../components/Pearls";
 import { ShareCard } from "../components/ShareCard";
@@ -54,17 +55,19 @@ export function Results() {
         />
       </section>
       <div className="space-y-2">
-        <div className={`grid gap-2 ${user?.isAnonymous ? "grid-cols-2" : ""}`}>
-          <Link to="/profil" className="btn-dark w-full px-3" data-testid="to-profile">
-            Voir mon profil
+        <Link to="/profil" className="btn-dark w-full" data-testid="to-profile">
+          Voir mon profil
+        </Link>
+        {user?.isAnonymous && (
+          <Link to="/connexion" className="btn-ghost w-full" data-testid="results-login">
+            Se connecter pour garder ma série
           </Link>
-          {user?.isAnonymous && (
-            <Link to="/connexion" className="btn-ghost w-full px-3" data-testid="results-login">
-              Se connecter
-            </Link>
-          )}
-        </div>
-        {user?.isAnonymous && <p className="text-center text-xs text-muted">Connecte-toi pour garder ta série sur tous tes appareils.</p>}
+        )}
+        {today.data?.date === date && (
+          <p className="pt-1 text-center text-sm text-muted">
+            <Countdown />
+          </p>
+        )}
       </div>
       {data.community && <Standing community={data.community} score={data.score_total} />}
       <DayItems items={data.items} />

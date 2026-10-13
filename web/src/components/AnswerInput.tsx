@@ -40,6 +40,32 @@ const MISSING: Partial<Record<Q["type"], string>> = {
   percent: "Déplace le curseur",
 };
 
+/** Le geste à faire, dit simplement, juste au-dessus de la zone de réponse. */
+function gesture(question: Q): string {
+  switch (question.type) {
+    case "binary":
+      return "Touche Vrai ou Faux";
+    case "mcq":
+      return "Touche la bonne réponse";
+    case "size":
+      return `Glisse pour régler la taille : ${question.size?.target.label ?? "l'objet"}`;
+    case "percent":
+      return "Glisse sur ton estimation, puis valide";
+    case "numeric":
+      return question.slider ? "Glisse sur ton estimation, puis valide" : "Tape un nombre, puis valide";
+    case "order":
+      return "Touche les éléments dans l'ordre";
+    case "dictation":
+      return "Écoute, écris, puis valide";
+    case "recall":
+      return "Écris tout ce dont tu te souviens";
+    case "riddle":
+      return "Tape ta réponse. Bloqué ? Prends un indice";
+    default:
+      return "Tape ta réponse, puis valide";
+  }
+}
+
 /** Saisie adaptée à la mécanique de réponse de la question. */
 export function AnswerInput({ question, disabled, expired = false, onSubmit, submitting = false, onClue }: Props) {
   // Saisie au clavier (texte, nombre, dictée, rappel, devinette) et valeur choisie (le reste).
@@ -127,6 +153,13 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, sub
     setValue(v);
     setError(null);
   };
+  // Vrai/Faux et QCM : toucher un choix, c'est répondre (pas de « Valider » à chercher).
+  const oneTap = question.type === "binary" || question.type === "mcq";
+  const pick = (v: Answer) => {
+    if (sent.current) return;
+    choose(v);
+    send(v);
+  };
   const askClue = async () => {
     if (!onClue) return;
     setAsking(true);
@@ -138,8 +171,14 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, sub
     }
   };
 
+  // Le bouton ne s'allume que quand la réponse est complète : on voit tout de suite s'il manque quelque chose.
+  const ready = current() !== null && (question.type !== "order" || picked.length >= (question.items?.length ?? 0) - 1);
+
   return (
     <form onSubmit={submit} className="space-y-3" aria-label="Ta réponse">
+      <p className="text-sm font-semibold text-muted" data-testid="gesture">
+        {gesture(question)}
+      </p>
       {question.type === "binary" && (
         <ChoiceInput
           binary
@@ -149,7 +188,8 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, sub
           ]}
           value={value}
           disabled={disabled}
-          onChange={choose}
+          busy={submitting}
+          onChange={pick}
         />
       )}
       {question.type === "mcq" && (
@@ -158,7 +198,8 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, sub
           options={(question.choices ?? []).map((c) => ({ label: c, value: c }))}
           value={value}
           disabled={disabled}
-          onChange={choose}
+          busy={submitting}
+          onChange={pick}
         />
       )}
       {question.type === "order" && (
@@ -226,9 +267,26 @@ export function AnswerInput({ question, disabled, expired = false, onSubmit, sub
           {error}
         </p>
       )}
-      <button type="submit" className="btn-dark w-full text-lg" disabled={disabled}>
-        {submitting ? "Vérification…" : "Valider"}
-      </button>
+      {oneTap ? (
+        submitting && (
+          <p className="text-center text-sm font-semibold text-muted" aria-live="polite">
+            Vérification…
+          </p>
+        )
+      ) : (
+        // Toujours sous le pouce : le bouton reste collé en bas de l'écran, même avec un long énoncé.
+        <div className="sticky bottom-0 -mx-5 bg-card px-5 pb-[max(12px,env(safe-area-inset-bottom))] pt-2">
+          <button
+            type="submit"
+            className={`btn-dark w-full text-lg ${submitting ? "btn-busy" : ""}`}
+            disabled={disabled || (!ready && !submitting)}
+            aria-busy={submitting}
+            data-testid="submit"
+          >
+            {submitting ? "Vérification…" : "Valider"}
+          </button>
+        </div>
+      )}
     </form>
   );
 }

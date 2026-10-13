@@ -1,5 +1,5 @@
 // Écran après une réponse : verdict coloré, points, correction propre au type, explication.
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
 import { formatAnswer } from "../lib/format";
 import type { PublicQuestion, SubmitResult } from "../lib/types";
@@ -61,6 +61,11 @@ export function Feedback({
   const typed = TypedReveal({ question, result });
   const perfect = result.score === 100;
   const isFact = question.category === "fait";
+  const verdictRef = useRef<HTMLDivElement>(null);
+  // Le verdict arrive à l'écran tout seul, même sous un long énoncé ou une photo.
+  useEffect(() => {
+    verdictRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, []);
 
   const sendReport = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +77,8 @@ export function Feedback({
   return (
     <div className="animate-rise space-y-4" data-testid="feedback">
       <div
-        className={`flex items-center gap-4 rounded-2xl border-2 border-ink ${v.bg} p-5 text-white shadow-hard`}
+        ref={verdictRef}
+        className={`flex scroll-mb-28 items-center gap-4 rounded-2xl border-2 border-ink ${v.bg} p-5 text-white shadow-hard`}
         role="status"
         aria-live="polite"
       >
@@ -134,9 +140,6 @@ export function Feedback({
         </a>
       )}
 
-      <button className="btn-dark w-full text-lg" onClick={onNext} autoFocus data-testid="next">
-        {isLast ? "Voir mon score" : "Suivant"}
-      </button>
       <div className="text-center">
         {reported ? (
           <p className="text-xs text-muted">Merci, c'est noté.</p>
@@ -161,6 +164,12 @@ export function Feedback({
             ⚑ Signaler une erreur
           </button>
         )}
+      </div>
+      {/* Toujours sous le pouce, même pendant la lecture de l'explication. */}
+      <div className="sticky bottom-0 -mx-5 bg-card px-5 pb-[max(12px,env(safe-area-inset-bottom))] pt-2">
+        <button className="btn-primary w-full text-lg" onClick={onNext} autoFocus data-testid="next">
+          {isLast ? "Voir mon score" : "Question suivante →"}
+        </button>
       </div>
     </div>
   );

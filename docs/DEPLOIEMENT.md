@@ -9,8 +9,10 @@ l'espace fondateur réservé à ton compte.
 | --- | --- | --- | --- |
 | Nom de domaine | Cloudflare (`.com`) ou OVH (`.fr`) | L'adresse du site | 8 à 12 € par an |
 | Site + aiguillage `/api` | Cloudflare (Worker) | Sert les pages, transmet les appels à l'API | Gratuit |
-| API (le « serveur ») | Modal | Calcule les scores, garde les règles | Environ 5 $/mois, couverts par les 30 $ de crédit offerts par mois (carte requise) |
-| Comptes + base de données | Firebase (Google) | Connexion, questions, parties | Gratuit à ton échelle (offre Spark) |
+| API (le « serveur ») | Modal | Calcule les scores, garde les règles | Gratuit : l'API dort quand personne ne joue, quelques centimes d'usage par mois, très loin des crédits offerts |
+| Comptes + base de données | Firebase (Google) | Connexion, questions, parties | Gratuit (offre Spark : aucune carte, donc aucune facture possible) |
+
+Voir « Ne jamais payer » en bas de page pour les réglages qui le garantissent.
 
 Tu crées les comptes et achètes le domaine (une seule fois). Ensuite, une seule commande
 met tout en ligne : `npm run prod:deploy`.
@@ -132,7 +134,18 @@ celles créées depuis l'admin sont déjà en ligne.
 | --- | --- |
 | « Connexion impossible » avec Google | Étape 2.3 : ajoute ton domaine aux domaines autorisés |
 | Les e-mails de connexion n'arrivent pas | Regarde les indésirables (expéditeur `noreply@…firebaseapp.com`) |
-| La première page met 3 secondes | `API_WARM_CONTAINERS=0` dans `.env.production` ? L'API se réveille après une pause. Mets `1` (ou laisse vide), puis `npm run prod:api` |
+| La première page met 1 à 2 secondes après une longue pause | Normal : l'API dormait (c'est ce qui la rend gratuite). Pour ne jamais attendre, `API_WARM_CONTAINERS=1` dans `.env.production` puis `npm run prod:deploy`, mais c'est environ 5 $/mois |
 | Google refuse la connexion dans Messenger | Normal : Google bloque les navigateurs intégrés. Ouvre le site dans Safari ou Chrome, ou utilise le lien par e-mail |
 | `npm run prod:deploy` refuse de démarrer | Lance `npm run prod:check` : il dit ce qui manque |
 | Le domaine n'affiche rien | Attends la fin de l'activation Cloudflare (étape 1.3), puis relance `npm run prod:web` |
+
+---
+
+## Ne jamais payer
+
+| Service | Ce qui garantit 0 € | À vérifier une fois |
+| --- | --- | --- |
+| Firebase (base + connexion) | Offre **Spark** : sans carte, Google ne peut rien facturer. Au-delà des quotas gratuits (50 000 lectures et 20 000 écritures par jour, environ 400 joueurs par jour), le jeu s'arrête jusqu'au lendemain au lieu de facturer. | Console Firebase, en bas à gauche : le badge doit dire **Spark**. S'il dit **Blaze**, ne repasse en Spark que si rien d'autre n'en dépend. |
+| Modal (API) | `API_WARM_CONTAINERS` vide ou à `0` dans `.env.production` : rien ne tourne quand personne ne joue. Un serveur minuscule (un quart de processeur) et 15 min de veille après le dernier joueur. Même allumé 24 h sur 24, il coûterait moins que les crédits offerts chaque mois. | modal.com, **Settings → Usage and billing** : regarde la consommation du mois. Si une carte est enregistrée, fixe une **limite de dépense** (budget) au montant des crédits. |
+| Cloudflare (site) | Offre **Free** des Workers : 100 000 visites de pages par jour. Les photos sont gardées en cache chez Cloudflare (elles ne réveillent pas l'API). | dash.cloudflare.com, **Workers & Pages** : l'offre doit être **Free**. |
+| Nom de domaine | Le seul coût réel : environ 10 € par an. | |
