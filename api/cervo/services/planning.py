@@ -229,3 +229,27 @@ def delete_question(db, question_id: str, today: str) -> dict:
     bank.bump_version(db)
     quiz.invalidate_cache()
     return {"id": question_id, "erased": not played, "replaced": replaced}
+
+
+def refresh_after_ship(db, today: str) -> list[str]:
+    """Nouvelles questions mises en ligne : le quiz du jour et les journées à venir composées
+    automatiquement sont recomposés, pour que les nouveautés soient jouées tout de suite.
+
+    Aujourd'hui est recomposé même si des joueurs ont commencé (choix du fondateur) : ceux qui ont
+    terminé gardent leur résultat, ceux qui sont en cours finissent sur les nouvelles questions.
+    Les journées à venir choisies à la main dans le planning ne bougent pas.
+    """
+    planned = quiz.planned_days(db)
+    later = sorted(d for d, ids in planned.items() if d > today)
+    sources = {s.id: (s.to_dict() or {}).get("source") for s in db.collection(col.DAILY_QUIZZES).stream() if s.id >= today}
+    days = [today, *(d for d in later if sources.get(d) == "auto")]
+    for day in days:
+        planned.pop(day, None)
+    refreshed = []
+    for day in days:
+        ids = quiz.compute_day(db, day, planned)
+        db.collection(col.DAILY_QUIZZES).document(day).set({"question_ids": ids, "updated_at": now_iso(), "source": "auto"})
+        planned[day] = ids
+        refreshed.append(day)
+    quiz.invalidate_cache()
+    return refreshed

@@ -11,6 +11,7 @@ from datetime import date, timedelta
 
 from google.cloud import firestore
 
+from ..domain.leaderboard import month_of
 from ..domain.scoring import day_score, score_answer
 from . import bank, quiz
 from . import collections as col
@@ -60,7 +61,7 @@ def seed_history(db, uid: str, today: str, days: int = 21, seed: str | None = No
             }
         )
         created += 1
-    rebuild_user_stats(db, uid)
+    rebuild_user_stats(db, uid, today)
     return created
 
 
@@ -148,4 +149,30 @@ def simulate_players(db, today: str, days: int = 14) -> int:
                 {"sum": inc(v["sum"]), "count": inc(v["count"]), "correct": inc(v["correct"])}, merge=True
             )
         total += players
+    _simulate_leaderboard(db, today, rng)
     return total
+
+
+SIM_NAMES = ["Lynx", "Comète", "Hibou", "Éclair", "Renard", "Boussole", "Pixel", "Origami", "Zeste", "Quartz", "Nova", "Tilleul"]
+
+
+def _simulate_leaderboard(db, today: str, rng: random.Random, players: int = 30) -> None:
+    """Joueurs fictifs dans le classement du mois (dont certains ont joué aujourd'hui)."""
+    first = date.fromisoformat(today).replace(day=1)
+    days = [(first + timedelta(days=i)).isoformat() for i in range((date.fromisoformat(today) - first).days + 1)]
+    ref = db.collection(col.MONTHLY_SCORES).document(month_of(today)).collection("players")
+    for n in range(players):
+        skill, assiduity = rng.uniform(40, 85), rng.uniform(0.3, 1)
+        played = [(d, max(0, min(100, int(rng.gauss(skill, 12))))) for d in days if rng.random() < assiduity]
+        if not played:
+            continue
+        ref.document(f"sim-{n:02d}").set(
+            {
+                "username": f"{rng.choice(SIM_NAMES)}-{rng.randint(10, 99)}",
+                "total": sum(s for _, s in played),
+                "days": len(played),
+                "last_day": played[-1][0],
+                "last_score": played[-1][1],
+                "simulated": True,
+            }
+        )

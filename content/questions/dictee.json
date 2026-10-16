@@ -28,5 +28,205 @@
     "correct_answer": "Les sœurs se sont succédé à la tête de l'entreprise et se sont partagé les bénéfices. Ci-joint la facture que vous nous avez demandée.",
     "explanation": "« Succédé » est invariable (on succède à quelqu'un). « Partagé » aussi, car le complément « les bénéfices » est placé après. En tête de phrase, « ci-joint » reste invariable, et « demandée » s'accorde avec « que » (la facture).",
     "status": "published"
+  },
+  {
+    "id": "dictee-104",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les enfants jettent leurs anoraks dans l'entrée en rentrant de l'école. Puis ils appellent leur oncle pour lui dire bonsoir.",
+    "explanation": "« Jettent » et « appellent » doublent leur consonne devant un e muet. « Leurs anoraks » prend un s (plusieurs anoraks), « leur oncle » non : il n'y en a qu'un.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-105",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les chevaux du village broutent l'herbe le long des canaux. Le fermier a repeint les portails et réparé les vitraux de la chapelle.",
+    "explanation": "Les noms en -al font leur pluriel en -aux (chevaux, canaux). En -ail, la plupart prennent un s (portails), mais quelques-uns passent en -aux, comme vitrail qui donne vitraux.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-106",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "On n'a pas vu le temps passer pendant les vacances. On a déjà hâte d'y retourner l'été prochain.",
+    "explanation": "À l'oral, « on n'a » et « on a » sonnent pareil : c'est le « pas » qui exige la négation « n' ». « Hâte » garde son accent circonflexe.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-107",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Le gâteau de ma tante est bien plus sucré que le mien. Elle a ajouté une pâte croustillante et des fraises fraîches.",
+    "explanation": "Trois accents circonflexes à ne pas oublier : gâteau, pâte et fraîches. Ils rappellent souvent un s disparu (l'ancien français « gastel »).",
+    "status": "published"
+  },
+  {
+    "id": "dictee-108",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Mon frère a fait un affreux cauchemar cette nuit. Au réveil, il était encore tout abasourdi.",
+    "explanation": "« Cauchemar » s'écrit sans d ni t final, malgré « cauchemarder ». « Abasourdi » prend un s qui se prononce z, et « affreux » double son f.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-109",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 1,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les vacanciers ont reçu un accueil chaleureux à l'hôtel. Néanmoins, la chambre était un peu bruyante.",
+    "explanation": "« Accueil » s'écrit -ueil après un c, pour garder le son dur. « Néanmoins » prend un accent aigu et un s final, même s'il ne se prononce pas.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-110",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Ma tante est toute rouge après sa course. Ses deux filles, tout essoufflées, se reposent sur un banc.",
+    "explanation": "Adverbe, « tout » est invariable, sauf devant un adjectif féminin commençant par une consonne : « toute rouge » mais « tout essoufflées ». Et « essoufflées » double à la fois le s et le f.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-111",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Bien qu'elle ait beaucoup couru, elle n'a pas attrapé son train. Elle a dû attendre le suivant sur le quai.",
+    "explanation": "« Bien que » se construit toujours avec le subjonctif : « qu'elle ait », jamais « qu'elle a ». Le participe « dû » garde son accent circonflexe au masculin singulier.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-112",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Quel que soit le temps demain, nous partirons en randonnée. Quelles que soient tes raisons, tu dois prévenir tes parents.",
+    "explanation": "Devant le verbe être au subjonctif, « quel que » s'écrit en deux mots et s'accorde avec le sujet : « quel que soit le temps », « quelles que soient tes raisons ».",
+    "status": "published"
+  },
+  {
+    "id": "dictee-113",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les festivals de cet été ont attiré des milliers de visiteurs. Les journaux locaux ont publié des récits tout à fait élogieux.",
+    "explanation": "Les noms en -al font -aux (journaux, locaux), sauf une poignée d'exceptions comme festivals, bals, carnavals ou récitals.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-114",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Mes voisins m'ont prêté leur échelle et leurs outils. Je leur ai tout rendu dès le lendemain.",
+    "explanation": "Déterminant, « leur » prend un s quand le nom est au pluriel : « leur échelle », « leurs outils » (la liaison s'entend). Devant un verbe, « leur » est un pronom et ne prend jamais de s.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-115",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Elles se sont lavé les mains avant de passer à table. Puis elles se sont assises en silence.",
+    "explanation": "« Lavé » reste invariable : le complément d'objet direct, « les mains », est placé après. « Assises » s'accorde avec le sujet, car s'asseoir est un verbe pronominal.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-116",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Il a jeté un coup d'œil par la fenêtre et a appelé son chien. Nous rappellerons le vétérinaire demain matin.",
+    "explanation": "Jeter et appeler doublent leur consonne seulement devant un e muet : « jeté » et « appelé » n'ont qu'un t et un l, mais « rappellerons » en prend deux.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-117",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 2,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Mon grand-père a fêté ses quatre-vingts ans entouré de toute sa famille. Il avait invité trente-deux personnes dans son jardin.",
+    "explanation": "« Vingt » prend un s quand il est multiplié et termine le nombre : quatre-vingts. Les nombres composés inférieurs à cent se lient par un trait d'union : trente-deux.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-118",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Quelque cent ans plus tard, les ruines étaient tout aussi impressionnantes. Les archéologues que j'ai vus fouiller le site en étaient persuadés.",
+    "explanation": "Devant un nombre, « quelque » signifie « environ » et reste invariable. « Vus » s'accorde avec « que » (les archéologues), car ce sont eux qui fouillent.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-119",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Bien qu'ils se soient beaucoup plu en Bretagne, ils sont rentrés plus tôt que prévu. Les quelques jours qui leur restaient, ils les ont passés à se reposer.",
+    "explanation": "« Se plaire » fait partie des pronominaux dont le participe reste invariable : « ils se sont plu ». « Passés » s'accorde avec « les » (les jours), placé avant l'auxiliaire avoir.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-120",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Elle s'est rendu compte de son erreur trop tard. Les excuses qu'elle s'est permis d'adresser ont été bien reçues.",
+    "explanation": "Dans « se rendre compte », le complément direct est « compte » : « rendu » ne s'accorde pas. « Permis » est invariable aussi : « que » est le complément d'« adresser », pas de « permettre ».",
+    "status": "published"
+  },
+  {
+    "id": "dictee-121",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Tout émue, la directrice a remercié les mille deux cents participants. Les quatre-vingt mille euros récoltés iront à une association.",
+    "explanation": "Devant un adjectif féminin commençant par une voyelle, « tout » reste invariable : « tout émue ». « Cents » et « vingts » perdent leur s quand un autre nombre les suit : quatre-vingt mille, mais deux cents. « Mille » ne prend jamais de s.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-122",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Quels que soient les obstacles qu'ils ont rencontrés, ils ne se sont jamais plaints. Ils se sont souri, puis se sont serré la main.",
+    "explanation": "« Souri » est invariable : on sourit à quelqu'un, « se » n'est donc pas complément direct. « Serré » non plus, car le complément direct, « la main », est placé après.",
+    "status": "published"
+  },
+  {
+    "id": "dictee-123",
+    "type": "dictation",
+    "category": "dictee",
+    "difficulty": 3,
+    "prompt": "Deux phrases, sans faute. Réécoute autant que tu veux.",
+    "correct_answer": "Les cheveux qu'elle s'est fait couper étaient très longs. La robe qu'elle s'est achetée lui va à merveille.",
+    "explanation": "« Fait » suivi d'un infinitif est toujours invariable. « Achetée » s'accorde avec « que » (la robe), complément direct placé avant le verbe.",
+    "status": "published"
   }
 ]

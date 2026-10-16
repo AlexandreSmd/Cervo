@@ -93,5 +93,588 @@
     "correct_answer": "Cactus",
     "explanation": "Ordre : citron, vélo, tortue, guitare, voilier, cactus, cloche, aimant. Retenir une position demande de mémoriser l'ordre, pas seulement les objets : bien plus dur.",
     "status": "published"
+  },
+  {
+    "id": "memoire-104",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 1,
+    "prompt": "Écris les 6 mots dont tu te souviens, dans n'importe quel ordre.",
+    "memorize": {
+      "items": [
+        "Tambour",
+        "Lune",
+        "Valise",
+        "Carotte",
+        "Pont",
+        "Renard"
+      ]
+    },
+    "correct_answer": [
+      "Tambour",
+      "Lune",
+      "Valise",
+      "Carotte",
+      "Pont",
+      "Renard"
+    ],
+    "recall_ordered": false,
+    "explanation": "Astuce : invente une petite histoire qui relie les mots, comme un renard qui traverse un pont avec une valise. Une scène se retient bien mieux qu'une liste.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-105",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 1,
+    "prompt": "Retape les 5 chiffres, dans l'ordre.",
+    "memorize": {
+      "items": [
+        "3",
+        "8",
+        "1",
+        "6",
+        "4"
+      ]
+    },
+    "correct_answer": [
+      "3",
+      "8",
+      "1",
+      "6",
+      "4"
+    ],
+    "recall_ordered": true,
+    "explanation": "Cinq chiffres tiennent sans effort en mémoire à court terme. Les répéter à voix basse pendant l'affichage aide encore : c'est la boucle phonologique.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-106",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Écris les 8 mots dont tu te souviens, dans n'importe quel ordre.",
+    "memorize": {
+      "items": [
+        "Ancre",
+        "Tulipe",
+        "Moulin",
+        "Cravate",
+        "Castor",
+        "Fusée",
+        "Bougie",
+        "Citrouille"
+      ]
+    },
+    "correct_answer": [
+      "Ancre",
+      "Tulipe",
+      "Moulin",
+      "Cravate",
+      "Castor",
+      "Fusée",
+      "Bougie",
+      "Citrouille"
+    ],
+    "recall_ordered": false,
+    "explanation": "La technique du palais de mémoire : pose chaque mot dans une pièce de ta maison (une ancre sur le paillasson, une tulipe dans l'entrée...), puis refais le tour en pensée.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-107",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Retape les 7 lettres, dans l'ordre.",
+    "memorize": {
+      "items": [
+        "K",
+        "R",
+        "B",
+        "M",
+        "T",
+        "F",
+        "L"
+      ]
+    },
+    "correct_answer": [
+      "K",
+      "R",
+      "B",
+      "M",
+      "T",
+      "F",
+      "L"
+    ],
+    "recall_ordered": true,
+    "explanation": "Des lettres sans voyelles ne forment aucun mot, donc rien à quoi se raccrocher. L'astuce : en faire des sigles connus ou une phrase, comme « Kevin Range Bien Mes Trois Fourchettes Lavées ».",
+    "status": "published"
+  },
+  {
+    "id": "memoire-108",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Retape les 8 chiffres, dans l'ordre.",
+    "memorize": {
+      "items": [
+        "4",
+        "1",
+        "7",
+        "2",
+        "9",
+        "0",
+        "5",
+        "3"
+      ]
+    },
+    "correct_answer": [
+      "4",
+      "1",
+      "7",
+      "2",
+      "9",
+      "0",
+      "5",
+      "3"
+    ],
+    "recall_ordered": true,
+    "explanation": "Huit chiffres isolés, c'est beaucoup ; quatre nombres de deux chiffres, beaucoup moins. En lisant 41 · 72 · 90 · 53, tu ne retiens plus que 4 paquets : c'est le chunking.",
+    "source_url": "https://psycnet.apa.org/doi/10.1037/h0043158",
+    "status": "published"
+  },
+  {
+    "id": "memoire-109",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Écris les 10 mots dont tu te souviens, dans n'importe quel ordre.",
+    "memorize": {
+      "items": [
+        "Balcon",
+        "Requin",
+        "Trompette",
+        "Noisette",
+        "Tunnel",
+        "Parapluie",
+        "Pingouin",
+        "Miroir",
+        "Chocolat",
+        "Moustache"
+      ]
+    },
+    "correct_answer": [
+      "Balcon",
+      "Requin",
+      "Trompette",
+      "Noisette",
+      "Tunnel",
+      "Parapluie",
+      "Pingouin",
+      "Miroir",
+      "Chocolat",
+      "Moustache"
+    ],
+    "recall_ordered": false,
+    "explanation": "Dix mots, c'est au-delà de la mémoire à court terme. Les ranger par familles aide beaucoup : deux animaux (requin, pingouin), deux choses à manger (noisette, chocolat), des lieux (balcon, tunnel)...",
+    "status": "published"
+  },
+  {
+    "id": "memoire-110",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Retape les 10 chiffres, dans l'ordre.",
+    "memorize": {
+      "items": [
+        "0",
+        "7",
+        "9",
+        "6",
+        "3",
+        "8",
+        "1",
+        "7",
+        "4",
+        "5"
+      ]
+    },
+    "correct_answer": [
+      "0",
+      "7",
+      "9",
+      "6",
+      "3",
+      "8",
+      "1",
+      "7",
+      "4",
+      "5"
+    ],
+    "recall_ordered": true,
+    "explanation": "C'est la forme d'un numéro de portable : 079 · 638 · 17 · 45. Découper en paquets (chunking) transforme 10 éléments en 4, ce que la mémoire à court terme sait gérer.",
+    "source_url": "https://psycnet.apa.org/doi/10.1037/h0043158",
+    "status": "published"
+  },
+  {
+    "id": "memoire-111",
+    "type": "recall",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Retape les 7 mots, dans l'ordre.",
+    "memorize": {
+      "items": [
+        "Nuage",
+        "Clou",
+        "Bouteille",
+        "Tigre",
+        "Robot",
+        "Lampe",
+        "Panier"
+      ]
+    },
+    "correct_answer": [
+      "Nuage",
+      "Clou",
+      "Bouteille",
+      "Tigre",
+      "Robot",
+      "Lampe",
+      "Panier"
+    ],
+    "recall_ordered": true,
+    "explanation": "Retenir l'ordre est bien plus dur que retenir les mots. La méthode du chaînage aide : imagine chaque objet qui touche le suivant, un nuage qui plante un clou dans une bouteille...",
+    "status": "published"
+  },
+  {
+    "id": "memoire-112",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 1,
+    "prompt": "Lequel n'était pas dans la liste ?",
+    "memorize": {
+      "items": [
+        "🍎 Pomme",
+        "🍐 Poire",
+        "🍇 Raisin",
+        "🍓 Fraise",
+        "🍌 Banane"
+      ]
+    },
+    "choices": [
+      "Pomme",
+      "Pêche",
+      "Raisin",
+      "Fraise"
+    ],
+    "correct_answer": "Pêche",
+    "explanation": "Il n'y avait pas de pêche : pomme, poire, raisin, fraise, banane. Avec un seul thème, le cerveau retient surtout « des fruits » et doit fouiller pour trouver l'intrus.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-113",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 1,
+    "prompt": "Lequel n'était pas dans la liste ?",
+    "memorize": {
+      "items": [
+        "🐘 Éléphant",
+        "🦒 Girafe",
+        "🦁 Lion",
+        "🐒 Singe",
+        "🦓 Zèbre",
+        "🐊 Crocodile"
+      ]
+    },
+    "choices": [
+      "Lion",
+      "Hippopotame",
+      "Zèbre",
+      "Singe"
+    ],
+    "correct_answer": "Hippopotame",
+    "explanation": "Pas d'hippopotame dans cette savane. On retient mieux une image qu'un mot écrit : c'est l'effet de supériorité des images, et les emojis en profitent.",
+    "source_url": "https://en.wikipedia.org/wiki/Picture_superiority_effect",
+    "status": "published"
+  },
+  {
+    "id": "memoire-114",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Quel élément était en 3e position ?",
+    "memorize": {
+      "items": [
+        "🎈 Ballon",
+        "🔑 Clé",
+        "⌛ Sablier",
+        "🦉 Hibou",
+        "🧀 Fromage",
+        "🚂 Train",
+        "🌻 Tournesol"
+      ]
+    },
+    "choices": [
+      "Sablier",
+      "Clé",
+      "Hibou",
+      "Ballon"
+    ],
+    "correct_answer": "Sablier",
+    "explanation": "Ordre : ballon, clé, sablier, hibou, fromage, train, tournesol. Les premiers éléments d'une liste sont souvent les mieux retenus (effet de primauté), car on a eu le temps de se les répéter.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-115",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Lequel n'était pas dans la liste ?",
+    "memorize": {
+      "items": [
+        "Casserole",
+        "Fouet",
+        "Louche",
+        "Passoire",
+        "Spatule",
+        "Râpe",
+        "Poêle",
+        "Rouleau"
+      ]
+    },
+    "choices": [
+      "Fouet",
+      "Écumoire",
+      "Passoire",
+      "Râpe"
+    ],
+    "correct_answer": "Écumoire",
+    "explanation": "L'écumoire n'y était pas. Plus l'intrus colle au thème des ustensiles, plus il paraît familier : notre mémoire garde l'idée générale bien mieux que le détail exact.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-116",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Lequel n'était pas dans la liste ?",
+    "memorize": {
+      "items": [
+        "Lit",
+        "Repos",
+        "Rêve",
+        "Oreiller",
+        "Nuit",
+        "Couette",
+        "Ronfler",
+        "Bâiller"
+      ]
+    },
+    "choices": [
+      "Rêve",
+      "Sommeil",
+      "Couette",
+      "Nuit"
+    ],
+    "correct_answer": "Sommeil",
+    "explanation": "« Sommeil » n'y était pas, alors que beaucoup jureraient l'avoir vu. C'est un faux souvenir classique : tous les mots évoquent le sommeil, et le cerveau l'ajoute tout seul (paradigme DRM).",
+    "source_url": "https://psycnet.apa.org/doi/10.1037/0278-7393.21.4.803",
+    "status": "published"
+  },
+  {
+    "id": "memoire-117",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Quel élément était en 7e position ?",
+    "memorize": {
+      "items": [
+        "🐙 Pieuvre",
+        "🏰 Château",
+        "🍩 Beignet",
+        "🧸 Nounours",
+        "🌋 Volcan",
+        "🪐 Planète",
+        "🦔 Hérisson",
+        "🎲 Dé",
+        "🧤 Gant"
+      ]
+    },
+    "choices": [
+      "Hérisson",
+      "Planète",
+      "Dé",
+      "Volcan"
+    ],
+    "correct_answer": "Hérisson",
+    "explanation": "Ordre : pieuvre, château, beignet, nounours, volcan, planète, hérisson, dé, gant. Les positions juste avant la fin sont mal servies : ni l'effet de primauté ni celui de récence ne les protègent vraiment.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-118",
+    "type": "mcq",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Lequel n'était pas dans la liste ?",
+    "memorize": {
+      "items": [
+        "Piano",
+        "Flûte",
+        "Harpe",
+        "Tuba",
+        "Batterie",
+        "Accordéon",
+        "Saxophone",
+        "Banjo",
+        "Orgue",
+        "Xylophone"
+      ]
+    },
+    "choices": [
+      "Harpe",
+      "Clarinette",
+      "Banjo",
+      "Tuba"
+    ],
+    "correct_answer": "Clarinette",
+    "explanation": "La clarinette manquait. Dix instruments du même orchestre se confondent vite ; imaginer le son de chacun ajoute une trace auditive et aide à les distinguer.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-119",
+    "type": "order",
+    "category": "memoire",
+    "difficulty": 1,
+    "prompt": "Remets les éléments dans l'ordre où ils sont apparus.",
+    "memorize": {
+      "items": [
+        "🏠 Maison",
+        "🌳 Arbre",
+        "🐟 Poisson",
+        "⭐ Étoile",
+        "🎩 Chapeau"
+      ]
+    },
+    "correct_answer": [
+      "🏠 Maison",
+      "🌳 Arbre",
+      "🐟 Poisson",
+      "⭐ Étoile",
+      "🎩 Chapeau"
+    ],
+    "explanation": "Relier les images en une scène aide à garder l'ordre : une maison, un arbre devant, un poisson dans l'arbre, une étoile au-dessus, un chapeau sur l'étoile.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-120",
+    "type": "order",
+    "category": "memoire",
+    "difficulty": 1,
+    "prompt": "Remets les couleurs dans l'ordre où elles sont apparues.",
+    "memorize": {
+      "items": [
+        "🔵 Bleu",
+        "🟡 Jaune",
+        "🔴 Rouge",
+        "🟢 Vert",
+        "🟣 Violet"
+      ]
+    },
+    "correct_answer": [
+      "🔵 Bleu",
+      "🟡 Jaune",
+      "🔴 Rouge",
+      "🟢 Vert",
+      "🟣 Violet"
+    ],
+    "explanation": "Prendre les initiales en fait un mot à prononcer : B, J, R, V, V. Transformer une liste en une seule unité sonore, c'est déjà du chunking.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-121",
+    "type": "order",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Remets les villes dans l'ordre où elles sont apparues.",
+    "memorize": {
+      "items": [
+        "Lille",
+        "Rennes",
+        "Nantes",
+        "Bordeaux",
+        "Lyon",
+        "Nice"
+      ]
+    },
+    "correct_answer": [
+      "Lille",
+      "Rennes",
+      "Nantes",
+      "Bordeaux",
+      "Lyon",
+      "Nice"
+    ],
+    "explanation": "Ici, l'ordre dessine un voyage sur la carte de France : du nord, on longe l'ouest vers le sud, puis on file vers l'est. Placer des éléments sur un trajet connu, c'est le principe du palais de mémoire.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-122",
+    "type": "order",
+    "category": "memoire",
+    "difficulty": 2,
+    "prompt": "Remets ces 5 sports dans l'ordre où ils sont apparus.",
+    "memorize": {
+      "items": [
+        "⚽ Football",
+        "🎾 Tennis",
+        "🏀 Basket",
+        "🏊 Natation",
+        "🚴 Cyclisme",
+        "🥊 Boxe",
+        "⛷️ Ski",
+        "🏹 Tir à l'arc"
+      ]
+    },
+    "correct_answer": [
+      "🎾 Tennis",
+      "🏀 Basket",
+      "🏊 Natation",
+      "🥊 Boxe",
+      "🏹 Tir à l'arc"
+    ],
+    "explanation": "Ordre complet : football, tennis, basket, natation, cyclisme, boxe, ski, tir à l'arc. Les sports de balle venaient d'abord : repérer des groupes dans une liste aide à en retenir l'ordre.",
+    "status": "published"
+  },
+  {
+    "id": "memoire-123",
+    "type": "order",
+    "category": "memoire",
+    "difficulty": 3,
+    "prompt": "Remets ces 6 mots dans l'ordre où ils sont apparus.",
+    "memorize": {
+      "items": [
+        "Grenouille",
+        "Parachute",
+        "Igloo",
+        "Boussole",
+        "Kangourou",
+        "Trombone",
+        "Cascade",
+        "Hamac",
+        "Pyramide",
+        "Escargot"
+      ]
+    },
+    "correct_answer": [
+      "Parachute",
+      "Igloo",
+      "Kangourou",
+      "Trombone",
+      "Hamac",
+      "Pyramide"
+    ],
+    "explanation": "Ordre complet : grenouille, parachute, igloo, boussole, kangourou, trombone, cascade, hamac, pyramide, escargot. Sans le premier ni le dernier mot, tu perds les deux repères les plus solides (primauté et récence).",
+    "status": "published"
   }
 ]

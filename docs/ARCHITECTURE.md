@@ -41,6 +41,7 @@ Dépendances autorisées : `web → services → domain`. Jamais l'inverse.
 | `users/{uid}/attempts/{date}` | La partie du jour : réponses, scores, chrono en cours | `services.play` (transactions) |
 | `daily_stats/{date}` | Agrégats du jour pour le tableau de bord | `services.play` (incréments, même transaction) |
 | `question_stats/{id}` | Réussite cumulée d'une question | idem |
+| `monthly_scores/{AAAA-MM}/players/{uid}` | Classement du mois : pseudo, total, jours joués, dernier jour et son score | `services.play` (même écriture que la dernière réponse), `services.leaderboard` |
 | `usernames/{pseudo}` | Unicité des pseudos | `services.users` |
 | `reports/{id}` | Signalements | joueur |
 | `media/{id}` | Photos envoyées depuis l'admin | admin |

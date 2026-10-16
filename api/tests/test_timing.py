@@ -41,3 +41,12 @@ def test_memorize_seconds():
     assert memorize_seconds({"memorize": {"items": ["a"] * 6, "seconds": 4}}) == 4
     assert memorize_seconds({"difficulty": 1, "memorize": {"items": ["a"] * 12}}) == 15
     assert memorize_seconds({}) is None
+
+
+def test_comfort_factor_applies_to_computed_time_only():
+    from cervo.domain.timing import TIME_FACTOR
+
+    assert TIME_FACTOR > 1
+    # Vocabulaire facile : base 12 s, sans lecture en plus.
+    assert time_limit(q(difficulty=1)) >= 12 * TIME_FACTOR
+    assert time_limit(q(time_limit=30)) == 30

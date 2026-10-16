@@ -67,5 +67,465 @@
     "explanation": "Le Soleil mesure 1,39 million de km de diamètre, 109 fois la Terre. En volume, on pourrait y loger environ 1,3 million de Terres.",
     "source_url": "https://science.nasa.gov/sun/facts/",
     "status": "published"
+  },
+  {
+    "id": "taille-104",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste la Lune par rapport à la Terre (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Terre",
+        "emoji": "🌍"
+      },
+      "target": {
+        "label": "Lune",
+        "emoji": "🌕"
+      },
+      "min": 0.1,
+      "max": 5
+    },
+    "correct_answer": 0.273,
+    "explanation": "La Lune mesure 3 474,8 km de diamètre, la Terre 12 742 km : 0,273 fois, soit un peu plus d'un quart. Il faudrait aligner près de quatre Lunes pour couvrir la largeur de la Terre.",
+    "source_url": "https://science.nasa.gov/moon/facts/",
+    "status": "published"
+  },
+  {
+    "id": "taille-105",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste Jupiter par rapport à la Terre (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Terre",
+        "emoji": "🌍"
+      },
+      "target": {
+        "label": "Jupiter",
+        "emoji": "🟠"
+      },
+      "min": 1,
+      "max": 30
+    },
+    "correct_answer": 11.2,
+    "explanation": "Jupiter mesure 142 984 km de diamètre à l'équateur, la Terre 12 742 km : 11,2 fois plus. En volume, plus de 1 300 Terres tiendraient à l'intérieur.",
+    "source_url": "https://science.nasa.gov/jupiter/facts/",
+    "status": "published"
+  },
+  {
+    "id": "taille-106",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste Mars par rapport à la Terre (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Terre",
+        "emoji": "🌍"
+      },
+      "target": {
+        "label": "Mars",
+        "emoji": "🔴"
+      },
+      "min": 0.05,
+      "max": 2
+    },
+    "correct_answer": 0.53,
+    "explanation": "Mars mesure 6 779 km de diamètre, la Terre 12 742 km : 0,53 fois, à peine plus de la moitié. Pourtant, sa surface équivaut à peu près à celle de toutes les terres émergées de notre planète.",
+    "source_url": "https://science.nasa.gov/mars/facts/",
+    "status": "published"
+  },
+  {
+    "id": "taille-107",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste la baleine bleue par rapport à un bus (longueur).",
+    "size_config": {
+      "reference": {
+        "label": "Bus standard",
+        "emoji": "🚌"
+      },
+      "target": {
+        "label": "Baleine bleue",
+        "emoji": "🐋"
+      },
+      "min": 0.5,
+      "max": 30
+    },
+    "correct_answer": 2.5,
+    "explanation": "La baleine bleue, plus grand animal ayant jamais existé, peut atteindre 30 m de long. Un bus standard mesure 12 m : 2,5 bus mis bout à bout.",
+    "source_url": "https://www.britannica.com/animal/blue-whale",
+    "status": "published"
+  },
+  {
+    "id": "taille-108",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste la girafe par rapport à un adulte de 1,75 m (hauteur).",
+    "size_config": {
+      "reference": {
+        "label": "Humain (1,75 m)",
+        "emoji": "🧍"
+      },
+      "target": {
+        "label": "Girafe mâle",
+        "emoji": "🦒"
+      },
+      "min": 0.5,
+      "max": 8
+    },
+    "correct_answer": 3.14,
+    "explanation": "Une girafe mâle peut mesurer 5,5 m de haut, contre 1,75 m pour un adulte : 3,14 fois plus. Son cou seul mesure environ 2 m, plus que la taille de la plupart des humains.",
+    "source_url": "https://www.britannica.com/animal/giraffe",
+    "status": "published"
+  },
+  {
+    "id": "taille-109",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste Sue, le plus célèbre squelette de T. rex, par rapport à un bus (longueur).",
+    "size_config": {
+      "reference": {
+        "label": "Bus standard",
+        "emoji": "🚌"
+      },
+      "target": {
+        "label": "T. rex « Sue »",
+        "emoji": "🦖"
+      },
+      "min": 0.2,
+      "max": 8
+    },
+    "correct_answer": 1.03,
+    "explanation": "Sue, exposé au Field Museum de Chicago, mesure 12,3 m du museau au bout de la queue. Un bus standard fait 12 m : 1,03 fois, quasiment la même longueur.",
+    "source_url": "https://fr.wikipedia.org/wiki/Sue_(dinosaure)",
+    "status": "published"
+  },
+  {
+    "id": "taille-110",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste la pyramide de Khéops par rapport à la statue de la Liberté (hauteur, socle compris).",
+    "size_config": {
+      "reference": {
+        "label": "Statue de la Liberté",
+        "emoji": "🗽"
+      },
+      "target": {
+        "label": "Pyramide de Khéops",
+        "emoji": "🔺"
+      },
+      "min": 0.5,
+      "max": 10
+    },
+    "correct_answer": 1.49,
+    "explanation": "La pyramide de Khéops mesure aujourd'hui 138,5 m (146,6 m à l'origine), la statue de la Liberté 93 m du sol à la torche : 1,49 fois plus. Elle est restée le plus haut monument humain pendant près de 4 000 ans.",
+    "source_url": "https://fr.wikipedia.org/wiki/Pyramide_de_Khéops",
+    "status": "published"
+  },
+  {
+    "id": "taille-111",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste Big Ben (la tour Elizabeth) par rapport à la pyramide de Khéops (hauteur).",
+    "size_config": {
+      "reference": {
+        "label": "Pyramide de Khéops",
+        "emoji": "🔺"
+      },
+      "target": {
+        "label": "Big Ben (tour Elizabeth)",
+        "emoji": "🕰️"
+      },
+      "min": 0.1,
+      "max": 3
+    },
+    "correct_answer": 0.69,
+    "explanation": "La tour Elizabeth, qui abrite la cloche Big Ben, mesure 96 m. La pyramide de Khéops culmine aujourd'hui à 138,5 m : 0,69 fois. La tour pourrait tenir debout à l'intérieur avec de la marge.",
+    "source_url": "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/",
+    "status": "published"
+  },
+  {
+    "id": "taille-112",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste le Kilimandjaro par rapport au mont Everest (altitude).",
+    "size_config": {
+      "reference": {
+        "label": "Everest",
+        "emoji": "🏔️"
+      },
+      "target": {
+        "label": "Kilimandjaro",
+        "emoji": "🌋"
+      },
+      "min": 0.1,
+      "max": 2
+    },
+    "correct_answer": 0.67,
+    "explanation": "Le Kilimandjaro, volcan et plus haut sommet d'Afrique, culmine à 5 895 m. L'Everest atteint 8 849 m : 0,67 fois, soit les deux tiers.",
+    "source_url": "https://www.britannica.com/place/Kilimanjaro",
+    "status": "published"
+  },
+  {
+    "id": "taille-113",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste le Christ Rédempteur de Rio par rapport à la statue de la Liberté (hauteur de la statue seule, sans socle).",
+    "size_config": {
+      "reference": {
+        "label": "Statue de la Liberté",
+        "emoji": "🗽"
+      },
+      "target": {
+        "label": "Christ Rédempteur",
+        "emoji": "✝️"
+      },
+      "min": 0.2,
+      "max": 5
+    },
+    "correct_answer": 0.65,
+    "explanation": "Le Christ Rédempteur mesure 30 m (38 m avec son piédestal), la statue de la Liberté 46 m de la base à la torche : 0,65 fois. Ses bras ouverts s'étendent tout de même sur 28 m.",
+    "source_url": "https://fr.wikipedia.org/wiki/Christ_Rédempteur",
+    "status": "published"
+  },
+  {
+    "id": "taille-114",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste le Titanic par rapport à un Airbus A380 (longueur).",
+    "size_config": {
+      "reference": {
+        "label": "Airbus A380",
+        "emoji": "✈️"
+      },
+      "target": {
+        "label": "Titanic",
+        "emoji": "🚢"
+      },
+      "min": 1,
+      "max": 50
+    },
+    "correct_answer": 3.7,
+    "explanation": "Le Titanic mesurait 269,1 m de long, l'A380, plus gros avion de ligne du monde, 72,72 m : 3,7 fois plus. Près de quatre A380 alignés pour égaler le paquebot.",
+    "source_url": "https://aircraft.airbus.com/en/aircraft/a380",
+    "status": "published"
+  },
+  {
+    "id": "taille-115",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste la Station spatiale internationale par rapport à un Airbus A380 (envergure).",
+    "size_config": {
+      "reference": {
+        "label": "Airbus A380",
+        "emoji": "✈️"
+      },
+      "target": {
+        "label": "Station spatiale internationale",
+        "emoji": "🛰️"
+      },
+      "min": 0.3,
+      "max": 3
+    },
+    "correct_answer": 1.37,
+    "explanation": "L'ISS mesure 109 m d'une extrémité à l'autre de ses panneaux solaires, l'A380 79,75 m d'envergure : 1,37 fois plus. C'est à peu près la taille d'un terrain de football, en orbite à 400 km d'altitude.",
+    "source_url": "https://www.nasa.gov/international-space-station/space-station-facts-and-figures/",
+    "status": "published"
+  },
+  {
+    "id": "taille-116",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste une balle de ping-pong par rapport à une balle de golf (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Balle de golf",
+        "emoji": "⛳"
+      },
+      "target": {
+        "label": "Balle de ping-pong",
+        "emoji": "🏓"
+      },
+      "min": 0.2,
+      "max": 2
+    },
+    "correct_answer": 0.94,
+    "explanation": "Une balle de ping-pong mesure 40 mm de diamètre, une balle de golf au moins 42,67 mm : 0,94 fois. Elles sont presque de la même taille, mais la balle de golf est 17 fois plus lourde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Balle_de_golf",
+    "status": "published"
+  },
+  {
+    "id": "taille-117",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste une balle de tennis par rapport à une balle de ping-pong (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Balle de ping-pong",
+        "emoji": "🏓"
+      },
+      "target": {
+        "label": "Balle de tennis",
+        "emoji": "🎾"
+      },
+      "min": 0.3,
+      "max": 4
+    },
+    "correct_answer": 1.68,
+    "explanation": "Une balle de tennis mesure environ 6,7 cm de diamètre (entre 6,54 et 6,86 cm selon le règlement), une balle de ping-pong 4 cm : 1,68 fois plus.",
+    "source_url": "https://fr.wikipedia.org/wiki/Balle_de_tennis",
+    "status": "published"
+  },
+  {
+    "id": "taille-118",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste une carte bancaire par rapport à une feuille A4 (largeur).",
+    "size_config": {
+      "reference": {
+        "label": "Feuille A4",
+        "emoji": "📄"
+      },
+      "target": {
+        "label": "Carte bancaire",
+        "emoji": "💳"
+      },
+      "min": 0.1,
+      "max": 3
+    },
+    "correct_answer": 0.41,
+    "explanation": "Une carte bancaire mesure 85,6 mm de long, au format normalisé ISO/IEC 7810 ID-1, partagé avec les cartes d'identité. Une feuille A4 fait 210 mm de large : 0,41 fois.",
+    "source_url": "https://fr.wikipedia.org/wiki/ISO/CEI_7810",
+    "status": "published"
+  },
+  {
+    "id": "taille-119",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 3,
+    "prompt": "Ajuste une pièce de 2 euros par rapport à une pièce de 1 euro (diamètre).",
+    "size_config": {
+      "reference": {
+        "label": "Pièce de 1 €",
+        "emoji": "🪙"
+      },
+      "target": {
+        "label": "Pièce de 2 €",
+        "emoji": "🪙"
+      },
+      "min": 0.3,
+      "max": 2
+    },
+    "correct_answer": 1.11,
+    "explanation": "La pièce de 2 € mesure 25,75 mm de diamètre, celle de 1 € 23,25 mm : 1,11 fois seulement. La différence tient en 2,5 mm.",
+    "source_url": "https://www.ecb.europa.eu/euro/coins/html/index.fr.html",
+    "status": "published"
+  },
+  {
+    "id": "taille-120",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 2,
+    "prompt": "Ajuste une feuille A3 par rapport à une feuille A4 (longueur).",
+    "size_config": {
+      "reference": {
+        "label": "Feuille A4",
+        "emoji": "📄"
+      },
+      "target": {
+        "label": "Feuille A3",
+        "emoji": "📃"
+      },
+      "min": 0.3,
+      "max": 3
+    },
+    "correct_answer": 1.41,
+    "explanation": "Une feuille A3 mesure 420 mm de long, une A4 297 mm : 1,41 fois, soit la racine carrée de 2. C'est ce rapport qui permet à une A3 pliée en deux de donner exactement deux A4.",
+    "source_url": "https://fr.wikipedia.org/wiki/ISO_216",
+    "status": "published"
+  },
+  {
+    "id": "taille-121",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste la Burj Khalifa par rapport à la tour Eiffel (hauteur).",
+    "size_config": {
+      "reference": {
+        "label": "Tour Eiffel",
+        "emoji": "🗼"
+      },
+      "target": {
+        "label": "Burj Khalifa",
+        "emoji": "🏙️"
+      },
+      "min": 0.5,
+      "max": 10
+    },
+    "correct_answer": 2.5,
+    "explanation": "La Burj Khalifa, plus haute tour du monde, mesure 828 m. La tour Eiffel atteint 330 m avec ses antennes : 2,5 fois plus.",
+    "source_url": "https://www.burjkhalifa.ae/en/the-tower/facts-figures/",
+    "status": "published"
+  },
+  {
+    "id": "taille-122",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste la tour de Pise par rapport à la tour Eiffel (hauteur).",
+    "size_config": {
+      "reference": {
+        "label": "Tour Eiffel",
+        "emoji": "🗼"
+      },
+      "target": {
+        "label": "Tour de Pise",
+        "emoji": "🏛️"
+      },
+      "min": 0.05,
+      "max": 2
+    },
+    "correct_answer": 0.172,
+    "explanation": "La tour de Pise mesure 56,67 m de son côté le plus haut, la tour Eiffel 330 m : 0,172 fois. Il faudrait empiler près de six tours de Pise pour l'égaler.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tour_de_Pise",
+    "status": "published"
+  },
+  {
+    "id": "taille-123",
+    "type": "size",
+    "category": "taille",
+    "difficulty": 1,
+    "prompt": "Ajuste l'altitude du Cervin par rapport à la hauteur de la tour Eiffel.",
+    "size_config": {
+      "reference": {
+        "label": "Tour Eiffel",
+        "emoji": "🗼"
+      },
+      "target": {
+        "label": "Cervin",
+        "emoji": "🏔️"
+      },
+      "min": 1,
+      "max": 50
+    },
+    "correct_answer": 13.6,
+    "explanation": "Le sommet du Cervin culmine à 4 478 m au-dessus du niveau de la mer, la tour Eiffel mesure 330 m : 13,6 fois plus.",
+    "source_url": "https://www.britannica.com/place/Matterhorn-mountain-Europe",
+    "status": "published"
   }
 ]

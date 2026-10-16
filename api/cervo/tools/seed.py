@@ -2,6 +2,8 @@
 
 Par défaut, ajoute seulement les questions absentes (les modifications faites
 depuis l'admin sont conservées). Avec --force, toutes les questions sont réécrites.
+Dès qu'au moins une question est ajoutée, le quiz du jour (et les journées à venir composées
+automatiquement) est recomposé pour jouer les nouveautés tout de suite. --keep-today l'évite.
 """
 
 from __future__ import annotations
@@ -9,13 +11,14 @@ from __future__ import annotations
 import argparse
 import sys
 
-from ..clock import now_iso
+from ..clock import now_iso, today
 from ..firebase import db
 from ..services.bank import bump_version, check_bank, load_files, to_doc
+from ..services.planning import refresh_after_ship
 from .migrate import retire_legacy
 
 
-def seed(force: bool = False) -> int:
+def seed(force: bool = False, keep_today: bool = False) -> int:
     client = db()
     col = client.collection("questions")
     existing = set() if force else {ref.id for ref in col.list_documents()}
@@ -41,13 +44,18 @@ def seed(force: bool = False) -> int:
     retired, cleared = retire_legacy(client)
     if retired or cleared:
         print(f"Anciennes questions retirées : {retired} · journées à venir recomposées : {cleared}.")
+    if count and not keep_today:
+        days = refresh_after_ship(client, today())
+        print(f"Quiz du jour recomposé avec les nouvelles questions ({len(days)} journée(s) mise(s) à jour).")
     return count
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--force", action="store_true", help="réécrit toutes les questions depuis les fichiers")
-    seed(force=parser.parse_args().force)
+    parser.add_argument("--keep-today", action="store_true", help="ne recompose pas le quiz du jour")
+    args = parser.parse_args()
+    seed(force=args.force, keep_today=args.keep_today)
 
 
 if __name__ == "__main__":

@@ -31,7 +31,7 @@ for (const width of [390, 1280]) {
     await expect(page.getByTestId("day-score")).toBeVisible();
     await shot(page, "4-resultats", width);
     await page.getByRole("link", { name: "Profil" }).first().click();
-    await expect(page.getByText("Mes questions")).toBeVisible();
+    await expect(page.getByTestId("kind-skills")).toBeVisible();
     await shot(page, "5-profil", width);
   });
 }

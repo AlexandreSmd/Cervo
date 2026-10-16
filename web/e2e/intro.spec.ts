@@ -42,7 +42,7 @@ test("première visite : l'intro présente la mission, puis ne revient plus", as
   await expect(page.getByTestId("intro")).toHaveCount(0);
 
   // On peut la revoir depuis le profil
-  await page.goto("/profil");
+  await page.goto("/profil?onglet=compte");
   await page.getByTestId("replay-intro").click();
   await expect(page.getByTestId("intro")).toBeVisible();
 });

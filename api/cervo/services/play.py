@@ -19,7 +19,7 @@ from ..domain.daily import QUIZ_SIZE
 from ..domain.scoring import day_score, score_answer
 from ..domain.stats import apply_answer, apply_completion, displayed_streak, empty_stats, recompute
 from ..errors import ApiError
-from . import bank, quiz
+from . import bank, leaderboard, quiz
 from . import collections as col
 from .users import new_user_doc, user_ref
 
@@ -245,10 +245,16 @@ def submit_answer(db, claims: dict, day: str, question_id: str, answer) -> dict:
             doc = new_user_doc(claims)
             batch.set(db.collection(col.USERNAMES).document(doc["username_lower"]), {"uid": uid})
             batch.create(u_ref, {**doc, **{k: stats[k] for k in empty_stats()}})
+            username = doc["username"]
         else:
             batch.set(u_ref, {k: stats[k] for k in empty_stats()}, merge=True)
+            username = profile.get("username") or new_user_doc(claims)["username"]
+        if completed:
+            leaderboard.record(batch, db, uid, username, day, attempt["score_total"])
         _record_stats(batch, db, day, question_id, score, attempt["score_total"] if completed else None)
         batch.commit()
+        if completed:
+            leaderboard.invalidate_cache()
 
         # Comparaison aux autres : chiffres lus avant l'écriture, plus cette réponse.
         seen = ((d_snap.to_dict() or {}).get("questions") or {}).get(question_id) or {}
@@ -342,10 +348,14 @@ def played_days(db, uid: str) -> list[dict]:
     return sorted(days, key=lambda d: d["date"], reverse=True)
 
 
-def rebuild_user_stats(db, uid: str) -> dict:
-    """Recalcule les agrégats du joueur depuis ses participations (outils de dev)."""
-    stats = recompute(list_attempts(db, uid), bank.by_id(db))
-    user_ref(db, uid).set(stats, merge=True)
+def rebuild_user_stats(db, uid: str, today: str | None = None) -> dict:
+    """Recalcule les agrégats et le classement du joueur depuis ses participations (outils de dev)."""
+    attempts = list_attempts(db, uid)
+    stats = recompute(attempts, bank.by_id(db))
+    ref = user_ref(db, uid)
+    ref.set(stats, merge=True)
+    username = (ref.get().to_dict() or {}).get("username") or "Joueur"
+    leaderboard.rebuild_user(db, uid, username, attempts, also={today[:7]} if today else set())
     return stats
 
 

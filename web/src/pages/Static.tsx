@@ -9,7 +9,7 @@ export function Privacy() {
       <p>{APP_NAME} collecte le strict minimum :</p>
       <ul className="list-disc space-y-1 pl-5">
         <li>ton adresse e-mail, si tu crées un compte ;</li>
-        <li>ton pseudo ;</li>
+        <li>ton pseudo, visible des autres joueurs dans le classement du mois avec tes points ;</li>
         <li>l'historique de tes réponses et les statistiques qui en découlent.</li>
       </ul>
       <p>

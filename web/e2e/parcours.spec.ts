@@ -28,6 +28,9 @@ test("parcours joueur : quiz invité, résultats, partage, profil, compte par li
 
   // Profil
   await page.getByRole("link", { name: "Profil" }).click();
+  await page.getByRole("tab", { name: "Classement" }).click();
+  await expect(page.getByTestId("leaderboard-me")).toBeVisible();
+  await page.getByRole("tab", { name: "Historique" }).click();
   await expect(page.getByText("Mes questions")).toBeVisible();
   const username = await page.getByTestId("username").textContent();
 
@@ -43,6 +46,7 @@ test("parcours joueur : quiz invité, résultats, partage, profil, compte par li
   await expect(page).toHaveURL(/\/profil$/, { timeout: 30_000 });
   await expect(page.getByText(email)).toBeVisible();
   await expect(page.getByTestId("username")).toHaveText(username!);
+  await page.getByRole("tab", { name: "Historique" }).click();
   await expect(page.locator("li").filter({ hasText: "toi :" }).first()).toBeVisible();
 });
 

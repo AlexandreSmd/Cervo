@@ -284,3 +284,26 @@ export interface Overview {
     levels: [number, number, number];
   })[];
 }
+
+/** Une ligne du classement du mois. */
+export interface LeaderboardRow {
+  username: string;
+  /** Somme des scores des quiz terminés du mois. */
+  total: number;
+  days: number;
+  rank: number;
+  /** Rang avant le quiz du jour (null : pas encore classé). */
+  previous_rank: number | null;
+  /** Places gagnées (positif) ou perdues (négatif) depuis le quiz du jour. */
+  change: number | null;
+  played_today: boolean;
+  is_me: boolean;
+}
+
+export interface Leaderboard {
+  /** AAAA-MM */
+  month: string;
+  players: number;
+  rows: LeaderboardRow[];
+  me: LeaderboardRow | null;
+}

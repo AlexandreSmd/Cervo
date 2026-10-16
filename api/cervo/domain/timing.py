@@ -3,7 +3,8 @@
 Principe : le chrono doit mettre la pression sur la réflexion, jamais sur la lecture. On part
 d'une base par type et par difficulté (`catalog.KINDS`), puis on ajoute le temps nécessaire
 pour lire l'énoncé, les choix, les éléments à classer ou à réécrire, et regarder les photos.
-Le résultat est arrondi aux 5 secondes supérieures : un chrono lisible (20, 25, 30 s…).
+Le tout est multiplié par `TIME_FACTOR` (marge de confort, réglage global), puis arrondi aux
+5 secondes supérieures : un chrono lisible (20, 25, 30 s…).
 
 Un `time_limit` écrit dans la question remplace le calcul (réglage fin depuis l'admin).
 """
@@ -15,6 +16,8 @@ import re
 
 from .catalog import KINDS
 
+# Marge de confort appliquée à tout le chrono calculé : les joueurs manquaient de temps à 1.
+TIME_FACTOR = 1.5
 # Lecture confortable sur téléphone : environ 3 mots par seconde.
 WORDS_PER_SECOND = 3
 # Mots « gratuits » : une question courte se lit dans le temps de base.
@@ -49,7 +52,7 @@ def time_limit(q: dict) -> int | None:
         return int(q["time_limit"])
     kind = KINDS.get(q.get("category", ""))
     if kind is None:
-        return LEGACY_TIME
+        return _round_up_5(LEGACY_TIME * TIME_FACTOR)
     if kind.base_time is None:
         return None
     difficulty = min(3, max(1, int(q.get("difficulty", 2))))
@@ -67,7 +70,7 @@ def time_limit(q: dict) -> int | None:
         seconds += SECONDS_PER_EXTRA_ITEM * max(0, len(answer) - 4)
     if q.get("type") == "recall" and isinstance(answer, list):
         seconds += SECONDS_PER_RECALL_ITEM * len(answer)
-    return _round_up_5(seconds)
+    return _round_up_5(seconds * TIME_FACTOR)
 
 
 def memorize_seconds(q: dict) -> int | None:

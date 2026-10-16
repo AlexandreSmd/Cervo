@@ -115,6 +115,9 @@ export const ANSWER_HINTS: Partial<Record<QuestionType, string>> = {
 export const DIFFICULTIES: Record<number, string> = { 1: "Facile", 2: "Moyen", 3: "Difficile" };
 export const STATUSES = { published: "Publiée", draft: "Brouillon", retired: "Retirée" } as const;
 
+/** Marge de confort appliquée à tout le chrono calculé (miroir de timing.TIME_FACTOR). */
+export const TIME_FACTOR = 1.5;
+
 /** Chrono calculé (miroir de domain/timing.py), pour l'aperçu de l'éditeur. */
 export function computeTimeLimit(q: {
   category: string;
@@ -126,7 +129,7 @@ export function computeTimeLimit(q: {
   correct_answer?: unknown;
 }): number | null {
   const rules = KIND_RULES[q.category];
-  if (!rules) return 15;
+  if (!rules) return Math.ceil((15 * TIME_FACTOR) / 5) * 5;
   if (!rules.baseTime) return null;
   const words = (t: string) => (t.match(/[\p{L}\p{N}_]+/gu) ?? []).length;
   let seconds = rules.baseTime[Math.min(3, Math.max(1, q.difficulty)) - 1];
@@ -135,7 +138,7 @@ export function computeTimeLimit(q: {
   seconds += Math.min(20, reading) + 3 * (q.images?.length ?? 0);
   if (q.type === "order" && Array.isArray(q.correct_answer)) seconds += 4 * Math.max(0, q.correct_answer.length - 4);
   if (q.type === "recall" && Array.isArray(q.correct_answer)) seconds += 2 * q.correct_answer.length;
-  return Math.ceil(seconds / 5) * 5;
+  return Math.ceil((seconds * TIME_FACTOR) / 5) * 5;
 }
 
 /** Durée de mémorisation calculée (miroir de domain/timing.py). */

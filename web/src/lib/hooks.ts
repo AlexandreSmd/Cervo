@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { api } from "./api";
 import { useAuth } from "./auth";
 import { quizDay, readCached, writeCached } from "./cache";
-import type { PlayedDay, Profile, Today } from "./types";
+import type { Leaderboard, PlayedDay, Profile, Today } from "./types";
 
 /** Garde sur l'appareil la dernière version fraîche reçue (y compris après une réponse au quiz). */
 function usePersist<T>(name: string, uid: string | undefined, query: UseQueryResult<T>) {
@@ -54,6 +54,18 @@ export function useDays() {
     placeholderData: () => readCached<{ days: PlayedDay[] }>("days", user?.uid),
   });
   usePersist("days", user?.uid, query);
+  return query;
+}
+
+export function useLeaderboard() {
+  const { user, ready } = useAuth();
+  const query = useQuery({
+    queryKey: ["leaderboard", user?.uid],
+    queryFn: api.leaderboard,
+    enabled: ready && !!user,
+    placeholderData: () => readCached<Leaderboard>("leaderboard", user?.uid),
+  });
+  usePersist("leaderboard", user?.uid, query);
   return query;
 }
 

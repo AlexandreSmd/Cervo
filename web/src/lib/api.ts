@@ -1,6 +1,18 @@
 // Client de l'API : ajoute le jeton Firebase, traduit les erreurs en messages lisibles.
 import { auth } from "./firebase";
-import type { AdminQuestion, Answer, DayDetail, DayStats, Overview, PlayedDay, Profile, Schedule, SubmitResult, Today } from "./types";
+import type {
+  AdminQuestion,
+  Answer,
+  DayDetail,
+  DayStats,
+  Leaderboard,
+  Overview,
+  PlayedDay,
+  Profile,
+  Schedule,
+  SubmitResult,
+  Today,
+} from "./types";
 
 export class ApiError extends Error {
   constructor(
@@ -79,6 +91,7 @@ export const api = {
   profile: () => request<Profile>("/profile"),
   setUsername: (username: string) => request<{ username: string }>("/profile", { method: "PATCH", body: json({ username }) }),
   days: () => request<{ days: PlayedDay[] }>("/profile/days"),
+  leaderboard: () => request<Leaderboard>("/leaderboard"),
   report: (question_id: string, reason: string) => request("/report", { method: "POST", body: json({ question_id, reason }) }),
   deleteAccount: () => request("/account", { method: "DELETE" }),
   admin: {

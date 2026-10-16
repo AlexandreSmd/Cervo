@@ -43,7 +43,7 @@ def dev_login(body: DevLoginIn):
 def replay_today(claims: Claims):
     client = db()
     play.attempt_ref(client, claims["uid"], today()).delete()
-    play.rebuild_user_stats(client, claims["uid"])
+    play.rebuild_user_stats(client, claims["uid"], today())
     return {"ok": True}
 
 

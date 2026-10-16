@@ -49,5 +49,345 @@
     "explanation": "Environ 107 000 km/h, soit près de 30 km par seconde. Pendant le temps de lire cette phrase, tu as parcouru une centaine de kilomètres autour du Soleil.",
     "source_url": "https://science.nasa.gov/earth/facts/",
     "status": "published"
+  },
+  {
+    "id": "estimation-104",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 1,
+    "prompt": "Combien d'os compte le squelette d'un adulte ?",
+    "correct_answer": 206,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 1.5,
+      "unit": "os",
+      "exact_margin": 0
+    },
+    "explanation": "Un adulte en compte 206, alors qu'un nouveau-né en a environ 300 qui fusionnent en grandissant. Plus de la moitié se trouvent dans les mains et les pieds : 106 à eux seuls.",
+    "source_url": "https://fr.wikipedia.org/wiki/Squelette_humain",
+    "status": "published"
+  },
+  {
+    "id": "estimation-105",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 1,
+    "prompt": "Quelle est l'altitude du sommet du Cervin, en mètres ?",
+    "correct_answer": 4478,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 1.5,
+      "unit": "m",
+      "exact_margin": 20
+    },
+    "explanation": "Le Cervin culmine à 4 478 m. Lors de la première ascension en 1865, Edward Whymper atteint le sommet avec six compagnons, mais quatre d'entre eux meurent dans la descente.",
+    "source_url": "https://fr.wikipedia.org/wiki/Cervin",
+    "status": "published"
+  },
+  {
+    "id": "estimation-106",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 1,
+    "prompt": "Combien d'habitants compte la Suisse, en millions ?",
+    "correct_answer": 9,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 1.5,
+      "unit": "millions d'habitants",
+      "exact_margin": 0.2
+    },
+    "explanation": "La Suisse a franchi le cap des 9 millions d'habitants en 2023. Elle n'en comptait que 4,7 millions en 1950 : la population a presque doublé en trois générations.",
+    "source_url": "https://www.bfs.admin.ch/bfs/fr/home/statistiques/population.html",
+    "status": "published"
+  },
+  {
+    "id": "estimation-107",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 1,
+    "prompt": "Combien de secondes compte une journée de 24 heures ?",
+    "correct_answer": 86400,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 1.5,
+      "unit": "secondes",
+      "exact_margin": 500
+    },
+    "explanation": "24 heures de 60 minutes de 60 secondes : 86 400 secondes. Une année en compte donc plus de 31 millions.",
+    "source_url": "https://fr.wikipedia.org/wiki/Jour",
+    "status": "published"
+  },
+  {
+    "id": "estimation-108",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 1,
+    "prompt": "Combien de dents compte la dentition complète d'un adulte, dents de sagesse comprises ?",
+    "correct_answer": 32,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 1.5,
+      "unit": "dents",
+      "exact_margin": 0
+    },
+    "explanation": "Un adulte a 32 dents, dont 4 dents de sagesse qui n'apparaissent pas chez tout le monde. Un enfant n'a que 20 dents de lait.",
+    "source_url": "https://fr.wikipedia.org/wiki/Dent",
+    "status": "published"
+  },
+  {
+    "id": "estimation-109",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 1,
+    "prompt": "Combien d'êtres humains vivent sur Terre, en milliards ?",
+    "correct_answer": 8,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 1.5,
+      "unit": "milliards",
+      "exact_margin": 0.3
+    },
+    "explanation": "Selon l'ONU, la population mondiale a atteint 8 milliards le 15 novembre 2022. Il a fallu 12 ans à peine pour passer de 7 à 8 milliards.",
+    "source_url": "https://www.un.org/fr/global-issues/population",
+    "status": "published"
+  },
+  {
+    "id": "estimation-110",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Quelle est la distance moyenne entre la Terre et la Lune, en kilomètres ?",
+    "correct_answer": 384400,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "km",
+      "exact_margin": 10000
+    },
+    "explanation": "En moyenne 384 400 km, soit près de 10 fois le tour de la Terre. Et la Lune s'éloigne de nous d'environ 3,8 cm chaque année.",
+    "source_url": "https://science.nasa.gov/moon/facts/",
+    "status": "published"
+  },
+  {
+    "id": "estimation-111",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Quelle est la vitesse de la lumière dans le vide, en kilomètres par seconde ?",
+    "correct_answer": 299792,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "km/s",
+      "exact_margin": 5000
+    },
+    "explanation": "Exactement 299 792,458 km/s : c'est même elle qui sert à définir le mètre. La lumière de la Lune met ainsi à peine plus d'une seconde à nous parvenir.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vitesse_de_la_lumi%C3%A8re",
+    "status": "published"
+  },
+  {
+    "id": "estimation-112",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Quelle est la longueur totale du Rhône, du glacier du Rhône à la Méditerranée ?",
+    "correct_answer": 812,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "km",
+      "exact_margin": 20
+    },
+    "explanation": "Le Rhône parcourt environ 812 km, du glacier du Rhône en Valais jusqu'à la Camargue. En chemin, il traverse le Léman de part en part avant de ressortir à Genève.",
+    "source_url": "https://fr.wikipedia.org/wiki/Rh%C3%B4ne_(fleuve)",
+    "status": "published"
+  },
+  {
+    "id": "estimation-113",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Combien peut peser une baleine bleue adulte, en tonnes ?",
+    "correct_answer": 150,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "tonnes",
+      "exact_margin": 10
+    },
+    "explanation": "Jusqu'à environ 150 tonnes, selon l'agence américaine NOAA. C'est le plus gros animal ayant jamais existé, plus lourd que n'importe quel dinosaure connu.",
+    "source_url": "https://www.fisheries.noaa.gov/species/blue-whale",
+    "status": "published"
+  },
+  {
+    "id": "estimation-114",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Quelle est la distance moyenne entre la Terre et le Soleil, en millions de kilomètres ?",
+    "correct_answer": 149.6,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "millions de km",
+      "exact_margin": 3
+    },
+    "explanation": "Environ 149,6 millions de kilomètres, une distance qui sert d'unité aux astronomes. La lumière du Soleil met environ 8 minutes et 20 secondes à nous parvenir : on le voit donc toujours avec un peu de retard.",
+    "source_url": "https://fr.wikipedia.org/wiki/Unit%C3%A9_astronomique",
+    "status": "published"
+  },
+  {
+    "id": "estimation-115",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "À quelle vitesse le son se propage-t-il dans l'air à 20 °C, en mètres par seconde ?",
+    "correct_answer": 343,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "m/s",
+      "exact_margin": 10
+    },
+    "explanation": "Environ 343 m/s, soit un kilomètre en trois secondes. Pour savoir à quelle distance tombe la foudre, compte les secondes entre l'éclair et le tonnerre et divise par trois.",
+    "source_url": "https://fr.wikipedia.org/wiki/Vitesse_du_son",
+    "status": "published"
+  },
+  {
+    "id": "estimation-116",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Quelle est la longueur du tunnel de base du Saint-Gothard, en kilomètres ?",
+    "correct_answer": 57,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "km",
+      "exact_margin": 1
+    },
+    "explanation": "57 km, ce qui en fait le plus long tunnel ferroviaire du monde depuis son ouverture en 2016. Sous le massif, la roche le recouvre par endroits de 2 300 m d'épaisseur.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tunnel_de_base_du_Saint-Gothard",
+    "status": "published"
+  },
+  {
+    "id": "estimation-117",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 2,
+    "prompt": "Quel âge a l'Univers, en milliards d'années ?",
+    "correct_answer": 13.8,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "milliards d'années",
+      "exact_margin": 0.3
+    },
+    "explanation": "Environ 13,8 milliards d'années, d'après les mesures du satellite Planck. La Terre, elle, n'a que 4,5 milliards d'années : elle a raté les deux tiers de l'histoire.",
+    "source_url": "https://fr.wikipedia.org/wiki/%C3%82ge_de_l%27Univers",
+    "status": "published"
+  },
+  {
+    "id": "estimation-118",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 3,
+    "prompt": "Combien de neurones compte le cerveau humain, en milliards ?",
+    "correct_answer": 86,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "milliards de neurones",
+      "exact_margin": 5
+    },
+    "explanation": "Environ 86 milliards. Pour les compter, la neuroscientifique Suzana Herculano-Houzel a dissous des cerveaux en une « soupe » homogène, puis compté les noyaux dans un échantillon.",
+    "source_url": "https://fr.wikipedia.org/wiki/Cerveau_humain",
+    "status": "published"
+  },
+  {
+    "id": "estimation-119",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 3,
+    "prompt": "Quelle est la profondeur maximale du Léman, en mètres ?",
+    "correct_answer": 310,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "m",
+      "exact_margin": 10
+    },
+    "explanation": "Environ 310 m, au large entre Évian et Lausanne. Avec 89 km³ d'eau, c'est le plus grand lac d'Europe occidentale par le volume.",
+    "source_url": "https://fr.wikipedia.org/wiki/L%C3%A9man",
+    "status": "published"
+  },
+  {
+    "id": "estimation-120",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 3,
+    "prompt": "Quelle est la température à la surface du Soleil, en degrés Celsius ?",
+    "correct_answer": 5500,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "°C",
+      "exact_margin": 200
+    },
+    "explanation": "Environ 5 500 °C en surface, alors que son cœur atteint 15 millions de degrés. Étrangement, sa couronne, plus loin du cœur, dépasse le million de degrés.",
+    "source_url": "https://science.nasa.gov/sun/facts/",
+    "status": "published"
+  },
+  {
+    "id": "estimation-121",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 3,
+    "prompt": "Combien de temps vit un globule rouge dans le sang humain, en jours ?",
+    "correct_answer": 120,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "jours",
+      "exact_margin": 5
+    },
+    "explanation": "Environ 120 jours, après quoi il est recyclé, surtout par la rate et le foie. Pour compenser, la moelle osseuse en fabrique environ 2 millions par seconde.",
+    "source_url": "https://fr.wikipedia.org/wiki/%C3%89rythrocyte",
+    "status": "published"
+  },
+  {
+    "id": "estimation-122",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 3,
+    "prompt": "Mis bout à bout, quelle longueur mesure l'ADN contenu dans une seule cellule humaine, en mètres ?",
+    "correct_answer": 2,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "m",
+      "exact_margin": 0.2
+    },
+    "explanation": "Environ 2 m d'ADN, replié dans un noyau qui mesure quelques millièmes de millimètre. Mis bout à bout, l'ADN de toutes les cellules d'un corps dépasserait des dizaines de milliards de kilomètres.",
+    "source_url": "https://fr.wikipedia.org/wiki/Acide_d%C3%A9soxyribonucl%C3%A9ique",
+    "status": "published"
+  },
+  {
+    "id": "estimation-123",
+    "type": "numeric",
+    "category": "estimation",
+    "difficulty": 3,
+    "prompt": "Quelle est la profondeur de la fosse des Mariannes, son point le plus bas, en mètres ?",
+    "correct_answer": 10935,
+    "numeric_config": {
+      "scale": "log",
+      "factor": 2,
+      "unit": "m",
+      "exact_margin": 200
+    },
+    "explanation": "Environ 10 935 m sous la surface, selon la NOAA, au point appelé Challenger Deep. On pourrait y engloutir l'Everest et il resterait encore plus de 2 000 m d'eau au-dessus de son sommet.",
+    "source_url": "https://oceanexplorer.noaa.gov/facts/mariana-trench.html",
+    "status": "published"
   }
 ]

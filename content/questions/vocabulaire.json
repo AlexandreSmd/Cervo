@@ -49,5 +49,345 @@
     "explanation": "Compendieux vient du latin compendium, « abrégé » : compendieusement veut dire « en résumé ». Le mot est très souvent employé à contresens, pour « longuement ».",
     "source_url": "https://www.cnrtl.fr/definition/compendieusement",
     "status": "published"
+  },
+  {
+    "id": "vocabulaire-104",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "Quel est le contraire de « pérenne » ?",
+    "choices": [
+      "Éphémère",
+      "Perpétuel",
+      "Annuel",
+      "Robuste"
+    ],
+    "correct_answer": "Éphémère",
+    "explanation": "Pérenne vient du latin perennis, « qui dure toute l'année », d'où « durable ». Piège : on entend « an » dedans, mais une plante pérenne revient justement année après année.",
+    "source_url": "https://www.cnrtl.fr/definition/p%C3%A9renne",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-105",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "« L'orage est ___ : rentrons vite. » Quel mot complète la phrase ?",
+    "choices": [
+      "Imminent",
+      "Éminent",
+      "Immanent",
+      "Émanant"
+    ],
+    "correct_answer": "Imminent",
+    "explanation": "Imminent : qui va se produire très bientôt. Éminent veut dire « remarquable » (un éminent chirurgien) et immanent est un terme de philosophie.",
+    "source_url": "https://www.cnrtl.fr/definition/imminent",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-106",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "Que signifie « ubuesque » ?",
+    "choices": [
+      "Absurde et grotesque",
+      "Présent partout",
+      "Extrêmement riche",
+      "Mystérieux"
+    ],
+    "correct_answer": "Absurde et grotesque",
+    "explanation": "Le mot vient du Père Ubu, tyran ridicule et cruel d'Ubu roi, la pièce d'Alfred Jarry (1896). Piège : « présent partout » se dit « ubiquiste », de ubique, « partout » en latin.",
+    "source_url": "https://www.cnrtl.fr/definition/ubuesque",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-107",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "Qu'est-ce qu'un « oxymore » ?",
+    "choices": [
+      "L'union de deux mots de sens opposés",
+      "La répétition d'un même son",
+      "Une exagération volontaire",
+      "Un mot inventé pour l'occasion"
+    ],
+    "correct_answer": "L'union de deux mots de sens opposés",
+    "explanation": "Comme « cette obscure clarté » de Corneille. Le mot en est lui-même un : en grec, oxus veut dire « fin, pointu » et môros « sot ».",
+    "source_url": "https://www.cnrtl.fr/definition/oxymore",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-108",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "« Le président a prononcé une courte ___ à la télévision. » Quel mot complète la phrase ?",
+    "choices": [
+      "Allocution",
+      "Allocation",
+      "Élocution",
+      "Locution"
+    ],
+    "correct_answer": "Allocution",
+    "explanation": "Une allocution est un discours bref adressé à un public. L'allocation est une somme versée, et l'élocution la manière de s'exprimer.",
+    "source_url": "https://www.cnrtl.fr/definition/allocution",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-109",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 1,
+    "prompt": "Comment appelle-t-on un mot qui se lit de la même façon dans les deux sens, comme « kayak » ou « radar » ?",
+    "choices": [
+      "Un palindrome",
+      "Une anagramme",
+      "Un homonyme",
+      "Un acrostiche"
+    ],
+    "correct_answer": "Un palindrome",
+    "explanation": "Du grec palin, « en sens inverse », et dromos, « course ». L'anagramme, elle, mélange les lettres : « chien » et « niche ».",
+    "source_url": "https://www.cnrtl.fr/definition/palindrome",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-110",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "Que signifie « pusillanime » ?",
+    "choices": [
+      "Craintif, sans audace",
+      "Unanime",
+      "Susceptible",
+      "Généreux"
+    ],
+    "correct_answer": "Craintif, sans audace",
+    "explanation": "Du latin pusillus, « tout petit », et animus, « esprit » : littéralement, « qui a l'âme petite ». Piège : « unanime » partage la même racine animus, mais pas le sens.",
+    "source_url": "https://www.cnrtl.fr/definition/pusillanime",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-111",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "« La ___ économique est mauvaise cette année. » Quel mot complète la phrase ?",
+    "choices": [
+      "Conjoncture",
+      "Conjecture",
+      "Conjonction",
+      "Jointure"
+    ],
+    "correct_answer": "Conjoncture",
+    "explanation": "La conjoncture est la situation qui résulte d'un ensemble de circonstances. Une conjecture n'est qu'une supposition : les deux sont confondus jusque dans les journaux.",
+    "source_url": "https://www.cnrtl.fr/definition/conjoncture",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-112",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "D'après son étymologie, à quoi le mot « salaire » est-il lié ?",
+    "choices": [
+      "Au sel",
+      "À la sueur",
+      "Au soleil",
+      "À la selle"
+    ],
+    "correct_answer": "Au sel",
+    "explanation": "Le latin salarium désignait la somme versée aux soldats romains pour acheter leur sel. Rien à voir avec la sueur du front, malgré l'expression.",
+    "source_url": "https://www.cnrtl.fr/definition/salaire",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-113",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "Que signifie « sibyllin » ?",
+    "choices": [
+      "Obscur, énigmatique",
+      "Sifflant",
+      "Séduisant",
+      "Bavard"
+    ],
+    "correct_answer": "Obscur, énigmatique",
+    "explanation": "Les sibylles étaient les prophétesses de l'Antiquité, réputées pour leurs oracles à double sens. Piège : le son « sifflant » se dit « sibilant ».",
+    "source_url": "https://www.cnrtl.fr/definition/sibyllin",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-114",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "« Il a toujours eu une ___ pour la musique. » Quel mot complète la phrase ?",
+    "choices": [
+      "Inclination",
+      "Inclinaison",
+      "Déclinaison",
+      "Inclusion"
+    ],
+    "correct_answer": "Inclination",
+    "explanation": "L'inclination est un penchant de l'esprit ou du cœur. L'inclinaison, c'est l'état de ce qui est penché : on parle de l'inclinaison d'un toit, pas d'un goût.",
+    "source_url": "https://www.cnrtl.fr/definition/inclination",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-115",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "Quel est le contraire de « laconique » ?",
+    "choices": [
+      "Verbeux",
+      "Lapidaire",
+      "Concis",
+      "Lacrymal"
+    ],
+    "correct_answer": "Verbeux",
+    "explanation": "Laconique vient de Laconie, la région de Sparte, dont les habitants étaient célèbres pour parler peu. Piège : « lapidaire » et « concis » en sont des synonymes.",
+    "source_url": "https://www.cnrtl.fr/definition/laconique",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-116",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "Quel est le contraire de « prodigue » ?",
+    "choices": [
+      "Avare",
+      "Généreux",
+      "Prodigieux",
+      "Repenti"
+    ],
+    "correct_answer": "Avare",
+    "explanation": "Prodigue : qui dépense sans compter, comme le fils de la parabole qui dilapide sa part d'héritage. Piège : on le croit synonyme de « repenti » parce qu'il finit par revenir.",
+    "source_url": "https://www.cnrtl.fr/definition/prodigue",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-117",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 2,
+    "prompt": "Que signifie « rasséréner » ?",
+    "choices": [
+      "Rassurer, rendre calme",
+      "Rendre sérieux",
+      "Assécher",
+      "Raser de près"
+    ],
+    "correct_answer": "Rassurer, rendre calme",
+    "explanation": "Rasséréner, c'est rendre serein : à l'origine, on le disait du ciel qui redevient clair après l'orage. Le mot n'a aucun lien avec « sérieux ».",
+    "source_url": "https://www.cnrtl.fr/definition/rass%C3%A9r%C3%A9ner",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-118",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "Qu'est-ce qu'un « béjaune » ?",
+    "choices": [
+      "Un jeune homme naïf et sot",
+      "Un oiseau des marais",
+      "Un vin de l'année",
+      "Un pain de seigle"
+    ],
+    "correct_answer": "Un jeune homme naïf et sot",
+    "explanation": "Le mot est la contraction de « bec jaune », la couleur du bec des oisillons. Même image que « blanc-bec » : celui qui ne sait encore rien de la vie.",
+    "source_url": "https://www.cnrtl.fr/definition/b%C3%A9jaune",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-119",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "Que signifie « jactance » ?",
+    "choices": [
+      "Vantardise",
+      "Bavardage",
+      "Paresse",
+      "Mélancolie"
+    ],
+    "correct_answer": "Vantardise",
+    "explanation": "La jactance est l'attitude de celui qui se vante avec arrogance, du latin jactantia. Piège : l'argot « jacter » veut dire « parler », d'où la confusion avec le bavardage.",
+    "source_url": "https://www.cnrtl.fr/definition/jactance",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-120",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "Que signifie « atrabilaire » ?",
+    "choices": [
+      "Irritable et sombre",
+      "Qui digère mal",
+      "Atrocement cruel",
+      "Qui ne dort jamais"
+    ],
+    "correct_answer": "Irritable et sombre",
+    "explanation": "Du latin atra bilis, « bile noire », humeur que la médecine antique accusait de rendre maussade et coléreux. Le sous-titre du Misanthrope de Molière est « L'Atrabilaire amoureux ».",
+    "source_url": "https://www.cnrtl.fr/definition/atrabilaire",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-121",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "Qu'est-ce qu'un « thaumaturge » ?",
+    "choices": [
+      "Un faiseur de miracles",
+      "Un spécialiste des traumatismes",
+      "Un dompteur de fauves",
+      "Un maître verrier"
+    ],
+    "correct_answer": "Un faiseur de miracles",
+    "explanation": "Du grec thauma, « merveille », et ergon, « œuvre ». Les rois de France étaient dits thaumaturges : on leur prêtait le pouvoir de guérir les écrouelles en touchant les malades.",
+    "source_url": "https://www.cnrtl.fr/definition/thaumaturge",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-122",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "« Ce mot a plusieurs ___ selon le contexte. » Quel mot complète la phrase ?",
+    "choices": [
+      "Acceptions",
+      "Acceptations",
+      "Exceptions",
+      "Accessions"
+    ],
+    "correct_answer": "Acceptions",
+    "explanation": "Une acception est le sens particulier dans lequel un mot est pris. L'acceptation, c'est le fait d'accepter : un seul « ta » de trop change tout.",
+    "source_url": "https://www.cnrtl.fr/definition/acception",
+    "status": "published"
+  },
+  {
+    "id": "vocabulaire-123",
+    "type": "mcq",
+    "category": "vocabulaire",
+    "difficulty": 3,
+    "prompt": "À l'origine, que désignait le mot « bureau » ?",
+    "choices": [
+      "Une étoffe de laine",
+      "Une pièce d'un château",
+      "Un registre de comptes",
+      "Un coffre à tiroirs"
+    ],
+    "correct_answer": "Une étoffe de laine",
+    "explanation": "Le mot dérive de « bure », grosse étoffe de laine dont on couvrait les tables de travail. Le nom est passé du tapis au meuble, puis à la pièce et enfin aux gens qui y travaillent.",
+    "source_url": "https://www.cnrtl.fr/definition/bureau",
+    "status": "published"
   }
 ]

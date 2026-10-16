@@ -4,10 +4,12 @@ from __future__ import annotations
 
 from google.cloud import firestore
 
-from ..clock import now_iso
+from ..clock import now_iso, today
+from ..domain.leaderboard import month_of
 from ..domain.stats import empty_stats
 from ..errors import ApiError
 from . import collections as col
+from . import leaderboard
 
 
 def user_ref(db, uid: str):
@@ -74,14 +76,18 @@ def set_username(db, uid: str, username: str) -> str:
         tx.update(ref, {"username": username, "username_lower": lower})
 
     run(db.transaction())
+    leaderboard.rename(db, uid, username, today())
     return username
 
 
 def delete_account(db, uid: str) -> None:
-    """Supprime le profil, toutes les participations, le pseudo et les signalements du joueur."""
+    """Supprime le profil, toutes les participations, le classement, le pseudo et les signalements du joueur."""
     ref = user_ref(db, uid)
+    months = {month_of(today())}
     for snap in ref.collection(col.ATTEMPTS).stream():
+        months.add(month_of(snap.id))
         snap.reference.delete()
+    leaderboard.delete_user(db, uid, months)
     user = ref.get().to_dict() or {}
     if user.get("username_lower"):
         db.collection(col.USERNAMES).document(user["username_lower"]).delete()

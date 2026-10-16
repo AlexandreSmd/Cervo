@@ -37,5 +37,261 @@
     "explanation": "Vénus tourne sur elle-même en 243 jours terrestres, et à l'envers, mais boucle son tour du Soleil en 225 jours. Son « jour » est plus long que son année.",
     "source_url": "https://science.nasa.gov/venus/facts/",
     "status": "published"
+  },
+  {
+    "id": "fait-104",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "La Grande Muraille de Chine est visible à l'œil nu depuis la Lune.",
+    "correct_answer": false,
+    "explanation": "Depuis la Lune, à 384 000 km, on ne distingue même pas les continents en détail, alors un mur large de quelques mètres... Même depuis l'orbite basse, les astronautes ont beaucoup de mal à l'apercevoir.",
+    "source_url": "https://www.scientificamerican.com/article/is-chinas-great-wall-visible-from-space/",
+    "status": "published"
+  },
+  {
+    "id": "fait-105",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "La foudre ne frappe jamais deux fois au même endroit.",
+    "correct_answer": false,
+    "explanation": "Elle adore au contraire les points hauts déjà touchés. L'Empire State Building est frappé une vingtaine de fois par an.",
+    "source_url": "https://www.weather.gov/safety/lightning-myths",
+    "status": "published"
+  },
+  {
+    "id": "fait-106",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "Du miel vieux de plusieurs milliers d'années peut encore se manger.",
+    "correct_answer": true,
+    "explanation": "Des archéologues ont retrouvé dans des tombes égyptiennes des pots de miel toujours comestibles. Très pauvre en eau et naturellement acide, il ne laisse aucune chance aux bactéries.",
+    "source_url": "https://www.smithsonianmag.com/science-nature/the-science-behind-honeys-eternal-shelf-life-1218690/",
+    "status": "published"
+  },
+  {
+    "id": "fait-107",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "La tour Eiffel est un peu plus haute en été qu'en hiver.",
+    "correct_answer": true,
+    "explanation": "Sous l'effet de la chaleur, son fer se dilate et elle gagne plusieurs centimètres. Son sommet s'incline même légèrement du côté opposé au soleil.",
+    "source_url": "https://www.toureiffel.paris/fr/le-monument/chiffres-cles",
+    "status": "published"
+  },
+  {
+    "id": "fait-108",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "Les Vikings portaient des casques à cornes au combat.",
+    "correct_answer": false,
+    "explanation": "Aucun casque viking à cornes n'a jamais été retrouvé. L'image vient surtout des costumes créés en 1876 pour un opéra de Wagner.",
+    "source_url": "https://www.britannica.com/story/did-vikings-really-wear-horns-on-their-helmets",
+    "status": "published"
+  },
+  {
+    "id": "fait-109",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 1,
+    "prompt": "Quel est le plus gros animal ayant jamais existé ?",
+    "choices": [
+      "La baleine bleue",
+      "L'Argentinosaurus",
+      "Le mégalodon",
+      "Le brachiosaure"
+    ],
+    "correct_answer": "La baleine bleue",
+    "explanation": "La baleine bleue peut dépasser 30 mètres de long et 150 tonnes, plus que tous les dinosaures connus. Sa langue pèse à elle seule autant qu'un éléphant.",
+    "source_url": "https://www.fisheries.noaa.gov/species/blue-whale",
+    "status": "published"
+  },
+  {
+    "id": "fait-110",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Botaniquement, la banane est une baie, mais pas la fraise.",
+    "correct_answer": true,
+    "explanation": "Pour un botaniste, une baie vient d'une seule fleur et garde ses graines à l'intérieur, comme la banane. Les vrais fruits de la fraise sont les petits grains sur sa peau.",
+    "source_url": "https://www.britannica.com/science/berry-plant-reproductive-body",
+    "status": "published"
+  },
+  {
+    "id": "fait-111",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "La Constitution suisse ne désigne aucune capitale.",
+    "correct_answer": true,
+    "explanation": "Berne n'est officiellement que la « ville fédérale », siège du gouvernement et du Parlement depuis 1848. Le mot « capitale » n'apparaît nulle part dans la Constitution.",
+    "source_url": "https://fr.wikipedia.org/wiki/Berne",
+    "status": "published"
+  },
+  {
+    "id": "fait-112",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Les mots « algèbre », « alcool » et « sirop » viennent de l'arabe.",
+    "correct_answer": true,
+    "explanation": "« Algèbre » vient d'al-jabr, titre d'un traité du savant al-Khwârizmî, et « sirop » de sharâb, la boisson. « Alcool » désignait à l'origine al-kuhl, la fine poudre du khôl.",
+    "source_url": "https://www.cnrtl.fr/etymologie/alcool",
+    "status": "published"
+  },
+  {
+    "id": "fait-113",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Nous n'utilisons que 10 % de notre cerveau.",
+    "correct_answer": false,
+    "explanation": "L'imagerie cérébrale montre que toutes les zones du cerveau servent, même pendant le sommeil. Une petite lésion n'importe où suffit d'ailleurs à provoquer des troubles.",
+    "source_url": "https://www.scientificamerican.com/article/do-people-only-use-10-percent-of-their-brains/",
+    "status": "published"
+  },
+  {
+    "id": "fait-114",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Napoléon était particulièrement petit pour son époque.",
+    "correct_answer": false,
+    "explanation": "Il mesurait environ 1,69 m, dans la moyenne des Français de son temps. La légende vient en partie de la confusion entre pouces français et anglais, et des caricatures britanniques.",
+    "source_url": "https://www.britannica.com/story/was-napoleon-short",
+    "status": "published"
+  },
+  {
+    "id": "fait-115",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Combien de temps met la lumière du Soleil pour arriver jusqu'à nous ?",
+    "choices": [
+      "Environ 8 minutes",
+      "Environ 8 secondes",
+      "Environ 1 heure",
+      "Moins d'une seconde"
+    ],
+    "correct_answer": "Environ 8 minutes",
+    "explanation": "Elle parcourt 150 millions de kilomètres en 8 minutes et 20 secondes environ. Si le Soleil s'éteignait, nous ne le remarquerions qu'après ce délai.",
+    "source_url": "https://science.nasa.gov/sun/facts/",
+    "status": "published"
+  },
+  {
+    "id": "fait-116",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Quel animal a survécu à une exposition directe au vide spatial ?",
+    "choices": [
+      "Le tardigrade",
+      "Le cafard",
+      "La fourmi",
+      "Le scorpion"
+    ],
+    "correct_answer": "Le tardigrade",
+    "explanation": "En 2007, des tardigrades ont passé dix jours à l'extérieur d'une capsule en orbite, et beaucoup sont revenus vivants. Ces animaux de moins d'un millimètre peuvent se dessécher et rester en vie au ralenti.",
+    "source_url": "https://www.cell.com/current-biology/fulltext/S0960-9822(08)00805-1",
+    "status": "published"
+  },
+  {
+    "id": "fait-117",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 2,
+    "prompt": "Combien de temps a duré la guerre de Cent Ans ?",
+    "choices": [
+      "116 ans",
+      "100 ans",
+      "99 ans",
+      "87 ans"
+    ],
+    "correct_answer": "116 ans",
+    "explanation": "Elle a opposé la France et l'Angleterre de 1337 à 1453, avec de longues trêves. Le nom « guerre de Cent Ans » n'a été inventé qu'au XIXe siècle.",
+    "source_url": "https://www.britannica.com/event/Hundred-Years-War",
+    "status": "published"
+  },
+  {
+    "id": "fait-118",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Cléopâtre a vécu plus près de notre époque que de la construction de la grande pyramide de Gizeh.",
+    "correct_answer": true,
+    "explanation": "La grande pyramide date d'environ 2560 av. J.-C., soit près de 2 500 ans avant la naissance de Cléopâtre. Elle est morte en 30 av. J.-C., il y a un peu plus de 2 050 ans.",
+    "source_url": "https://www.britannica.com/topic/Pyramids-of-Giza",
+    "status": "published"
+  },
+  {
+    "id": "fait-119",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Le drapeau suisse est l'un des deux seuls drapeaux nationaux carrés.",
+    "correct_answer": true,
+    "explanation": "Seuls la Suisse et le Vatican ont un drapeau carré. Sur les bateaux, la Suisse utilise pourtant une version rectangulaire.",
+    "source_url": "https://fr.wikipedia.org/wiki/Drapeau_de_la_Suisse",
+    "status": "published"
+  },
+  {
+    "id": "fait-120",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Le sommet de l'Everest est le point de la surface terrestre le plus éloigné du centre de la Terre.",
+    "correct_answer": false,
+    "explanation": "La Terre est renflée à l'équateur, si bien que le sommet du Chimborazo, en Équateur, est environ 2 km plus loin du centre. L'Everest reste le plus haut au-dessus du niveau de la mer.",
+    "source_url": "https://oceanservice.noaa.gov/facts/highestpoint.html",
+    "status": "published"
+  },
+  {
+    "id": "fait-121",
+    "type": "binary",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Les ongles et les cheveux continuent de pousser après la mort.",
+    "correct_answer": false,
+    "explanation": "C'est une illusion : la peau se dessèche et se rétracte, ce qui découvre davantage les ongles et les poils. Pousser demande des hormones et du glucose, qui ne circulent plus.",
+    "source_url": "https://www.bmj.com/content/335/7633/1288",
+    "status": "published"
+  },
+  {
+    "id": "fait-122",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Quel pays s'étend sur le plus grand nombre de fuseaux horaires ?",
+    "choices": [
+      "La France",
+      "La Russie",
+      "Les États-Unis",
+      "La Chine"
+    ],
+    "correct_answer": "La France",
+    "explanation": "Grâce à ses territoires d'outre-mer, de la Polynésie à la Nouvelle-Calédonie, la France couvre 12 fuseaux horaires, 13 avec la Terre Adélie. La Chine, pourtant immense, n'utilise officiellement qu'une seule heure.",
+    "source_url": "https://fr.wikipedia.org/wiki/Heure_en_France",
+    "status": "published"
+  },
+  {
+    "id": "fait-123",
+    "type": "mcq",
+    "category": "fait",
+    "difficulty": 3,
+    "prompt": "Combien de planètes comme la Terre pourrait-on faire tenir dans le Soleil ?",
+    "choices": [
+      "Environ 1,3 million",
+      "Environ 1 300",
+      "Environ 130 000",
+      "Environ 13 millions"
+    ],
+    "correct_answer": "Environ 1,3 million",
+    "explanation": "Le Soleil a un diamètre environ 109 fois plus grand que celui de la Terre. Il concentre à lui seul plus de 99 % de la masse du Système solaire.",
+    "source_url": "https://science.nasa.gov/sun/facts/",
+    "status": "published"
   }
 ]

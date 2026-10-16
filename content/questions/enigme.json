@@ -40,5 +40,267 @@
     "correct_answer": 22,
     "explanation": "Elles se rejoignent toutes les 12/11 d'heure (environ 1 h 05), soit 11 fois en 12 heures et 22 fois par jour. Le piège : entre 11 h et 13 h, elles ne se croisent qu'une seule fois, à midi.",
     "status": "published"
+  },
+  {
+    "id": "enigme-104",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Sur un étang, une tache de nénuphars double de surface chaque jour. Elle couvre tout l'étang en 48 jours. En combien de jours en couvrait-elle la moitié ?",
+    "choices": [
+      "24",
+      "47",
+      "46",
+      "12"
+    ],
+    "correct_answer": "47",
+    "explanation": "La surface double chaque jour : la veille du 48e jour, la tache couvrait donc la moitié de l'étang. Le réflexe de diviser 48 par 2 ne marche pas pour une croissance qui double.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-105",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Un tiroir contient 10 chaussettes noires et 10 blanches, mélangées. Dans le noir, combien dois-tu en prendre au minimum pour être sûr d'avoir une paire de la même couleur ?",
+    "correct_answer": 3,
+    "explanation": "Avec deux couleurs, les deux premières chaussettes peuvent être différentes, mais la troisième ira forcément avec l'une d'elles. Inutile d'en prendre 11 : on veut une paire, pas une couleur précise.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-106",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Quel nombre vient ensuite : 1, 1, 2, 3, 5, 8, … ?",
+    "choices": [
+      "11",
+      "16",
+      "13",
+      "12"
+    ],
+    "correct_answer": "13",
+    "explanation": "Chaque nombre est la somme des deux précédents : 5 + 8 = 13. C'est la célèbre suite de Fibonacci.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-107",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Pendant une course, tu dépasses le coureur qui est deuxième. À quelle place es-tu maintenant ?",
+    "correct_answer": 2,
+    "explanation": "Tu prends la place de celui que tu viens de dépasser : tu es deuxième. Le premier est toujours devant toi, d'où le piège de répondre « premier ».",
+    "status": "published"
+  },
+  {
+    "id": "enigme-108",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Un fermier a 17 moutons. Tous meurent, sauf 9. Combien lui en reste-t-il ?",
+    "choices": [
+      "8",
+      "0",
+      "17",
+      "9"
+    ],
+    "correct_answer": "9",
+    "explanation": "« Tous sauf 9 » veut dire que 9 moutons survivent. Le cerveau voit 17 et 9, et lance la soustraction tout seul.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-109",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 1,
+    "prompt": "Une clôture droite de 20 mètres a un poteau tous les 2 mètres, y compris à chaque extrémité. Combien y a-t-il de poteaux ?",
+    "correct_answer": 11,
+    "explanation": "Il y a 10 intervalles de 2 mètres, donc 10 + 1 = 11 poteaux. Oublier le poteau du bout est l'erreur « d'intervalle » la plus classique.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-110",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Un escargot est au fond d'un puits de 10 mètres. Chaque jour il monte de 3 mètres, chaque nuit il glisse de 2 mètres. Quel jour atteint-il le bord ?",
+    "correct_answer": 8,
+    "explanation": "Il gagne 1 mètre par jour et nuit : au soir du 7e jour il est à 7 mètres, et le 8e jour ses 3 mètres de montée l'amènent au bord, sans qu'il glisse. Le piège est de répondre 10.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-111",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "8 personnes se retrouvent et chacune serre la main de chacune des autres, une seule fois. Combien de poignées de main en tout ?",
+    "correct_answer": 28,
+    "explanation": "Chacun serre 7 mains, soit 8 × 7 = 56, mais chaque poignée de main compte deux personnes : 56 ÷ 2 = 28. Oublier de diviser par 2 donne 56.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-112",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Un robinet remplit une baignoire en 3 minutes, un autre en 6 minutes. En combien de temps la remplissent-ils ensemble ?",
+    "choices": [
+      "4 minutes 30",
+      "2 minutes",
+      "3 minutes",
+      "9 minutes"
+    ],
+    "correct_answer": "2 minutes",
+    "explanation": "En une minute, l'un remplit 1/3 de la baignoire et l'autre 1/6, soit 1/2 ensemble : il faut donc 2 minutes. La moyenne (4 minutes 30) est plus longue que le robinet le plus rapide seul, c'est impossible.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-113",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Un père a 3 fois l'âge de son fils. Dans 10 ans, il n'aura plus que 2 fois son âge. Quel âge a le fils aujourd'hui ?",
+    "correct_answer": 10,
+    "explanation": "Si le fils a f ans, alors 3f + 10 = 2(f + 10), donc f = 10. Vérification : 30 et 10 ans aujourd'hui, 40 et 20 ans dans 10 ans.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-114",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Sur une île, les chevaliers disent toujours la vérité et les fripons mentent toujours. Anna dit : « Bruno et moi sommes deux fripons. » Que sont-ils ?",
+    "choices": [
+      "Deux fripons",
+      "Anna chevalier, Bruno fripon",
+      "Anna fripon, Bruno chevalier",
+      "Deux chevaliers"
+    ],
+    "correct_answer": "Anna fripon, Bruno chevalier",
+    "explanation": "Un chevalier ne pourrait jamais dire qu'il est fripon : Anna ment donc, et sa phrase est fausse. Comme elle est bien fripon, c'est Bruno qui doit être chevalier.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-115",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Le 1er mars d'une année est un mardi. Quel jour de la semaine sera le 1er avril ?",
+    "choices": [
+      "Jeudi",
+      "Mardi",
+      "Samedi",
+      "Vendredi"
+    ],
+    "correct_answer": "Vendredi",
+    "explanation": "Mars compte 31 jours, soit 4 semaines et 3 jours : on avance de 3 jours, de mardi à vendredi. Le piège est de compter 30 jours et de répondre jeudi.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-116",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "Tu as 8 billes identiques, dont une un peu plus lourde, et une balance à deux plateaux. Combien de pesées faut-il au minimum pour être sûr de la trouver ?",
+    "correct_answer": 2,
+    "explanation": "Pèse 3 billes contre 3 : si c'est équilibré, la lourde est parmi les 2 restantes, sinon parmi les 3 du plateau qui penche. Une seconde pesée (1 contre 1) suffit dans tous les cas.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-117",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 2,
+    "prompt": "À 6 h, une horloge sonne 6 coups : il s'écoule 5 secondes entre le premier et le dernier. À midi, combien de secondes entre le premier et le dernier de ses 12 coups ?",
+    "choices": [
+      "10 secondes",
+      "11 secondes",
+      "12 secondes",
+      "22 secondes"
+    ],
+    "correct_answer": "11 secondes",
+    "explanation": "6 coups font 5 intervalles, soit 1 seconde chacun. 12 coups font 11 intervalles, donc 11 secondes, et non le double de 5.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-118",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "Jeu télévisé : tu choisis une porte parmi 3, une seule cache une voiture. L'animateur, qui sait où elle est, ouvre une autre porte qui cache une chèvre et te propose de changer. Si tu changes, quelle est ta chance de gagner ?",
+    "choices": [
+      "1/2",
+      "1/3",
+      "2/3",
+      "1"
+    ],
+    "correct_answer": "2/3",
+    "explanation": "Ton premier choix n'a qu'une chance sur 3 d'être bon, et l'animateur ne change rien à cela. Dans les 2 autres cas sur 3, la voiture est derrière la porte restante : changer gagne 2 fois sur 3.",
+    "source_url": "https://fr.wikipedia.org/wiki/Problème_de_Monty_Hall",
+    "status": "published"
+  },
+  {
+    "id": "enigme-119",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "Quel nombre vient ensuite : 1, 11, 21, 1211, 111221, … ?",
+    "correct_answer": 312211,
+    "explanation": "Chaque terme décrit le précédent à voix haute : 111221, c'est « trois 1, deux 2, un 1 », soit 312211. Inutile de chercher un calcul, il suffit de lire.",
+    "source_url": "https://fr.wikipedia.org/wiki/Suite_de_Conway",
+    "status": "published"
+  },
+  {
+    "id": "enigme-120",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "« Avant-hier, j'avais 17 ans. L'an prochain, j'aurai 20 ans. » Cette phrase est vraie. Quel jour est-on ?",
+    "choices": [
+      "Le 31 décembre",
+      "Le 1er janvier",
+      "Le 29 février",
+      "C'est impossible"
+    ],
+    "correct_answer": "Le 1er janvier",
+    "explanation": "On est le 1er janvier et l'anniversaire tombe le 31 décembre : 17 ans le 30 décembre, 18 ans le lendemain, 19 ans à la fin de cette année et 20 ans l'an prochain. Cela paraît impossible tant qu'on suppose un seul anniversaire entre les deux dates.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-121",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "Un tiroir contient 5 paires de gants noirs et 5 paires de gants blancs, tous mélangés. Dans le noir, combien de gants faut-il prendre au minimum pour être sûr d'avoir un gauche et un droit de la même couleur ?",
+    "correct_answer": 11,
+    "explanation": "Dans le pire des cas, tu prends les 10 gants gauches (ou 5 gauches noirs et 5 droits blancs) sans former de paire. Le 11e gant complète forcément une paire, contrairement aux chaussettes où 3 suffisent.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-122",
+    "type": "mcq",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "Ana dit : « Bruno ment. » Bruno dit : « Chloé ment. » Chloé dit : « Ana et Bruno mentent tous les deux. » Chacun ment ou dit vrai. Qui dit la vérité ?",
+    "choices": [
+      "Chloé seulement",
+      "Bruno seulement",
+      "Ana et Chloé",
+      "Personne"
+    ],
+    "correct_answer": "Bruno seulement",
+    "explanation": "Si Chloé disait vrai, Ana mentirait, donc Bruno dirait vrai, ce qui contredit Chloé : elle ment, et Bruno dit donc vrai. Ana, qui l'accuse, ment, et la phrase de Chloé est bien fausse puisque Bruno dit vrai.",
+    "status": "published"
+  },
+  {
+    "id": "enigme-123",
+    "type": "short_text",
+    "category": "enigme",
+    "difficulty": 3,
+    "prompt": "Pour numéroter les pages d'un livre de 1 à 100, combien de fois écrit-on le chiffre 9 ?",
+    "correct_answer": 20,
+    "explanation": "Il apparaît 10 fois en unité (9, 19, …, 99) et 10 fois en dizaine (90 à 99). Le piège est d'oublier qu'on l'écrit deux fois dans 99.",
+    "status": "published"
   }
 ]

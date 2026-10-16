@@ -62,5 +62,443 @@
     "explanation": "Fille du poète Lord Byron, Ada Lovelace a décrit un algorithme pour la machine analytique de Babbage, une machine jamais construite. Le langage Ada, créé pour la défense américaine, porte son nom.",
     "source_url": "https://www.britannica.com/biography/Ada-Lovelace",
     "status": "published"
+  },
+  {
+    "id": "devinette-104",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Quel animal suis-je ?",
+    "clues": [
+      "J'ai autant de vertèbres dans le cou que toi : sept.",
+      "Ma langue, bleu foncé, peut mesurer près de 50 cm.",
+      "Je vis dans la savane africaine et je raffole des feuilles d'acacia.",
+      "Je suis l'animal le plus grand du monde sur la terre ferme."
+    ],
+    "correct_answer": "girafe",
+    "accepted_aliases": [
+      "girafes",
+      "giraffe"
+    ],
+    "explanation": "Malgré un cou de près de 2 mètres, la girafe n'a que sept vertèbres cervicales, comme nous : chacune peut dépasser 25 cm. Sa langue sombre la protégerait des coups de soleil pendant qu'elle broute.",
+    "source_url": "https://www.nationalgeographic.com/animals/mammals/facts/giraffe",
+    "status": "published"
+  },
+  {
+    "id": "devinette-105",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Quel aliment suis-je ?",
+    "clues": [
+      "Pour les botanistes, je suis un fruit, mais on me cuisine comme un légume.",
+      "Je viens d'Amérique, et l'Europe m'a longtemps crue toxique.",
+      "Les Italiens m'ont appelée « pomme d'or ».",
+      "Je suis la base du ketchup et de la sauce des pizzas."
+    ],
+    "correct_answer": "tomate",
+    "accepted_aliases": [
+      "tomates"
+    ],
+    "explanation": "Arrivée en Europe au XVIe siècle, la tomate a d'abord été cultivée comme plante décorative, car on la soupçonnait d'être vénéneuse comme ses cousines de la famille des solanacées. Son nom italien, pomodoro, signifie « pomme d'or ».",
+    "source_url": "https://www.britannica.com/plant/tomato",
+    "status": "published"
+  },
+  {
+    "id": "devinette-106",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Quelle ville suis-je ?",
+    "clues": [
+      "Je suis construite sur plus d'une centaine de petites îles.",
+      "Mes palais reposent sur des millions de pieux de bois plantés dans la vase.",
+      "Mon carnaval est célèbre pour ses masques.",
+      "On y circule en vaporetto ou en gondole sur le Grand Canal."
+    ],
+    "correct_answer": "Venise",
+    "accepted_aliases": [
+      "Venezia",
+      "Venice"
+    ],
+    "explanation": "Venise s'étend sur 118 îlots reliés par plus de 400 ponts. Ses fondations en bois tiennent depuis des siècles parce que, privé d'oxygène dans la vase, le bois ne pourrit presque pas.",
+    "source_url": "https://whc.unesco.org/fr/list/394",
+    "status": "published"
+  },
+  {
+    "id": "devinette-107",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Quel objet suis-je ?",
+    "clues": [
+      "J'ai été inventée en Chine il y a environ mille ans.",
+      "Je fonctionne sans pile ni électricité.",
+      "Les marins m'ont utilisée pour traverser les océans.",
+      "Mon aiguille aimantée indique toujours le nord."
+    ],
+    "correct_answer": "boussole",
+    "accepted_aliases": [
+      "boussoles",
+      "compas"
+    ],
+    "explanation": "Les premières boussoles chinoises servaient à la géomancie avant de guider les navires. Son aiguille ne vise pas le pôle Nord géographique mais le pôle Nord magnétique, qui se déplace de plusieurs dizaines de kilomètres par an.",
+    "source_url": "https://www.britannica.com/technology/compass-navigational-instrument",
+    "status": "published"
+  },
+  {
+    "id": "devinette-108",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Qui suis-je ?",
+    "clues": [
+      "Je suis né en Corse en 1769.",
+      "J'ai fait rédiger le Code civil, promulgué en 1804.",
+      "Je me suis couronné empereur à Notre-Dame de Paris.",
+      "J'ai perdu à Waterloo et je suis mort en exil à Sainte-Hélène."
+    ],
+    "correct_answer": "Napoléon",
+    "accepted_aliases": [
+      "Napoléon Bonaparte",
+      "Bonaparte",
+      "Napoléon Ier",
+      "Napoléon 1er",
+      "Napoléon premier"
+    ],
+    "explanation": "Sa réputation de petit homme vient en partie d'une confusion entre pouces français et anglais : il mesurait environ 1,69 m, une taille normale pour l'époque. Lors de son sacre, c'est lui qui a posé la couronne sur sa tête, et non le pape.",
+    "source_url": "https://www.britannica.com/biography/Napoleon-I",
+    "status": "published"
+  },
+  {
+    "id": "devinette-109",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 1,
+    "prompt": "Quel pays suis-je ?",
+    "clues": [
+      "Je suis un archipel volcanique.",
+      "J'ai mis en service le premier train à grande vitesse du monde, en 1964.",
+      "Mon plus haut sommet est le mont Fuji.",
+      "Ma capitale est Tokyo."
+    ],
+    "correct_answer": "Japon",
+    "accepted_aliases": [
+      "Japan",
+      "Nippon",
+      "Nihon"
+    ],
+    "explanation": "Le Shinkansen a été inauguré en octobre 1964, juste avant les Jeux olympiques de Tokyo. Son retard moyen se compte encore aujourd'hui en secondes.",
+    "source_url": "https://www.britannica.com/place/Japan",
+    "status": "published"
+  },
+  {
+    "id": "devinette-110",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quel animal suis-je ?",
+    "clues": [
+      "Chez moi, c'est le mâle qui porte les petits et leur donne naissance.",
+      "Je nage en position verticale, très lentement.",
+      "Je m'accroche aux algues avec ma queue.",
+      "Je suis un poisson dont la tête rappelle celle d'un cheval."
+    ],
+    "correct_answer": "hippocampe",
+    "accepted_aliases": [
+      "hippocampes",
+      "cheval de mer"
+    ],
+    "explanation": "La femelle hippocampe dépose ses œufs dans une poche ventrale du mâle, qui les féconde puis met au monde des centaines de petits. Il est l'un des poissons les plus lents du monde.",
+    "source_url": "https://www.nationalgeographic.com/animals/fish/facts/seahorses",
+    "status": "published"
+  },
+  {
+    "id": "devinette-111",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quel aliment suis-je ?",
+    "clues": [
+      "On me fabrique à partir de fèves qui poussent dans des cabosses.",
+      "Les Mayas et les Aztèques me buvaient amer et épicé.",
+      "Mes fèves ont servi de monnaie en Amérique centrale.",
+      "La Suisse est l'un des pays où l'on me consomme le plus."
+    ],
+    "correct_answer": "chocolat",
+    "accepted_aliases": [
+      "chocolats",
+      "cacao"
+    ],
+    "explanation": "Chez les Aztèques, on payait avec des fèves de cacao : quelques fèves suffisaient pour acheter un fruit ou un œuf. Le chocolat ne s'est sucré qu'en arrivant en Europe, au XVIe siècle.",
+    "source_url": "https://www.britannica.com/topic/chocolate",
+    "status": "published"
+  },
+  {
+    "id": "devinette-112",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quelle ville suis-je ?",
+    "clues": [
+      "Je suis à cheval sur deux continents.",
+      "Je me suis appelée Byzance, puis Constantinople.",
+      "Le détroit du Bosphore me coupe en deux.",
+      "Ma basilique Sainte-Sophie a été église, mosquée, musée, puis de nouveau mosquée."
+    ],
+    "correct_answer": "Istanbul",
+    "accepted_aliases": [
+      "Stamboul",
+      "Constantinople"
+    ],
+    "explanation": "Istanbul est la seule grande métropole partagée entre l'Europe et l'Asie. Elle a été la capitale de l'Empire byzantin puis de l'Empire ottoman pendant plus de quinze siècles au total.",
+    "source_url": "https://www.britannica.com/place/Istanbul",
+    "status": "published"
+  },
+  {
+    "id": "devinette-113",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quel objet suis-je ?",
+    "clues": [
+      "J'ai été inventé en 1974 par un professeur d'architecture hongrois.",
+      "J'existe en plus de 43 milliards de milliards de positions.",
+      "J'ai six faces de couleurs différentes.",
+      "On me résout en faisant pivoter mes rangées de petits cubes."
+    ],
+    "correct_answer": "Rubik's Cube",
+    "accepted_aliases": [
+      "Rubiks Cube",
+      "Rubik cube",
+      "cube Rubik",
+      "cube de Rubik",
+      "Rubik",
+      "Rubik's Cubes"
+    ],
+    "explanation": "Malgré son nombre astronomique de positions, des chercheurs ont prouvé en 2010 qu'aucune ne demande plus de 20 mouvements pour être résolue. Ernő Rubik a lui-même mis environ un mois à résoudre son invention.",
+    "source_url": "https://www.britannica.com/topic/Rubiks-Cube",
+    "status": "published"
+  },
+  {
+    "id": "devinette-114",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Qui suis-je ?",
+    "clues": [
+      "Je suis née à Varsovie en 1867.",
+      "J'ai découvert deux éléments chimiques, dont l'un porte le nom de mon pays natal.",
+      "J'ai été la première personne à recevoir deux prix Nobel.",
+      "Je repose au Panthéon aux côtés de mon mari, Pierre."
+    ],
+    "correct_answer": "Marie Curie",
+    "accepted_aliases": [
+      "Curie",
+      "Marie Sklodowska-Curie",
+      "Maria Sklodowska",
+      "Madame Curie"
+    ],
+    "explanation": "Marie Curie a reçu le Nobel de physique en 1903 puis celui de chimie en 1911, pour le polonium et le radium. Ses carnets de laboratoire sont encore radioactifs et se consultent avec des protections.",
+    "source_url": "https://www.nobelprize.org/prizes/physics/1903/marie-curie/biographical/",
+    "status": "published"
+  },
+  {
+    "id": "devinette-115",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quel pays suis-je ?",
+    "clues": [
+      "Je n'ai pas d'armée.",
+      "Mon parlement, fondé en 930, est l'un des plus anciens du monde.",
+      "On y trouve des volcans, des glaciers et des geysers.",
+      "Ma capitale est Reykjavik."
+    ],
+    "correct_answer": "Islande",
+    "accepted_aliases": [
+      "Iceland",
+      "Island"
+    ],
+    "explanation": "L'Islande n'a jamais eu d'armée permanente : sa défense repose sur ses garde-côtes et sur l'OTAN, dont elle est membre fondateur. Le mot « geyser » vient d'ailleurs du Geysir, une source jaillissante islandaise.",
+    "source_url": "https://www.britannica.com/place/Iceland",
+    "status": "published"
+  },
+  {
+    "id": "devinette-116",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quel animal suis-je ?",
+    "clues": [
+      "Mes espèces représentent environ un cinquième de tous les mammifères.",
+      "Je suis le seul mammifère capable de vraiment voler.",
+      "Je me repère dans le noir grâce à l'écho de mes cris.",
+      "Je dors suspendue la tête en bas."
+    ],
+    "correct_answer": "chauve-souris",
+    "accepted_aliases": [
+      "chauves-souris",
+      "chiroptère",
+      "chiroptères",
+      "roussette"
+    ],
+    "explanation": "On compte plus de 1 400 espèces de chauves-souris, ce qui en fait le deuxième groupe de mammifères après les rongeurs. Certaines mangent plus de 1 000 moustiques en une heure.",
+    "source_url": "https://www.nationalgeographic.com/animals/mammals/facts/bats",
+    "status": "published"
+  },
+  {
+    "id": "devinette-117",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 2,
+    "prompt": "Quelle ville suis-je ?",
+    "clues": [
+      "J'ai été la capitale d'un empire européen, alors que je suis en Amérique.",
+      "J'ai été la capitale de mon pays jusqu'en 1960.",
+      "Mon nom signifie « rivière de janvier ».",
+      "Je suis dominée par le Pain de Sucre et le Christ Rédempteur."
+    ],
+    "correct_answer": "Rio de Janeiro",
+    "accepted_aliases": [
+      "Rio"
+    ],
+    "explanation": "Fuyant Napoléon, la cour du Portugal s'installe à Rio en 1808, qui devient la capitale de tout l'empire portugais. Son nom vient d'une erreur : les navigateurs arrivés en janvier 1502 avaient pris sa baie pour l'embouchure d'un fleuve.",
+    "source_url": "https://www.britannica.com/place/Rio-de-Janeiro-Brazil",
+    "status": "published"
+  },
+  {
+    "id": "devinette-118",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Qui suis-je ?",
+    "clues": [
+      "Je suis né en 1856 dans l'actuelle Croatie.",
+      "J'ai travaillé pour Thomas Edison avant de devenir son rival.",
+      "J'ai défendu le courant alternatif.",
+      "Une unité de champ magnétique et une marque de voitures électriques portent mon nom."
+    ],
+    "correct_answer": "Nikola Tesla",
+    "accepted_aliases": [
+      "Tesla",
+      "Nicolas Tesla"
+    ],
+    "explanation": "Inventeur de centaines de brevets, Nikola Tesla est mort presque sans le sou en 1943, dans une chambre d'hôtel de New York. Il passait ses journées à nourrir les pigeons, dont il disait aimer l'un comme une personne.",
+    "source_url": "https://www.britannica.com/biography/Nikola-Tesla",
+    "status": "published"
+  },
+  {
+    "id": "devinette-119",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Quel pays suis-je ?",
+    "clues": [
+      "Je suis le pays indépendant le moins densément peuplé du monde.",
+      "Près de la moitié de mes habitants vivent dans ma capitale.",
+      "Je suis coincé entre la Russie et la Chine, sans accès à la mer.",
+      "Gengis Khan y a fondé un immense empire au XIIIe siècle.",
+      "Ma capitale est Oulan-Bator."
+    ],
+    "correct_answer": "Mongolie",
+    "accepted_aliases": [
+      "Mongolia"
+    ],
+    "explanation": "La Mongolie compte environ 2 habitants au km², et une partie de sa population vit encore de façon nomade sous la yourte. L'empire de Gengis Khan a été le plus grand empire d'un seul tenant de l'histoire.",
+    "source_url": "https://www.britannica.com/place/Mongolia",
+    "status": "published"
+  },
+  {
+    "id": "devinette-120",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Quel aliment suis-je ?",
+    "clues": [
+      "Il faut plus de 150 000 fleurs pour obtenir un seul kilo de moi.",
+      "Je suis l'épice la plus chère du monde.",
+      "On me récolte à la main, filament par filament, sur un crocus.",
+      "Je donne sa couleur jaune à la paella."
+    ],
+    "correct_answer": "safran",
+    "accepted_aliases": [
+      "saffran",
+      "safrans"
+    ],
+    "explanation": "Chaque fleur de crocus ne porte que trois stigmates, cueillis à la main à l'aube. C'est ce qui fait grimper le prix du safran à plusieurs milliers d'euros le kilo.",
+    "source_url": "https://www.britannica.com/topic/saffron",
+    "status": "published"
+  },
+  {
+    "id": "devinette-121",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Quel objet suis-je ?",
+    "clues": [
+      "J'ai été inventé en France en 1816.",
+      "Mon inventeur, gêné de coller son oreille contre la poitrine d'une patiente, a roulé un cahier en tube.",
+      "Je permets d'écouter le cœur et les poumons.",
+      "Le médecin me porte souvent autour du cou."
+    ],
+    "correct_answer": "stéthoscope",
+    "accepted_aliases": [
+      "stéthoscopes",
+      "stetoscope"
+    ],
+    "explanation": "Le médecin René Laennec a inventé le stéthoscope à l'hôpital Necker, à Paris. Sa première version était un simple cylindre de bois, sans tuyaux ni embouts pour les oreilles.",
+    "source_url": "https://www.britannica.com/biography/Rene-Laennec",
+    "status": "published"
+  },
+  {
+    "id": "devinette-122",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Quelle ville suis-je ?",
+    "clues": [
+      "J'ai été fondée en 1703 par un tsar, sur des marécages.",
+      "J'ai changé trois fois de nom au XXe siècle.",
+      "J'ai résisté à un siège de près de 900 jours pendant la Seconde Guerre mondiale.",
+      "J'ai été la capitale de la Russie pendant plus de deux siècles.",
+      "Le musée de l'Ermitage s'y trouve."
+    ],
+    "correct_answer": "Saint-Pétersbourg",
+    "accepted_aliases": [
+      "St-Pétersbourg",
+      "Saint-Petersburg",
+      "St Petersburg",
+      "Leningrad",
+      "Léningrad",
+      "Petrograd",
+      "Pétrograd"
+    ],
+    "explanation": "Fondée par Pierre le Grand, elle est devenue Petrograd en 1914, Leningrad en 1924, puis de nouveau Saint-Pétersbourg en 1991. Le siège de Leningrad a duré 872 jours et fait environ un million de morts.",
+    "source_url": "https://www.britannica.com/place/Saint-Petersburg-Russia",
+    "status": "published"
+  },
+  {
+    "id": "devinette-123",
+    "type": "riddle",
+    "category": "devinette",
+    "difficulty": 3,
+    "prompt": "Quel animal suis-je ?",
+    "clues": [
+      "Je mesure moins d'un millimètre.",
+      "J'ai huit pattes griffues, mais je ne suis ni une araignée ni un insecte.",
+      "Je peux survivre des années sans eau en me desséchant complètement.",
+      "En 2007, j'ai survécu à un voyage dans le vide spatial.",
+      "On me surnomme « ourson d'eau »."
+    ],
+    "correct_answer": "tardigrade",
+    "accepted_aliases": [
+      "tardigrades",
+      "ourson d'eau",
+      "oursons d'eau"
+    ],
+    "explanation": "Desséché, le tardigrade se met en pause et supporte le froid extrême, les radiations et le vide spatial, comme l'a montré la mission européenne FOTON-M3. Réhydraté, il reprend vie en quelques heures.",
+    "source_url": "https://www.britannica.com/animal/tardigrade",
+    "status": "published"
   }
 ]

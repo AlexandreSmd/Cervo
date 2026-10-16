@@ -17,7 +17,7 @@ from ..domain.models import AnswerIn, ClueIn, ReportIn, StartIn, UsernameIn
 from ..domain.stats import profile_summary
 from ..firebase import app as firebase_app
 from ..firebase import db
-from ..services import media, play, users
+from ..services import leaderboard, media, play, users
 from .deps import Claims, is_admin, rate_limit
 
 router = APIRouter()
@@ -101,6 +101,12 @@ def patch_profile(body: UsernameIn, claims: Claims):
 @router.get("/profile/days")
 def get_days(claims: Claims):
     return {"days": play.played_days(db(), claims["uid"])}
+
+
+@router.get("/leaderboard")
+def get_leaderboard(claims: Claims):
+    """Classement du mois en cours, avec ta place et ce que le quiz du jour a changé."""
+    return leaderboard.view(db(), claims["uid"], today())
 
 
 @router.post("/report")

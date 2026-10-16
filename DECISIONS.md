@@ -278,3 +278,12 @@ Autour du quiz :
 18. **Résultats** : une phrase sur la journée, sous le score (« Très belle journée : 6 sans faute. »).
 19. **Profil** : si le quiz du jour n'est pas fini, « Jouer le quiz du jour » (ou « Reprendre ») en premier.
 20. **Connexion** : ce qu'on y gagne (3 points), les étapes après l'envoi du lien, « Plus tard, je continue à jouer » ; plus de bouton « Se connecter » en double dans l'en-tête de cette page.
+
+## Version 11 : classement du mois, profil en onglets, plus de temps, 200 questions
+
+- **Classement du mois** (demande du porteur, à la place du « pas de classement public » de PRODUCT.md) : chaque joueur cumule les scores de ses quiz terminés du mois, jouer tous les jours compte autant que bien jouer. Ex aequo : même rang. Tenu à jour dans la même écriture que la dernière réponse (`monthly_scores/{AAAA-MM}/players/{uid}`), sans relire les parties des autres. Tête du classement (50) et ta ligne, même plus loin ; aucun identifiant de joueur n'est envoyé, seulement les pseudos.
+- **Ce que le quiz du jour a changé** : ton rang comparé au classement sans les points gagnés aujourd'hui (par tous les joueurs). « ▲ 3 places », « ▼ 1 place », « = », ou « nouveau » pour un premier quiz du mois. Montré en fin de quiz (carte qui ouvre le classement) et dans le profil.
+- **Profil en onglets** : Progrès (moyenne, série, 30 jours, forme du cerveau, 10 défis), Classement, Historique (calendrier, mes questions), Compte. L'onglet est dans l'adresse (`/profil?onglet=classement`) : on peut y renvoyer directement. Jouer le quiz du jour et créer un compte restent au-dessus des onglets.
+- **Plus de temps** : tout chrono calculé est multiplié par 1,5 (`timing.TIME_FACTOR`), lecture et photos comprises. Un `time_limit` écrit à la main n'est pas touché.
+- **Nouvelles questions jouées tout de suite** : quand le chargement des questions (`seed`, donc `prod:seed` et `prod:deploy`) en ajoute au moins une, le quiz du jour et les journées à venir composées automatiquement sont recomposés. Aujourd'hui compris même si des joueurs ont commencé : ceux qui ont fini gardent leur résultat, ceux qui sont en cours terminent sur les nouvelles questions. Les journées choisies à la main dans le planning ne bougent pas. `--keep-today` désactive ce comportement.
+- **200 questions de plus** : 20 par type (6 faciles, 8 moyennes, 6 difficiles), soit 23 jours de rotation.

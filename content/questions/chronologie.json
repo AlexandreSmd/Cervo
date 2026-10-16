@@ -65,5 +65,459 @@
     ],
     "explanation": "Le fax a été breveté par Alexander Bain en 1843, avant même la découverte de Neptune (1846). Le métro de Londres ouvre en 1863, la guerre de Sécession s'achève en 1865 et Nintendo naît en 1889, comme fabricant de cartes à jouer.",
     "status": "published"
+  },
+  {
+    "id": "chronologie-104",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Quatre grandes premières de la conquête spatiale : remets-les dans l'ordre.",
+    "correct_answer": [
+      "Le lancement de Spoutnik",
+      "Le premier pas sur la Lune",
+      "Le lancement du télescope Hubble",
+      "La première photo d'un trou noir"
+    ],
+    "order_details": [
+      "1957",
+      "1969",
+      "1990",
+      "2019"
+    ],
+    "explanation": "Spoutnik ouvre l'ère spatiale en 1957, Armstrong marche sur la Lune en 1969 et Hubble décolle en 1990. Surprise : son miroir principal était mal poli et il a fallu une mission de réparation en 1993 pour qu'il voie net.",
+    "source_url": "https://fr.wikipedia.org/wiki/T%C3%A9lescope_spatial_Hubble",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-105",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Quatre dates clés de l'histoire suisse : du plus ancien au plus récent.",
+    "correct_answer": [
+      "Le Pacte fédéral",
+      "La bataille de Marignan",
+      "La première Constitution fédérale",
+      "Le droit de vote des femmes au niveau fédéral"
+    ],
+    "order_details": [
+      "1291",
+      "1515",
+      "1848",
+      "1971"
+    ],
+    "explanation": "Les Suissesses n'obtiennent le droit de vote fédéral qu'en 1971, plus de 120 ans après la Constitution de 1848. Plus étonnant encore : Appenzell Rhodes-Intérieures n'a accordé le vote cantonal aux femmes qu'en 1990, contraint par le Tribunal fédéral.",
+    "source_url": "https://fr.wikipedia.org/wiki/Suffrage_f%C3%A9minin_en_Suisse",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-106",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Quatre étapes de l'histoire du cinéma : retrouve leur ordre.",
+    "correct_answer": [
+      "La première projection publique des frères Lumière",
+      "Le premier film parlant, « Le Chanteur de jazz »",
+      "« Blanche-Neige et les Sept Nains » de Disney",
+      "« Titanic » de James Cameron"
+    ],
+    "order_details": [
+      "1895",
+      "1927",
+      "1937",
+      "1997"
+    ],
+    "explanation": "Les Lumière projettent leurs films au public le 28 décembre 1895, au Grand Café à Paris. « Le Chanteur de jazz » (1927) passe pour le premier film parlant, alors qu'il ne contient que quelques minutes de dialogues synchronisés.",
+    "source_url": "https://fr.wikipedia.org/wiki/Le_Chanteur_de_jazz_(film,_1927)",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-107",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Quatre géants américains : lequel est né en premier ?",
+    "correct_answer": [
+      "L'invention du Coca-Cola",
+      "La sortie de la Ford T",
+      "La fondation de Microsoft",
+      "La fondation de Google"
+    ],
+    "order_details": [
+      "1886",
+      "1908",
+      "1975",
+      "1998"
+    ],
+    "explanation": "Le Coca-Cola est créé en 1886 à Atlanta par le pharmacien John Pemberton, vendu d'abord comme un remède. Google, fondé en 1998, s'appelait à l'origine « BackRub ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Google",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-108",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Quatre moments de l'histoire du sport : remets-les dans l'ordre.",
+    "correct_answer": [
+      "Les premiers Jeux olympiques modernes, à Athènes",
+      "Le premier Tour de France",
+      "La première Coupe du monde de football",
+      "Le record du 100 m d'Usain Bolt en 9,58 s"
+    ],
+    "order_details": [
+      "1896",
+      "1903",
+      "1930",
+      "2009"
+    ],
+    "explanation": "Le Tour de France a été créé en 1903 par le journal L'Auto pour doper ses ventes. Le 9,58 s de Bolt, réalisé à Berlin en 2009, tient toujours plus de quinze ans après.",
+    "source_url": "https://fr.wikipedia.org/wiki/Tour_de_France_1903",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-109",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 1,
+    "prompt": "Cinq repères qui couvrent plus de 4000 ans : du plus ancien au plus récent.",
+    "correct_answer": [
+      "La construction de la pyramide de Khéops",
+      "La fondation de Rome",
+      "La chute de l'Empire romain d'Occident",
+      "Le premier voyage de Christophe Colomb en Amérique",
+      "La prise de la Bastille"
+    ],
+    "order_details": [
+      "vers 2560 av. J.-C.",
+      "753 av. J.-C. (selon la tradition)",
+      "476",
+      "1492",
+      "1789"
+    ],
+    "explanation": "Quand Rome est fondée, la pyramide de Khéops a déjà environ 1800 ans. Elle est restée le plus haut monument construit par l'homme pendant près de 4000 ans.",
+    "source_url": "https://fr.wikipedia.org/wiki/Pyramide_de_Kh%C3%A9ops",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-110",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Cinq grandes avancées scientifiques : retrouve leur ordre.",
+    "correct_answer": [
+      "Les « Principia » de Newton",
+      "« L'Origine des espèces » de Darwin",
+      "Le tableau périodique de Mendeleïev",
+      "La relativité restreinte d'Einstein",
+      "La structure en double hélice de l'ADN"
+    ],
+    "order_details": [
+      "1687",
+      "1859",
+      "1869",
+      "1905",
+      "1953"
+    ],
+    "explanation": "En 1905, Einstein publie quatre articles révolutionnaires, dont la relativité restreinte. Il travaille alors comme expert technique à l'Office fédéral des brevets, à Berne.",
+    "source_url": "https://fr.wikipedia.org/wiki/Annus_mirabilis_d%27Einstein",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-111",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Quatre chefs-d'œuvre de la peinture : du plus ancien au plus récent.",
+    "correct_answer": [
+      "« La Joconde » de Léonard de Vinci",
+      "« La Nuit étoilée » de Van Gogh",
+      "« Le Cri » de Munch",
+      "« Guernica » de Picasso"
+    ],
+    "order_details": [
+      "vers 1503",
+      "1889",
+      "1893",
+      "1937"
+    ],
+    "explanation": "Van Gogh peint « La Nuit étoilée » en 1889 depuis sa chambre de l'asile de Saint-Rémy-de-Provence. « La Joconde » n'est devenue une star mondiale qu'après son vol au Louvre en 1911.",
+    "source_url": "https://fr.wikipedia.org/wiki/La_Nuit_%C3%A9toil%C3%A9e",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-112",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Quatre moments de l'histoire de la musique pop : remets-les dans l'ordre.",
+    "correct_answer": [
+      "Le premier album des Beatles",
+      "Le festival de Woodstock",
+      "Le lancement de la chaîne MTV",
+      "La sortie de « Thriller » de Michael Jackson"
+    ],
+    "order_details": [
+      "1963",
+      "1969",
+      "1981",
+      "1982"
+    ],
+    "explanation": "MTV démarre le 1er août 1981 avec un clip au titre prophétique : « Video Killed the Radio Star » des Buggles. Un an plus tard sort « Thriller », l'album le plus vendu de l'histoire.",
+    "source_url": "https://fr.wikipedia.org/wiki/MTV",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-113",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Quatre objets du quotidien : lequel est apparu en premier ?",
+    "correct_answer": [
+      "Le stylo Bic Cristal",
+      "Le premier scan d'un code-barres en caisse",
+      "Le Walkman de Sony",
+      "Le Post-it"
+    ],
+    "order_details": [
+      "1950",
+      "1974",
+      "1979",
+      "1980"
+    ],
+    "explanation": "Le tout premier produit scanné en caisse, le 26 juin 1974 dans l'Ohio, était un paquet de chewing-gums Wrigley's. Le Post-it est né d'une colle ratée, jugée trop faible chez 3M.",
+    "source_url": "https://fr.wikipedia.org/wiki/Code-barres",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-114",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Cinq étapes de la construction européenne : du plus ancien au plus récent.",
+    "correct_answer": [
+      "Le traité de Rome",
+      "La chute du mur de Berlin",
+      "Le traité de Maastricht",
+      "L'arrivée des pièces et billets en euros",
+      "Le référendum sur le Brexit"
+    ],
+    "order_details": [
+      "1957",
+      "1989",
+      "1992",
+      "2002",
+      "2016"
+    ],
+    "explanation": "Les pièces et billets en euros arrivent le 1er janvier 2002, mais l'euro existait déjà depuis 1999 sous forme scripturale. Le Royaume-Uni vote sa sortie de l'Union en 2016 et la quitte officiellement en 2020.",
+    "source_url": "https://fr.wikipedia.org/wiki/Euro",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-115",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Cinq dates suisses : retrouve leur ordre.",
+    "correct_answer": [
+      "La fondation de la Croix-Rouge à Genève",
+      "L'ouverture du tunnel ferroviaire du Gothard",
+      "La fondation du CERN",
+      "L'adhésion de la Suisse à l'ONU",
+      "L'inauguration du tunnel de base du Gothard"
+    ],
+    "order_details": [
+      "1863",
+      "1882",
+      "1954",
+      "2002",
+      "2016"
+    ],
+    "explanation": "La Suisse n'est entrée à l'ONU qu'en 2002, après un vote populaire, alors que Genève accueille l'un de ses principaux sièges depuis des décennies. Le tunnel de base du Gothard, long de 57 km, est le plus long tunnel ferroviaire du monde.",
+    "source_url": "https://fr.wikipedia.org/wiki/Suisse_et_l%27Organisation_des_Nations_unies",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-116",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Cinq naissances de l'ère numérique : du plus ancien au plus récent.",
+    "correct_answer": [
+      "Le premier site web",
+      "Le premier SMS",
+      "Le lancement de Facebook",
+      "La première vidéo sur YouTube",
+      "La présentation du premier iPhone"
+    ],
+    "order_details": [
+      "1991",
+      "1992",
+      "2004",
+      "2005",
+      "2007"
+    ],
+    "explanation": "Le premier site web a été mis en ligne en 1991 au CERN, près de Genève, par Tim Berners-Lee. Le premier SMS, envoyé en 1992, disait simplement « Merry Christmas ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Short_Message_Service",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-117",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 2,
+    "prompt": "Quatre premières spatiales : remets-les dans l'ordre.",
+    "correct_answer": [
+      "Le premier homme dans l'espace",
+      "La première femme dans l'espace",
+      "La première sortie dans l'espace",
+      "Le premier vol de la navette spatiale"
+    ],
+    "order_details": [
+      "1961",
+      "1963",
+      "1965",
+      "1981"
+    ],
+    "explanation": "Valentina Terechkova vole en 1963, à 26 ans, et reste la seule femme à avoir fait un vol spatial en solitaire. La navette Columbia décolle le 12 avril 1981, vingt ans jour pour jour après le vol de Gagarine.",
+    "source_url": "https://fr.wikipedia.org/wiki/Valentina_Terechkova",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-118",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Attention, piège : du plus ancien au plus récent.",
+    "correct_answer": [
+      "Les premiers cours à l'université d'Oxford",
+      "Gengis Khan proclamé chef des Mongols",
+      "La fondation de Tenochtitlan, capitale aztèque",
+      "La chute de Constantinople"
+    ],
+    "order_details": [
+      "vers 1096",
+      "1206",
+      "1325",
+      "1453"
+    ],
+    "explanation": "On enseignait déjà à Oxford plus de deux siècles avant la fondation de Tenochtitlan par les Aztèques. L'université est plus ancienne que la plupart des empires qu'on imagine « antiques ».",
+    "source_url": "https://fr.wikipedia.org/wiki/Universit%C3%A9_d%27Oxford",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-119",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Quatre événements des années 1970 : retrouve leur ordre exact.",
+    "correct_answer": [
+      "Le premier vol commercial du Concorde",
+      "La sortie de « La Guerre des étoiles » aux États-Unis",
+      "La dernière exécution à la guillotine en France",
+      "L'abolition de la peine de mort en France"
+    ],
+    "order_details": [
+      "janvier 1976",
+      "mai 1977",
+      "septembre 1977",
+      "octobre 1981"
+    ],
+    "explanation": "La dernière exécution à la guillotine a eu lieu à Marseille le 10 septembre 1977, quelques mois après la sortie de « La Guerre des étoiles ». La France abolit la peine de mort en 1981, sous l'impulsion de Robert Badinter.",
+    "source_url": "https://fr.wikipedia.org/wiki/Hamida_Djandoubi",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-120",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Quatre inventions du début du XIXe siècle : du plus ancien au plus récent.",
+    "correct_answer": [
+      "La pile de Volta",
+      "Le stéthoscope de Laennec",
+      "L'alphabet braille",
+      "Le premier timbre-poste, le Penny Black"
+    ],
+    "order_details": [
+      "1800",
+      "1816",
+      "1829",
+      "1840"
+    ],
+    "explanation": "Louis Braille, aveugle depuis l'âge de 3 ans, invente son système à 15 ans et le publie en 1829. Laennec, lui, a imaginé le stéthoscope en roulant une feuille de papier pour écouter le cœur d'une patiente.",
+    "source_url": "https://fr.wikipedia.org/wiki/Louis_Braille",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-121",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Quatre entreprises célèbres : laquelle a été fondée en premier ?",
+    "correct_answer": [
+      "Nokia",
+      "Lego",
+      "Samsung",
+      "IKEA"
+    ],
+    "order_details": [
+      "1865",
+      "1932",
+      "1938",
+      "1943"
+    ],
+    "explanation": "Nokia est née en 1865 comme une papeterie en Finlande, et Samsung a commencé en 1938 en vendant du poisson séché et des nouilles. Ingvar Kamprad a fondé IKEA à seulement 17 ans.",
+    "source_url": "https://fr.wikipedia.org/wiki/Nokia",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-122",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Cinq naissances du sport moderne : retrouve leur ordre.",
+    "correct_answer": [
+      "Le premier tournoi de Wimbledon",
+      "L'invention du basket-ball",
+      "La fondation du Comité international olympique",
+      "La fondation de la FIFA",
+      "Les premiers Jeux olympiques d'hiver, à Chamonix"
+    ],
+    "order_details": [
+      "1877",
+      "1891",
+      "1894",
+      "1904",
+      "1924"
+    ],
+    "explanation": "Le basket-ball a été inventé en 1891 par James Naismith, avec des paniers à pêches en guise de cerceaux. Le CIO, fondé à Paris en 1894, s'est installé à Lausanne en 1915.",
+    "source_url": "https://fr.wikipedia.org/wiki/Basket-ball",
+    "status": "published"
+  },
+  {
+    "id": "chronologie-123",
+    "type": "order",
+    "category": "chronologie",
+    "difficulty": 3,
+    "prompt": "Cinq héros de bande dessinée et de dessin animé : du plus ancien au plus récent.",
+    "correct_answer": [
+      "Mickey Mouse",
+      "Tintin",
+      "Superman",
+      "Les Schtroumpfs",
+      "Astérix"
+    ],
+    "order_details": [
+      "1928",
+      "1929",
+      "1938",
+      "1958",
+      "1959"
+    ],
+    "explanation": "Tintin apparaît en janvier 1929, à peine deux mois après les débuts de Mickey dans « Steamboat Willie ». Les Schtroumpfs sont nés comme personnages secondaires des aventures de Johan et Pirlouit, un an avant Astérix.",
+    "source_url": "https://fr.wikipedia.org/wiki/Les_Schtroumpfs",
+    "status": "published"
   }
 ]

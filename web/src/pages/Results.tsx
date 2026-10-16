@@ -1,8 +1,9 @@
-// Résultats d'une journée : score, perles, partage, détail des questions.
+// Résultats d'une journée : score, perles, partage, place au classement du mois, détail des questions.
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { Countdown } from "../components/Countdown";
 import { DayItems } from "../components/DayItems";
+import { MyRank } from "../components/Leaderboard";
 import { Pearls } from "../components/Pearls";
 import { ShareCard } from "../components/ShareCard";
 import { ErrorBox, Loading } from "../components/States";
@@ -11,12 +12,13 @@ import { APP_NAME, BASELINE } from "../lib/config";
 import { COLOR_HEX, capitalize, formatDay, scoreColor } from "../lib/format";
 import type { DayDetail } from "../lib/types";
 import { useAuth } from "../lib/auth";
-import { useResults, useToday } from "../lib/hooks";
+import { useLeaderboard, useResults, useToday } from "../lib/hooks";
 
 export function Results() {
   const { date = "" } = useParams();
   const { data, isLoading, error } = useResults(date);
   const today = useToday();
+  const ranking = useLeaderboard();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -72,6 +74,7 @@ export function Results() {
           </p>
         )}
       </div>
+      {today.data?.date === date && ranking.data && <MyRank data={ranking.data} link />}
       {data.community && <Standing community={data.community} score={data.score_total} />}
       <DayItems items={data.items} />
     </div>
@@ -118,7 +121,7 @@ export function PastDay() {
   if (isLoading || !data) return <Loading />;
   return (
     <div className="space-y-4 pt-4">
-      <Link to="/profil" className="chip">
+      <Link to="/profil?onglet=historique" className="chip">
         ← Profil
       </Link>
       <section className="card space-y-4 p-6">

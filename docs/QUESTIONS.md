@@ -4,20 +4,24 @@ Chaque jour, le quiz pose **une question de chacun des 10 types**, toujours dans
 
 | # | Type | Ce que fait le joueur | Chrono (facile / moyen / difficile) |
 | --- | --- | --- | --- |
-| 1 | 📖 Vocabulaire | Choisit le mot juste parmi 4 | 15 / 15 / 20 s |
-| 2 | 📏 Taille | Agrandit ou réduit un objet par rapport à un autre | 15 / 20 / 20 s |
-| 3 | 💡 Fait étonnant | Vrai ou faux (ou 4 choix), puis découvre l'explication | 15 / 20 / 20 s |
-| 4 | 🧠 Mémoire | Mémorise une liste, puis la réécrit, trouve l'intrus ou la remet dans l'ordre | 15 / 20 / 25 s + 2 s par élément à réécrire |
-| 5 | 📊 Statistique | Devine un pourcentage sur 100 personnes | 15 / 20 / 20 s |
-| 6 | ⏳ Chronologie | Classe 4 à 5 événements, du plus ancien au plus récent | 20 / 25 / 30 s + 4 s par élément au-delà de 4 |
-| 7 | ⚖️ Estimation | Donne un ordre de grandeur (poids, taille, durée…) | 15 / 20 / 25 s |
-| 8 | 🕵️ Devinette | Trouve avec le moins d'indices possible | 40 / 45 / 50 s |
-| 9 | 🧩 Énigme | Résout un problème de logique | 45 / 60 / 90 s |
+| 1 | 📖 Vocabulaire | Choisit le mot juste parmi 4 | 20 / 25 / 30 s |
+| 2 | 📏 Taille | Agrandit ou réduit un objet par rapport à un autre | 25 / 30 / 30 s |
+| 3 | 💡 Fait étonnant | Vrai ou faux (ou 4 choix), puis découvre l'explication | 25 / 30 / 30 s |
+| 4 | 🧠 Mémoire | Mémorise une liste, puis la réécrit, trouve l'intrus ou la remet dans l'ordre | 25 / 30 / 40 s + 3 s par élément à réécrire |
+| 5 | 📊 Statistique | Devine un pourcentage sur 100 personnes | 25 / 30 / 30 s |
+| 6 | ⏳ Chronologie | Classe 4 à 5 événements, du plus ancien au plus récent | 30 / 40 / 45 s + 6 s par élément au-delà de 4 |
+| 7 | ⚖️ Estimation | Donne un ordre de grandeur (poids, taille, durée…) | 25 / 30 / 40 s |
+| 8 | 🕵️ Devinette | Trouve avec le moins d'indices possible | 60 / 70 / 75 s |
+| 9 | 🧩 Énigme | Résout un problème de logique | 70 / 90 / 135 s |
 | 10 | ✍️ Dictée | Écoute deux phrases et les écrit | sans chrono |
 
 Le chrono est **calculé tout seul** : base du type et de la difficulté, plus le temps de lire
 l'énoncé et les choix (environ 3 mots par seconde au-delà de 15 mots), plus 3 s par photo,
-arrondi aux 5 secondes. L'éditeur l'affiche ; on peut l'imposer avec `time_limit`.
+le tout multiplié par 1,5 (marge de confort), arrondi aux 5 secondes. Les valeurs du tableau
+l'incluent. L'éditeur l'affiche ; on peut l'imposer avec `time_limit`.
+
+**Mise en ligne** : dès que `npm run prod:seed` (ou `prod:deploy`) ajoute au moins une question,
+le quiz du jour est recomposé pour la jouer tout de suite (voir DECISIONS.md, version 11).
 
 **Le plus simple : l'éditeur de l'espace fondateur** (Banque → + sur le type voulu). Le
 formulaire ne demande que ce que le type utilise et montre l'aperçu sur téléphone. Pour écrire
